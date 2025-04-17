@@ -5,6 +5,7 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 
 ## Miembros del equipo
 
+
 Nombre: Julian Figueira
 Legajo: 33369
 Alias Slack: Julian Figueira
