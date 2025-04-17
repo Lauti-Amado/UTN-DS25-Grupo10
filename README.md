@@ -10,15 +10,15 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **Alias de Slack:** Juan Caceres
 **perfil GitHub:** https://github.com/Jcacero
 
-Nombre completo: Yamil Tundis
-Legajo: 33648
-Alias Slack: Yamil Tundis
-URL de mi perfil de Github: https://github.com/yamiltundis
+**Nombre completo:** Yamil Tundis
+**Legajo:** 33648
+**Alias Slack:** Yamil Tundis
+**URL de mi perfil de Github:** https://github.com/yamiltundis
 
-Nombre: Julian Valentin Figueira
-Legajo: 33369
-Alias Slack: Julian Figueira
-Pagina de perfil: https://github.com/JulianFigueira
+**Nombre:** Julian Valentin Figueira
+**Legajo:** 33369
+**Alias Slack:** Julian Figueira
+**Pagina de perfil:** https://github.com/JulianFigueira
 
 **Nombre:** Lautaro Agustin Amado
 **Legajo:** 33146
