@@ -15,7 +15,7 @@ Legajo: 33648
 Alias Slack: Yamil Tundis
 URL de mi perfil de Github: https://github.com/yamiltundis
 
-Nombre: Julian Figueira
+Nombre: Julian Valentin Figueira
 Legajo: 33369
 Alias Slack: Julian Figueira
 Pagina de perfil: https://github.com/JulianFigueira
