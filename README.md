@@ -5,7 +5,10 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 
 ## Miembros del equipo
 
-Mi nombre es juan cruz caceres, legajo: 33168, Juan Caceres, perfilGitHub: https://github.com/Jcacero
+**Nombre:** juan cruz caceres
+**legajo:** 33168
+**Alias de Slack:** Juan Caceres
+**perfil GitHub:** https://github.com/Jcacero
 
 Nombre completo: Yamil Tundis
 Legajo: 33648
