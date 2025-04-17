@@ -9,3 +9,9 @@ Nombre: Julian Figueira
 Legajo: 33369
 Alias Slack: Julian Figueira
 Pagina de perfil: https://github.com/JulianFigueira
+
+**Nombre:** Lautaro Agustin Amado
+**Legajo:** 33146
+**Alias de Slack:** Lautaro Amado
+**URL Perfil:** https://github.com/Lauti-Amado
+
