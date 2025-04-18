@@ -25,25 +25,30 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **Alias de Slack:** Lautaro Amado
 **URL Perfil:** https://github.com/Lauti-Amado
 
-**Nombre:** Leonel Piquet
-**Legajo:** 33725
-**Alias de Slack:** Leonel Piquet
-**URL Perfil:** https://github.com/LeonelPiquet
 
-**Oportunidad de Negocio**
-    Problema que se resuelve: La problemática que existe actualmente se da en
-    las plataformas de búsqueda de trabajo en las que se encuentran
-    profesionales con una larga trayectoria generando así que las nuevas
-    generaciones queden dejadas de lado debido a la falta de experiencia inicial.
-    Impacto del problema: Afecta a los primerizos que se quieren insertar en el
-    sector laboral IT debido a la diferencia de años de ventaja con respecto a los
-    más experimentados en el rubro. Esto afecta a la cantidad de oportunidades
-    de trabajo que se les puede presentar.
-    Soluciones actuales y sus limitaciones: Actualmente plataformas, como
-    Linkedin suelen ser demasiado amplias a la hora de la búsqueda de empleos
-    del tipo informáticos, lo que genera que perfiles incompletos por falta de
-    experiencia laboral tengan menos posibilidades de competir y figurar en la
-    búsqueda de empleo ante otros perfiles más desarrollados.
+**Nombre:** Brisa Bassilion
+**Legajo:** 33143
+**Alias de Slack:** brisabassilion
+**URL Perfil:** https://github.com/brisabassilion
+
+##Alcance del Producto
+
+**Dentro del Alcance:**
+-Alta / baja / modificación de usuarios.
+-Generar formularios para postularse a un trabajo.
+-Permitir la comunicación entre usuarios.
+-Generar encuestas sobre la experiencia con la página.
+-Proporcionar un espacio para compartir diversos proyectos a modo de repositorio.
+-Permitir a los usuarios ver un historial de movimientos previos.
+-Posibilidad de compartir perfiles entre usuarios.
+
+**Fuera del Alcance:**
+-Generar contratos legales.
+-Permitir transacciones económicas dentro de la página.
+-Permitir llamadas o videollamadas entre los usuarios.
+-Realizar posteos a modo de redes sociales tal como Linkedin, facebook, entre otras.
+
+
 
 ##Visión del Producto:
 
