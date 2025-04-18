@@ -11,6 +11,7 @@ Legajo: 33369
 Alias Slack: Julian Figueira
 Pagina de perfil: https://github.com/JulianFigueira
 
+
 Oportunidad de Negocio
 Problema que se resuelve: La problemática que existe actualmente se da en
 las plataformas de búsqueda de trabajo en las que se encuentran
