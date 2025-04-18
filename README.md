@@ -25,5 +25,7 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **Alias de Slack:** Lautaro Amado
 **URL Perfil:** https://github.com/Lauti-Amado
 
-
-
+**Nombre:** Brisa Bassilion
+**Legajo:** 33143
+**Alias de Slack:** brisabassilion
+**URL Perfil:** https://github.com/brisabassilion
