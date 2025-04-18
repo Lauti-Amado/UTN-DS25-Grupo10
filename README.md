@@ -26,6 +26,7 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **URL Perfil:** https://github.com/Lauti-Amado
 
 
+
 ##Visión del Producto:
 
 **Descripción general:** El producto es una plataforma en línea para que talentos
@@ -42,3 +43,9 @@ profesionales con años de trayectoria.
 **Usuarios principales:**
 ★ Postulantes
 ★ Empleadores
+=======
+**Nombre:** Leonel Piquet
+**Legajo:** 33725
+**Alias de Slack:** Leonel Piquet
+**URL Perfil:** https://github.com/LeonelPiquet
+
