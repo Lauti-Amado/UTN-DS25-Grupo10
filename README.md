@@ -12,6 +12,7 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **Pagina de perfil**: https://github.com/JulianFigueira
 
 
+
 =======
 **Nombre:** Lautaro Agustin Amado
 **Legajo:** 33146
