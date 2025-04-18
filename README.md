@@ -29,3 +29,20 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **Legajo:** 33143
 **Alias de Slack:** brisabassilion
 **URL Perfil:** https://github.com/brisabassilion
+
+ ##Alcance del Producto##
+
+**Dentro del Alcance:**
+-Alta / baja / modificación de usuarios.
+-Generar formularios para postularse a un trabajo.
+-Permitir la comunicación entre usuarios.
+-Generar encuestas sobre la experiencia con la página.
+-Proporcionar un espacio para compartir diversos proyectos a modo de repositorio.
+-Permitir a los usuarios ver un historial de movimientos previos.
+-Posibilidad de compartir perfiles entre usuarios.
+
+**Fuera del Alcance:**
+-Generar contratos legales.
+-Permitir transacciones económicas dentro de la página.
+-Permitir llamadas o videollamadas entre los usuarios.
+-Realizar posteos a modo de redes sociales tal como Linkedin, facebook, entre otras.
