@@ -31,6 +31,12 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **Alias de Slack:** brisabassilion
 **URL Perfil:** https://github.com/brisabassilion
 
+**Nombre:** Leonel Piquet
+**legajo:** 33725
+**Alias de Slack:** Leonel Piquet
+**perfil GitHub:** https://github.com/LeonelPiquet
+
+
 ##Alcance del Producto
 
 **Dentro del Alcance:**
