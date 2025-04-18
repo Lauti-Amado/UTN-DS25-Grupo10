@@ -26,4 +26,19 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **URL Perfil:** https://github.com/Lauti-Amado
 
 
+##Visión del Producto:
 
+**Descripción general:** El producto es una plataforma en línea para que talentos
+emergentes puedan encontrar trabajo de forma más rápida y que también
+empleadores puedan reclutar Juniors que cumplan con los requerimientos de
+puestos de trabajos que estos ofrecen.
+
+**Propuesta de valor:** Está destinada para aquellos con nula o poca experiencia
+previa que buscan ingresar en el mercado laboral. Se diferencia de otras
+plataformas ya que esta misma está orientada a personas que se encuentren
+en sus primeras inmersiones de trabajo, sin verse opacados frente a
+profesionales con años de trayectoria.
+
+**Usuarios principales:**
+★ Postulantes
+★ Empleadores
