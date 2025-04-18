@@ -29,3 +29,19 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **Legajo:** 33725
 **Alias de Slack:** Leonel Piquet
 **URL Perfil:** https://github.com/LeonelPiquet
+
+
+
+## Objetivos del Proyecto
+
+**Objetivo principal:** Ofrecer una plataforma digital que agilice e impulse el proceso de inserción laboral en el mundo IT, conectándose de forma efectiva con sus primeras oportunidades profesionales.
+
+**Objetivos específicos:** 
+	1. Permitir a los usuarios hacer seguimiento de sus postulaciones y progresos.
+	2. Crear perfiles de usuario que destaquen habilidades, formación y proyectos personales relevantes para el primer empleo.
+	3. Permitir la comunicación entre usuarios.
+
+**Métricas de éxito:** 
+	Se realizarán encuestas a los usuarios para obtener valoraciones.
+	A través de un análisis de las contrataciones llevadas a cabo en la página.
+
