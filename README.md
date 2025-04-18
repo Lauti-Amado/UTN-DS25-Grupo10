@@ -25,5 +25,7 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **Alias de Slack:** Lautaro Amado
 **URL Perfil:** https://github.com/Lauti-Amado
 
-
-
+**Nombre:** Leonel Piquet
+**Legajo:** 33725
+**Alias de Slack:** Leonel Piquet
+**URL Perfil:** https://github.com/LeonelPiquet
