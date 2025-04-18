@@ -26,3 +26,10 @@ Linkedin suelen ser demasiado amplias a la hora de la búsqueda de empleos
 del tipo informáticos, lo que genera que perfiles incompletos por falta de
 experiencia laboral tengan menos posibilidades de competir y figurar en la
 búsqueda de empleo ante otros perfiles más desarrollados.
+=======
+**Nombre:** Lautaro Agustin Amado
+**Legajo:** 33146
+**Alias de Slack:** Lautaro Amado
+**URL Perfil:** https://github.com/Lauti-Amado
+
+
