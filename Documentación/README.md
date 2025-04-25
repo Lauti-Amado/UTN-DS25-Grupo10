@@ -1,4 +1,5 @@
 Fase 0
+
 	0.1 Documento De Visión y Alcance
 
 Fase 1
