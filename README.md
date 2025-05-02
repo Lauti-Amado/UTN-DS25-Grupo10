@@ -37,7 +37,7 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 **perfil GitHub:** https://github.com/LeonelPiquet
 
 
-##Alcance del Producto
+## Alcance del Producto
 
 **Dentro del Alcance:**
 -Alta / baja / modificación de usuarios.
@@ -56,7 +56,7 @@ Se presenta una plataforma web llamada RoDi destinada a la búsqueda de empleo y
 
 
 
-##Visión del Producto:
+## Visión del Producto:
 
 **Descripción general:** El producto es una plataforma en línea para que talentos
 emergentes puedan encontrar trabajo de forma más rápida y que también
