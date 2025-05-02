@@ -14,5 +14,7 @@ Fase 2
 	2.2 Definición De Las Reglas De Negocio
 
 Fase 3
+
 	3.1 Generación de épicas
 	3.2 Refinamiento de épicas en features
+        3.3 Diagrama de Estados de Encuesta
