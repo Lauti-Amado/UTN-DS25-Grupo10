@@ -20,5 +20,5 @@ Fase 3
 	3.3 Diagrama de Actividades.Proceso De Adjuntar Proyecto
 	3.3 Diagrama de Actividades.Proceso Iniciar Sesión
 	3.3 Diagrama de Actividades.Proceso De Crear Vacante
-        3.3 Diagrama de Estados de Encuesta
-        3.3 Diagrama de Estados Oferta de Trabajo
+	3.3 Diagrama de Estados de Encuesta
+	3.3 Diagrama de Estados Oferta de Trabajo
