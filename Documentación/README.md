@@ -22,3 +22,5 @@ Fase 3
 	3.3 Diagrama de Actividades.Proceso De Crear Vacante
 	3.3 Diagrama de Estados de Encuesta
 	3.3 Diagrama de Estados Oferta de Trabajo
+	3.4 Historias de Usuario por Feature
+	3.5 División de historias
