@@ -27,3 +27,13 @@ Fase 3
 Fase 4
 
 	4.2 Matriz de Trazabilidad
+
+Fase 6
+
+       6.1 Wireframe Inicio Sesion
+       6.2 Wireframe Home del Empleador
+       6.2 Wireframe Home del Postulante 
+       6.3 Wireframe perfil de un empleador (vista desde una computadora)
+       6.3 Wireframe perfil de un postulante (vista desde un celular)
+       6.4 Wireframe Formulario para agregar nuevo empleo
+       6.4 Wireframe Formulario para postularse a un empleo
