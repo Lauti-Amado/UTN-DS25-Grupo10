@@ -1,0 +1,23 @@
+.scroll-section {
+  width: 400px;
+  margin: 2rem auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+.scroll-section h2 {
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin: 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.scroll-content {
+  max-height: 200px; /* Altura visible */
+  overflow-y: auto;  /* Scroll vertical */
+  padding: 10px;
+  line-height: 1.6;
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrusel Simple</title>
+  <link rel="stylesheet" href="prueba.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    .carousel {
+      position: relative;
+      width: 600px;
+      overflow: hidden;
+      margin: 20px auto;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: white;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-image {
+      width: 600px;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 24px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .carousel-button:hover {
+      background: rgba(0,0,0,0.7);
+    }
+
+    .prev {
+      left: 15px;
+    }
+
+    .next {
+      right: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Carrusel de Imágenes sin Bootstrap</h1>
+
+  <div class="carousel">
+    <div class="carousel-track">
+      <img src="https://picsum.photos/id/1018/600/400" class="carousel-image" alt="Imagen 1">
+      <img src="https://picsum.photos/id/1025/600/400" class="carousel-image" alt="Imagen 2">
+      <img src="https://picsum.photos/id/1035/600/400" class="carousel-image" alt="Imagen 3">
+
+    </div>
+    <button class="carousel-button prev">&#10094;</button>
+    <button class="carousel-button next">&#10095;</button>
+  </div>
+
+  <script>
+    const track = document.querySelector('.carousel-track');
+    const images = document.querySelectorAll('.carousel-image');
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+
+    let index = 0;
+
+    function updateCarousel() {
+      const width = images[0].clientWidth;
+      track.style.transform = `translateX(-${index * width}px)`;
+    }
+
+    prevButton.addEventListener('click', () => {
+      index = (index === 0) ? images.length - 1 : index - 1;
+      updateCarousel();
+    });
+
+    nextButton.addEventListener('click', () => {
+      index = (index === images.length - 1) ? 0 : index + 1;
+      updateCarousel();
+    });
+
+    window.addEventListener('resize', updateCarousel);
+
+    // Auto-reproducción (opcional)
+    /*setInterval(() => {
+      nextButton.click();
+    }, 5000);*/
+  </script>
+
+  <div class="scroll-section">
+  <h2>Últimas noticias</h2>
+  <div class="scroll-content">
+    <p>Noticia 1: Lorem ipsum dolor sit amet.</p>
+    <p>Noticia 2: Consectetur adipiscing elit.</p>
+    <p>Noticia 3: Integer nec odio. Praesent libero.</p>
+    <p>Noticia 4: Sed cursus ante dapibus.</p>
+    <p>Noticia 5: Mauris massa. Vestibulum lacinia.</p>
+    <p>Noticia 6: Curabitur sodales ligula in libero.</p>
+    <p>Noticia 7: Sed dignissim lacinia nunc.</p>
+    <p>Noticia 8: Curabitur tortor. Pellentesque nibh.</p>
+  </div>
+</div>
+
+
+</body>
+</html>
