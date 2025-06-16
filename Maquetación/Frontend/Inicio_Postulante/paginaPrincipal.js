@@ -20,11 +20,15 @@
       updateCarousel();
     });
 
+    // ...existing code...
+    document.querySelectorAll('.ofertaCard').forEach(elemento=>{
+      elemento.addEventListener('click', function() {
+        elemento.classList.add('animada');
+        setTimeout(() => elemento.classList.remove('animada'), 200); // Duración igual a la transición
+        const ventana = document.getElementById('infoVentana');
+        ventana.classList.toggle('activa');
+      });
+    })
+  // ...existing code...
+
     window.addEventListener('resize', updateCarousel);
-
-    function sumar
-
-    // Auto-reproducción (opcional)
-    /*setInterval(() => {
-      nextButton.click();
-    }, 5000);*/
