@@ -1,0 +1,221 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+    flex-grow: 1;
+}
+
+header .perfil {
+    width: 50px;
+    height: 50px;
+    background-color: #ccc;
+    color: rgb(0, 0, 0);
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;               
+    align-items: center;
+    justify-content: center;
+    padding: 0;                                   
+    font-weight: bold; 
+}          
+
+.search-bar {
+    flex: 1;
+    margin: 0 20px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.search-bar input {
+   width: 100%;
+   padding: 6px;
+   border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.search-bar button {
+      margin-left: 10px;
+      padding: 6px 12px;
+      border-radius: 10px;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: row;
+    width: 100%; 
+    border-color: #333;
+}
+
+.sidebar {
+  width: 200px;
+  height: 425px;
+  background-color: rgb(209, 209, 209);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  margin-left: 50px;
+  position: relative;
+  float: right;
+  border-radius: 10px;
+  top:15px;
+  
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 15px 20px;
+}
+
+.sidebar a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar a:hover {
+  background-color: #444;
+}
+
+.contenido {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.ofertaCard{
+  display: flex;
+  justify-content: center;
+  width: 150px;
+  height:200px;
+  border-radius: 10px;
+  background-color: rgb(186, 61, 61);
+  border: 1px solid rgb(0, 0, 0);
+  margin-left: 10px;
+  color: rgb(0, 0, 0);
+
+}
+
+
+h1 {
+  text-align: center;
+  margin: 20px 0;
+  color: #333;
+}
+
+.carousel {
+  position: relative;
+  width: 600px;
+  padding: 20px;
+  overflow: hidden;
+  margin: 20px auto;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: white;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 24px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.carousel-button:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.prev {
+left: 15px;
+}
+
+.next {
+  right: 15px;
+}
+
+.trabajoCard{
+  display: inline-block;
+  justify-content: center;
+  position:relative;
+  padding: 5px;
+  width: 500px;
+  height:150px;
+  border-radius: 10px;
+  background-color: rgb(209, 209, 209);
+  border: 1px solid black;
+  margin-left: 50px;
+  margin-bottom:10px ;
+}
+.btnVerForm{
+  position: relative;
+  left: 38%;
+  border-radius: 30px;
+  height:30px;
+  background-color: rgb(186, 61, 61);
+  border-color: rgb(186, 61, 61);
+}
+
+.imagenTrabajo{
+  position: absolute;
+  bottom: 6px;
+  right: 5%;
+  border-radius: 50%;
+  float: right;
+  width: 150px;
+  height: 150px;
+}
+
+.scroll-section {
+  width: 1200px;
+  height: 500px;
+  margin: 2rem auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+.scroll-section h2 {
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin: 0;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.scroll-content {
+  max-height: 425px; /* Altura visible */
+  overflow-y: auto;  /* Scroll vertical */
+  padding: 10px;
+  line-height: 1.6;
+}
