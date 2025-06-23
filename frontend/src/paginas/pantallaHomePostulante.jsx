@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
-export default  function pantallaHomePostulante () {
+export default  function PantallaHomePostulante () {
  
     return (
-      <div>pantallaHome</div>
+      <div style={{minHeight:"100vh"}}>pantallaHome</div>
     )
 
 }
