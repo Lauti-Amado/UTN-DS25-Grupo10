@@ -15,7 +15,7 @@ function OfertasCarousel() {
     >
       <Carousel.Item >
           <div style={{display:"flex",}}>
-            <OfertaCard titulo={'Oferta 1'} categoria={'programacion'} texto={'texto descriptivo del trabajo'}/>
+            <OfertaCard  titulo={'Oferta 11'} categoria={'programacion'} texto={'texto descriptivo del trabajo'}/>
             <OfertaCard titulo={'Oferta 1'} categoria={'programacion'} texto={'texto descriptivo del trabajo'}/>
             <OfertaCard titulo={'Oferta 1'} categoria={'programacion'} texto={'texto descriptivo del trabajo'}/>
           </div>

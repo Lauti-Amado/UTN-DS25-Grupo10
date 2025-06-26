@@ -16,7 +16,7 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<PantallaHomePostulante />} />
-              <Route path="/home" element={<PantallaHomePostulante />} />
+              <Route path="/inicio" element={<PantallaHomePostulante />} />
               
             </Routes>
           </Router>
