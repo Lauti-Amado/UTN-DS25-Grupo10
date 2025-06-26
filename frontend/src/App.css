@@ -7,3 +7,12 @@
 .contenidoPrincipal{
   margin-top: 80px;
 }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: black; /* Cambia el color de fondo de las flechas */
+  border-radius: 50%;
+  padding: 10px;
+  background-size: 100% 100%;
+}
+
