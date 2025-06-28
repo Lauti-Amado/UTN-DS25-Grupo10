@@ -9,7 +9,7 @@ function NavBar() {
   return (
     <Navbar expand="lg" bg="dark" variant='dark' className="body-tertiary navbar w-100" fixed='top'>
       <Container fluid>
-        <Navbar.Brand href="#">RoDi</Navbar.Brand>
+        <Navbar.Brand href="/">RoDi</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -18,7 +18,7 @@ function NavBar() {
             navbarScroll
           >
             <Nav.Link href="/inicio">Inicio</Nav.Link>
-            <Nav.Link href="#action2">Trabajos</Nav.Link>
+            <Nav.Link href="/trabajos">Trabajos</Nav.Link>
           
 
           </Nav>
