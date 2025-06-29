@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+
 <link rel="stylesheet" href="navBar.css" />
 function NavBar() {
   return (
@@ -19,6 +20,7 @@ function NavBar() {
           >
             <Nav.Link href="/inicio">Inicio</Nav.Link>
             <Nav.Link href="/trabajos">Trabajos</Nav.Link>
+            <Nav.Link href="/perfil">Perfil</Nav.Link>
           
 
           </Nav>
