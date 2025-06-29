@@ -10,8 +10,10 @@ function Acordion() {
   { id: 3, titulo: 'titulo oferta de trabajo 3', contenido: 'Contenido de la sección 3' }];
     const location = useLocation(); //funcion para buscar variable
     const s= location.state?.mensaje//valor de la variable mensaje
+    
   return (
-    <Accordion defaultActiveKey={s.toString()}>  
+    <>   
+    <Accordion defaultActiveKey={(s ?? 0 ).toString()}>  {/*si s es de tipo undefined o null se coloca 0*/}
       {items.map((item, index) => (
         <Accordion.Item eventKey={index.toString()} key={item.id}>
           <Accordion.Header>{item.titulo}</Accordion.Header>
@@ -20,6 +22,9 @@ function Acordion() {
         </Accordion.Item>
       ))}
     </Accordion>
+
+    </>
+    
   );
 }
 
