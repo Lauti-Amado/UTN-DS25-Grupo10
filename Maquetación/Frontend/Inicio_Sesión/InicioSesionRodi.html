@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio De Sesión RoDi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="InicioSesionRodi.css">
+    <script type="text/javascript" src="InicioSesionRodi.js"></script>
+</head>
+
+<body>
+    <header>
+        <img src="imagenes/diamond-line-circle-color-icon-vector.png" alt="Logo de RoDi" id="logo">
+        <h1>RoDi</h1>
+        <img src="imagenes/Screenshot_20250530_172540_Chrome (1).png " alt="Logo de configuración" id="tuerca-logo">
+    </header>
+    <div id="contenedor">
+        <div class="opciones-rol">
+        <div class="rol" onclick="seleccionar('postulante')">
+            <img src="imagenes/employee-rights-line-icon-vector.png" alt="Postulante">
+            <p>Postulante</p>
+        </div>
+            <div class="rol" onclick="seleccionar('empleador')">
+            <img src="imagenes/agente-contrato-icono-contorno-vector-servicio-secreto-contacto-personas_98396-48418.png" alt="Empleador">
+            <p>Empleador</p>
+            </div>
+        </div>
+        <form id="formulario">
+            <div class="datos">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Example@dominio">
+                <span id="errorMail" class="error"></span>
+                <label for="contraseña">Contraseña</label>
+                <input type="password" id="contraseña" placeholder="********">
+                <span id="errorContraseña" class="error"></span>
+                <input type="submit" id="submit" name="submit" value="Iniciar Sesión">
+            </div>
+        </form>
+        <br>
+        <a href="#">Olvidé Mi Contraseña</a>
+        <br>
+        <p>¿No tienes cuenta?<a href="#"> Registrate</a></p>
+        <br>
+    </div>
+    <footer>
+        <p>© RoDi - Todos los derechos reservados</p>
+        <img src="imagenes/Screenshot_20250530_172114_Chrome.png" alt="Perfil Logo" id="footer-logo">
+    </footer>
+</body>
+</html>
