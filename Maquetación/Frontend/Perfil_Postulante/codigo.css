@@ -1,0 +1,228 @@
+ body{
+    padding:0;
+    margin:0;
+   }
+
+   article{
+    margin-top: 1px
+   }
+
+   #fondoborroso{
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    padding:0;
+    margin:0;
+    backdrop-filter: blur(6px);
+    display:none;
+    position:fixed;
+    z-index:5
+   }
+
+header{
+    background-color:rgba(209, 58, 58, 0.4);
+    display:flex;
+    justify-content: space-between;
+    height:100px
+}
+    
+header span.forma{
+        height:100px;
+         text-align: center;
+        margin-top:20px
+}
+
+button{
+    border-radius:20px;
+    height:40px;
+    width:150px
+}
+
+#u{
+    width:600px;
+    margin-left:10px
+}
+article{
+    margin-top:30px;
+    display: flex;
+}
+
+header input{
+    border-radius:8px;
+    height:40px;
+    width:5000px;
+    margin-top:1px
+}
+
+header input:hover{
+    border:3px solid black
+}
+
+#e{
+    margin-left:10px
+}
+
+img{
+    height:50px;
+    width:50px;
+}
+
+button:hover{
+    background-color: rgba(191, 187, 187, 0.463);
+}
+
+section {
+    width: 40em;
+}
+section div img{
+    height: 290px;
+    width: 20em;
+    margin-left: 3em;
+}
+
+#f{
+    margin-right:10px
+}
+
+#botones {
+    display: flex;
+    margin-top: 3em;
+    gap:8px
+}
+
+#opcionesbot {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#chau{
+    display: block;
+    align-items: center;
+    margin-top: 3em;
+    padding-left: 3em;
+}
+
+.scroll-section {
+    width: 28em;
+    height: 29,5em;
+    margin: 2rem auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+  
+.scroll-section h2 {
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin: 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+  
+.scroll-content {
+    max-height: 425px; /* Altura visible */
+    overflow-y: auto;  /* Scroll vertical */
+    padding: 10px;
+    line-height: 1.6;
+}
+.unperfil{
+    display: inline-block;
+    justify-content: center;
+    padding: 5px;
+    width: 25em;
+    height: 10em;
+    border-radius: 10px;
+    background-color: rgb(209, 209, 209);
+    border: 1px solid black;
+    margin: 1px;
+    position:relative
+}
+
+.imagenPerfil{
+    position: absolute;
+    bottom: 30px;
+    right: 5%;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+
+.btnVerForm{
+    position: relative;
+    border-radius: 30px;
+    background-color: rgb(186, 61, 61);
+    border-color: rgb(186, 61, 61);
+}
+
+#subirfoto input[type="file"]{
+     display:none
+}
+
+#editar{
+    margin:70px;
+    background-color:white;
+    top: 20%;
+    left: 50%;
+    width: 100vh;
+    height: 41,5vh;
+    transform: translateX(-50%);
+    display:none;
+    position:fixed;
+    border:solid black 1px;
+    z-index: 20;
+    
+}
+
+#vistaprevia{
+    height:150px;
+    width:150px
+}
+
+#fotoper{
+    margin:5px;
+    height:30px;
+    width:150px;
+    border-radius: 0;
+}
+
+#imagenperfil{
+    height:300px;
+    width:300px
+}
+
+#barra1{
+    display:flex;
+    border-bottom: 1px solid black;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+#barra2{
+    display:flex;
+    align-items: center;
+    margin-bottom:30px
+}
+
+#cancelar{
+    border-radius: 0;
+    height:20px;
+    width:20px;
+    background-color: red;
+
+}
+
+h1{
+    margin:8px
+    
+}
+
+#aceptar{
+    float:right;
+    border-radius: 0;
+    height:20px;
+    width:70px;
+    border-bottom: 0;
+    border-right: 0;
+}
