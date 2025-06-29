@@ -5,7 +5,8 @@ import Acordion from '../componentes/acordion'
 export default function PantallaTrabajos () {
 
     return (
-      <>pantallaTrabajo
+      <>
+        <h1 style={{color:"brown"}}>Ofertas de trabajos</h1>
         <Acordion />
       </>
       
