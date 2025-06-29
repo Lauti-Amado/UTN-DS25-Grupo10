@@ -1,30 +1,25 @@
+// navBar.jsx
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './navBar.css'; // Asegurate de que este CSS exista
 
-<link rel="stylesheet" href="navBar.css" />
-function NavBar() {
+function NavBar({ onLogout }) {
   return (
-    <Navbar expand="lg" bg="dark" variant='dark' className="body-tertiary navbar w-100" fixed='top'>
+    <Navbar expand="lg" bg="dark" variant="dark" className="navbar w-100" fixed="top">
       <Container fluid>
         <Navbar.Brand href="/">RoDi</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
-            navbarScroll
-          >
+          <Nav className="me-auto">
             <Nav.Link href="/inicio">Inicio</Nav.Link>
             <Nav.Link href="/trabajos">Trabajos</Nav.Link>
             <Nav.Link href="/perfil">Perfil</Nav.Link>
-          
-
           </Nav>
-          <Form className="d-none mx-auto d-lg-flex" style={{ width: '50%', position: 'relative', right: '12%' }}>
+          <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Buscar"
@@ -33,6 +28,11 @@ function NavBar() {
             />
             <Button variant="outline-danger">Buscar</Button>
           </Form>
+          {onLogout && (
+            <Button variant="danger" className="ms-3" onClick={onLogout}>
+              Cerrar sesión
+            </Button>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

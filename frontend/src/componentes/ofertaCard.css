@@ -1,5 +1,3 @@
-
-
 .card:hover{
     transform: scale(1.02); /*le da el efecto de crecimiento cuando se coloca click sobre el card*/
     transition: 0.3s;
