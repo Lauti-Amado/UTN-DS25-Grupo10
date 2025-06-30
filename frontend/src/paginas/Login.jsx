@@ -25,7 +25,8 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div className={`${styles.loginPageWrapper} ${styles.resetGlobalStyles}`}>
+    <div className={styles.loginPageWrapper}>
+    <div className={styles.bodyLogin}>
       <header className={styles.header}>
         <img src={logo} alt="Logo de RoDi" className={styles.logo} />
         <h1 className={styles.title}>RoDi</h1>
@@ -85,7 +86,7 @@ export default function Login({ onLogin }) {
         </p>
         <br />
       </div>
-      <Footer />
-    </div>
+      </div>
+      </div>
   );
 }
