@@ -4,7 +4,7 @@ import ContenidoInfoPerfil from '../componentes/ContenidoInfoPerfil';
 export default function Perfil() {
    
     return (
-        <div>
+        <div className="vistaEstirada">
            <ContenidoInfoPerfil />
         </div>
     );
