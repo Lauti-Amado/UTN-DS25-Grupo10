@@ -5,6 +5,8 @@ import tuercaLogo from '../assets/Configuracion.png';
 import postulanteImg from '../assets/Empleado.png';
 import empleadorImg from '../assets/Empleador.png';
 import Footer from '../componentes/Footer.jsx';
+import { BiCog } from "react-icons/bi"; // Íconos de FontAwesome
+
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState('');
@@ -31,6 +33,7 @@ export default function Login({ onLogin }) {
         <img src={logo} alt="Logo de RoDi" className={styles.logo} />
         <h1 className={styles.title}>RoDi</h1>
         <img src={tuercaLogo} alt="Configuración" className={styles.tuercaLogo} />
+        <BiCog className={styles.tuercaLogo} />
       </header>
 
       <div className={styles.contenedor}>

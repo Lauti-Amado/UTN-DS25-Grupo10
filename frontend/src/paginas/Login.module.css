@@ -65,7 +65,7 @@ body {
   top: -20px;
   z-index: 2;
   border-radius: 50%;
-  border: 3px solid rgb(190, 13, 13);
+  border: 3px solid rgb(241, 82, 82);
   padding: 5px;
   transition: transform 0.3s ease;
 }
