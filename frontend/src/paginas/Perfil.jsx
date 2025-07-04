@@ -11,6 +11,7 @@ export default function Perfil() {
            <article className={styles.article}>
            <ContenidoInfoPerfil />
            <PerfilesSugeridos/>
-        </article>
+            </article>
+        </div>
     );
 }
