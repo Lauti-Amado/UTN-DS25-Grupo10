@@ -1,6 +1,6 @@
 import React, { useState,useContext } from 'react';
 import styles from './Login.module.css';
-import logo from '../assets/RoDi-Logo.png';
+import logo from '../assets/RoDi-LogoPeque3.jpg';
 import tuercaLogo from '../assets/Configuracion.png';
 import postulanteImg from '../assets/Empleado.png';
 import empleadorImg from '../assets/Empleador.png';

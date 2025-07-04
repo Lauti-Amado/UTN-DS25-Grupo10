@@ -6,6 +6,7 @@
     padding: 5px;
     position: relative;
     float: right;
+
     background-color: #252729;
     color: whitesmoke;
 
@@ -30,7 +31,7 @@ button:hover {
 }
 
 .logoEmpresa{
-    width: 50px;
+    width: 30px;
     height: auto;
 }
 .nombreEmpresa{

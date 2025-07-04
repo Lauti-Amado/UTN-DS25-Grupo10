@@ -2,7 +2,8 @@ import React from "react";
 import './cuadroEmpDest.css'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Image from 'react-bootstrap/Image';
-import logo from '../assets/Rodi-Logo.png'
+import { Link } from "react-router-dom";
+
 
 function CuadroEmpDest() {
     const alertClicked = () => {
@@ -30,6 +31,8 @@ function CuadroEmpDest() {
             </ListGroup.Item>
            
         </ListGroup>
+
+        <Link to={"/"}>Ver mas</Link>
     </div>
   );
 }
