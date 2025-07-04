@@ -3,13 +3,18 @@
     background-color: #212529;
 }
 
+.accordion-button:hover{
+    background-color: #212529;
+}
+
 .accordion-body{
-    background-color: #c5c5c5;
+    background-color: #7c1a1a;
+    color: rgb(197, 197, 197);
 }
 
 
 .accordion-button:not(.collapsed){
     background-color: #000000;
-    color: white
+    color: rgb(250, 96, 96)
     
 }

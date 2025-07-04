@@ -34,10 +34,11 @@ header span.forma{
 }
 
 button{
-    border-radius:20px;
+    /*border-radius:20px;*/
     height:40px;
     width:150px
 }
+
 
 #u{
     width:600px;
@@ -90,6 +91,7 @@ section div img{
     display: flex;
     margin-top: 3em;
     gap:8px
+    
 }
 
 #opcionesbot {

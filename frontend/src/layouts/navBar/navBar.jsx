@@ -37,7 +37,7 @@ function NavBar({ onLogout }) {
           </Form>
 
           {onLogout && (
-            <Button variant="danger" className="ms-3" onClick={onLogout}>
+            <Button variant="danger" className="ms-3 botonCerrar" onClick={onLogout}>
               Cerrar sesión
             </Button>
           )}
