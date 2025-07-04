@@ -105,3 +105,21 @@ button:focus-visible {
   padding: 0 20px;
   box-sizing: border-box;
 }
+
+.carrusel-empleos {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 30px;
+  box-sizing: border-box;
+}
+
+.carrusel-empleos .card {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+@import "bootstrap-icons/font/bootstrap-icons.css";
