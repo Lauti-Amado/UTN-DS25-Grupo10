@@ -37,11 +37,12 @@ body {
 }
 
 .logo {
-  width: 90px;
+  width: 100px;
   position: relative;
   top: -20px;
   z-index: 2;
   height: auto;
+  border-radius: 50px;
 }
 
 .title {

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import styles from './Login.module.css';
-import logo from '../assets/Logo.png';
+import logo from '../assets/RoDi-Logo.png';
 import tuercaLogo from '../assets/Configuracion.png';
 import postulanteImg from '../assets/Empleado.png';
 import empleadorImg from '../assets/Empleador.png';
 import Footer from '../componentes/Footer.jsx';
 import { BiCog } from "react-icons/bi"; // Íconos de FontAwesome
+import { DatosContexto } from '../datosContext';
 
 
 export default function Login({ onLogin }) {
@@ -15,6 +16,8 @@ export default function Login({ onLogin }) {
   const [errorPassword, setErrorPassword] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
 
+  const {usuarios, setUsuarioLogueado} = useContext(DatosContexto) //traigo los usuarios que estan en el archivo datosContexto.jsx
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrorMail('');
@@ -23,7 +26,17 @@ export default function Login({ onLogin }) {
     if (!email) setErrorMail('Este campo es obligatorio');
     if (!password) setErrorPassword('Este campo es obligatorio');
 
-    if (email && password) onLogin();
+    if (email && password){
+      const usuarioEncontrado = usuarios.find( 
+        (u) => u.email == email && u.contraseña == password //si email y contraseña ingresados coincide con email y contraseña de algun usuario que este en el datosContexto.jsx
+      );
+      if (usuarioEncontrado){
+        setUsuarioLogueado(usuarioEncontrado) //guarda usuario activo
+        onLogin(); //si lo encientra inicia sesion
+      } else{
+        alert("Usuario no registrado o datos incorrectos");  //si no lo encuentra tira alert
+      }
+    } 
   };
 
   return (
@@ -32,7 +45,6 @@ export default function Login({ onLogin }) {
       <header className={styles.header}>
         <img src={logo} alt="Logo de RoDi" className={styles.logo} />
         <h1 className={styles.title}>RoDi</h1>
-        <img src={tuercaLogo} alt="Configuración" className={styles.tuercaLogo} />
         <BiCog className={styles.tuercaLogo} />
       </header>
 

@@ -24,7 +24,6 @@ function Acordion() {
         </Accordion.Item>
       ))}
     </Accordion>
-    <p className='pepe'>hola</p>
 
     </div>
     
