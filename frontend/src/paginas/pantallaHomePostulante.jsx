@@ -2,6 +2,7 @@ import React, { Component, useContext } from 'react'
 import OfertasCarousel from '../componentes/carousel'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { DatosContexto } from '../datosContext';
+import CuadroEmpDest from '../componentes/cuadroEmpDest';
 export default  function PantallaHomePostulante () {
 
     const {usuarioLogueado} = useContext(DatosContexto)
@@ -27,6 +28,8 @@ export default  function PantallaHomePostulante () {
               )}
         
           </div>
+
+          <CuadroEmpDest />
           
           
         
