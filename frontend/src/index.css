@@ -1,14 +1,21 @@
  #root {
-  max-width: 1280px;
   margin: 0 auto;
   text-align: center;
+} 
+
+.contenidoPrincipal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: calc(100vh - 160px);
+  padding-top: 70px;
+  padding-bottom: 40px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.contenidoPrincipal{
-  margin-top: 80px;
-  width: 100vh;
-  height: 100vh;
-}
+
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
@@ -29,7 +36,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} 
 
 a {
   font-weight: 500;
@@ -43,11 +50,12 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #fff;
+  color: #000;
 }
+
 
 h1 {
   font-size: 3.2em;
@@ -88,4 +96,12 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.vistaEstirada {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
 }

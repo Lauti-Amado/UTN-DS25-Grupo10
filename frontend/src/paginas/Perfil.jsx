@@ -6,7 +6,9 @@ import styles from './perfil.module.css';
 export default function Perfil() {
    
     return (
-        <article className={styles.article}>
+
+        <div className="vistaEstirada">
+           <article className={styles.article}>
            <ContenidoInfoPerfil />
            <PerfilesSugeridos/>
         </article>

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion'
 import OfertaCard from './ofertaCard';
 import { useLocation } from 'react-router-dom';
+import './acordion.css'
+
 
 function Acordion() {
     const items = [
@@ -12,18 +14,17 @@ function Acordion() {
     const s= location.state?.mensaje//valor de la variable mensaje
     
   return (
-    <>   
-    <Accordion defaultActiveKey={(s ?? 0 ).toString()}>  {/*si s es de tipo undefined o null se coloca 0*/}
+    <div>   
+    <Accordion defaultActiveKey={(s ?? 0 ).toString()} >  {/*si s es de tipo undefined o null se coloca 0*/}
       {items.map((item, index) => (
-        <Accordion.Item eventKey={index.toString()} key={item.id}>
-          <Accordion.Header>{item.titulo}</Accordion.Header>
-          <Accordion.Body>{item.contenido}
-          </Accordion.Body>
+        <Accordion.Item  eventKey={index.toString()} key={item.id}>
+          <Accordion.Header >{item.titulo}</Accordion.Header>
+          <Accordion.Body>{item.contenido}</Accordion.Body>
         </Accordion.Item>
       ))}
     </Accordion>
 
-    </>
+    </div>
     
   );
 }

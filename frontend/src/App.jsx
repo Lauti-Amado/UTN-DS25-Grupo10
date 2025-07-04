@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,24 +9,19 @@ import Login from './paginas/Login.jsx';
 import PantallaHomePostulante from './paginas/pantallaHomePostulante.jsx';
 import PantallaTrabajo from './paginas/pantallaTrabajos.jsx';
 import Perfil from './paginas/Perfil.jsx';
+import { DatosProvider, DatosContexto } from './datosContext.jsx';
 
-function App() {
-  const [logueado, setLogueado] = useState(() => localStorage.getItem('logueado') === 'true');
-
-  const handleLogin = () => {
-    localStorage.setItem('logueado', 'true');
-    setLogueado(true);
-  };
+function AppContent() {
+  const { usuarioLogueado, setUsuarioLogueado } = useContext(DatosContexto);
 
   const handleLogout = () => {
-    localStorage.removeItem('logueado');
-    setLogueado(false);
+    setUsuarioLogueado(null);
   };
 
   return (
     <Router>
-      {logueado && <NavBar onLogout={handleLogout} />}
-      {logueado ? (
+      {usuarioLogueado && <NavBar onLogout={handleLogout} />}
+      {usuarioLogueado ? (
         <div className="contenidoPrincipal">
           <Routes>
             <Route path="/inicio" element={<PantallaHomePostulante />} />
@@ -37,11 +32,20 @@ function App() {
         </div>
       ) : (
         <Routes>
-          <Route path="/" element={<Login onLogin={handleLogin} />} />
+          <Route path="/" element={<Login onLogin={() => {}} />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}
+      <Footer />
     </Router>
+  );
+}
+
+function App() {
+  return (
+    <DatosProvider>
+      <AppContent />
+    </DatosProvider>
   );
 }
 
