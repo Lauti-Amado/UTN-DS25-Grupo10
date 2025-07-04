@@ -9,3 +9,10 @@
 .nav-link:hover, .nav-link:focus {
    color: white;
 }
+
+@media (max-width: 991px) {
+  .botonCerrar {
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+}
