@@ -8,7 +8,8 @@ function OfertasCarousel() {
       style={{border:"1px solid black",
       borderRadius:"30px" , 
       padding:"10px", 
-      width:"900px"
+      width:"900px",
+      left:"10%"
       }} 
       interval={null} 
       indicators={false}

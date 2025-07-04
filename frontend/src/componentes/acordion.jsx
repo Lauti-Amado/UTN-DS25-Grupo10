@@ -19,12 +19,10 @@ function Acordion() {
       {items.map((item, index) => (
         <Accordion.Item  eventKey={index.toString()} key={item.id}>
           <Accordion.Header >{item.titulo}</Accordion.Header>
-          <Accordion.Body>{item.contenido}
-          </Accordion.Body>
+          <Accordion.Body>{item.contenido}</Accordion.Body>
         </Accordion.Item>
       ))}
     </Accordion>
-    <p className='pepe'>hola</p>
 
     </div>
     
