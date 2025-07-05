@@ -1,0 +1,22 @@
+.trabajo-card {
+  background-color: #d3d3d3;
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.imagen-trabajo {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  padding: 1rem;
+}
+
+.btn-ver-form {
+  background-color: #b32d2d;
+  border: none;
+}
+
+.btn-ver-form:hover {
+  background-color: #a52828;
+}
