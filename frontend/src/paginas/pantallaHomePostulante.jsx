@@ -3,7 +3,11 @@ import OfertasCarousel from '../componentes/carousel'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { DatosContexto } from '../datosContext';
 import CuadroEmpDest from '../componentes/cuadroEmpDest';
+
 import { FiltroPostulante } from '../componentes/filtroPostulantes';
+
+import TrabajosDisponibles from '../componentes/TrabajosDisponibles';
+
 export default  function PantallaHomePostulante () {
 
     const {usuarioLogueado} = useContext(DatosContexto) //guardo el usuario logueado
@@ -46,7 +50,7 @@ export default  function PantallaHomePostulante () {
           
         
           
-          
+          <TrabajosDisponibles />
         
       </div>
     )
