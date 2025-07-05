@@ -1,3 +1,5 @@
+ @import "bootstrap-icons/font/bootstrap-icons.css";
+ 
  #root {
   margin: 0 auto;
   text-align: center;
@@ -121,5 +123,3 @@ button:focus-visible {
   min-width: 0;
   word-break: break-word;
 }
-
-@import "bootstrap-icons/font/bootstrap-icons.css";
