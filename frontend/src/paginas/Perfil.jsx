@@ -6,9 +6,11 @@ import PerfilesSugeridos from '../componentes/sugerenciasperfiles';
 import styles from './perfil.module.css';
 import imagen from '../assets/perfilx.png';  // Importa tu imagen por defecto aquí
 
+
 export default function Perfil() {
   const [mostrarEditar, setMostrarEditar] = useState(false);
   const [imagenPerfil, setImagenPerfil] = useState(imagen);
+
 
   return (
     <div className="vistaEstirada" style={{ position: 'relative' }}>

@@ -9,7 +9,7 @@ export function DatosProvider({ children }) {
       ? JSON.parse(datosGuardados)
       : [
           { id: 0, nombre: "Lauti", usuario: "Lautarito1", email: "lau@gmail.com", contraseña: "123", rol: "empleador" },
-          { id: 1, nombre: "Juan Cruz", usuario: "Juancito1", email: "juan@gmail.com", contraseña: "456", rol: "postulante" },
+          { id: 1, nombre: "Juan Cruz", usuario: "Juancito1", email: "juan@gmail.com", contraseña: "456", rol: "postulante"},
         ];
   });
 
