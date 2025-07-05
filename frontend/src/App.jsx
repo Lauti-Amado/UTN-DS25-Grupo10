@@ -1,28 +1,52 @@
-import { useState } from 'react'
-import './App.css'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import PantallaHomePostulante from './paginas/pantallaHomePostulante';
-import NavBar from './layouts/navBar/navBar';
-//los componentes deben ser importados con la primera lentra en mayuscula
-function App() {
 
+import NavBar from './layouts/navBar/navBar';
+import Footer from './componentes/Footer.jsx';
+import Login from './paginas/Login.jsx';
+import PantallaHomePostulante from './paginas/pantallaHomePostulante.jsx';
+import PantallaTrabajo from './paginas/pantallaTrabajos.jsx';
+import Perfil from './paginas/Perfil.jsx';
+import { DatosProvider, DatosContexto } from './datosContext.jsx';
+
+function AppContent() {
+  const { usuarioLogueado, setUsuarioLogueado } = useContext(DatosContexto);
+
+  const handleLogout = () => {
+    setUsuarioLogueado(null);
+  };
 
   return (
-
-    <div>
-      <NavBar />
-      <div className='contenidoPrincipal'>
-          <Router>
-            <Routes>
-              <Route path="/" element={<PantallaHomePostulante />} />
-              <Route path="/home" element={<PantallaHomePostulante />} />
-              
-            </Routes>
-          </Router>
-      </div>
-    </div>
-  )
+    <Router>
+      {usuarioLogueado && <NavBar onLogout={handleLogout} />}
+      {usuarioLogueado ? (
+        <div className="contenidoPrincipal">
+          <Routes>
+            <Route path="/inicio" element={<PantallaHomePostulante />} />
+            <Route path="/trabajos" element={<PantallaTrabajo />} />
+            <Route path="/perfil" element={<Perfil />} />
+            <Route path="*" element={<Navigate to="/inicio" />} />
+          </Routes>
+        </div>
+      ) : (
+        <Routes>
+          <Route path="/" element={<Login onLogin={() => {}} />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      )}
+      <Footer />
+    </Router>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <DatosProvider>
+      <AppContent />
+    </DatosProvider>
+  );
+}
+
+export default App;

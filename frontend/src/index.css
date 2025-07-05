@@ -1,34 +1,53 @@
+ @import "bootstrap-icons/font/bootstrap-icons.css";
+ 
+ #root {
+  margin: 0 auto;
+  text-align: center;
+} 
+
+.contenidoPrincipal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: calc(100vh - 160px);
+  padding-top: 70px;
+  padding-bottom: 40px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} 
 
 a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #fff;
+  color: #000;
 }
+
 
 h1 {
   font-size: 3.2em;
@@ -46,23 +65,81 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+ @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+  
   button {
     background-color: #f9f9f9;
   }
+}
+
+.vistaEstirada {
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px 40px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #ff5050;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: 70% 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 3px #000);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carrusel-empleos {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 30px;
+  box-sizing: border-box;
+}
+
+.carrusel-empleos .card {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.carrusel-empleos .carousel-item {
+  transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+  opacity: 1;
+  z-index: 2;
+}
+
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px #ff5050;
 }

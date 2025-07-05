@@ -1,0 +1,131 @@
+.accordion-button {
+  color: white;
+  background-color: #212529;
+}
+
+.accordion-button:hover{
+    background-color: #212529;
+}
+
+.accordion-body{
+    background-color: #7c1a1a;
+    color: rgb(197, 197, 197);
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #000000;
+  color: white;
+}
+
+.btn-bordo {
+  background-color: #800000;
+  border-color: #660000;
+  color: white;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-bordo:hover {
+  background-color: #990000;
+  border-color: #660000;
+  color: #f0f0f0; 
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+
+.btn-bordo-danger {
+  background-color: #000000;
+  border: 2px solid #8B0000;
+  color: white;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: all 0.25s ease-in-out;
+}
+
+.btn-bordo-danger:hover {
+  background-color: #000000;
+  color: #ff4d4d;
+  border-color: #ff4d4d;
+  transform: scale(1.08);
+  cursor: pointer;
+}
+
+
+.modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.accordion-button:not(.collapsed){
+    background-color: #000000;
+    color: rgb(250, 96, 96)    
+}
+
+.transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.formulario-oferta.ocultar {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: scaleY(0.9);
+}
+
+.formulario-oferta.mostrar {
+  max-height: 1000px;
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.btn-toggle-formulario {
+  background-color: #800000;
+  color: #ffeaea; 
+  border: 2px solid #8B0000;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.1rem; 
+  padding: 12px 30px; 
+  border-radius: 12px; 
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; 
+  white-space: nowrap; 
+  width: auto;
+}
+
+.btn-toggle-formulario:hover {
+  background-color: #990000;
+  color: #ffffff;
+  border-color: #ff4d4d;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.btn-toggle-formulario i {
+  font-size: 1.3rem;
+  line-height: 1;
+  color: inherit;
+  transition: color 0.25s ease-in-out;
+}
+
+.accordion-button::after {
+  transition: transform 0.3s ease;
+  filter: brightness(0) invert(1); 
+}
+
+.accordion-button:not(.collapsed)::after {
+  transform: rotate(180deg);
+  filter: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff4d4d' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+}
