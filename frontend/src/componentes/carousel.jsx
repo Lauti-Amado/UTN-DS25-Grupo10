@@ -23,9 +23,16 @@ function OfertasCarousel() {
   };
 
   const ofertasEnSlides = [];
-  for (let i = 0; i < ofertas.length; i += 3) {
-    ofertasEnSlides.push(ofertas.slice(i, i + 3));
-  }
+    for (let i = 0; i < ofertas.length; i++) {
+      const grupo = [
+        ofertas[i],
+        ofertas[(i + 1) % ofertas.length],
+        ofertas[(i + 2) % ofertas.length],
+      ];
+      ofertasEnSlides.push(grupo);
+      if ((i + 3) % ofertas.length === 0) break;
+    }
+
 
   return (
     <Carousel 
