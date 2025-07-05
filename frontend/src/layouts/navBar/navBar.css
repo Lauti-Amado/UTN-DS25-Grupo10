@@ -1,15 +1,18 @@
-/* clase por defecto */
 .nav-link {
  
   color: rgb(167, 167, 167);
   text-decoration: none;
 }
 
-/* clase para el ítem activo */
 .nav-link:hover, .nav-link:focus {
    color: white;
 }
 
+.modal-content {
+  max-height: 80vh;
+  overflow: hidden;
+  border-radius: 12px;
+}
 @media (max-width: 991px) {
   .botonCerrar {
     margin-top: 10px;

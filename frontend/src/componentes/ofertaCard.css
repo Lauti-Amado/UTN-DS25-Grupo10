@@ -1,4 +1,21 @@
 .card:hover{
-    transform: scale(1.02); /*le da el efecto de crecimiento cuando se coloca click sobre el card*/
+    transform: scale(1.02);
     transition: 0.3s;
 }
+
+.card:hover .card-title{
+  color: #ff5050
+}
+
+.card:hover .card-header{
+  text-decoration: underline 2px;
+  text-decoration-color: #ff5050;
+}
+
+.card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+

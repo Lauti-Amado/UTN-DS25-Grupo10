@@ -209,8 +209,8 @@ section div img{
 }
   
 .scroll-content {
-    max-height: 425px; /* Altura visible */
-    overflow-y: auto;  /* Scroll vertical */
+    max-height: 425px;
+    overflow-y: auto; 
     padding: 10px;
     line-height: 1.6;
 }
