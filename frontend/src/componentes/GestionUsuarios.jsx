@@ -22,10 +22,11 @@ export default function GestionUsuarios() {
           <p><strong>Usuario:</strong> {user.usuario}</p>
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Rol:</strong> {user.rol}</p>
-          <button onClick={() => eliminarUsuario(user.id)} style={{
-            backgroundColor: "#d13a3a", color: "white", padding: "5px 10px", border: "none", borderRadius: "5px"
-          }}>
-            Eliminar
+          <button
+            onClick={() => eliminarUsuario(user.id)}
+            className="btn btn-danger d-flex align-items-center gap-2"
+          >
+            <i className="bi bi-trash"></i> Eliminar
           </button>
         </div>
       ))}
