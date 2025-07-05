@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import './acordion.css';
 import { DatosContexto } from '../datosContext.jsx';
 import datosEmpleosIniciales from './datosIniciales';
-import 'bootstrap-icons/font/bootstrap-icons.css'; // Importación directa
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function Acordion() {
   const location = useLocation();

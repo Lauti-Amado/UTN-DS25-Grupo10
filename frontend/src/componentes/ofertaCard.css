@@ -1,5 +1,5 @@
 .card:hover{
-    transform: scale(1.02); /*le da el efecto de crecimiento cuando se coloca click sobre el card*/
+    transform: scale(1.02);
     transition: 0.3s;
 }
 
@@ -7,5 +7,5 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%; /* o 90% si necesitás margen */
+  max-width: 100%;
 }
