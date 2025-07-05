@@ -9,7 +9,7 @@ function ContenidoInfoPerfil () {
     return (
         <section>
         <div id={styles['chau']}>
-          <img src= {imagen} />
+          <img src= {imagen} className={styles['imagenPerfilPropio']} />
           <h3>{usuarioLogueado.nombre}</h3>
           <p> Descripción: <br></br>
               Soy un estudiante de sistemas con ganas de insertarme en el mundo laboral.
