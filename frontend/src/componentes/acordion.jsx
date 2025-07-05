@@ -1,4 +1,3 @@
-// componentes/acordion.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import { useLocation } from 'react-router-dom';
@@ -119,12 +118,12 @@ function Acordion() {
               <br />
               <p className="mt-2">{item.contenido}</p>
               <div className="text-end mt-2">
-                <button
-                  className="btn btn-sm btn-bordo-danger"
-                  onClick={() => confirmarEliminar(item.id)}
-                >
-                  Eliminar
-                </button>
+              <button
+                className="btn btn-sm btn-bordo-danger"
+                onClick={() => confirmarEliminar(item.id)}
+              >
+                <i className="bi bi-trash3-fill me-1"></i> Eliminar
+              </button>
               </div>
               {mostrarModal && (
                 <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>

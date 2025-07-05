@@ -15,7 +15,15 @@ import { useContext, useState } from 'react';
 import { DatosContexto } from '../../datosContext.jsx';
 
 function NavBar({ onLogout }) {
-  const { busquedaGlobal, setBusquedaGlobal, usuarios, setUsuarios } = useContext(DatosContexto);
+  const {
+    busquedaGlobal,
+    setBusquedaGlobal,
+    usuarios,
+    setUsuarios,
+    usuarioLogueado,
+    setUsuarioLogueado
+  } = useContext(DatosContexto);
+
   const navigate = useNavigate();
 
   const [mostrarUsuarios, setMostrarUsuarios] = useState(false);
@@ -36,6 +44,13 @@ function NavBar({ onLogout }) {
     const nuevosUsuarios = usuarios.filter((u) => u.id !== idAEliminar);
     setUsuarios(nuevosUsuarios);
     setMostrarModal(false);
+
+    if (usuarioLogueado?.id === idAEliminar) {
+      setUsuarioLogueado(null);
+      localStorage.removeItem('usuarioLogueado');
+      if (onLogout) onLogout();
+      navigate('/login');
+    }
   };
 
   return (
@@ -63,11 +78,13 @@ function NavBar({ onLogout }) {
               value={busquedaGlobal}
               onChange={(e) => setBusquedaGlobal(e.target.value)}
             />
-            <Button variant="outline-danger" type="submit">Buscar</Button>
+            <Button variant="outline-danger" type="submit">
+              <i className="bi bi-search"></i>
+            </Button>
           </Form>
 
-          <Button variant="outline-light" className="ms-3"onClick={() => setMostrarUsuarios(!mostrarUsuarios)}>
-            {mostrarUsuarios ? 'Ocultar usuarios' : <BsPersonFillGear style={{fontSize:"25px"}} />}
+          <Button variant="outline-light" className="ms-3" onClick={() => setMostrarUsuarios(!mostrarUsuarios)}>
+            {mostrarUsuarios ? '' : <BsPersonFillGear style={{ fontSize: "25px" }} />}
           </Button>
 
           {onLogout && (
@@ -75,29 +92,25 @@ function NavBar({ onLogout }) {
               Cerrar sesión
             </Button>
           )}
-
         </Navbar.Collapse>
       </Container>
 
       {mostrarUsuarios && (
-        <div
-          className="modal fade show d-block"
-          tabIndex="-1"
-          role="dialog"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            zIndex: 1050,
-          }}
-        >
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: 1050,
+        }}>
           <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header bg-dark text-white">
-                <h5 className="modal-title">Gestión de Usuarios</h5>
+                <h5 className="modal-title">
+                  <i className="bi bi-people-fill me-2"></i> Gestión de Usuarios
+                </h5>
                 <button type="button" className="btn-close" onClick={() => setMostrarUsuarios(false)}></button>
               </div>
 
@@ -133,10 +146,10 @@ function NavBar({ onLogout }) {
                             </div>
                             <div className="text-end">
                               <button
-                                className="btn btn-bordo-danger"
+                                className="btn btn-danger d-flex align-items-center gap-2"
                                 onClick={() => eliminarUsuario(usuario.id)}
                               >
-                                Eliminar
+                                <i className="bi bi-trash"></i> Eliminar
                               </button>
                             </div>
                           </div>
@@ -151,32 +164,19 @@ function NavBar({ onLogout }) {
       )}
 
       {mostrarModal && (
-        <div
-          className="modal fade show d-block"
-          tabIndex="-1"
-          role="dialog"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-        >
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header bg-dark text-white">
                 <h5 className="modal-title">Confirmar eliminación</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setMostrarModal(false)}
-                ></button>
+                <button type="button" className="btn-close" onClick={() => setMostrarModal(false)}></button>
               </div>
               <div className="modal-body">
                 <p>¿Estás seguro de que querés eliminar este usuario?</p>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setMostrarModal(false)}>
-                  Cancelar
-                </button>
-                <button className="btn btn-bordo-danger" onClick={eliminarConfirmado}>
-                  Sí, eliminar
-                </button>
+                <button className="btn btn-secondary" onClick={() => setMostrarModal(false)}>Cancelar</button>
+                <button className="btn btn-bordo-danger" onClick={eliminarConfirmado}>Sí, eliminar</button>
               </div>
             </div>
           </div>
