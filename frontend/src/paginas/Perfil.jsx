@@ -4,7 +4,10 @@ import ContenidoInfoPerfil from '../componentes/ContenidoInfoPerfil';
 import PerfilesSugeridos from '../componentes/sugerenciasperfiles';
 import Editar from '../componentes/editar';
 import Proyecto from '../componentes/proyecto'; // Asegurate de importar también el componente de Proyecto
+import OfertaCard from '../componentes/ofertaCard';
+import '../componentes/ofertaCard.css';
 import imagen from '../assets/perfilx.png';
+import Compartir from '../componentes/compartir';
 
 export default function Perfil() {
   // modoEditar puede ser null, 'perfil' o 'proyecto'
@@ -16,12 +19,14 @@ export default function Perfil() {
   const [descripcionPerfil, setDescripcionPerfil] = useState(
     'Soy un estudiante de sistemas con ganas de insertarme en el mundo laboral. Poseo los conocimientos de algunas tecnologías, idiomas y trabajo en equipo.'
   );
+  const [FechaNac, setNuevafecha]=useState('')
 
   // Actualiza datos de perfil
-  const manejarActualizarPerfil = (nuevaImagen, nuevoNombre, nuevaDescripcion) => {
+  const manejarActualizarPerfil = (nuevaImagen, nuevoNombre, nuevaDescripcion, nuevaFechaNac) => {
     if (nuevaImagen) setImagenPerfil(nuevaImagen);
     if (nuevoNombre) setNombrePerfil(nuevoNombre);
     if (nuevaDescripcion) setDescripcionPerfil(nuevaDescripcion);
+    if(nuevaFechaNac) setNuevafecha(nuevaFechaNac)
     setModoEditar(null);
   };
 
@@ -39,6 +44,7 @@ export default function Perfil() {
           imagen={imagenPerfil}
           nombre={nombrePerfil}
           descripcion={descripcionPerfil}
+          FechaNac={FechaNac}
         />
         <PerfilesSugeridos />
       </article>
@@ -83,6 +89,8 @@ export default function Perfil() {
                 onActualizarPerfil={manejarActualizarPerfil}
                 nombre={nombrePerfil}
                 descripcion={descripcionPerfil}
+                FechaNac={FechaNac}
+                imagen={imagenPerfil}
               />
             )}
            
@@ -92,6 +100,11 @@ export default function Perfil() {
                 onActualizarPerfil={manejarActualizarProyecto}
               />
             )}
+            {modoEditar == 'compartir' && (
+              <Compartir
+               onCerrar={()=> setModoEditar(null)}/>
+            )}
+
             </div>
         </>
       )}
