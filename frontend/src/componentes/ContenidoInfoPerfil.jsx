@@ -15,7 +15,7 @@ function ContenidoInfoPerfil () {
               Soy un estudiante de sistemas con ganas de insertarme en el mundo laboral.
               Poseo los conocimientos de algunas tecnologias, idiomas y trabajo en equipo
           </p>
-          <p> Fecha de Nacimiento: 10-02-2002</p>
+          <p> Fecha de Nacimiento: {usuarioLogueado.fnac} </p>
           <div id={styles['botones']}>
           <BotonesPerfil texto="Editar perfil" />
           <BotonesPerfil texto="Compartir perfil" />

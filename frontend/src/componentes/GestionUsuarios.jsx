@@ -32,6 +32,7 @@ export default function GestionUsuarios({ onLogout }) {
           <p><strong>Usuario:</strong> {user.usuario}</p>
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Rol:</strong> {user.rol}</p>
+          <p><strong>Fecha de Nacimiento:</strong> {user.fnac}</p>
           <button
             onClick={() => eliminarUsuario(user.id)}
             style={{

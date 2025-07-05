@@ -8,8 +8,9 @@ export function DatosProvider({ children }) {
     return datosGuardados
       ? JSON.parse(datosGuardados)
       : [
-          { id: 0, nombre: "Lauti", usuario: "Lautarito1", email: "lau@gmail.com", contraseña: "123", rol: "empleador" },
-          { id: 1, nombre: "Juan Cruz", usuario: "Juancito1", email: "juan@gmail.com", contraseña: "456", rol: "postulante"},
+          { id: 0, nombre: "Lauti", usuario: "Lautarito1", email: "lau@gmail.com", contraseña: "123", rol: "empleador", fnac:"28-12-2004"},
+          { id: 1, nombre: "Juan Cruz", usuario: "Juancito1", email: "juan@gmail.com", contraseña: "456", rol: "postulante", fnac:"13-09-2004"},
+          { id: 2, nombre: "Yamil", usuario: "Yama107", email: "yamiltundis6@gmail.com", contraseña: "8494", rol: "postulante", fnac:"10-07-2004"},
         ];
   });
 
