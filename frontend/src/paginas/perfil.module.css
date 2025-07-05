@@ -4,6 +4,10 @@
 
 .vistaEstirada{
     margin:0;
+}
+
+article{
+    margin-top: 1px;
     padding:0
 }
 
@@ -151,7 +155,7 @@ header input:hover{
 
 /* img{
     height:50px;
-    width:50px;
+    width: 50px;
 }
 
 button:hover{
@@ -173,8 +177,10 @@ section div img{
 
 #botones {
     display: flex;
-    margin-top: 3em;
-    gap:8px
+    white-space: nowrap;
+    margin-top: 1em;
+    margin-left: 3em;;
+    gap:10px
     
 }
 
@@ -186,12 +192,16 @@ section div img{
 #chau{
     display: block;
     align-items: center;
-    margin-top: 3em;
-    padding-left: 3em;
+    justify-content: center;
+    margin-top: 2em;
+    padding-left: 1em;
 }
 
+.imagenPerfilPropio {
+    margin-right: 3em;
+}
 .scroll-section {
-    width: 60em;
+    width: 30em;
     height: 29.5em;
     margin: 2rem auto;
     border: 1px solid #ccc;
@@ -228,7 +238,6 @@ section div img{
 }
 
 .imagenPerfil{
-    position: absolute;
     bottom: 30px;
     right: 5%;
     border-radius: 50%;
@@ -238,13 +247,15 @@ section div img{
 
 .btnVerForm{
     position: relative;
-    border-radius: 30px;
+    margin-right: 5em;
+    margin-top: 2em;
+    border-radius: 15px;
     background-color: rgb(186, 61, 61);
     border-color: rgb(186, 61, 61);
 }
 
 #subirfoto input[type="file"]{
-     display:none
+    display:none
 }
 
 #editar {
