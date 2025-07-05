@@ -1,4 +1,3 @@
-// componentes/acordion.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import { useLocation } from 'react-router-dom';
