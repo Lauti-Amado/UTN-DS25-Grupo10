@@ -46,7 +46,7 @@ const TrabajosDisponibles = () => {
       <h2 className="text-center my-4">Trabajos Disponibles</h2>
       <div className="scroll-box">
         <div className="trabajos-grid">
-          {ofertas.map((trabajo, index) => (
+          {trabajos.map((trabajo, index) => (
             <TrabajoCard
               key={index}
               titulo={trabajo.titulo}
