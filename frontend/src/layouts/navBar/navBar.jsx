@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logo from "../../assets/RoDi-LogoPeque3.jpg";
 import "./navBar.css";
+import { BsPersonFillGear } from "react-icons/bs";
 import { FaHouse } from "react-icons/fa6";
 import { MdOutlineWork } from "react-icons/md";
 import { IoMdPerson } from "react-icons/io";
@@ -65,8 +66,8 @@ function NavBar({ onLogout }) {
             <Button variant="outline-danger" type="submit">Buscar</Button>
           </Form>
 
-          <Button variant="outline-light" className="ms-3" onClick={() => setMostrarUsuarios(!mostrarUsuarios)}>
-            {mostrarUsuarios ? 'Ocultar usuarios' : 'Usuarios'}
+          <Button variant="outline-light" className="ms-3"onClick={() => setMostrarUsuarios(!mostrarUsuarios)}>
+            {mostrarUsuarios ? 'Ocultar usuarios' : <BsPersonFillGear style={{fontSize:"25px"}} />}
           </Button>
 
           {onLogout && (
