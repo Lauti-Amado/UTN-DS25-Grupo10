@@ -17,16 +17,6 @@
   width: 100%;
 }
 
-
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  background-color: black; /* Cambia el color de fondo de las flechas*/
-  border-radius: 50%;
-  padding: 10px;
-  background-size: 100% 100%;
-}
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -108,6 +98,19 @@ button:focus-visible {
   box-sizing: border-box;
 }
 
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #ff5050;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: 70% 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 3px #000);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
 .carrusel-empleos {
   width: 100%;
   max-width: 900px;
@@ -122,4 +125,21 @@ button:focus-visible {
   flex: 1;
   min-width: 0;
   word-break: break-word;
+}
+
+.carrusel-empleos .carousel-item {
+  transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+  opacity: 1;
+  z-index: 2;
+}
+
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px #ff5050;
 }

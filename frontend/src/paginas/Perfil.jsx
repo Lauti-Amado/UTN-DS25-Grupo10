@@ -2,30 +2,54 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ContenidoInfoPerfil from '../componentes/ContenidoInfoPerfil';
 import PerfilesSugeridos from '../componentes/sugerenciasperfiles';
-//import Editar from '../componentes/editar';
-import styles from './perfil.module.css';
-import imagen from '../assets/perfilx.png';  // Importa tu imagen por defecto aquí
 
+/*import Editar from '../componentes/editar';
+import Proyecto from '../componentes/proyecto';*/ // Asegurate de importar también el componente de Proyecto
+import imagen from '../assets/perfilx.png';
 
 export default function Perfil() {
-  const [mostrarEditar, setMostrarEditar] = useState(false);
+  // modoEditar puede ser null, 'perfil' o 'proyecto'
+  const [modoEditar, setModoEditar] = useState(null);
+
+  // Datos del perfil
   const [imagenPerfil, setImagenPerfil] = useState(imagen);
+  const [nombrePerfil, setNombrePerfil] = useState('Nombre Perfil');
+  const [descripcionPerfil, setDescripcionPerfil] = useState(
+    'Soy un estudiante de sistemas con ganas de insertarme en el mundo laboral. Poseo los conocimientos de algunas tecnologías, idiomas y trabajo en equipo.'
+  );
+
+  // Actualiza datos de perfil
+  const manejarActualizarPerfil = (nuevaImagen, nuevoNombre, nuevaDescripcion) => {
+    if (nuevaImagen) setImagenPerfil(nuevaImagen);
+    if (nuevoNombre) setNombrePerfil(nuevoNombre);
+    if (nuevaDescripcion) setDescripcionPerfil(nuevaDescripcion);
+    setModoEditar(null);
+  };
+
+  // Actualiza datos de proyecto (puedes guardar los datos si querés)
+  const manejarActualizarProyecto = (nombreProyecto, descripcionProyecto, tecnologias) => {
+    console.log('Proyecto agregado o actualizado:', nombreProyecto, descripcionProyecto, tecnologias);
+    setModoEditar(null);
+  };
 
 
   return (
     <div className="vistaEstirada" style={{ position: 'relative' }}>
-      <article className={styles.article}>
+      <article>
         <ContenidoInfoPerfil
-          onEditarClick={() => setMostrarEditar(true)}
+          onEditarClick={(tipo) => setModoEditar(tipo)} // Recibe 'perfil' o 'proyecto'
           imagen={imagenPerfil}
+          nombre={nombrePerfil}
+          descripcion={descripcionPerfil}
         />
         <PerfilesSugeridos />
       </article>
 
-      {mostrarEditar && (
+      {modoEditar && (
         <>
+          {/* Fondo oscuro que al hacer click cierra el modal */}
           <div
-            onClick={() => setMostrarEditar(false)}
+            onClick={() => setModoEditar(null)}
             style={{
               position: 'fixed',
               top: 0,
@@ -38,7 +62,7 @@ export default function Perfil() {
               zIndex: 1000,
             }}
           />
-
+          {/* Contenedor modal */}
           <div
             style={{
               position: 'fixed',
@@ -54,15 +78,23 @@ export default function Perfil() {
               maxHeight: '90%',
               overflowY: 'auto',
             }}
-          >
-            <Editar
-              onCerrar={() => setMostrarEditar(false)}
-              onActualizarPerfil={(nuevaImagen) => {
-                setImagenPerfil(nuevaImagen);
-                setMostrarEditar(false);
-              }}
-            />
-          </div>
+          > 
+            {modoEditar === 'perfil' && (
+              <Editar
+                onCerrar={() => setModoEditar(null)}
+                onActualizarPerfil={manejarActualizarPerfil}
+                nombre={nombrePerfil}
+                descripcion={descripcionPerfil}
+              />
+            )}
+           
+            {modoEditar === 'proyecto' && (
+              <Proyecto
+                onCerrar={() => setModoEditar(null)}
+                onActualizarPerfil={manejarActualizarProyecto}
+              />
+            )}
+            </div>
         </>
       )}
     </div>

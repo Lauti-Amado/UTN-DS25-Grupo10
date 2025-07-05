@@ -1,23 +1,13 @@
 import React, { useContext } from 'react';
 import { DatosContexto } from '../datosContext';
-import { useNavigate } from 'react-router-dom';
 
-export default function GestionUsuarios({ onLogout }) {
-  const { usuarios, setUsuarios, usuarioLogueado, setUsuarioLogueado } = useContext(DatosContexto);
-  const navigate = useNavigate();
+export default function GestionUsuarios() {
+  const { usuarios, setUsuarios } = useContext(DatosContexto);
 
   const eliminarUsuario = (id) => {
     const confirmado = window.confirm("¿Estás seguro de eliminar este usuario?");
     if (confirmado) {
-      const nuevosUsuarios = usuarios.filter(user => user.id !== id);
-      setUsuarios(nuevosUsuarios);
-
-      if (usuarioLogueado?.id === id) {
-        setUsuarioLogueado(null);
-        localStorage.removeItem('usuarioLogueado');
-        if (onLogout) onLogout();
-        navigate('/login');
-      }
+      setUsuarios(prev => prev.filter(user => user.id !== id));
     }
   };
 
@@ -35,15 +25,9 @@ export default function GestionUsuarios({ onLogout }) {
           <p><strong>Fecha de Nacimiento:</strong> {user.fnac}</p>
           <button
             onClick={() => eliminarUsuario(user.id)}
-            style={{
-              backgroundColor: "#d13a3a",
-              color: "white",
-              padding: "5px 10px",
-              border: "none",
-              borderRadius: "5px"
-            }}
+            className="btn btn-danger d-flex align-items-center gap-2"
           >
-            Eliminar
+            <i className="bi bi-trash"></i> Eliminar
           </button>
         </div>
       ))}
