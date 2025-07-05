@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ContenidoInfoPerfil from '../componentes/ContenidoInfoPerfil';
 import PerfilesSugeridos from '../componentes/sugerenciasperfiles';
-import Editar from '../componentes/editar';
+//import Editar from '../componentes/editar';
 import styles from './perfil.module.css';
 import imagen from '../assets/perfilx.png';  // Importa tu imagen por defecto aquí
 

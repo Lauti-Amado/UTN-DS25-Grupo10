@@ -8,17 +8,14 @@
    color: white;
 }
 
-<<<<<<< HEAD
 .modal-content {
   max-height: 80vh;
   overflow: hidden;
   border-radius: 12px;
 }
-=======
 @media (max-width: 991px) {
   .botonCerrar {
     margin-top: 10px;
     margin-bottom: 5px;
   }
 }
->>>>>>> 96e6975b4773cc0b98aa0f8ecb65cf530c87e406
