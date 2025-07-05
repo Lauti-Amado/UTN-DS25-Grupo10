@@ -245,5 +245,7 @@ export default function Login({ onLogin }) {
         </div>
       </div>
     </div>
+    
+    </div>
   );
 }
