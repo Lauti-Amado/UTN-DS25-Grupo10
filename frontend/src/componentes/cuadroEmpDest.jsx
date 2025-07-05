@@ -14,19 +14,19 @@ function CuadroEmpDest() {
         <h3>Empresas Destacadas</h3>
         <ListGroup>
             <ListGroup.Item  action onClick={alertClicked} className="itemLista">
-                <Image src="../public/Facebook_Logo_(2019).png" roundedCircle className="logoEmpresa" />
+                <Image src="../Facebook_Logo_(2019).png" roundedCircle className="logoEmpresa" />
                 <p className="nombreEmpresa">Facebook</p>
             </ListGroup.Item>
             <ListGroup.Item action onClick={alertClicked} className="itemLista">
-                <Image src="../public/logoCocaCola.png" roundedCircle className="logoEmpresa" />
+                <Image src="../logoCocaCola.png" roundedCircle className="logoEmpresa" />
                 <p className="nombreEmpresa">Coca Cola</p>
             </ListGroup.Item>
             <ListGroup.Item action onClick={alertClicked} className="itemLista">
-                <Image src="../public/logoInsta2.png" roundedCircle className="logoEmpresa" />
+                <Image src="../logoInsta2.png" roundedCircle className="logoEmpresa" />
                 <p className="nombreEmpresa">Instagraam</p>
             </ListGroup.Item>
             <ListGroup.Item action onClick={alertClicked} className="itemLista">
-                <Image src="../public/logoMercadoLibre.png" roundedCircle className="logoEmpresa" />
+                <Image src="../logoMercadoLibre.png" roundedCircle className="logoEmpresa" />
                 <p className="nombreEmpresa">Mercado libre</p>
             </ListGroup.Item>
 
