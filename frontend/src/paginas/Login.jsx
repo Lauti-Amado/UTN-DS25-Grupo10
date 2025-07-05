@@ -151,6 +151,7 @@ export default function Login({ onLogin }) {
                   <option value="" disabled>Selecciona un rol</option>
                   <option value="postulante">Postulante</option>
                   <option value="empleador">Empleador</option>
+                  <option value="Administrador">Administrador</option>
                 </select>
                 {!rolSeleccionado && <p className={styles.error}>Por favor seleccioná un rol</p>}
 
