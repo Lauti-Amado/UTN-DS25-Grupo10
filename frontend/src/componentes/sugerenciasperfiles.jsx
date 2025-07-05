@@ -13,9 +13,9 @@ function PerfilesSugeridos(){
     ];
 
     return (
-      <div className={styles['scroll-section']}>
+      <div className={styles.scrollsection}>
           <h2>Perfiles sugeridos</h2>
-          <div className={styles['scroll-content']}>
+          <div className={styles.scrollcontent}>
             {perfiles.map(({id, nombre, imagen})=>(
               <Sugerencias key={id} nombre={nombre} imagen={imagen}/>
             ))}
