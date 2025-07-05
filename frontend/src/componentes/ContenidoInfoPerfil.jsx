@@ -7,7 +7,7 @@ function ContenidoInfoPerfil () {
     const {usuarioLogueado} = useContext(DatosContexto)
     
     return (
-        <section>
+        <section className={styles['seccionPerfil']} >
         <div id={styles['chau']}>
           <img src= {imagen} className={styles['imagenPerfilPropio']} />
           <h3>{usuarioLogueado.nombre}</h3>

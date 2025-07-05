@@ -1,14 +1,6 @@
-/* article{
-    margin-top: 1px
-   } */
 
 .vistaEstirada{
     margin:0;
-}
-
-article{
-    margin-top: 1px;
-    padding:0
 }
 
 .imagen{
@@ -132,8 +124,8 @@ button{
     width:600px;
     margin-left:10px
 }
-/*article{
-    margin-top:30px;
+article{
+    margin-top: 0.2em;
     display: flex;
     justify-content: space-between;
 }
@@ -147,13 +139,13 @@ header input{
 
 header input:hover{
     border:3px solid black
-} */
+}
 
 #e{
     margin-left:10px
 }
 
-/* img{
+img{
     height:50px;
     width: 50px;
 }
@@ -162,14 +154,14 @@ button:hover{
     background-color: rgba(191, 187, 187, 0.463);
 }
 
-section {
+.seccionPerfil {
     width: 40em;
 }
-section div img{
+.seccionPerfil div img{
     height: 290px;
     width: 20em;
     margin-left: 3em;
-} */
+}
 
 #f{
     margin-right:10px
