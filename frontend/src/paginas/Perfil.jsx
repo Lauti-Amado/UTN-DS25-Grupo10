@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ContenidoInfoPerfil from '../componentes/ContenidoInfoPerfil';
 import PerfilesSugeridos from '../componentes/sugerenciasperfiles';
 
-import Editar from '../componentes/editar';
-import Proyecto from '../componentes/proyecto'; // Asegurate de importar también el componente de Proyecto
+/*import Editar from '../componentes/editar';
+import Proyecto from '../componentes/proyecto';*/ // Asegurate de importar también el componente de Proyecto
 import imagen from '../assets/perfilx.png';
 
 export default function Perfil() {
