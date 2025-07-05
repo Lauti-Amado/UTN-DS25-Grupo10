@@ -1,7 +1,6 @@
-
-   article{
+/* article{
     margin-top: 1px
-   }
+   } */
 
 .vistaEstirada{
     margin:0;
@@ -104,12 +103,12 @@
 }
 
 
-header{
+/*header{
     background-color:rgba(209, 58, 58, 0.4);
     display:flex;
     justify-content: space-between;
     height:100px
-}
+} 
     
 header span.forma{
         height:100px;
@@ -118,17 +117,18 @@ header span.forma{
 }
 
 button{
-    /*border-radius:20px;*/
+    /*border-radius:20px;
     height:65px;
     width:150px
 }
+*/
 
 
 #u{
     width:600px;
     margin-left:10px
 }
-article{
+/*article{
     margin-top:30px;
     display: flex;
     justify-content: space-between;
@@ -143,13 +143,13 @@ header input{
 
 header input:hover{
     border:3px solid black
-}
+} */
 
 #e{
     margin-left:10px
 }
 
-img{
+/* img{
     height:50px;
     width:50px;
 }
@@ -165,7 +165,7 @@ section div img{
     height: 290px;
     width: 20em;
     margin-left: 3em;
-}
+} */
 
 #f{
     margin-right:10px
@@ -298,10 +298,10 @@ section div img{
 
 }
 
-h1{
+/*h1{
     margin:8px
     
-}
+} */
 
 #aceptar{
     float:right;

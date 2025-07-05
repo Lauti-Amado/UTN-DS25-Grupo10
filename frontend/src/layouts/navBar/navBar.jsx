@@ -29,6 +29,7 @@ function NavBar({ onLogout }) {
   const [mostrarUsuarios, setMostrarUsuarios] = useState(false);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [idAEliminar, setIdAEliminar] = useState(null);
+  const [busquedaLocal, setBusquedaLocal] = useState("");
 
   const handleBuscar = (e) => {
     e.preventDefault();
@@ -83,7 +84,10 @@ function NavBar({ onLogout }) {
             </Button>
           </Form>
 
-          <Button variant="outline-light" className="ms-3" onClick={() => setMostrarUsuarios(!mostrarUsuarios)}>
+          <Button variant="outline-light" className="ms-3" onClick={() => {
+            setMostrarUsuarios(!mostrarUsuarios);
+            setBusquedaLocal("");
+          }}>
             {mostrarUsuarios ? '' : <BsPersonFillGear style={{ fontSize: "25px" }} />}
           </Button>
 
@@ -95,6 +99,7 @@ function NavBar({ onLogout }) {
         </Navbar.Collapse>
       </Container>
 
+      {/* GESTIÓN DE USUARIOS */}
       {mostrarUsuarios && (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -115,13 +120,18 @@ function NavBar({ onLogout }) {
               </div>
 
               <div className="modal-body" style={{ maxHeight: "65vh", overflowY: "auto" }}>
-                <Form className="mb-3">
+                {/* BÚSQUEDA */}
+                <Form className="d-flex mb-3">
                   <Form.Control
                     type="text"
                     placeholder="Buscar por nombre o email"
-                    value={busquedaGlobal}
-                    onChange={(e) => setBusquedaGlobal(e.target.value)}
+                    className="me-2"
+                    value={busquedaLocal}
+                    onChange={(e) => setBusquedaLocal(e.target.value)}
                   />
+                  <Button variant="outline-danger" type="button">
+                    <i className="bi bi-search"></i>
+                  </Button>
                 </Form>
 
                 {usuarios.length === 0 ? (
@@ -132,7 +142,7 @@ function NavBar({ onLogout }) {
                       .filter((usuario) =>
                         (usuario.nombre + usuario.email)
                           .toLowerCase()
-                          .includes(busquedaGlobal.toLowerCase())
+                          .includes(busquedaLocal.toLowerCase())
                       )
                       .map((usuario) => (
                         <li key={usuario.id} className="list-group-item">
@@ -163,6 +173,7 @@ function NavBar({ onLogout }) {
         </div>
       )}
 
+      {/* CONFIRMACIÓN ELIMINAR */}
       {mostrarModal && (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
@@ -176,7 +187,7 @@ function NavBar({ onLogout }) {
               </div>
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={() => setMostrarModal(false)}>Cancelar</button>
-                <button className="btn btn-bordo-danger" onClick={eliminarConfirmado}>Sí, eliminar</button>
+                <button className="btn btn-danger" onClick={eliminarConfirmado}>Sí, eliminar</button>
               </div>
             </div>
           </div>

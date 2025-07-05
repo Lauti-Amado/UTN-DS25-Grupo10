@@ -6,6 +6,7 @@ import datosEmpleosIniciales from './datosIniciales';
 
 function OfertasCarousel() {
   const [ofertas, setOfertas] = useState([]);
+  const [itemsPorSlide, setItemsPorSlide] = useState(3);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,39 +19,62 @@ function OfertasCarousel() {
     }
   }, []);
 
+  useEffect(() => {
+    const actualizarCantidad = () => {
+      const ancho = window.innerWidth;
+      if (ancho < 576) setItemsPorSlide(1);
+      else if (ancho < 768) setItemsPorSlide(2);
+      else setItemsPorSlide(3);
+    };
+
+    actualizarCantidad();
+    window.addEventListener('resize', actualizarCantidad);
+    return () => window.removeEventListener('resize', actualizarCantidad);
+  }, []);
+
   const irAOferta = (index) => {
-    navigate('/trabajos', { state: { mensaje: index } });
+    navigate('/trabajos', { state: { mensaje: index % ofertas.length } });
   };
 
-  const ofertasEnSlides = [];
-    for (let i = 0; i < ofertas.length; i++) {
-      const grupo = [
-        ofertas[i],
-        ofertas[(i + 1) % ofertas.length],
-        ofertas[(i + 2) % ofertas.length],
-      ];
-      ofertasEnSlides.push(grupo);
-      if ((i + 3) % ofertas.length === 0) break;
-    }
+  const completarOfertas = () => {
+    const total = ofertas.length;
+    const resto = total % itemsPorSlide;
+    if (resto === 0) return ofertas;
 
+    const faltan = itemsPorSlide - resto;
+    const extras = ofertas.slice(0, faltan);
+    return [...ofertas, ...extras];
+  };
+
+  const ofertasCompletas = completarOfertas();
+
+  const ofertasEnSlides = [];
+  for (let i = 0; i < ofertasCompletas.length; i += itemsPorSlide) {
+    const grupo = ofertasCompletas.slice(i, i + itemsPorSlide);
+    ofertasEnSlides.push(grupo);
+  }
 
   return (
+  <div className="carousel-wrapper positin-relative">
     <Carousel 
       className="carrusel-empleos"
-      interval={null} 
+      interval={5000}
       indicators={false}
+      wrap={true}
+      pause="hover"
+      prevIcon={<span className="carousel-control-prev-icon" aria-hidden="true" />}
+      nextIcon={<span className="carousel-control-next-icon" aria-hidden="true" />}
     >
-
       {ofertasEnSlides.map((grupo, i) => (
         <Carousel.Item key={i}>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             {grupo.map((oferta, index) => (
-              <div key={oferta.id} onClick={() => irAOferta(i * 3 + index)}>
+              <div key={`${oferta.id}-${i}-${index}`} onClick={() => irAOferta(i * itemsPorSlide + index)}>
                 <OfertaCard
                   titulo={oferta.titulo}
                   categoria={oferta.categoria}
                   texto={oferta.contenido}
-                  n={i * 3 + index}
+                  n={(i * itemsPorSlide + index) % ofertas.length}
                 />
               </div>
             ))}
@@ -58,6 +82,7 @@ function OfertasCarousel() {
         </Carousel.Item>
       ))}
     </Carousel>
+  </div>
   );
 }
 
