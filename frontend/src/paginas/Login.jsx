@@ -82,54 +82,55 @@ export default function Login({ onLogin }) {
       </header>
 
 
-      <div className={styles.contenedor}>
-        <div className={styles.opcionesRol}>
-          <div
-            className={`${styles.rol} ${rolSeleccionado === 'postulante' ? styles.rolSeleccionado : ''}`}
-            onClick={() => setRolSeleccionado('postulante')}
-          >
-            <img src={postulanteImg} alt="Postulante" />
-            <p>Postulante</p>
-          </div>
-          <div
-            className={`${styles.rol} ${rolSeleccionado === 'empleador' ? styles.rolSeleccionado : ''}`}
-            onClick={() => setRolSeleccionado('empleador')}
-          >
-            <img src={empleadorImg} alt="Empleador" />
-            <p>Empleador</p>
-          </div>
+    <div className={styles.contenedor}>
+
+      <div className={styles.opcionesRol}>
+        <div
+          className={`${styles.rol} ${rolSeleccionado === 'postulante' ? styles.rolSeleccionado : ''}`}
+          onClick={() => setRolSeleccionado('postulante')}
+        >
+          <img src={postulanteImg} alt="Postulante" />
+          <p>Postulante</p>
         </div>
+        <div
+          className={`${styles.rol} ${rolSeleccionado === 'empleador' ? styles.rolSeleccionado : ''}`}
+          onClick={() => setRolSeleccionado('empleador')}
+        >
+          <img src={empleadorImg} alt="Empleador" />
+          <p>Empleador</p>
+        </div>
+      </div>
 
 
-        <div className={styles.contenedor}>
-          {vista === 'login' && (
-            <>
-              <div className={styles.opcionesRol}>
-                <div className={`${styles.rol} ${rolSeleccionado === 'postulante' ? styles.rolSeleccionado : ''}`} onClick={() => setRolSeleccionado('postulante')}>
-                  <img src={postulanteImg} alt="Postulante" />
-                  <p>Postulante</p>
-                </div>
-                <div className={`${styles.rol} ${rolSeleccionado === 'empleador' ? styles.rolSeleccionado : ''}`} onClick={() => setRolSeleccionado('empleador')}>
-                  <img src={empleadorImg} alt="Empleador" />
-                  <p>Empleador</p>
-                </div>
-              </div>
+      {vista === 'login' && (
+        <form onSubmit={handleSubmit}>
+          <div className={styles.datos}>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Example@dominio"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <span className={styles.error}>{errorMail}</span>
 
-              <form onSubmit={handleSubmit}>
-                <div className={styles.datos}>
-                  <label htmlFor="email">Email</label>
-                  <input type="email" id="email" placeholder="Example@dominio" value={email} onChange={(e) => setEmail(e.target.value)} />
-                  <span className={styles.error}>{errorMail}</span>
+            <label htmlFor="contraseña">Contraseña</label>
+            <input
+              type="password"
+              id="contraseña"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span className={styles.error}>{errorPassword}</span>
 
-                  <label htmlFor="contraseña">Contraseña</label>
-                  <input type="password" id="contraseña" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} />
-                  <span className={styles.error}>{errorPassword}</span>
+            <button type="submit" className={styles.submit}>Iniciar Sesión</button>
+          </div>
+        </form>
+      )}
+    </div>
 
-                  <button type="submit" className={styles.submit}>Iniciar Sesión</button>
-                </div>
-              </form>
-            </>
-          )}
 
           {vista === 'registro' && (
             <form onSubmit={handleRegistro}>
@@ -242,8 +243,7 @@ export default function Login({ onLogin }) {
             <a href="#" onClick={(e) => { e.preventDefault(); setVista('registro'); }}> Registrate</a>
           </p>
           <br />
-        </div>
-      </div>
     </div>
+  </div>
   );
 }
