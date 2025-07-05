@@ -15,6 +15,7 @@ import { useContext, useState } from 'react';
 import { DatosContexto } from '../../datosContext.jsx';
 
 function NavBar({ onLogout }) {
+  
   const {
     busquedaGlobal,
     setBusquedaGlobal,
@@ -73,7 +74,7 @@ function NavBar({ onLogout }) {
           <Form className="d-flex" onSubmit={handleBuscar}>
             <Form.Control
               type="search"
-              placeholder="Buscar"
+              placeholder="Buscar oferta"
               className="me-2"
               aria-label="Buscar"
               value={busquedaGlobal}
@@ -84,13 +85,14 @@ function NavBar({ onLogout }) {
             </Button>
           </Form>
 
-          <Button variant="outline-light" className="ms-3" onClick={() => {
-            setMostrarUsuarios(!mostrarUsuarios);
-            setBusquedaLocal("");
-          }}>
-            {mostrarUsuarios ? '' : <BsPersonFillGear style={{ fontSize: "25px" }} />}
-          </Button>
-
+          {usuarioLogueado.rol==="Administrador" && (
+            <Button variant="outline-light" className="ms-3" onClick={() => {
+              setMostrarUsuarios(!mostrarUsuarios);
+              setBusquedaLocal("");
+            }}>
+              {mostrarUsuarios ? '' : <BsPersonFillGear style={{ fontSize: "25px" }} />}
+            </Button>
+          )}
           {onLogout && (
             <Button variant="danger" className="ms-3 botonCerrar" onClick={onLogout}>
               Cerrar sesión
