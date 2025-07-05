@@ -6,19 +6,73 @@ body{
    article{
     margin-top: 1px
    }
+ 
+.fondoBorroso {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+}
 
-   #fondoborroso{
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    padding:0;
-    margin:0;
-    backdrop-filter: blur(6px);
-    display:none;
-    position:fixed;
-    z-index:5
-   }
+#modal-root {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100vw; 
+  height: 100vh;
+  z-index: 1100; /* más alto que fondoBorroso */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal */
+#editar {
+  background-color: white;
+  width: 40vw;
+  height: 41.5vh;
+  border: solid black 1px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+}
+#barra1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#cancelar {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+#barra2 {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+#fotoper {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+#vistaprevia {
+  border-radius: 50%;
+  object-fit: cover;
+}
+#aceptar {
+  margin-top: 25px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
 
 header{
     background-color:rgba(209, 58, 58, 0.4);
@@ -34,10 +88,11 @@ header span.forma{
 }
 
 button{
-    border-radius:20px;
+    /*border-radius:20px;*/
     height:40px;
     width:150px
 }
+
 
 #u{
     width:600px;
@@ -90,6 +145,7 @@ section div img{
     display: flex;
     margin-top: 3em;
     gap:8px
+    
 }
 
 #opcionesbot {
@@ -161,19 +217,16 @@ section div img{
      display:none
 }
 
-#editar{
-    margin:70px;
-    background-color:white;
-    top: 20%;
-    left: 50%;
-    width: 100vh;
-    height: 41,5vh;
-    transform: translateX(-50%);
-    display:none;
-    position:fixed;
-    border:solid black 1px;
-    z-index: 20;
-    
+#editar {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vh;
+  height: 41.5vh;
+  background-color: white;
+  border: solid black 1px;
+  z-index: 100; /* Muy alto para que esté sobre el fondo borroso */
 }
 
 #vistaprevia{

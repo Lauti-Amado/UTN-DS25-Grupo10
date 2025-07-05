@@ -70,10 +70,11 @@ function NavBar({ onLogout }) {
           </Button>
 
           {onLogout && (
-            <Button variant="danger" className="ms-2" onClick={onLogout}>
+            <Button variant="danger" className="ms-3 botonCerrar" onClick={onLogout}>
               Cerrar sesión
             </Button>
           )}
+
         </Navbar.Collapse>
       </Container>
 

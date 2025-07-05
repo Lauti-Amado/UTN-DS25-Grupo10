@@ -29,10 +29,11 @@ function CuadroEmpDest() {
                 <Image src="../public/logoMercadoLibre.png" roundedCircle className="logoEmpresa" />
                 <p className="nombreEmpresa">Mercado libre</p>
             </ListGroup.Item>
+
            
         </ListGroup>
 
-        <Link to={"/"}>Ver mas</Link>
+        <Link style={{color:"white"}} to={"/"}>Ver mas</Link>
     </div>
   );
 }
