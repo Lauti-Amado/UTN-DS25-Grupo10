@@ -5,31 +5,24 @@ import { DatosContexto } from '../datosContext';
 import CuadroEmpDest from '../componentes/cuadroEmpDest';
 export default  function PantallaHomePostulante () {
 
-    const {usuarioLogueado} = useContext(DatosContexto)
+    const {usuarioLogueado} = useContext(DatosContexto) //guardo el usuario logueado
    
-       console.log(usuarioLogueado.nombre)
     
    
     return (
       <div className="vistaEstirada">
+        <div style={{textAlign:"start"}}>
+          {usuarioLogueado ? (
+            usuarioLogueado.rol === 'empleador' ? (<h2>Empleador</h2> ) : usuarioLogueado.rol === 'postulante' ? (<h2>Postulante</h2>) : (<h2>Administrador</h2>)
+          ) : (<p>no has iniciado sesion</p>)
+          }
+
+          <p>{usuarioLogueado.nombre} ({usuarioLogueado.rol})</p>
+        </div>
         
         <OfertasCarousel />
-        <br></br>
-        pantallaHome
-        
-        <h2>Usuario</h2>
-      
-          <div>
-            
-              {usuarioLogueado ? (
-                <p>Hola, {usuarioLogueado.nombre} ({usuarioLogueado.rol})</p>
-              ) : (
-                <p>No has iniciado sesión</p>
-              )}
-        
-          </div>
-
-          <CuadroEmpDest />
+          <br></br>
+        <CuadroEmpDest />
           
           
         
