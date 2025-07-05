@@ -1,18 +1,35 @@
-/* clase por defecto */
 .nav-link {
  
   color: rgb(167, 167, 167);
   text-decoration: none;
 }
 
-/* clase para el ítem activo */
 .nav-link:hover, .nav-link:focus {
    color: white;
 }
 
+.modal-content {
+  max-height: 80vh;
+  overflow: hidden;
+  border-radius: 12px;
+}
 @media (max-width: 991px) {
   .botonCerrar {
     margin-top: 10px;
     margin-bottom: 5px;
   }
+}
+
+.btn-danger:hover i.bi-trash {
+  animation: shake 0.5s;
+  color: #ffaaaa;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
 }

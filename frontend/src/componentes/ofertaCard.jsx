@@ -16,12 +16,12 @@ function OfertaCard({ titulo, texto, categoria, n }) {
   return (
     <Card
       bg={'dark'}
-      style={{ width: '18rem', cursor: 'pointer' }}
+      style={{ width: '18rem', height: '140px', cursor: 'pointer' }}
       text={'white'}
-      className="mb-2 me-2"
+      className="mb-2 me-2 card"
       onClick={navegar}
     >
-      <Card.Header>{categoria}</Card.Header>
+      <Card.Header className='card-header'>{categoria}</Card.Header>
       <Card.Body>
         <Card.Title className="card-title">{titulo}</Card.Title>
         <Card.Text>
