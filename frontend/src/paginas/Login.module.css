@@ -24,7 +24,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 20px;
+  padding: 25px 20px;
+  height: auto;
   background: linear-gradient(
     to bottom,
     rgba(255, 120, 120, 0.9) 0%,
@@ -38,33 +39,32 @@ body {
 
 .logo {
   width: 100px;
-  position: relative;
-  top: -20px;
-  z-index: 2;
   height: auto;
   border-radius: 50px;
+  object-fit: contain;
 }
 
+
 .title {
-  flex-grow: 1;
+  position:absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
   text-align: center;
-  margin: 0 20px;
   font-size: 60px;
   font-weight: 400;
   font-family: "Carter One", system-ui;
   color: #111;
   letter-spacing: 3px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  position: relative;
-  top: -20px;
+  margin: 0;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .tuercaLogo {
   width: 60px;
   height: auto;
-  position: relative;
-  top: -20px;
-  z-index: 2;
   border-radius: 50%;
   border: 3px solid rgb(241, 82, 82);
   padding: 5px;
@@ -84,8 +84,8 @@ body {
   max-width: 500px;
   padding: 5px;
   margin: auto;
-  margin-top: 5px;
-  margin-bottom: 60px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .opcionesRol {
@@ -122,7 +122,7 @@ body {
 .datos {
   width: 90%;
   text-align: left;
-  margin: 15px auto 20px auto;
+  margin: 15px auto;
   display: flex;
   flex-direction: column;
 }
@@ -135,14 +135,12 @@ body {
 
 .datos input {
   width: 90%;
-  height: 30px;
+  height: 50px;
   padding: 12px;
   margin: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 15px;
-  background-color: white;
-  color: black;
 }
 
 .datos input:-webkit-autofill {
@@ -154,6 +152,7 @@ body {
 
 .submit {
   width: 60%;
+  height: 30px;
   padding: 5px;
   margin-top: 30px;
   margin-bottom: 1px;
@@ -194,7 +193,7 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 5px 5px;
   background-color: rgb(222, 219, 219);
   color: #444;
   width: 100%;

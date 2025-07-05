@@ -73,12 +73,33 @@ export default function Login({ onLogin }) {
 
   return (
     <div className={styles.loginPageWrapper}>
-      <div className={styles.bodyLogin}>
-        <header className={styles.header}>
-          <img src={logo} alt="Logo de RoDi" className={styles.logo} />
-          <h1 className={styles.title}>RoDi</h1>
-          <BiCog className={styles.tuercaLogo} />
-        </header>
+
+    <div className={styles.bodyLogin}>
+      <header className={styles.header}>
+        <img src={logo} alt="Logo de RoDi" className={styles.logo} />
+        <h1 className={styles.title}>RoDi</h1>
+        <BiCog className={styles.tuercaLogo} />
+      </header>
+
+
+      <div className={styles.contenedor}>
+        <div className={styles.opcionesRol}>
+          <div
+            className={`${styles.rol} ${rolSeleccionado === 'postulante' ? styles.rolSeleccionado : ''}`}
+            onClick={() => setRolSeleccionado('postulante')}
+          >
+            <img src={postulanteImg} alt="Postulante" />
+            <p>Postulante</p>
+          </div>
+          <div
+            className={`${styles.rol} ${rolSeleccionado === 'empleador' ? styles.rolSeleccionado : ''}`}
+            onClick={() => setRolSeleccionado('empleador')}
+          >
+            <img src={empleadorImg} alt="Empleador" />
+            <p>Empleador</p>
+          </div>
+        </div>
+
 
         <div className={styles.contenedor}>
           {vista === 'login' && (
