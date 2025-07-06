@@ -4,6 +4,17 @@ import styles from '../paginas/perfil.module.css';
 
 function ListaProyectos ({ onCerrar, onProyectos }) {
 
+    const confirmarEliminar = (id) => {
+        setIdAEliminar(id);
+        setMostrarModal(true);
+    };
+    
+    const eliminarConfirmado = () => {
+        const nuevas = items.filter((item) => item.id !== idAEliminar);
+        setItems(nuevas);
+        setMostrarModal(false);
+    };
+
     return (
         <div>
         <div className={styles.barra1}>
@@ -16,6 +27,9 @@ function ListaProyectos ({ onCerrar, onProyectos }) {
               <h3> Proyecto {i + 1}: {proyecto.nombre}</h3>
               <p> Descripcion: {proyecto.descripcion} </p>
               <p> Tecnologias usadas: {proyecto.tecnologias}</p>
+              <button className="btn btn-sm btn-bordo-danger" onClick={() => confirmarEliminar(item.id)}>
+                  <i className="bi bi-trash3-fill me-1"></i> Eliminar
+              </button>
               <p>-------------------------------------</p>
             </div>
         ))}
