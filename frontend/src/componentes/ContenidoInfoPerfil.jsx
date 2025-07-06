@@ -11,7 +11,7 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
         <img className={styles.imagenperfil} src={imagen} alt="foto de perfil" />
         <h3>{usuarioLogueado.nombre}</h3>
         <p>
-          Descripción:<br />
+          Descripción:<br/>
           {descripcion}
         </p>
         <p>Fecha de Nacimiento: {usuarioLogueado.fnac}</p>
@@ -20,10 +20,11 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
           <BotonesPerfil texto="Editar perfil" onClick={() => onEditarClick('perfil')} />
           <BotonesPerfil texto="Compartir perfil" onClick={()=>onEditarClick('compartir')}/>
           <BotonesPerfil texto="Agregar proyecto" onClick={() => onEditarClick('proyecto')} />
+          <BotonesPerfil texto="Visualizar proyectos" onClick={() => onEditarClick('visualizarproyectos')} />
         </div>
-        </div>
-        </section>
-        )
-        }
+      </div>
+    </section>
+  )
+}
 
 export default ContenidoInfoPerfil;
