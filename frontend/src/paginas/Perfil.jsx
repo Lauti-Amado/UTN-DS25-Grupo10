@@ -4,7 +4,6 @@ import ContenidoInfoPerfil from '../componentes/ContenidoInfoPerfil';
 import PerfilesSugeridos from '../componentes/sugerenciasperfiles';
 import Editar from '../componentes/editar';
 import Proyecto from '../componentes/proyecto'; // Asegurate de importar también el componente de Proyecto
-import OfertaCard from '../componentes/ofertaCard';
 import '../componentes/ofertaCard.css';
 import imagen from '../assets/perfilx.png';
 import Compartir from '../componentes/compartir';
@@ -50,6 +49,11 @@ export default function Perfil() {
     setProyectosAgregados([...proyectosagregados,nuevoproy]) 
     setModoEditar(null);
   };
+
+  // Elimina un proyecto del array
+  const eliminarProyecto = (nombre) => {
+    setProyectosAgregados (proyectosagregados.filter(proyecto => proyecto.nombre !== nombre))
+  }
 
   return (
     <div className="vistaEstirada" style={{ position: 'relative' }}>
@@ -124,6 +128,7 @@ export default function Perfil() {
             {modoEditar === 'verproyectos' && (
               <ListaProyectos
                 onCerrar={()=> setModoEditar(null)}
+                onEliminar={eliminarProyecto}
                 onProyectos={proyectosagregados}
               />
             )}
