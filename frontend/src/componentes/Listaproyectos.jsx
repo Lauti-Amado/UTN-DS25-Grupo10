@@ -1,26 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from "react";
 import styles from '../paginas/perfil.module.css';
 
 
-function visualizarproyectos ({ onCerrar, proyectosAgregados }) {
+function ListaProyectos ({ onCerrar, onProyectos }) {
 
     return (
         <div>
-        <p> Hola </p>
         <div className={styles.barra1}>
-                <h1>Agregar Proyecto</h1>
-                    <button className={styles.cancelar} onClick={onCerrar}>X</button>
-              </div>
-        {proyectosAgregados.map(proyecto => (
-            <div key="muestradeproyectos">
-              <h3> Proyecto {proyectosAgregados.length}: {proyectosAgregados.nombre}</h3>
-              <p> Descripcion: {proyectosAgregados.descripcion} </p>
-              <p> Tecnologias usadas: {proyectosAgregados.tecnologias}</p>
+            <h1> Proyectos </h1>
+            <button className={styles.cancelar} onClick={onCerrar}>X</button>
+        </div>
+        <br/>
+        {onProyectos.map((proyecto,i) => (
+            <div key={i}>
+              <h3> Proyecto {i + 1}: {proyecto.nombre}</h3>
+              <p> Descripcion: {proyecto.descripcion} </p>
+              <p> Tecnologias usadas: {proyecto.tecnologias}</p>
               <p>-------------------------------------</p>
             </div>
         ))}
         </div>
-    )
+    );
 }
 
-export default visualizarproyectos;
+export default ListaProyectos;
