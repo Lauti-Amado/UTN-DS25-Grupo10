@@ -29,10 +29,15 @@ export default  function PantallaHomePostulante () {
             ) : usuarioLogueado.rol === 'postulante' ? (
               
               <div>
-                <h2>Postulante</h2>
+                <h2 style={{textDecoration:" brown 1.5px underline"}}>Postulante</h2>
+                  
                   <OfertasCarousel />
                   <br></br>
-                  <CuadroEmpDest />
+                  
+                  <TrabajosDisponibles />
+                  < CuadroEmpDest/>
+                  
+                  
               </div>
             ) : (
               
@@ -50,7 +55,7 @@ export default  function PantallaHomePostulante () {
           
         
           
-          <TrabajosDisponibles />
+         
         
       </div>
     )
