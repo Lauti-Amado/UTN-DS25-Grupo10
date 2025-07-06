@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../paginas/perfil.module.css';
 
-function Proyecto({ onCerrar, onActualizarPerfil, nombre, descripcion, tecnologias }) {
+function Proyecto({ onCerrar, onActualizarPerfil, onAgregarProyecto, nombre, descripcion, tecnologias }) {
   const [nuevoNombre, setNombre] = useState(nombre || '');
   const [Descripcion, setDescripcion] = useState(descripcion || '');
   const [Tecnologias, setTecnologias] = useState(tecnologias || '');
@@ -17,6 +17,7 @@ function Proyecto({ onCerrar, onActualizarPerfil, nombre, descripcion, tecnologi
   const aceptarCambios = () => {
     if (onActualizarPerfil) {
       onActualizarPerfil(nuevoNombre, Descripcion, Tecnologias);
+      //agregarProyecto(nuevoNombre, Descripcion, Tecnologias);
     }
     if (onCerrar) onCerrar();
   };
@@ -57,7 +58,12 @@ function Proyecto({ onCerrar, onActualizarPerfil, nombre, descripcion, tecnologi
       </div>
 
 
-      <button className={styles.aceptar} onClick={aceptarCambios}>Aceptar</button>
+      <button className={styles.aceptar} 
+        onClick={() => {onAgregarProyecto({nombre: {nuevoNombre}, 
+                                    descripcion: {Descripcion}, 
+                                    tecnologias: {Tecnologias}});
+                        aceptarCambios();
+                       }}>Aceptar</button>
     </div>
   );
 }
