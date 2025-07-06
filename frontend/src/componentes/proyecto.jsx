@@ -16,6 +16,7 @@ function Proyecto({ onCerrar, onActualizarPerfil, onAgregarProyecto, nombre, des
  
   const aceptarCambios = () => {
     if (onActualizarPerfil) {
+      onAgregarProyecto({nombre: nuevoNombre, descripcion: Descripcion, tecnologias: Tecnologias});
       onActualizarPerfil(nuevoNombre, Descripcion, Tecnologias);
       //agregarProyecto(nuevoNombre, Descripcion, Tecnologias);
     }
@@ -59,11 +60,7 @@ function Proyecto({ onCerrar, onActualizarPerfil, onAgregarProyecto, nombre, des
 
 
       <button className={styles.aceptar} 
-        onClick={() => {onAgregarProyecto({nombre: {nuevoNombre}, 
-                                    descripcion: {Descripcion}, 
-                                    tecnologias: {Tecnologias}});
-                        aceptarCambios();
-                       }}>Aceptar</button>
+        onClick={() => {aceptarCambios()}}>Aceptar</button>
     </div>
   );
 }
