@@ -264,8 +264,18 @@ select option {
   color: black;
 }
 
-.login-container select,
-.login-container select option {
-  color: white;
+.temaOscuro {
   background-color: #1a1a1a;
+  color: white;
+}
+
+.temaOscuro input,
+.temaOscuro select {
+  background-color: #333;
+  color: white;
+  border: 1px solid #666;
+}
+
+.temaOscuro .contenedor {
+  background-color: #2a2a2a;
 }
