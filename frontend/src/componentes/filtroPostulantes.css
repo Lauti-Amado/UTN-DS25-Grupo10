@@ -8,10 +8,8 @@
   background-color: #252729;
   color: whitesmoke;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  /* Agrego para limitar altura total si quieres */
-  max-height: 400px; /* o menos si querés */
-  display: flex;
-  flex-direction: column;
+  max-height: 400px; 
+  left: 150px;
 }
 
 .tituloFiltro {
