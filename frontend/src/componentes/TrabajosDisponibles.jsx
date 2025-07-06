@@ -49,8 +49,10 @@ const TrabajosDisponibles = () => {
           {trabajos.map((trabajo, index) => (
             <TrabajoCard
               key={index}
+              EsTrabajo={true}
               titulo={trabajo.titulo}
               sueldo={trabajo.sueldo}
+              rol={""}
               imagen={trabajo.imagen}
             />
           ))}

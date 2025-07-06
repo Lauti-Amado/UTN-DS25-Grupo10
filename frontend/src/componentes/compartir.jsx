@@ -21,19 +21,19 @@ function Compartir({onCerrar}) {
         </div>
         <ListGroup>
             <ListGroup.Item  action onClick={alertClicked} className={styles.itemLista}>
-                <Image src="../public/Facebook_Logo_(2019).png" roundedCircle className={styles.logoEmpresa} />
+                <Image src="../Facebook_Logo_(2019).png" roundedCircle className={styles.logoEmpresa} />
                 <p className={styles.nombreEmpresa}>Facebook</p>
             </ListGroup.Item>
             <ListGroup.Item action onClick={alertClicked} className={styles.itemLista}>
-                <Image src="../public/WhatsApp.svg.png" roundedCircle className={styles.logoEmpresa} />
+                <Image src="../WhatsApp.svg.png" roundedCircle className={styles.logoEmpresa} />
                 <p className={styles.nombreEmpresa}>Whatsapp</p>
             </ListGroup.Item>
             <ListGroup.Item action onClick={alertClicked} className={styles.itemLista}>
-                <Image src="../public/logoInsta2.png" roundedCircle className={styles.logoEmpresa} />
+                <Image src="../logoInsta2.png" roundedCircle className={styles.logoEmpresa} />
                 <p className={styles.nombreEmpresa}>Instagram</p>
             </ListGroup.Item>
             <ListGroup.Item action onClick={alertClicked} className={styles.itemLista}>
-                <Image src="../public/linkedin.png" roundedCircle className={styles.logoEmpresa} />
+                <Image src="../linkedin.png" roundedCircle className={styles.logoEmpresa} />
                 <p className={styles.nombreEmpresa}>Linkedin</p>
             </ListGroup.Item>
 

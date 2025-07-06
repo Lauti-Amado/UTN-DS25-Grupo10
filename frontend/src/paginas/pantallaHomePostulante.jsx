@@ -5,6 +5,7 @@ import { DatosContexto } from '../datosContext';
 import CuadroEmpDest from '../componentes/cuadroEmpDest';
 import FiltroPostulantes from '../componentes/filtroPostulantes';
 import TrabajosDisponibles from '../componentes/TrabajosDisponibles';
+import PostulantesScrollBox from '../componentes/PostulantesScrollBox';
 
 export default  function PantallaHomePostulante () {
 
@@ -22,6 +23,7 @@ export default  function PantallaHomePostulante () {
                 <h2 style={{textDecoration:"brown 1.5px underline"}}>Empleador</h2>
                 <OfertasCarousel />
                   <br></br>
+                <PostulantesScrollBox />
                 <FiltroPostulantes />
               </div>
             ) : usuarioLogueado.rol === 'postulante' ? (
