@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TrabajoCard from './TrabajoCard';
 import './TrabajosDisponibles.css';
+import FormularioPostulacionModal from './FormularioPostulacionModal';
 
-const trabajos = [
+const trabajos= [
   {
     titulo: 'Frontend Developer',
     sueldo: '$350.000',
@@ -41,6 +42,13 @@ const trabajos = [
 ];
 
 const TrabajosDisponibles = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [trabajoSeleccionado, setTrabajoSeleccionado] = useState(null);
+
+  const abrirFormulario = (trabajo) => {
+    setTrabajoSeleccionado(trabajo);
+    setModalVisible(true);
+  };
   return (
     <div className="trabajos-container container">
       <h2 className="text-center my-4">Trabajos Disponibles</h2>
@@ -54,10 +62,16 @@ const TrabajosDisponibles = () => {
               sueldo={trabajo.sueldo}
               rol={""}
               imagen={trabajo.imagen}
+              onPostular={() => abrirFormulario(trabajo)}
             />
           ))}
         </div>
       </div>
+      <FormularioPostulacionModal
+        show={modalVisible}
+        handleClose={() => setModalVisible(false)}
+        trabajo={trabajoSeleccionado}
+      />
     </div>
   );
 };

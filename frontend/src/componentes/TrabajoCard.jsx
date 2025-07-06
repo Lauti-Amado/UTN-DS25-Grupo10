@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import './TrabajoCard.css'; 
 
-const TrabajoCard = ({ EsTrabajo,titulo, sueldo,rol, imagen }) => {
+const TrabajoCard = ({ EsTrabajo,titulo, sueldo,rol, imagen, onPostular }) => {
 
   
   return (
@@ -14,7 +14,7 @@ const TrabajoCard = ({ EsTrabajo,titulo, sueldo,rol, imagen }) => {
         {EsTrabajo ? (
             <>
             <Card.Text className="mb-2">Sueldo {sueldo}</Card.Text>
-            <Button variant="danger" className="btn-ver-form">Postularse</Button>
+            <Button variant="danger" className="btn-ver-form"onClick={onPostular}>Postularse</Button>
             </>
           ) : (
               <>
