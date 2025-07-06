@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ContenidoInfoPerfil from '../componentes/ContenidoInfoPerfil';
 import PerfilesSugeridos from '../componentes/sugerenciasperfiles';
@@ -8,6 +8,7 @@ import OfertaCard from '../componentes/ofertaCard';
 import '../componentes/ofertaCard.css';
 import imagen from '../assets/perfilx.png';
 import Compartir from '../componentes/compartir';
+import ListaProyectos from '../componentes/listaproyectos';
 
 export default function Perfil() {
   // modoEditar puede ser null, 'perfil' o 'proyecto'
@@ -19,20 +20,34 @@ export default function Perfil() {
   const [descripcionPerfil, setDescripcionPerfil] = useState(
     'Soy un estudiante de sistemas con ganas de insertarme en el mundo laboral. Poseo los conocimientos de algunas tecnologías, idiomas y trabajo en equipo.'
   );
-  const [FechaNac, setNuevafecha]=useState('')
+  const [FechaNac, setNuevafecha]=useState('');
+  const [proyectosagregados, setProyectosAgregados] = useState([
+    {  nombre: "Sistema para una biblioteca", descripcion: "Las funcionalidades son variadas y utiles",
+      tecnologias: "Python y SQL Server" },
+    {  nombre: "Ta-te-ti", descripcion: "Juego de ta-te-ti con manejo de estados previos",
+      tecnologias: "React y tecnologias frontend" },
+    {  nombre: "Juego de Ajedrez", descripcion: "Se pueden jugar partidas con un excelente diseño",
+      tecnologias: "C++" }
+  ]);
 
   // Actualiza datos de perfil
   const manejarActualizarPerfil = (nuevaImagen, nuevoNombre, nuevaDescripcion, nuevaFechaNac) => {
     if (nuevaImagen) setImagenPerfil(nuevaImagen);
     if (nuevoNombre) setNombrePerfil(nuevoNombre);
     if (nuevaDescripcion) setDescripcionPerfil(nuevaDescripcion);
-    if(nuevaFechaNac) setNuevafecha(nuevaFechaNac)
+    if(nuevaFechaNac) setNuevafecha(nuevaFechaNac);
     setModoEditar(null);
   };
 
-  // Actualiza datos de proyecto (puedes guardar los datos si querés)
+  // Permite ingresar los datos de un proyecto
   const manejarActualizarProyecto = (nombreProyecto, descripcionProyecto, tecnologias) => {
     console.log('Proyecto agregado o actualizado:', nombreProyecto, descripcionProyecto, tecnologias);
+    setModoEditar(null);
+  };
+
+  // Agrega un nuevo proyecto al array
+  const agregarProyecto = (nuevoproy) => {
+    setProyectosAgregados([...proyectosagregados,nuevoproy]) 
     setModoEditar(null);
   };
 
@@ -70,7 +85,7 @@ export default function Perfil() {
           <div
             style={{
               position: 'fixed',
-              top: '50%',
+              top: '58%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
               zIndex: 1001,
@@ -97,15 +112,23 @@ export default function Perfil() {
             {modoEditar === 'proyecto' && (
               <Proyecto
                 onCerrar={() => setModoEditar(null)}
+                onAgregarProyecto={agregarProyecto}
                 onActualizarPerfil={manejarActualizarProyecto}
               />
             )}
-            {modoEditar == 'compartir' && (
+            {modoEditar === 'compartir' && (
               <Compartir
                onCerrar={()=> setModoEditar(null)}/>
             )}
 
-            </div>
+            {modoEditar === 'verproyectos' && (
+              <ListaProyectos
+                onCerrar={()=> setModoEditar(null)}
+                onProyectos={proyectosagregados}
+              />
+            )}
+
+          </div>
         </>
       )}
     </div>

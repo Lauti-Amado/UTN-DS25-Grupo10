@@ -1,29 +1,28 @@
 import BotonesPerfil from './BotonesPerfil';
 import styles from '../paginas/perfil.module.css';
-import {DatosContexto} from '../datosContext'
 import React, {Component, useContext} from 'react';
 
 function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, FechaNac }) {
-  const{usuarioLogueado}=useContext(DatosContexto)
   return (
-    <section>
+    <section className="seccionPerfil">
       <div id={styles['chau']}>
         <img className={styles.imagenperfil} src={imagen} alt="foto de perfil" />
-        <h3>{usuarioLogueado.nombre}</h3>
+        <h3>{nombre}</h3>
         <p>
-          Descripción:<br />
+          Descripción:<br/>
           {descripcion}
         </p>
-        <p>Fecha de Nacimiento: {usuarioLogueado.fnac}</p>
+        <p>Fecha de Nacimiento: {FechaNac}</p>
 
         <div id={styles['botones']}>
           <BotonesPerfil texto="Editar perfil" onClick={() => onEditarClick('perfil')} />
-          <BotonesPerfil texto="Compartir perfil" onClick={()=>onEditarClick('compartir')}/>
+          <BotonesPerfil texto="Compartir perfil" onClick={() =>onEditarClick('compartir')}/>
           <BotonesPerfil texto="Agregar proyecto" onClick={() => onEditarClick('proyecto')} />
+          <BotonesPerfil texto="Visualizar proyectos" onClick={() => onEditarClick('verproyectos')} />
         </div>
-        </div>
-        </section>
-        )
-        }
+      </div>
+    </section>
+  )
+}
 
 export default ContenidoInfoPerfil;

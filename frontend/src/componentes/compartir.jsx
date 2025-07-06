@@ -16,7 +16,7 @@ function Compartir({onCerrar}) {
   return (
     <div className={styles.recuadroEmpresas}>
         <div className={styles.barra1}>
-        <h3>Empresas Destacadas</h3>
+        <h3> Compartir por... </h3>
         <button onClick={onCerrar} className={styles.cancelar}>X</button>
         </div>
         <ListGroup>
@@ -30,7 +30,7 @@ function Compartir({onCerrar}) {
             </ListGroup.Item>
             <ListGroup.Item action onClick={alertClicked} className={styles.itemLista}>
                 <Image src="../public/logoInsta2.png" roundedCircle className={styles.logoEmpresa} />
-                <p className={styles.nombreEmpresa}>Instagraam</p>
+                <p className={styles.nombreEmpresa}>Instagram</p>
             </ListGroup.Item>
             <ListGroup.Item action onClick={alertClicked} className={styles.itemLista}>
                 <Image src="../public/linkedin.png" roundedCircle className={styles.logoEmpresa} />
