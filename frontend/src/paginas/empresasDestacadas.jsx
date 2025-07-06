@@ -1,13 +1,17 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { DatosContexto } from '../datosContext';
 import { useLocation } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import FormularioPostulacionModal from '../componentes/FormularioPostulacionModal';
 
 export default function EmpresasDestacadas() {
   const { usuarioLogueado } = useContext(DatosContexto); // usuario actual
   const location = useLocation();
 
-  
+  const [empresaSeleccionada, setEmpresaSeleccionada] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const empresas = [
     {
       logo: "../Facebook_Logo_(2019).png",
@@ -52,7 +56,8 @@ export default function EmpresasDestacadas() {
 
   
   const handlePostular = (empresa) => {
-    alert(`Te postulaste para ${empresa.puestoBacante} en ${empresa.nombre}`);
+    setEmpresaSeleccionada(empresa);
+    setModalVisible(true);
   };
 
   return (
@@ -76,15 +81,25 @@ export default function EmpresasDestacadas() {
             <p><strong>Descripción:</strong> {empresa.descripcion}</p>
             <p><strong>Puesto vacante:</strong> {empresa.puestoBacante}</p>
             <div style={{ textAlign: "center" }}>
-              <button
-                className="btn btn-success"
+              <Button
+                variant='danger'
+                className="btn-ver-form"
                 onClick={() => handlePostular(empresa)}
               >
-                Postular
-              </button>
+                Postularse
+              </Button>
+
+
             </div>
           </div>
         ))}
+
+        <FormularioPostulacionModal
+        show={modalVisible}
+        handleClose={() => setModalVisible(false)}
+        empresa={empresaSeleccionada}
+        />
+
       </div>
     </div>
   );
