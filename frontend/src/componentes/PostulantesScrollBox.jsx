@@ -1,6 +1,6 @@
 import React from 'react';
 import TrabajoCard from './TrabajoCard';
-import './TrabajosDisponibles.css';
+import './PostulantesScrollBox.css';
 
 const postulantes = [
   {
