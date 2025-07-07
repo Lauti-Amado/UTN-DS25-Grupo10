@@ -12,13 +12,13 @@ import Confirmar from '../componentes/confirmar'
 import styles from '../paginas/perfil.module.css';
 
 export default function Perfil() {
-  // modoEditar puede ser null, 'perfil' o 'proyecto'
+ 
   const [modoEditar, setModoEditar] = useState(null);
 
   const[proyectoaEliminar, setProyectoaEliminar]=useState(null)
   const[mostrarConfirmacion, setMostrarConfirmacion]=useState(false)
 
-  // Datos del perfil
+  
   const [imagenPerfil, setImagenPerfil] = useState(imagen);
   const [nombrePerfil, setNombrePerfil] = useState('Nombre Perfil');
   const [descripcionPerfil, setDescripcionPerfil] = useState(
@@ -34,7 +34,6 @@ export default function Perfil() {
       tecnologias: "C++" }
   ]);
 
-  // Actualiza datos de perfil
   const manejarActualizarPerfil = (nuevaImagen, nuevoNombre, nuevaDescripcion, nuevaFechaNac) => {
     if (nuevaImagen) setImagenPerfil(nuevaImagen);
     if (nuevoNombre) setNombrePerfil(nuevoNombre);
@@ -43,13 +42,13 @@ export default function Perfil() {
     setModoEditar(null);
   };
 
-  // Permite ingresar los datos de un proyecto
+  
   const manejarActualizarProyecto = (nombreProyecto, descripcionProyecto, tecnologias) => {
     console.log('Proyecto agregado o actualizado:', nombreProyecto, descripcionProyecto, tecnologias);
     setModoEditar(null);
   };
 
-  // Agrega un nuevo proyecto al array
+ 
   const agregarProyecto = (nuevoproy) => {
     setProyectosAgregados([...proyectosagregados,nuevoproy]) 
     setModoEditar(null);
@@ -75,7 +74,7 @@ export default function Perfil() {
     <div className="vistaEstirada" style={{ position: 'relative' }}>
       <div className={styles.article}>
         <ContenidoInfoPerfil
-          onEditarClick={(tipo) => setModoEditar(tipo)} // Recibe 'perfil' o 'proyecto'
+          onEditarClick={(tipo) => setModoEditar(tipo)} 
           imagen={imagenPerfil}
           nombre={nombrePerfil}
           descripcion={descripcionPerfil}
