@@ -1,6 +1,9 @@
+// componentes/PostulantesScrollBox.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import TrabajoCard from './TrabajoCard';
 import './PostulantesScrollBox.css';
+import datosPostulantes from './datosPostulantes';
+import ModalDatosPostulante from './ModalDatosPostulante';
 
 const postulantesOriginales = [
   {
@@ -52,6 +55,8 @@ const PostulantesScrollBox = () => {
   const [filtroRol, setFiltroRol] = useState('');
   const [orden, setOrden] = useState('');
   const [mostrarOpciones, setMostrarOpciones] = useState(false);
+  const [postulanteSeleccionado, setPostulanteSeleccionado] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
   const opcionesRef = useRef();
 
   const rolesUnicos = [...new Set(postulantesOriginales.map(p => p.rol))];
@@ -99,9 +104,7 @@ const PostulantesScrollBox = () => {
         <div className="col-12 col-md-auto" ref={opcionesRef}>
           <div className="mb-3">
             <button
-              className={`btn w-100 d-flex justify-content-center align-items-center ${
-                mostrarOpciones ? 'btn-danger' : 'btn-danger'
-              }`}
+              className={`btn w-100 d-flex justify-content-center align-items-center btn-danger`}
               onClick={() => setMostrarOpciones(!mostrarOpciones)}
             >
               <i className="bi bi-funnel-fill me-2"></i> Filtros
@@ -128,22 +131,37 @@ const PostulantesScrollBox = () => {
 
       <div className="row justify-content-center mt-4">
         {postulantesFiltrados.length > 0 ? (
-          postulantesFiltrados.map((p, i) => (
-      <div className="col-12 col-sm-6 col-lg-4 d-flex justify-content-center mb-3" key={i}>
-        <TrabajoCard
-          EsTrabajo={false}
-          titulo={p.nombre}
-          sueldo={p.sueldo}
-          rol={p.rol}
-          imagen={p.imagen}
-        />
-      </div>
+          postulantesFiltrados.map((p, i) => {
+            const nombreBase = p.nombre.split(" ")[0];
+            const datosExtendidos = datosPostulantes.find(dp => p.nombre.includes(dp.nombre));
 
-          ))
+            return (
+              <div className="col-12 col-sm-6 col-lg-4 d-flex justify-content-center mb-3" key={i}>
+                <TrabajoCard
+                  EsTrabajo={false}
+                  titulo={p.nombre}
+                  rol={p.rol}
+                  imagen={p.imagen}
+                  postulante={{ ...p, ...(datosExtendidos || {}) }}
+                  onVerDatos={() => {
+                    setPostulanteSeleccionado({ ...p, ...(datosExtendidos || {}) });
+                    setMostrarModal(true);
+                  }}
+                />
+              </div>
+            );
+          })
         ) : (
           <p className="text-center mt-4">No se encontraron coincidencias.</p>
         )}
       </div>
+
+      {mostrarModal && postulanteSeleccionado && (
+        <ModalDatosPostulante
+          postulante={postulanteSeleccionado}
+          onClose={() => setMostrarModal(false)}
+        />
+      )}
     </div>
   );
 
