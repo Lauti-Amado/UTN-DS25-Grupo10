@@ -15,9 +15,9 @@ function Compartir({onCerrar}) {
 
   return (
     <div className={styles.recuadroEmpresas}>
-        <div className={styles.barra1}>
+        <div className={styles.barra11}>
         <h3> Compartir por... </h3>
-        <button onClick={onCerrar} className={styles.cancelar}>X</button>
+        <button onClick={onCerrar} className={styles.cancelar2}>X</button>
         </div>
         <ListGroup>
             <ListGroup.Item  action onClick={alertClicked} className={styles.itemLista}>

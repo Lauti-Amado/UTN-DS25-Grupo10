@@ -29,9 +29,10 @@ function Proyecto({ onCerrar, onActualizarPerfil, onAgregarProyecto, nombre, des
         <h1>Agregar Proyecto</h1>
         <button className={styles.cancelar} onClick={onCerrar}>X</button>
       </div>
-
+      <div className={styles.b}>
       <div className={styles.barra3}>
         <input
+          className={styles.co}
           type="text"
           value={nuevoNombre}
           onChange={(e) => setNombre(e.target.value)}
@@ -41,26 +42,29 @@ function Proyecto({ onCerrar, onActualizarPerfil, onAgregarProyecto, nombre, des
 
       <div className={styles.barra3}>
         <input
+          className={styles.co}
           type="text"
           value={Descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
         />
         <label>Descripción</label>
       </div>
-
+     
       
       <div className={styles.barra3}>
         <input
+          className={styles.co}
           type="text"
           value={Tecnologias}
           onChange={(e) => setTecnologias(e.target.value)}
         />
         <label>Tecnologias Usadas</label>
       </div>
-
-
-      <button className={styles.aceptar} 
+      </div>
+      <div>
+      <button className="btn btn-bordo-danger" 
         onClick={() => {aceptarCambios()}}>Aceptar</button>
+    </div>
     </div>
   );
 }

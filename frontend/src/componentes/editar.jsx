@@ -57,11 +57,12 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
           onChange={handleFileChange}
           style={{ display: 'none' }}
         />
-        <img src={previewSrc} className={styles.imagenPerfill} alt="Vista previa" />
+        <img src={previewSrc} className={styles.imagenPerfil2} alt="Vista previa" />
       </div>
 
       <div className={styles.barra3}>
         <input
+          className={styles.co}
           placeholder="nombre"
           type="text"
           value={nuevoNombre}
@@ -71,7 +72,8 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
       </div>
 
       <div className={styles.barra3}>
-        <input
+        <textarea 
+          className={styles.algo}
           type="text"
           value={nuevaDescripcion}
           onChange={(e) => setNuevaDescripcion(e.target.value)}
@@ -81,14 +83,16 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
 
       <div className={styles.barra3}>
         <input
+          className={styles.co}
           type="date"
-          value={FechaNac}
+          value={nuevaFechaNac}
           onChange={(e) => setNuevafecha(e.target.value)}
         />
         <label>Fecha de Nacimiento</label>
       </div>
-
-      <button className={styles.aceptar} onClick={aceptarCambios}>Aceptar</button>
+      <div className={styles.boton}>
+      <button className="btn btn-bordo-danger"onClick={aceptarCambios}>Aceptar</button>
+      </div>
       </div>
   );
 }
