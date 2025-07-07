@@ -1,10 +1,10 @@
-##USUARIO POSTULANTE:
-#Email: juan@gmail.com // Contraseña: 456
-##USUARIO EMPLEADOR:
-#Email: lauqgmail.com // Contraseña: 123
-##Si se quiere ingresar en modo Administrador será necesario registrarse y cuando se le pregunta el rol deberá ingresar 'Administrador'
+## USUARIO POSTULANTE:
+# Email: juan@gmail.com // Contraseña: 456
+## USUARIO EMPLEADOR:
+# Email: lauqgmail.com // Contraseña: 123
+## Si se quiere ingresar en modo Administrador será necesario registrarse y cuando se le pregunta el rol deberá ingresar 'Administrador'
 
-#LAS CUENTAS SE GUARDAN DE FORMA LOCAL
+# LAS CUENTAS SE GUARDAN DE FORMA LOCAL
 
 Lo que se encuentra en la carpeta son todos los archivos, directorios y componentes necsarios para el desarrollo
 del Frontend de la aplicación de Rodi, hecho mediante la biblioteca de React.
