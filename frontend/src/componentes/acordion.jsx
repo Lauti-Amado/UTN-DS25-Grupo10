@@ -1,4 +1,3 @@
-// componentes/acordion.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import { useLocation } from 'react-router-dom';
@@ -9,8 +8,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Button } from 'react-bootstrap';
 import { IoIosPaper } from "react-icons/io";
 import FormularioPostulacionModal from '../componentes/FormularioPostulacionModal';
-
-
 
 function Acordion() {
   const location = useLocation();
@@ -179,21 +176,16 @@ function Acordion() {
                 variant='dark'
                 onClick={()=>handlePostular(item)}>Postularse <IoIosPaper /></Button>
             </Accordion.Body>
-
           
           </Accordion.Item>
         ))}
       </Accordion>
-
 
       <FormularioPostulacionModal
         show={modalVisible}
         handleClose={() => setModalVisible(false)}
         empresa={empresaSeleccionada}
       />
-
-   
-
     
     </div>
   );
