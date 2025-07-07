@@ -7,7 +7,7 @@ import styles from '../paginas/perfil.module.css';
 
 function Compartir({onCerrar}) {
     const alertClicked = () => {
-    alert('You clicked the third ListGroupItem');
+    alert('Compartir');
   };
     const CerrarTodo =()=>{
     if (onCerrar) onCerrar();
