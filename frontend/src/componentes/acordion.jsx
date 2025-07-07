@@ -6,11 +6,21 @@ import './acordion.css';
 import { DatosContexto } from '../datosContext.jsx';
 import datosEmpleosIniciales from './datosIniciales';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Button } from 'react-bootstrap';
+import { IoIosPaper } from "react-icons/io";
+import FormularioPostulacionModal from '../componentes/FormularioPostulacionModal';
+
+
 
 function Acordion() {
   const location = useLocation();
   const s = location.state?.mensaje;
   const { busquedaGlobal } = useContext(DatosContexto);
+  
+  const {usuarioLogueado} = useContext(DatosContexto) //guardo el usuario logueado
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [empresaSeleccionada, setEmpresaSeleccionada] = useState(null);
 
   const cargarDesdeLocalStorage = () => {
     const datosGuardados = localStorage.getItem('empleos');
@@ -88,32 +98,42 @@ function Acordion() {
     setMostrarModal(false);
   };
 
+   const handlePostular = (empresa) => {
+    setEmpresaSeleccionada(empresa);
+    setModalVisible(true);
+  };
+
   return (
     <div className="container mt-4">
-      <button
-        className="btn-toggle-formulario mb-3"
-        onClick={() => setMostrarFormulario(!mostrarFormulario)}
-      >
-        <i className={`bi ${mostrarFormulario ? 'bi-dash-circle' : 'bi-plus-circle'}`}></i>
-        {mostrarFormulario ? 'Cancelar' : 'Agregar Nueva Oferta'}
-      </button>
+     
+    {usuarioLogueado.rol === "empleador" && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
+      <>
+        <button
+          className="btn-toggle-formulario mb-3"
+          onClick={() => setMostrarFormulario(!mostrarFormulario)}
+        >
+          <i className={`bi ${mostrarFormulario ? 'bi-dash-circle' : 'bi-plus-circle'}`}></i>
+          {mostrarFormulario ? 'Cancelar' : 'Agregar Nueva Oferta'}
+        </button>
 
-      <div className={`formulario-oferta transition ${mostrarFormulario ? 'mostrar' : 'ocultar'}`}>
-        <form onSubmit={manejarSubmit} className="mb-4">
-          <input type="text" className="form-control mb-2" placeholder="Título del empleo" value={nuevoTitulo} onChange={(e) => setNuevoTitulo(e.target.value)} />
-          <textarea className="form-control mb-2" placeholder="Descripción del empleo" value={nuevoContenido} onChange={(e) => setNuevoContenido(e.target.value)} />
-          <input type="text" className="form-control mb-2" placeholder="Categoría del empleo" value={nuevaCategoria} onChange={(e) => setNuevaCategoria(e.target.value)} />
-          <input type="text" className="form-control mb-2" placeholder="Ubicación" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
-          <input type="text" className="form-control mb-2" placeholder="Sueldo (o escribí 'A convenir')" value={sueldo} onChange={(e) => setSueldo(e.target.value)} />
-          <input type="text" className="form-control mb-2" placeholder="Modalidad (presencial/remoto/híbrido)" value={modalidad} onChange={(e) => setModalidad(e.target.value)} />
-          <input type="text" className="form-control mb-2" placeholder="Horario" value={horario} onChange={(e) => setHorario(e.target.value)} />
-          <input type="text" className="form-control mb-2" placeholder="Contacto (email, WhatsApp, etc.)" value={contacto} onChange={(e) => setContacto(e.target.value)} />
-          <input type="text" className="form-control mb-2" placeholder="URL de Logo de la empresa (opcional)" value={logo} onChange={(e) => setLogo(e.target.value)} />
-          <button type="submit" className="btn btn-bordo w-100">Agregar Oferta</button>
-        </form>
-      </div>
+        <div className={`formulario-oferta transition ${mostrarFormulario ? 'mostrar' : 'ocultar'}`}>
+          <form onSubmit={manejarSubmit} className="mb-4">
+            <input type="text" className="form-control mb-2" placeholder="Título del empleo" value={nuevoTitulo} onChange={(e) => setNuevoTitulo(e.target.value)} />
+            <textarea className="form-control mb-2" placeholder="Descripción del empleo" value={nuevoContenido} onChange={(e) => setNuevoContenido(e.target.value)} />
+            <input type="text" className="form-control mb-2" placeholder="Categoría del empleo" value={nuevaCategoria} onChange={(e) => setNuevaCategoria(e.target.value)} />
+            <input type="text" className="form-control mb-2" placeholder="Ubicación" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
+            <input type="text" className="form-control mb-2" placeholder="Sueldo (o escribí 'A convenir')" value={sueldo} onChange={(e) => setSueldo(e.target.value)} />
+            <input type="text" className="form-control mb-2" placeholder="Modalidad (presencial/remoto/híbrido)" value={modalidad} onChange={(e) => setModalidad(e.target.value)} />
+            <input type="text" className="form-control mb-2" placeholder="Horario" value={horario} onChange={(e) => setHorario(e.target.value)} />
+            <input type="text" className="form-control mb-2" placeholder="Contacto (email, WhatsApp, etc.)" value={contacto} onChange={(e) => setContacto(e.target.value)} />
+            <input type="text" className="form-control mb-2" placeholder="URL de Logo de la empresa (opcional)" value={logo} onChange={(e) => setLogo(e.target.value)} />
+            <button type="submit" className="btn btn-bordo w-100">Agregar Oferta</button>
+          </form>
+        </div>
+      </>
+    )}
 
-      <Accordion defaultActiveKey={(s ?? 0).toString()}>
+        <Accordion defaultActiveKey={(s ?? 0).toString()}>
         {itemsFiltrados.map((item, index) => (
           <Accordion.Item eventKey={index.toString()} key={item.id}>
             <Accordion.Header>{item.titulo}</Accordion.Header>
@@ -126,11 +146,15 @@ function Acordion() {
               <p><strong>Horario:</strong> {item.horario || 'No especificado'}</p>
               <p><strong>Contacto:</strong> {item.contacto || 'No especificado'}</p>
               <p className="mt-2">{item.contenido}</p>
-              <div className="text-end mt-2">
-                <button className="btn btn-sm btn-bordo-danger" onClick={() => confirmarEliminar(item.id)}>
-                  <i className="bi bi-trash3-fill me-1"></i> Eliminar
-                </button>
-              </div>
+              
+              {usuarioLogueado.rol!=="postulante" && (
+                  <div className="text-end mt-2">
+                  <button className="btn btn-sm btn-bordo-danger" onClick={() => confirmarEliminar(item.id)}>
+                    <i className="bi bi-trash3-fill me-1"></i> Eliminar
+                  </button>
+                </div>
+              )}
+              
               {mostrarModal && (
                 <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
                   <div className="modal-dialog modal-dialog-centered" role="document">
@@ -150,10 +174,27 @@ function Acordion() {
                   </div>
                 </div>
               )}
+
+                <Button 
+                variant='dark'
+                onClick={()=>handlePostular(item)}>Postularse <IoIosPaper /></Button>
             </Accordion.Body>
+
+          
           </Accordion.Item>
         ))}
       </Accordion>
+
+
+      <FormularioPostulacionModal
+        show={modalVisible}
+        handleClose={() => setModalVisible(false)}
+        empresa={empresaSeleccionada}
+      />
+
+   
+
+    
     </div>
   );
 }

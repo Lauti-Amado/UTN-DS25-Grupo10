@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component} from 'react'
 import Acordion from '../componentes/acordion'
 
-
 export default function PantallaTrabajos () {
+
+    
 
     return (
       <div className="vistaEstirada">
