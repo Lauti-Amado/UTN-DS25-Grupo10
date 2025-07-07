@@ -1,22 +1,99 @@
-.trabajo-card {
-  background-color: #d3d3d3;
-  border-radius: 10px;
-  padding: 0;
+.trabajo-card-horizontal {
+  background-color: #2c2c2c;
+  color: white;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 2px 6px rgba(255, 80, 80, 0.15);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  width: 100%;
+  max-width: 100%;
+  /* Quitar altura fija */
+  /* height: 180px;  <-- eliminar esta línea */
+  min-height: 150px; /* opcional, si querés una altura mínima base */
 }
 
-.imagen-trabajo {
-  width: 150px;
-  height: 150px;
-  object-fit: contain;
-  padding: 1rem;
+.imagen-container {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 1rem;
+}
+
+.imagen-avatar-grande {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ff5050;
+}
+
+.contenido-card {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  padding: 0.5rem 0;
+  min-width: 0; /* Previene desbordes de texto */
+}
+
+.contenido-card .card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .btn-ver-form {
   background-color: #b32d2d;
   border: none;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  width: fit-content;
 }
 
 .btn-ver-form:hover {
   background-color: #a52828;
+}
+
+/* Mobile fix */
+@media (max-width: 576px) {
+  .trabajo-card-horizontal {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    height: auto; /* se adapta al contenido */
+  }
+
+  .imagen-container {
+    padding: 0 0 1rem 0;
+  }
+
+  .contenido-card {
+    align-items: center;
+    padding: 0;
+  }
+
+  .contenido-card .card-title,
+  .card-text {
+    white-space: normal;
+    text-align: center;
+  }
+
+  .imagen-avatar-grande {
+    width: 100px;
+    height: 100px;
+  }
 }
