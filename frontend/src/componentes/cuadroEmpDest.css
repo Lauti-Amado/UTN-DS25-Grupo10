@@ -1,6 +1,6 @@
 
 
-@media (min-width: 1080px){
+
   .recuadroEmpresas{
     width: 300px;
     border: 1px solid black ;
@@ -8,12 +8,13 @@
     padding: 5px;
     position: relative;
     float: right;
-    left: 100px;
+    right: 30px;
+    margin-top: 5px;
     bottom: 500px;
     background-color: #252729;
     color: whitesmoke;
-    
-}
+    }
+
 
 .itemLista{
     background-color: transparent;
@@ -40,6 +41,6 @@ button:hover {
     display: inline-block;
 }
 
-}
+
 
 
