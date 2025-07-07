@@ -7,12 +7,11 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
     <section className="seccionPerfil">
       <div id={styles['chau']}>
         <img className={styles.imagenperfil} src={imagen} alt="foto de perfil" />
-        <h3>{nombre}</h3>
-        <p>
-          Descripción:<br/>
-          {descripcion}
+        <h3 className={styles.text}>{nombre}</h3>
+        <p className={styles.text}>
+          Descripción:{descripcion}
         </p>
-        <p>Fecha de Nacimiento: {FechaNac}</p>
+        <p className={styles.text}>Fecha de Nacimiento: {FechaNac}</p>
 
         <div id={styles['botones']}>
           <BotonesPerfil texto="Editar perfil" onClick={() => onEditarClick('perfil')} />

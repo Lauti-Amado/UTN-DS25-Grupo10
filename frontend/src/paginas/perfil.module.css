@@ -24,13 +24,13 @@
   left: 0;
   width: 100vw; 
   height: 100vh;
-  z-index: 1100; /* más alto que fondoBorroso */
+  z-index: 1100;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Modal */
+
 .editar {
     margin:70px;
     background-color:white;
@@ -52,15 +52,66 @@
   align-items: center;
 }
 
+.barra11 {
+  display: flex;
+  font-size: 5px;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .cancelar {
-  background: red;
+  background-color: grey;
+  color:black;
   border: none;
   font-size: 15px;
   cursor: pointer;
   height:30px;
-  width:5px;
+  width:1px;
   text-align:center;
   align-items: center;
+  margin-top:0
+}
+
+.cancelar2 {
+  background-color: #252729;
+  color:white;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  height:30px;
+  width:1px;
+  text-align:center;
+  align-items: center;
+  margin-top:0
+}
+
+
+
+.Confirmo{
+    display:block;
+    position:absolute;
+    background-color:grey;
+    top:0;
+    left:0;
+    right:0;
+    height:40px;
+    margin-bottom:60px
+}
+
+.texto{
+    display:block;
+    margin-top: 50px;
+    margin-bottom:10px
+}
+
+.cuadro{
+    height:130px;
+}
+
+.opciones{
+    display:block;
+    margin-top:70px;
+    margin-left:10px
 }
 
 .barra2 {
@@ -68,6 +119,19 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  margin-left:10px
+}
+
+.co{
+    background-color: grey;
+}
+
+.algo{
+    height:200px;
+    width:400px;
+    margin-right:5px;
+    background-color: grey;
+    
 }
 
 .barra3{
@@ -76,7 +140,10 @@
   align-items: flex-start;
   margin-top: 20px;
   gap: 2px;
+  margin-bottom:30px;
+  margin-left:10px
 }
+
 
 
 .fotoper {
@@ -111,22 +178,21 @@ header span.forma{
         margin-top:20px
 }
 
-button{
-    /*border-radius:20px;*/
-    /*height:65px;*/
-    /*width:150px*/
-}
-
-
 
 #u{
     width:600px;
     margin-left:10px
 }
-article{
+
+.text{
+    text-align: left;
+}
+
+.article{
     margin-top: 0.2em;
     display: flex;
     justify-content: space-between;
+    gap:80px
 }
 
 header input{
@@ -142,11 +208,6 @@ header input:hover{
 
 #e{
     margin-left:10px
-}
-
-img{
-    /*height:50px;*/
-    /*width:50px;*/
 }
 
 button:hover{
@@ -226,6 +287,12 @@ button:hover{
     position:relative
 }
 
+.b{
+    margin-left:60px;
+    margin-bottom:35px
+}
+
+
 .imagenPerfil2{
     border-radius: 50%;
     width: 100px;
@@ -243,8 +310,8 @@ button:hover{
   }
 
  .imagenperfil {
-  position: relative; /* para poder usar top/right/bottom si quieres */
-  border-radius: 50%;  /* círculo */
+  position: relative; 
+  border-radius: 50%;  
   margin-left: 14em;
   width: 200px;
   height: 100px;
@@ -285,11 +352,15 @@ button:hover{
     border-radius: 50%;
 }
 
-#barra1{
+.barra1{
+    background-color: grey;
+    margin-top:0;
+    margin-left:0;
+    margin-right:0;
     display:flex;
     border-bottom: 1px solid black;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin-bottom: 40px;
 }
 
 #barra2{
@@ -298,13 +369,6 @@ button:hover{
     margin-bottom:30px
 }
 
-#cancelar{
-    border-radius: 0;
-    height:30px;
-    width:20px;
-    background-color: red;
-
-}
 
 h1{
     margin:8px
@@ -343,10 +407,6 @@ h1{
    color: white;
   background-color: #2b2d30;
   
-}
-
-button:hover {
-    border-color: whitesmoke;
 }
 
 .logoEmpresa{

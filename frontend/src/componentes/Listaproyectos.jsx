@@ -17,7 +17,7 @@ function ListaProyectos ({ onCerrar, onEliminar, onProyectos }) {
               <p> Descripcion: {proyecto.descripcion} </p>
               <p> Tecnologias usadas: {proyecto.tecnologias}</p>
               <button className="btn btn-sm btn-bordo-danger" onClick={() => onEliminar(proyecto.nombre)}>
-                  <i className="bi bi-trash3-fill me-1"></i> Eliminar
+                  <i className="btn btn-bordo-danger"></i> Eliminar
               </button>
               <p>-------------------------------------</p>
             </div>
