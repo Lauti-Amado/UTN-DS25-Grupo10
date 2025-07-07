@@ -45,7 +45,9 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
   return (
     <Modal show={show} onHide={handleClose} size='lg' scrollable={true}>
       <Modal.Header closeButton>
-        <Modal.Title>Postularse a {empresa?.nombre}</Modal.Title>
+        <Modal.Title>Postularse a {empresa?.nombre || empresa?.titulo || "una empresa"}</Modal.Title>
+
+
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
