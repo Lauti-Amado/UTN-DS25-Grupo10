@@ -1,7 +1,7 @@
 # USUARIO POSTULANTE:
 ## Email: juan@gmail.com // Contraseña: 456
 # USUARIO EMPLEADOR:
-## Email: lauqgmail.com // Contraseña: 123
+## Email: lau@gmail.com // Contraseña: 123
 # Si se quiere ingresar en modo Administrador será necesario registrarse y cuando se le pregunta el rol deberá ingresar 'Administrador'
 
 # LAS CUENTAS SE GUARDAN DE FORMA LOCAL
