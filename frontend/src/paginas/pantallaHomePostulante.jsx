@@ -3,7 +3,6 @@ import OfertasCarousel from '../componentes/carousel'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { DatosContexto } from '../datosContext';
 import CuadroEmpDest from '../componentes/cuadroEmpDest';
-import FiltroPostulantes from '../componentes/filtroPostulantes';
 import TrabajosDisponibles from '../componentes/TrabajosDisponibles';
 import PostulantesScrollBox from '../componentes/PostulantesScrollBox';
 
@@ -24,7 +23,6 @@ export default  function PantallaHomePostulante () {
                 <OfertasCarousel />
                   <br></br>
                 <PostulantesScrollBox />
-                <FiltroPostulantes />
               </div>
             ) : usuarioLogueado.rol === 'postulante' ? (
               
