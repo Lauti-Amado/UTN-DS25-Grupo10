@@ -1,3 +1,4 @@
+
 import { UsuarioPostulante } from "./usuarios.types"
 
 export interface Proyecto {
