@@ -1,67 +1,67 @@
 import { Request, Response, NextFunction } from 'express';
-import * as ofertaService from '../services/oferta.service';
-import { CreateProyectoRequest, UpdateOfertaResquest, OfertaResponse, OfertasListResponse } from '../types/proyectos.types';
+import * as proyectoService from '../services/servicio_proyecto';
+import { CreateProyectoRequest, UpdateProyectoRequest, ProyectoResponse, ProyectosListResponse, Proyecto } from '../types/proyectos.types';
 
-// Obtener todas las ofertas
-export async function getAllOfertas(req: Request, res: Response<OfertasListResponse>, next: NextFunction) {
+// Obtener proyectos
+export async function getAllProyectos(req: Request, res: Response<ProyectosListResponse>, next: NextFunction) {
   try {
-    const ofertas = await ofertaService.getAllOfertas();
-    res.json({ ofertas, total: ofertas.length });
+    const ofertas = await proyectoService.getAllProyectos();
+    res.json({ proyectos, total: ofertas.length });
   } catch (error) {
     next(error);
   }
 }
 
-// Obtener oferta por ID
-export async function getOfertaById(req: Request, res: Response<OfertaResponse>, next: NextFunction) {
+// Obtener proyecto por ID
+export async function getProyectoById(req: Request, res: Response<ProyectoResponse>, next: NextFunction) {
   try {
     const id = parseInt(req.params.id);
-    const oferta = await ofertaService.getOfertaById(id);
-    res.json({ oferta, message: "Oferta encontrada" });
+    const proyecto = await proyectoService.getProyectoById(id);
+    res.json({ proyecto, message: "Oferta encontrada" });
   } catch (error) {
     next(error);
   }
 }
 
-// Crear nueva oferta
-export async function createOferta(
-  req: Request<{}, OfertaResponse, CreateOfertaRequest>,
-  res: Response<OfertaResponse>,
+// Crear nuevo proyecto
+export async function createProyecto(
+  req: Request<{}, ProyectoResponse, CreateProyectoRequest>,
+  res: Response<ProyectoResponse>,
   next: NextFunction
 ) {
   try {
-    const nueva = await ofertaService.createOferta(req.body);
-    res.status(201).json({ oferta: nueva, message: "Oferta creada" });
+    const nueva = await proyectoService.createProyecto(req.body);
+    res.status(201).json({ proyecto: nueva, message: "Oferta creada" });
   } catch (error) {
     next(error);
   }
 }
 
-// Actualizar oferta existente
-export async function updateOferta(
-  req: Request<{ id: string }, OfertaResponse, UpdateOfertaResquest>,
-  res: Response<OfertaResponse>,
+// Actualizar proyecto existente
+export async function updateProyecto(
+  req: Request<{ id: string }, ProyectoResponse, UpdateProyectoRequest>,
+  res: Response<ProyectoResponse>,
   next: NextFunction
 ) {
   try {
     const id = parseInt(req.params.id);
-    const updated = await ofertaService.updateOferta(id, req.body);
-    res.json({ oferta: updated, message: "Oferta actualizada" });
+    const updated = await proyectoService.updateProyecto(id, req.body);
+    res.json({ proyecto: updated, message: "Proyecto actualizado" });
   } catch (error) {
     next(error);
   }
 }
 
-// Eliminar oferta
-export async function deleteOferta(
+// Eliminar proyecto
+export async function deleteProyecto(
   req: Request,
   res: Response<{ message: string }>,
   next: NextFunction
 ) {
   try {
     const id = parseInt(req.params.id);
-    await ofertaService.deleteOferta(id);
-    res.json({ message: "Oferta eliminada" });
+    await proyectoService.deleteProyecto(id);
+    res.json({ message: "Proyecto eliminada" });
   } catch (error) {
     next(error);
   }
