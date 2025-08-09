@@ -2,7 +2,7 @@ import {
   CreateOfertaRequest,
   UpdateOfertaResquest,
   Oferta
-} from '../types/ofertas.type';
+} from '../types/ofertas.types';
 
 // Lista falsa para probar datos si asi lo queremos
 let ofertas: Oferta[] = [];
