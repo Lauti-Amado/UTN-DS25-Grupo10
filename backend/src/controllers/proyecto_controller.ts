@@ -17,7 +17,7 @@ export async function getProyectoById(req: Request, res: Response<ProyectoRespon
   try {
     const id = parseInt(req.params.id);
     const proyecto = await proyectoService.getProyectoById(id);
-    res.json({ proyecto, message: "Oferta encontrada" });
+    res.json({ proyecto, message: "Proyecto encontrado" });
   } catch (error) {
     next(error);
   }
@@ -31,7 +31,7 @@ export async function createProyecto(
 ) {
   try {
     const nueva = await proyectoService.createProyecto(req.body);
-    res.status(201).json({ proyecto: nueva, message: "Oferta creada" });
+    res.status(201).json({ proyecto: nueva, message: "Proyecto creado" });
   } catch (error) {
     next(error);
   }
