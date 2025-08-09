@@ -38,8 +38,8 @@ export async function updateUsuarioPostulante(
 //Obtener lista de postulantes
 export async function getAllPostulantes(req: Request, res: Response<UsuarioPostulanteListResponse>, next: NextFunction) {
   try {
-    const ofertas = await usuarioService.getAllPostulantes();
-    res.json({ usuarios, total: usarios.length });
+    const usuarios = await usuarioService.getAllPostulantes();
+    res.json({ usuarios, total: usuarios.length });
   } catch (error) {
     next(error);
   }
