@@ -4,8 +4,35 @@ import {
   Oferta
 } from '../types/ofertas.types';
 
-// Lista falsa para probar datos si asi lo queremos
-let ofertas: Oferta[] = [];
+// Lista con una oferta de prueba
+let ofertas: Oferta[] = [
+  {
+    id: 1,
+    categoria: 'Categoria 1',
+    ubicacion: 'Ubicacion 1',
+    sueldo: 50000,
+    modalidad: 'remoto',
+    horario: [new Date('1970-01-01T09:00:00')],
+    creador: {
+      id: 1,
+      nombre: 'Creador 1',
+      contraseña: 'contraseña1',
+      mail: 'creador1@example.com',
+      descripcion: 'Descripcion del creador 1',
+      fechaCreacion: new Date(), 
+      logo: 'logo1.png'
+    },
+    postulados: [{
+        id: 2,
+        nombre: 'Postulante 2',
+        contraseña: 'contraseña2',
+        mail: 'postulante2@example.com',
+        descripcion: 'Descripcion del postulante 2',
+        fechaNacimiento: new Date(), 
+        fotoperfil: 'foto2.png'
+    }]
+  }
+];
 
 // Obtener todas las ofertas
 export async function getAllOfertas(): Promise<Oferta[]> {
