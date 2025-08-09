@@ -13,6 +13,7 @@ let ofertas: Oferta[] = [
     sueldo: 50000,
     modalidad: 'remoto',
     horario: [new Date('1970-01-01T09:00:00')],
+
     creador:   {
       id: 3,
       nombre: 'Lautaro Amado',
@@ -33,6 +34,7 @@ let ofertas: Oferta[] = [
       fecha: new Date('2004-10-07 T0:00:00'),
       fotoperfil: 'fotoPerfilYamil.png',
     }]
+    
   }
 ];
 

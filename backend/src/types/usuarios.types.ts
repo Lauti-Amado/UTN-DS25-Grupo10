@@ -49,17 +49,3 @@ export interface UsuarioEmpleadoresListResponse {
     usuarios: Usuario[];
     total: number;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
