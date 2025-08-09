@@ -5,7 +5,7 @@ import {
   UpdateOfertaResquest,
   OfertaResponse,
   OfertasListResponse
-} from '../types/ofertas.type';
+} from '../types/ofertas.types';
 
 // Obtener todas las ofertas
 export async function getAllOfertas(req: Request, res: Response<OfertasListResponse>, next: NextFunction) {
