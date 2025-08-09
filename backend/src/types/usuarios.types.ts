@@ -1,80 +1,67 @@
 
-export interface UsuarioPostulante {
+export interface Usuario {
     id: number;
     nombre: string;
+    nombreUsuario: string,
     contraseña: string;
     mail: string;
     descripcion: string;
-    fechaNacimiento: Date;
+    rolPostulante: boolean;
+    fecha: Date;
     fotoperfil: string;
 }
 
-export interface UsuarioEmpleador {
-    id: number;
+// Crear un usuario. Acepta tanto para crear un postulante como a un empleador
+export interface CreateUsuarioRequest {
     nombre: string;
+    nombreUsuario: string,
     contraseña: string;
     mail: string;
     descripcion: string;
-    fechaCreacion: Date;
-    logo: string;
+    rolPostulante: boolean;
+    fecha: Date;
+    fotoperfil: string;
 }
 
-
-
-// Con esto defino que un usuario puede ser empleador o postulante
-type Usuario = UsuarioEmpleador | UsuarioPostulante
-
-
-
-// Crear un usuario. Acepta tanto para crear un postulante como a un empleador
-export interface CreateUsuarioRequest {
-    usuario: Usuario;
-}
-
-
-// Formato de las request y response de los usuarios postulantes
-export interface UpdateUsuarioPostulanteRequest {
+export interface UpdateUsuarioRequest {
     nombre?: string;
     contraseña?: string;
     mail?: string;
     descripcion?: string;
-    fechaNacimiento?: Date;
+    fecha?: Date;
     fotoperfil?: string;
 }
 
-export interface UsuarioPostulanteResponse {
-    usuario: UsuarioPostulante;
+export interface UsuarioResponse {
+    usuario: Usuario;
     message: string;
 }
 
-export interface UsuarioPostulanteListResponse {
-    usuarios: UsuarioPostulante[];
-    total: number;
-}
-
-
-
-// Formato de las request y response de los usuarios empleadores
-export interface UpdateUsuarioEmpleadorRequest {
-    nombre?: string;
-    contraseña?: string;
-    mail?: string;
-    descripcion?: string;
-    fechaCreacion?: Date;
-    logo?: string;
-}
-
-export interface UsuarioEmpleadorResponse {
-    usuario: UsuarioEmpleador;
-    message: string;
-}
-export interface UsuarioEmpleadorListResponpose {   
-    usuarios: UsuarioEmpleador[];
-    total: number;
-}
-
-// Retorna usuarios sin importar si son empleadores o postulantes
 export interface UsuariosListResponse {
     usuarios: Usuario[];
     total: number;
 }
+
+export interface UsuarioPostulantesListResponse {
+    usuarios: Usuario[];
+    total: number;
+}
+
+export interface UsuarioEmpleadoresListResponse {
+    usuarios: Usuario[];
+    total: number;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
