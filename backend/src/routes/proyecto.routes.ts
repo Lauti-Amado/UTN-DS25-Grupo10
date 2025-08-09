@@ -7,10 +7,12 @@ const router = Router();
 router.get('/', proyectoController.getAllProyectos);
 
 // GET/api/Proyectos/:id
-router.get('/:id', proyectoController.getProyectoId);
+router.get('/:id', proyectoController.getProyectoById);
 
 //POST /api/Proyecto
+router.post('/', proyectoController.createProyecto);
 
 // PUT /api/Proyecto/:id
+router.put('/:id', proyectoController.updateProyecto)
 
 export const proyectoRouters = router;

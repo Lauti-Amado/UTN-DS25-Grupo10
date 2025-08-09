@@ -2,12 +2,13 @@
 import {Request, Response, NextFunction} from 'express';
 import { Proyecto, CreateProyectoRequest, UpdateProyectoRequest, 
 ProyectoResponse, ProyectosListResponse } from '../types/proyectos.types';
-import * as ProyectoService from '../services/proyecto.service';
+import * as proyectoService from '../services/proyecto.service';
 
+// Obtener todos los proyectos
 export async function getAllProyectos(req: Request, res: 
 Response<ProyectosListResponse>, next: NextFunction) {
   try {
-    const proyectos = await ProyectoService.getAllProyectos();
+    const proyectos = await proyectoService.getAllProyectos();
     res.json({
       proyectos,
       total: proyectos.length
@@ -16,11 +17,12 @@ Response<ProyectosListResponse>, next: NextFunction) {
     next(error);
   }
 }
+// Obtener proyecto por ID
 export async function getProyectoById(req: Request, res: 
 Response<ProyectoResponse>, next: NextFunction) {
   try {
     const { id } = req.params;
-    const proyecto = await ProyectoService.getProyectoById(parseInt(id));
+    const proyecto = await proyectoService.getProyectoById(parseInt(id));
     res.json({
       proyecto,
       message: 'Proyecto encontrado'
@@ -30,39 +32,52 @@ Response<ProyectoResponse>, next: NextFunction) {
   }
 } 
 
-
-//apartir de aca hace BRISA
-
-export async function createBook(
-   req: Request<{}, BookResponse, CreateBookRequest>,
-   res: Response<BookResponse>,
+// Crear nuevo proyecto
+export async function createProyecto(
+   req: Request<{}, ProyectoResponse, CreateProyectoRequest>,
+   res: Response<ProyectoResponse>,
    next: NextFunction
 ) {
   try {
-    const newBook = await bookService.createBook(req.body);
+    const newProyecto = await proyectoService.createProyecto(req.body);
     res.status(201).json({
-      book: newBook,
-      message: 'Book created successfully'
+      proyecto: newProyecto,
+      message: 'Proyecto creado'
     });
   } catch (error) {
     next(error);
   }
 }
-export async function updateBook(
-  req: Request<{ id: string }, BookResponse , UpdateBookRequest >,
-  res: Response<BookResponse>,
+
+// Actualizar proyecto existente
+export async function updateProyecto(
+  req: Request<{ id: string }, ProyectoResponse , UpdateProyectoRequest >,
+  res: Response<ProyectoResponse>,
   next: NextFunction
 ) {
   try {
     const { id } = req.params;
-    const updatedBook = await 
-bookService.updateBook(parseInt(id), req.body);
+    const updatedProyecto = await proyectoService.updateProyecto(parseInt(id), req.body);
     res.json({
-      book: updatedBook,
-      message: 'Book updated successfully'
+      proyecto: updatedProyecto,
+      message: 'Proyecto updated successfully'
     });
   } catch (error) {
     next(error);
   }
 }
-  Controller .
+
+// Eliminar proyecto
+export async function deleteProyecto(
+  req: Request,
+  res: Response<{ message: string }>,
+  next: NextFunction
+) {
+  try {
+    const { id } = req.params;
+    await proyectoService.deleteProyecto(parseInt(id));
+    res.json({ message: 'Proyecto eliminado' });
+  } catch (error) {
+    next(error);
+  }
+}
