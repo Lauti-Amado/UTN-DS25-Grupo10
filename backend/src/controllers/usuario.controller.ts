@@ -4,10 +4,10 @@ import {CreateUsuarioRequest, UpdateUsuarioRequest, UsuarioResponse,
        UsuariosListResponse, UsuarioPostulantesListResponse, UsuarioEmpleadoresListResponse} from '../types/usuarios.types';
 
 
-       //CONTROLLER DE POSTULANTES. FALTA DEFINIR FUNCIONES
+//CONTROLLER DE POSTULANTES. FALTA DEFINIR FUNCIONES
 
 // Crear Postulante
-export async function getPostulantes(
+export async function createUsuario(
   req: Request<{}, UsuarioResponse, CreateUsuarioRequest>,
   res: Response<UsuarioResponse>,
   next: NextFunction
@@ -45,6 +45,23 @@ export async function updateUsuario(
     next(error);
   }
 }
+
+// Eliminar usuario
+export async function deleteUsuario(
+  req: Request,
+  res: Response<{ message: string }>,
+  next: NextFunction
+) {
+  try {
+    const id = parseInt(req.params.id);
+    await usuarioService.deleteUsuario(id);
+    res.json({ message: "Usuario eliminado" });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
 
 //Obtener lista de usuarios
 export async function getAllUsuarios(req: Request, res: Response<UsuariosListResponse>, next: NextFunction) {
