@@ -1,19 +1,19 @@
 
-import { UsuarioPostulante } from "./usuarios.types"
+import { Usuario } from "./usuarios.types"
 
 export interface Proyecto {
     id: number;
     nombre: string;
     descripcion: string;
     tecnologiasUsadas: string[];
-    creador: UsuarioPostulante;
+    creador: Usuario;
 }
 
 export interface CreateProyectoRequest {
     nombre: string;
     descripcion: string;
     tecnologiasUsadas: string[];
-    creador: UsuarioPostulante;
+    creador: Usuario;
 }
 
 export interface UpdateProyectoRequest {
