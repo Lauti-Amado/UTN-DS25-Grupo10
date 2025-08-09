@@ -13,23 +13,25 @@ let ofertas: Oferta[] = [
     sueldo: 50000,
     modalidad: 'remoto',
     horario: [new Date('1970-01-01T09:00:00')],
-    creador: {
-      id: 1,
-      nombre: 'Creador 1',
-      contraseña: 'contraseña1',
-      mail: 'creador1@example.com',
-      descripcion: 'Descripcion del creador 1',
-      fechaCreacion: new Date(), 
-      logo: 'logo1.png'
+    creador:   {
+      id: 3,
+      nombre: 'Lautaro Amado',
+      contraseña: 'jdalsdjlsdjadl',
+      mail: 'lau@gmail.com',
+      descripcion: 'Quiero sumar gente y capacitarla',
+      rolPostulante: false,
+      fecha: new Date('2004-09-05 T00:00:00'),
+      fotoperfil: 'fotoPerfilLautaro.png',
     },
-    postulados: [{
-        id: 2,
-        nombre: 'Postulante 2',
-        contraseña: 'contraseña2',
-        mail: 'postulante2@example.com',
-        descripcion: 'Descripcion del postulante 2',
-        fechaNacimiento: new Date(), 
-        fotoperfil: 'foto2.png'
+    postulados: [ {
+      id: 1,
+      nombre: 'Yamil Tundis',
+      contraseña: 'jdalsdjlsdjadl',
+      mail: 'yamiltundis6@gmail.com',
+      descripcion: 'Estoy en busca de mi primer empleo',
+      rolPostulante: true,
+      fecha: new Date('2004-10-07 T0:00:00'),
+      fotoperfil: 'fotoPerfilYamil.png',
     }]
   }
 ];

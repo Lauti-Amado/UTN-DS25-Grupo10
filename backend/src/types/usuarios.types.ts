@@ -2,7 +2,6 @@
 export interface Usuario {
     id: number;
     nombre: string;
-    nombreUsuario: string,
     contraseña: string;
     mail: string;
     descripcion: string;
@@ -14,7 +13,6 @@ export interface Usuario {
 // Crear un usuario. Acepta tanto para crear un postulante como a un empleador
 export interface CreateUsuarioRequest {
     nombre: string;
-    nombreUsuario: string,
     contraseña: string;
     mail: string;
     descripcion: string;

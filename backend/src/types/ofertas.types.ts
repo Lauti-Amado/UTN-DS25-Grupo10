@@ -1,5 +1,5 @@
 
-import { Usuario, UsuariosListResponse } from "./usuarios.types"
+import { Usuario, UsuarioPostulantesListResponse } from "./usuarios.types"
 
 export interface Oferta {
     id: number;
@@ -9,7 +9,7 @@ export interface Oferta {
     modalidad: TipoModalidad;
     horario: Date[];
     creador: Usuario;
-    postulados: UsuariosListResponse[];
+    postulados?: UsuarioPostulantesListResponse[];
 }
 
 type TipoModalidad = 'presencial' | 'remoto' | 'hibrido'
@@ -21,7 +21,7 @@ export interface CreateOfertaRequest {
     modalidad: TipoModalidad;
     horario: Date[];
     creador: Usuario;
-    postulados: UsuariosListResponse[];
+    postulados?: UsuarioPostulantesListResponse[];
 }
 
 export interface UpdateOfertaResquest {
@@ -30,7 +30,7 @@ export interface UpdateOfertaResquest {
     sueldo?: number;
     modalidad?: TipoModalidad;
     horario?: Date[];
-    postulados?: UsuariosListResponse[];
+    postulados?: UsuarioPostulantesListResponse[];
 }
 
 export interface OfertaResponse {
