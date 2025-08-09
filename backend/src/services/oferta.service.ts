@@ -16,21 +16,28 @@ let ofertas: Oferta[] = [
     creador: {
       id: 1,
       nombre: 'Creador 1',
+      nombreUsuario: 'crador1',
       contraseña: 'contraseña1',
       mail: 'creador1@example.com',
       descripcion: 'Descripcion del creador 1',
-      fechaCreacion: new Date(), 
-      logo: 'logo1.png'
+      rolPostulante: false,
+      fecha: new Date(), 
+      fotoperfil: 'logo1.png'
     },
     postulados: [{
-        id: 2,
-        nombre: 'Postulante 2',
-        contraseña: 'contraseña2',
-        mail: 'postulante2@example.com',
-        descripcion: 'Descripcion del postulante 2',
-        fechaNacimiento: new Date(), 
-        fotoperfil: 'foto2.png'
-    }]
+      usuarios: [{
+          id: 2,
+          nombre: 'Postulante 2',
+          nombreUsuario: 'postulante2',
+          contraseña: 'contraseña2',
+          mail: 'postulante2@example.com',
+          descripcion: 'Descripcion del postulante 2',
+          rolPostulante: true,
+          fecha: new Date(),
+          fotoperfil: 'foto2.png'
+      }],
+      total: 1
+  }]
   }
 ];
 
