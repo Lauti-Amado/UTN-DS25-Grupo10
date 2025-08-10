@@ -1,4 +1,3 @@
-// service/oferta.service.ts
 import {  CreateOfertaRequest,  UpdateOfertaResquest,  Oferta } from '../types/ofertas.types';
 
 // Lista de ofertas de prueba
@@ -165,6 +164,12 @@ export async function updateOferta(id: number, data: UpdateOfertaResquest): Prom
   if (index === -1) throw new Error('Oferta no encontrada');
   ofertas[index] = { ...ofertas[index], ...data };
   return ofertas[index];
+}
+
+// Obtener todas las ofertas de un empleador
+export async function getOfertasByEmpleadorId(empleadorId: number): Promise<Oferta[]> {
+  const ofertasFiltradas = ofertas.filter(o => o.creador.id === empleadorId);
+  return ofertasFiltradas;
 }
 
 // Eliminar oferta
