@@ -1,4 +1,3 @@
-
 import { Usuario } from "./usuarios.types"
 
 export interface Proyecto {

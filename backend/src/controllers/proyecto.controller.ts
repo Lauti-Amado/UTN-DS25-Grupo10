@@ -1,4 +1,3 @@
-
 import {Request, Response, NextFunction} from 'express';
 import { Proyecto, CreateProyectoRequest, UpdateProyectoRequest, 
 ProyectoResponse, ProyectosListResponse } from '../types/proyectos.types';

@@ -1,10 +1,11 @@
+// service/oferta.service.ts
 import {
   CreateOfertaRequest,
   UpdateOfertaResquest,
   Oferta
 } from '../types/ofertas.types';
 
-// Lista con una oferta de prueba
+// Lista de ofertas de prueba
 let ofertas: Oferta[] = [
   {
     id: 1,
@@ -14,27 +15,34 @@ let ofertas: Oferta[] = [
     modalidad: 'remoto',
     horario: [new Date('1970-01-01T09:00:00')],
 
-    creador:   {
+    creador: {
       id: 3,
       nombre: 'Lautaro Amado',
       contraseña: 'jdalsdjlsdjadl',
       mail: 'lau@gmail.com',
       descripcion: 'Quiero sumar gente y capacitarla',
       rolPostulante: false,
-      fecha: new Date('2004-09-05 T00:00:00'),
+      fecha: new Date('2004-09-05T00:00:00'),
       fotoperfil: 'fotoPerfilLautaro.png',
     },
-    postulados: [ {
-      id: 1,
-      nombre: 'Yamil Tundis',
-      contraseña: 'jdalsdjlsdjadl',
-      mail: 'yamiltundis6@gmail.com',
-      descripcion: 'Estoy en busca de mi primer empleo',
-      rolPostulante: true,
-      fecha: new Date('2004-10-07 T0:00:00'),
-      fotoperfil: 'fotoPerfilYamil.png',
-    }]
-    
+
+    postulados: [
+      {
+        usuarios: [
+          {
+            id: 1,
+            nombre: 'Yamil Tundis',
+            contraseña: 'jdalsdjlsdjadl',
+            mail: 'yamiltundis6@gmail.com',
+            descripcion: 'Estoy en busca de mi primer empleo',
+            rolPostulante: true,
+            fecha: new Date('2004-10-07T00:00:00'),
+            fotoperfil: 'fotoPerfilYamil.png',
+          }
+        ],
+        total: 1
+      }
+    ]
   }
 ];
 
