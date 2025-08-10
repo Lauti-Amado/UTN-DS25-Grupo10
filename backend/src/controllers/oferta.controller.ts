@@ -57,6 +57,21 @@ export async function updateOferta(
   }
 }
 
+// Obtener todas las ofertas de un empleador especifico por ID
+export async function getOfertasByEmpleadorId(
+  req: Request,
+  res: Response<OfertasListResponse>,
+  next: NextFunction
+) {
+  try {
+    const empleadorId = parseInt(req.params.empleadorId);
+    const ofertas = await ofertaService.getOfertasByEmpleadorId(empleadorId);
+    res.json({ ofertas, total: ofertas.length });
+  } catch (error) {
+    next(error);
+  }
+}
+
 // Eliminar oferta
 export async function deleteOferta(
   req: Request,
