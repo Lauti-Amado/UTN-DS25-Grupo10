@@ -107,6 +107,11 @@ export async function getProyectoById(id: number): Promise<Proyecto> {
 // Crear nuevo proyecto
 export async function createProyecto(proyectoData: CreateProyectoRequest): 
 Promise<Proyecto> {
+ if (proyectoData.creador.rolPostulante == false) {
+  const error = new Error('El creador debe ser un usuario de tipo postulante');
+  (error as any).statusCode = 400;
+  throw error;
+ }
  const newProyecto: Proyecto = {
    id: Math.max(...proyectos.map(b => b.id)) + 1,
    ...proyectoData,
