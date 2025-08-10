@@ -3,16 +3,19 @@ import * as proyectoController from '../controllers/proyecto.controller';
 
 const router = Router();
 
-// GET /api/Proyectos
+// GET /api/proyectos
 router.get('/', proyectoController.getAllProyectos);
 
-// GET/api/Proyectos/:id
+// GET/api/proectos/:id
 router.get('/:id', proyectoController.getProyectoById);
 
-//POST /api/Proyecto
+//POST /api/proyectos
 router.post('/', proyectoController.createProyecto);
 
-// PUT /api/Proyecto/:id
-router.put('/:id', proyectoController.updateProyecto)
+// PUT /api/proyectos/:id
+router.put('/:id', proyectoController.updateProyecto);
+
+// DELETE /api/proyectos/:id
+router.delete('/:id', proyectoController.deleteProyecto)
 
 export const proyectoRouters = router;
