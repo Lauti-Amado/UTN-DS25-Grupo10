@@ -1,9 +1,5 @@
 // service/oferta.service.ts
-import {
-  CreateOfertaRequest,
-  UpdateOfertaResquest,
-  Oferta
-} from '../types/ofertas.types';
+import {  CreateOfertaRequest,  UpdateOfertaResquest,  Oferta } from '../types/ofertas.types';
 
 // Lista de ofertas de prueba
 let ofertas: Oferta[] = [
@@ -43,7 +39,102 @@ let ofertas: Oferta[] = [
         total: 1
       }
     ]
-  }
+  },
+  
+  {
+    id: 2,
+    categoria: 'Backend',
+    ubicacion: 'La Plata',
+    sueldo: 100000,
+    modalidad: 'hibrido',
+    horario: [new Date('2026-01-01T09:00:00')],
+
+    creador: {
+      id: 3,
+      nombre: 'Lautaro Amado',
+      contraseña: 'jdalsdjlsdjadl',
+      mail: 'lau@gmail.com',
+      descripcion: 'Quiero sumar gente y capacitarla',
+      rolPostulante: false,
+      fecha: new Date('2004-09-05T00:00:00'),
+      fotoperfil: 'fotoPerfilLautaro.png',
+    },
+
+    postulados: [
+      {
+        usuarios: [
+          {
+            id: 1,
+            nombre: 'Yamil Tundis',
+            contraseña: 'jdalsdjlsdjadl',
+            mail: 'yamiltundis6@gmail.com',
+            descripcion: 'Estoy en busca de mi primer empleo',
+            rolPostulante: true,
+            fecha: new Date('2004-10-07T00:00:00'),
+            fotoperfil: 'fotoPerfilYamil.png',
+          },
+          {
+            id: 5,
+            nombre: 'Juan Caceres',
+            contraseña: 'jdalsdjlsdjadl',
+            mail: 'juancaceres@gmail.com',
+            descripcion: 'En busca del mejor trabajo',
+            rolPostulante: true,
+            fecha: new Date('2004-12-31 T00:00:00'),
+            fotoperfil: 'fotoPerfilJuan.png',
+          },
+        ],
+        total: 2
+      }
+    ]
+  },
+  {
+    id: 3,
+    categoria: 'Full-stack',
+    ubicacion: 'Berazategui',
+    sueldo: 50000,
+    modalidad: 'presencial',
+    horario: [new Date('2025-01-01T09:00:00')],
+
+    creador:  {
+      id: 4,
+      nombre: 'Leo Piquet',
+      contraseña: 'jdalsdjlsdjadl',
+      mail: 'leonelpiquet@gmail.com',
+      descripcion: 'En busca del mejor postulante',
+      rolPostulante: false,
+      fecha: new Date('2004-12-28 T00:00:00'),
+      fotoperfil: 'fotoPerfilLeo.png',
+    },
+
+    postulados: [
+      {
+        usuarios: [
+          {
+            id: 2,
+            nombre: 'Julian Figueira',
+            contraseña: 'jdalsdjlsdjadl',
+            mail: 'julifigueroa@gmail.com',
+            descripcion: 'Quiero sumar experiencia laboral',
+            rolPostulante: true,
+            fecha: new Date('2004-12-17 T00:00:00'),
+            fotoperfil: 'fotoPerfilJulian.png',
+          },
+          {
+            id: 5,
+            nombre: 'Juan Caceres',
+            contraseña: 'jdalsdjlsdjadl',
+            mail: 'juancaceres@gmail.com',
+            descripcion: 'En busca del mejor trabajo',
+            rolPostulante: true,
+            fecha: new Date('2004-12-31 T00:00:00'),
+            fotoperfil: 'fotoPerfilJuan.png',
+          }
+        ],
+        total: 2
+      }
+    ]
+  },
 ];
 
 // Obtener todas las ofertas
