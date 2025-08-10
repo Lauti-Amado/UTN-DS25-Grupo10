@@ -19,9 +19,9 @@ router.put('/:id', usuarioController.updateUsuario);
 router.delete('/:id', usuarioController.deleteUsuario);
 
 // Ruta para obtener todos los usuarios
-router.get('/', usuarioController.getAllUsuariosPostulantes);
+router.get('/particulares/p', usuarioController.getAllUsuariosPostulantes);
 
-router.get('/', usuarioController.getAllUsuariosEmpleadores);
+router.get('/particulares/e', usuarioController.getAllUsuariosEmpleadores);
 
 // Exportamos las rutas como "usuarioRoutes"
 export const usuarioRoutes = router;

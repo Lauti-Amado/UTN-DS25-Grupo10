@@ -6,7 +6,7 @@ import {CreateUsuarioRequest, UpdateUsuarioRequest, UsuarioResponse,
 
 //CONTROLLER DE POSTULANTES. FALTA DEFINIR FUNCIONES
 
-// Crear Postulante
+// Crear Usuario
 export async function createUsuario(
   req: Request<{}, UsuarioResponse, CreateUsuarioRequest>,
   res: Response<UsuarioResponse>,
@@ -76,7 +76,7 @@ export async function getAllUsuarios(req: Request, res: Response<UsuariosListRes
 //Obtener lista de usuarios postulantes
 export async function getAllUsuariosPostulantes(req: Request, res: Response<UsuarioPostulantesListResponse>, next: NextFunction) {
   try {
-    const usuarios = await usuarioService.getAllUsuarios();
+    const usuarios = await usuarioService.getAllUsuariosPostulantes();
     res.json({ usuarios, total: usuarios.length });
   } catch (error) {
     next(error);
@@ -86,7 +86,7 @@ export async function getAllUsuariosPostulantes(req: Request, res: Response<Usua
 //Obtener lista de usuarios empleadores
 export async function getAllUsuariosEmpleadores(req: Request, res: Response<UsuarioEmpleadoresListResponse>, next: NextFunction) {
   try {
-    const usuarios = await usuarioService.getAllUsuarios();
+    const usuarios = await usuarioService.getAllUsuariosEmpleadores();
     res.json({ usuarios, total: usuarios.length });
   } catch (error) {
     next(error);
