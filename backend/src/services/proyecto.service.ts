@@ -1,9 +1,7 @@
-import {Proyecto, CreateProyectoRequest, UpdateProyectoRequest} from '../proyectos.types/';
+import { Proyecto, CreateProyectoRequest, UpdateProyectoRequest } from '../types/proyectos.types';
 
 // Mock data (proxima clase: PostgreeSQL real)
-let proyectos: Proyecto[] = [
-    {}
-];
+let proyectos: Proyecto[] = [];
 
 // Obtener todos los proyectos
 export async function getAllProyectos(): Promise <Proyecto[]>{
@@ -29,7 +27,7 @@ Promise<Proyecto> {
    ...proyectoData,
    createdAt: new Date(),
  };
- Proyecto.push(newProyecto);
+ proyectos.push(newProyecto);
  return newProyecto;
 }
 
@@ -42,7 +40,7 @@ export async function updateProyecto(id: number, updateData: UpdateProyectoReque
    throw error;
  }
  proyectos[proyectoIndex] = { ...proyectos[proyectoIndex], ...updateData };
- return proyectos[proyectoIndex],
+ return proyectos[proyectoIndex];
 }
 
 // Eliminar proyecto

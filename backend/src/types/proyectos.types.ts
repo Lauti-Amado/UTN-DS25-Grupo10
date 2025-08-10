@@ -6,6 +6,7 @@ export interface Proyecto {
     nombre: string;
     descripcion: string;
     tecnologiasUsadas: string[];
+    createdAt: Date;
     creador: Usuario;
 }
 
@@ -13,6 +14,7 @@ export interface CreateProyectoRequest {
     nombre: string;
     descripcion: string;
     tecnologiasUsadas: string[];
+    createdAt: Date;
     creador: Usuario;
 }
 
