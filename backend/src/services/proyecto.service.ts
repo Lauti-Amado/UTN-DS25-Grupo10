@@ -1,4 +1,4 @@
-import {Proyecto, CreateProyectoRequest, UpdateProyectoRequest} from '../proyectos.types/';
+import { Proyecto, CreateProyectoRequest, UpdateProyectoRequest } from '../types/proyectos.types';
 
 // Mock data (proxima clase: PostgreeSQL real)
 let proyectos: Proyecto[] = [
