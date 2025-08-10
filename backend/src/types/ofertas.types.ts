@@ -1,4 +1,3 @@
-
 import { Usuario, UsuarioPostulantesListResponse } from "./usuarios.types"
 
 export interface Oferta {
