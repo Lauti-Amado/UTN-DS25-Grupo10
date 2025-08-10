@@ -128,6 +128,11 @@ export async function updateProyecto(id: number, updateData: UpdateProyectoReque
  return proyectos[proyectoIndex];
 }
 
+// Obtener todos los proyectos de un postulante
+export async function getProyectosByPostuladoId(postuladoId: number): Promise<Proyecto[]> {
+  return proyectos.filter(o => o.creador.id === postuladoId);
+}
+
 // Eliminar proyecto
 export async function deleteProyecto(id: number): Promise<void> {
  const proyectoIndex = proyectos.findIndex(p => p.id === id);

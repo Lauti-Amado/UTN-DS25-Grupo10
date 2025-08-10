@@ -18,4 +18,7 @@ router.put('/:id', proyectoController.updateProyecto);
 // DELETE /api/proyectos/:id
 router.delete('/:id', proyectoController.deleteProyecto)
 
+// Ruta para obtener todas los proyectos de un postulado
+router.get('/postulados/:postuladoId', proyectoController.getProyectosByPostuladoId);
+
 export const proyectoRouters = router;
