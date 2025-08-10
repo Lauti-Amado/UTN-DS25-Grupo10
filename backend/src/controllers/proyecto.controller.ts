@@ -66,6 +66,22 @@ export async function updateProyecto(
   }
 }
 
+// Obtener todos los proyectos de un postulado específico
+export async function getProyectosByPostuladoId(
+  req: Request,
+  res: Response<ProyectosListResponse>,
+  next: NextFunction
+) {
+  try {
+    const postuladoId = parseInt(req.params.postuladoId);
+    const proyectos = await proyectoService.getProyectosByPostuladoId(postuladoId);
+    res.json({ proyectos, total: proyectos.length });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
 // Eliminar proyecto
 export async function deleteProyecto(
   req: Request,
