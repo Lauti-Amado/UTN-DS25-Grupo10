@@ -19,7 +19,7 @@ router.put('/:id', ofertaController.updateOferta);
 router.delete('/:id', ofertaController.deleteOferta);
 
 // Ruta para obtener todas las ofertas de un empleador
-router.get('/empleador/:id', ofertaController.getOfertasByEmpleadorId);
+router.get('/empleador/:empleadorId', ofertaController.getOfertasByEmpleadorId);
 
 // Exportamos las rutas como "ofertaRoutes"
 export const ofertaRoutes = router;
