@@ -14,7 +14,7 @@ let proyectos: Proyecto[] = [
       mail: 'yamiltundis6@gmail.com',
       descripcion: 'Estoy en busca de mi primer empleo',
       rolPostulante: true,
-      fecha: new Date('2020-20-03T00:00:00'),
+      fecha: new Date('2020-03-20T00:00:00'),
       fotoperfil: 'fotoPerfilYamil.png',
     },
   },
@@ -31,7 +31,7 @@ let proyectos: Proyecto[] = [
       mail: 'juancaceres@gmail.com',
       descripcion: 'En busca del mejor trabajo',
       rolPostulante: true,
-      fecha: new Date('2004-12-31 T00:00:00'),
+      fecha: new Date('2004-12-31T00:00:00'),
       fotoperfil: 'fotoPerfilJuan.png',
     },
   },
@@ -48,7 +48,7 @@ let proyectos: Proyecto[] = [
       mail: 'julifigueroa@gmail.com',
       descripcion: 'Quiero sumar experiencia laboral',
       rolPostulante: true,
-      fecha: new Date('2004-12-17 T00:00:00'),
+      fecha: new Date('2004-12-17T00:00:00'),
       fotoperfil: 'fotoPerfilJulian.png',
     },
   },
@@ -65,7 +65,7 @@ let proyectos: Proyecto[] = [
       mail: 'julifigueroa@gmail.com',
       descripcion: 'Quiero sumar experiencia laboral',
       rolPostulante: true,
-      fecha: new Date('2004-12-17 T00:00:00'),
+      fecha: new Date('2004-12-17T00:00:00'),
       fotoperfil: 'fotoPerfilJulian.png',
     },
   },
@@ -82,18 +82,55 @@ let proyectos: Proyecto[] = [
       mail: 'yamiltundis6@gmail.com',
       descripcion: 'Estoy en busca de mi primer empleo',
       rolPostulante: true,
-      fecha: new Date('2020-20-03T00:00:00'),
+      fecha: new Date('2020-03-20T00:00:00'),
       fotoperfil: 'fotoPerfilYamil.png',
     },
   },
 ];
 
-// Obtener todos los proyectos
-export async function getAllProyectos(): Promise <Proyecto[]>{
-    return proyectos;
+// Validar creación de proyecto, campos obligatorios
+function validarProyectoCreacion(data: CreateProyectoRequest) {
+  if (!data.nombre || typeof data.nombre !== 'string') {
+    throw new Error('El nombre es obligatorio y debe ser una cadena de texto');
+  }
+  if (!data.descripcion || typeof data.descripcion !== 'string') {
+    throw new Error('La descripción es obligatoria y debe ser una cadena de texto');
+  }
+  if (!data.tecnologiasUsadas || !Array.isArray(data.tecnologiasUsadas) || data.tecnologiasUsadas.length === 0) {
+    throw new Error('Debe haber al menos una tecnología usada');
+  }
+  if (!data.creador) {
+    throw new Error('El creador es obligatorio');
+  }
+  if (typeof data.creador.rolPostulante !== 'boolean') {
+    throw new Error('El creador debe tener rolPostulante definido');
+  }
+  if (!data.creador.rolPostulante) {
+    throw new Error('El creador debe ser un postulante (rolPostulante = true)');
+  }
 }
 
-//Obtener proyecto por id
+// Validar actualización de proyecto, campos opcionales
+function validarProyectoUpdate(data: UpdateProyectoRequest) {
+  if ('nombre' in data && (typeof data.nombre !== 'string' || !data.nombre)) {
+    throw new Error('El nombre debe ser una cadena de texto no vacía');
+  }
+  if ('descripcion' in data && (typeof data.descripcion !== 'string' || !data.descripcion)) {
+    throw new Error('La descripción debe ser una cadena de texto no vacía');
+  }
+  if ('tecnologiasUsadas' in data) {
+    if (!Array.isArray(data.tecnologiasUsadas) || data.tecnologiasUsadas.length === 0) {
+      throw new Error('Debe haber al menos una tecnología usada');
+    }
+  }
+}
+
+// Obtener todos los proyectos
+export async function getAllProyectos(): Promise<Proyecto[]> {
+  return proyectos;
+}
+
+// Obtener proyecto por id
 export async function getProyectoById(id: number): Promise<Proyecto> {
   const proyecto = proyectos.find(b => b.id === id);
   if (!proyecto) {
@@ -105,32 +142,31 @@ export async function getProyectoById(id: number): Promise<Proyecto> {
 }
 
 // Crear nuevo proyecto
-export async function createProyecto(proyectoData: CreateProyectoRequest): 
-Promise<Proyecto> {
- if (proyectoData.creador.rolPostulante == false) {
-  const error = new Error('El creador debe ser un usuario de tipo postulante');
-  (error as any).statusCode = 400;
-  throw error;
- }
- const newProyecto: Proyecto = {
-   id: Math.max(...proyectos.map(b => b.id)) + 1,
-   ...proyectoData,
-   createdAt: new Date(),
- };
- proyectos.push(newProyecto);
- return newProyecto;
+export async function createProyecto(proyectoData: CreateProyectoRequest): Promise<Proyecto> {
+  validarProyectoCreacion(proyectoData);
+
+  const newProyecto: Proyecto = {
+    id: proyectos.length > 0 ? Math.max(...proyectos.map(b => b.id)) + 1 : 1,
+    ...proyectoData,
+    createdAt: new Date(),
+  };
+  proyectos.push(newProyecto);
+  return newProyecto;
 }
 
 // Actualizar proyecto existente
 export async function updateProyecto(id: number, updateData: UpdateProyectoRequest): Promise<Proyecto> {
- const proyectoIndex = proyectos.findIndex(p => p.id === id);
- if (proyectoIndex === -1) {
-   const error = new Error('Proyecto no encontrado');
-   (error as any).statusCode = 404;
-   throw error;
- }
- proyectos[proyectoIndex] = { ...proyectos[proyectoIndex], ...updateData };
- return proyectos[proyectoIndex];
+  const proyectoIndex = proyectos.findIndex(p => p.id === id);
+  if (proyectoIndex === -1) {
+    const error = new Error('Proyecto no encontrado');
+    (error as any).statusCode = 404;
+    throw error;
+  }
+
+  validarProyectoUpdate(updateData);
+
+  proyectos[proyectoIndex] = { ...proyectos[proyectoIndex], ...updateData };
+  return proyectos[proyectoIndex];
 }
 
 // Obtener todos los proyectos de un postulante
@@ -140,11 +176,11 @@ export async function getProyectosByPostuladoId(postuladoId: number): Promise<Pr
 
 // Eliminar proyecto
 export async function deleteProyecto(id: number): Promise<void> {
- const proyectoIndex = proyectos.findIndex(p => p.id === id);
- if (proyectoIndex === -1) {
-   const error = new Error('Proyecto no encontrado');
-   (error as any).statusCode = 404;
-   throw error;
- }
- proyectos.splice(proyectoIndex, 1);
+  const proyectoIndex = proyectos.findIndex(p => p.id === id);
+  if (proyectoIndex === -1) {
+    const error = new Error('Proyecto no encontrado');
+    (error as any).statusCode = 404;
+    throw error;
+  }
+  proyectos.splice(proyectoIndex, 1);
 }
