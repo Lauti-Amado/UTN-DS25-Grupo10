@@ -13,8 +13,8 @@ import styles from '../paginas/perfil.module.css';
 
 export default function Perfil() {
  
-  const[modoEditar, setModoEditar] = useState(null);
-  const[proyectoModificar, setProyectoModificar]=useState(null)
+  const [modoEditar, setModoEditar] = useState(null);
+
   const[proyectoaEliminar, setProyectoaEliminar]=useState(null)
   const[mostrarConfirmacion, setMostrarConfirmacion]=useState(false)
 
@@ -64,22 +64,6 @@ export default function Perfil() {
      setMostrarConfirmacion(false)
      setProyectoaEliminar(null)
   }
-
-   const SolicitarModificar=(nombre)=>{
-     const proyecto= proyectosagregados.find(proyecto=>proyecto.nombre===nombre);
-    setProyectoModificar(proyecto);
-    setModoEditar('modificarProyecto')
-  }
-
-  const ConfirmacionModificacion=()=>{
-    const { nombre, cambios } = proyectoModificar;
-    setProyectosAgregados(proyectosagregados.map(proyecto=>proyecto.nombre===nombre
-    ? {...proyecto, ...cambios}
-      : proyecto
-    ));
-     setMostrarConfirmacion(false)
-     setProyectoModificar(null);
-  };
   
   const Cancelar=()=>{
      setMostrarConfirmacion(false)
@@ -157,28 +141,7 @@ export default function Perfil() {
               <ListaProyectos
                 onCerrar={()=> setModoEditar(null)}
                 onEliminar={SolicitarEliminar}
-                onModificar={SolicitarModificar}
                 onProyectos={proyectosagregados}
-              />
-            )}
-            {modoEditar === 'modificarProyecto' && proyectoModificar && (
-              <Proyecto
-                nombre={proyectoModificar.nombre}
-                descripcion={proyectoModificar.descripcion}
-                tecnologias={proyectoModificar.tecnologias}
-                onCerrar={() => {
-                  setModoEditar('verproyectos');
-                  setProyectoModificar(null);
-                }}
-                onModificarPerfil={(nuevoNombre, nuevaDescripcion, nuevasTecnologias) => {
-                  setProyectosAgregados(proyectosagregados.map(p =>
-                    p.nombre === proyectoModificar.nombre
-                      ? { nombre: nuevoNombre, descripcion: nuevaDescripcion, tecnologias: nuevasTecnologias }
-                      : p
-                  ));
-                  setProyectoModificar(null);
-                  setModoEditar('verproyectos');
-                }}
               />
             )}
 
