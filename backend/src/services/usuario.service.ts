@@ -103,7 +103,7 @@ export async function updateUsuario(id: number, data: UpdateUsuarioRequest): Pro
 }
 
 
-// Eliminar oferta
+// Eliminar usuario
 export async function deleteUsuario(id: number): Promise<void> {
   const index = usuarios.findIndex(o => o.id === id);
   if (index === -1) throw new Error('Usuario no encontrado');

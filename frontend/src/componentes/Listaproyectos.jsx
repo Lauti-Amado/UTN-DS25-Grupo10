@@ -2,7 +2,7 @@ import React from "react";
 import styles from '../paginas/perfil.module.css';
 
 
-function ListaProyectos ({ onCerrar, onEliminar, onProyectos }) {
+function ListaProyectos ({ onCerrar, onEliminar, onProyectos, onModificar }) {
 
     return (
         <div>
@@ -18,6 +18,9 @@ function ListaProyectos ({ onCerrar, onEliminar, onProyectos }) {
               <p> Tecnologias usadas: {proyecto.tecnologias}</p>
               <button className="btn btn-sm btn-bordo-danger" onClick={() => onEliminar(proyecto.nombre)}>
                   <i className="btn btn-bordo-danger"></i> Eliminar
+              </button>
+              <button className="btn btn-sm btn-bordo-danger" onClick={() => onModificar(proyecto.nombre)}>
+                  <i className="btn btn-bordo-danger"></i> Modificar
               </button>
               <p>-------------------------------------</p>
             </div>
