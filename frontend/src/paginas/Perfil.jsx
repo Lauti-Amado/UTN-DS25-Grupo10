@@ -10,6 +10,7 @@ import Compartir from '../componentes/compartir';
 import ListaProyectos from '../componentes/listaproyectos';
 import Confirmar from '../componentes/confirmar'
 import styles from '../paginas/perfil.module.css';
+import Pensamiento from '../componentes/quepensas'
 
 export default function Perfil() {
  
@@ -18,7 +19,8 @@ export default function Perfil() {
   const[proyectoaEliminar, setProyectoaEliminar]=useState(null)
   const[mostrarConfirmacion, setMostrarConfirmacion]=useState(false)
 
-  
+  const[modificarProyecto, setModificarProyecto]=useState(null)
+
   const [imagenPerfil, setImagenPerfil] = useState(imagen);
   const [nombrePerfil, setNombrePerfil] = useState('Nombre Perfil');
   const [descripcionPerfil, setDescripcionPerfil] = useState(
@@ -69,6 +71,24 @@ export default function Perfil() {
      setMostrarConfirmacion(false)
      setProyectoaEliminar(null)
   }
+
+  
+const AbrirModificarProyecto = (nombre) => {
+  const proyecto = proyectosagregados.find(p => p.nombre === nombre);
+  if (proyecto) {
+    setModificarProyecto(proyecto);         
+    setModoEditar('modificarProyecto');     
+  }
+};
+
+  const ModificarProyecto=(nombre)=>
+    { const proyecto= proyectosagregados.find(proyecto=>proyecto.nombre===nombre); 
+    setModificarProyecto(proyecto); setModoEditar('modificarProyecto')}
+
+    const ConfirmacionModificacion=()=>{ const { nombre, cambios } = modificarProyecto
+    setProyectosAgregados(proyectosagregados.map(proyecto=>proyecto.nombre===nombre ? {...proyecto, ...cambios} : proyecto ));
+    setMostrarConfirmacion(false);
+    setModificarProyecto(null); };
 
   return (
     <div className="vistaEstirada" style={{ position: 'relative' }}>
@@ -141,13 +161,27 @@ export default function Perfil() {
               <ListaProyectos
                 onCerrar={()=> setModoEditar(null)}
                 onEliminar={SolicitarEliminar}
+                onModificar={AbrirModificarProyecto}
                 onProyectos={proyectosagregados}
               />
             )}
+            {modoEditar === 'modificarProyecto' && modificarProyecto && 
+            ( <Proyecto nombre={modificarProyecto.nombre} 
+            descripcion={modificarProyecto.descripcion} 
+            tecnologias={modificarProyecto.tecnologias} 
+            onCerrar={() => 
+            { setModoEditar('verproyectos'); 
+              setModificarProyecto(null); }} 
+            onModificarProyecto= {(nuevoNombre, nuevaDescripcion, nuevasTecnologias) => 
+              { setProyectosAgregados(proyectosagregados.map
+            (p => p.nombre === modificarProyecto.nombre ? { nombre: nuevoNombre, descripcion: nuevaDescripcion, 
+              tecnologias: nuevasTecnologias } : p )); 
+            setModificarProyecto(null); setModoEditar('verproyectos'); }} /> )}
 
           </div>
         </>
       )}
+        
           {mostrarConfirmacion && (
   <>
     <div
@@ -184,7 +218,7 @@ export default function Perfil() {
     </div>
   </>
 )}
-
+      <Pensamiento/>
 </div>
   );
 }
