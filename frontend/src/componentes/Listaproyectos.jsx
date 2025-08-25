@@ -2,7 +2,7 @@ import React from "react";
 import styles from '../paginas/perfil.module.css';
 
 
-function ListaProyectos ({ onCerrar, onEliminar, onProyectos }) {
+function ListaProyectos ({ onCerrar, onEliminar, onProyectos, onModificar }) {
 
     return (
         <div>
@@ -16,9 +16,18 @@ function ListaProyectos ({ onCerrar, onEliminar, onProyectos }) {
               <h3> Proyecto {i + 1}: {proyecto.nombre}</h3>
               <p> Descripcion: {proyecto.descripcion} </p>
               <p> Tecnologias usadas: {proyecto.tecnologias}</p>
-              <button className="btn btn-sm btn-bordo-danger" onClick={() => onEliminar(proyecto.nombre)}>
-                  <i className="btn btn-bordo-danger"></i> Eliminar
-              </button>
+              <button
+      className="btn btn-sm btn-danger me-2"
+      onClick={() => onEliminar(proyecto.nombre)}
+    >
+      Eliminar
+    </button>
+    <button
+      className="btn btn-sm btn-warning"
+      onClick={() => onModificar(proyecto.nombre)}
+    >
+      Modificar
+    </button>
               <p>-------------------------------------</p>
             </div>
         ))}

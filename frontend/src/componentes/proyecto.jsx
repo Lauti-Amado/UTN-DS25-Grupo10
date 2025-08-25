@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../paginas/perfil.module.css';
 
-function Proyecto({ onCerrar, onActualizarPerfil, onAgregarProyecto, nombre, descripcion, tecnologias }) {
+function Proyecto({ onCerrar, onActualizarPerfil, onAgregarProyecto, nombre, 
+  descripcion, tecnologias, onModificarProyecto }) {
   const [nuevoNombre, setNombre] = useState(nombre || '');
   const [Descripcion, setDescripcion] = useState(descripcion || '');
   const [Tecnologias, setTecnologias] = useState(tecnologias || '');
@@ -15,13 +16,19 @@ function Proyecto({ onCerrar, onActualizarPerfil, onAgregarProyecto, nombre, des
 
  
   const aceptarCambios = () => {
-    if (onActualizarPerfil) {
-      onAgregarProyecto({nombre: nuevoNombre, descripcion: Descripcion, tecnologias: Tecnologias});
-      onActualizarPerfil(nuevoNombre, Descripcion, Tecnologias);
-      //agregarProyecto(nuevoNombre, Descripcion, Tecnologias);
-    }
-    if (onCerrar) onCerrar();
-  };
+  if (onAgregarProyecto) {
+    
+    onAgregarProyecto({ nombre: nuevoNombre, descripcion: Descripcion, tecnologias: Tecnologias });
+  }
+
+  if (onModificarProyecto) {
+    
+    onModificarProyecto(nuevoNombre, Descripcion, Tecnologias);
+  }
+
+  if (onCerrar) onCerrar();
+};
+
 
   return (
     <div>
