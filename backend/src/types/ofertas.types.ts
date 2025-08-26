@@ -1,43 +1,43 @@
-import { Usuario, UsuarioPostulantesListResponse } from "./usuarios.types"
+import { Usuario } from "./usuarios.types";
 
 export interface Oferta {
-    id: number;
-    categoria: string;
-    ubicacion: string;
-    sueldo?: number;
-    modalidad: TipoModalidad;
-    horario: Date[];
-    creador: Usuario;
-    postulados?: UsuarioPostulantesListResponse[];
+  id: number;
+  categoria: string;
+  ubicacion: string;
+  sueldo?: number;
+  modalidad: TipoModalidad;
+  horario: Date[];
+  creador: Usuario;
+  postulados?: Usuario[];
 }
 
-type TipoModalidad = 'presencial' | 'remoto' | 'hibrido'
+type TipoModalidad = "presencial" | "remoto" | "hibrido";
 
 export interface CreateOfertaRequest {
-    categoria: string;
-    ubicacion: string;
-    sueldo?: number;
-    modalidad: TipoModalidad;
-    horario: Date[];
-    creador: Usuario;
-    postulados?: UsuarioPostulantesListResponse[];
+  categoria: string;
+  ubicacion: string;
+  sueldo?: number;
+  modalidad: TipoModalidad;
+  horario: Date[];
+  creadorId: number;
+  postuladosIds?: number[];
 }
 
 export interface UpdateOfertaResquest {
-    categoria?: string;
-    ubicacion?: string;
-    sueldo?: number;
-    modalidad?: TipoModalidad;
-    horario?: Date[];
-    postulados?: UsuarioPostulantesListResponse[];
+  categoria?: string;
+  ubicacion?: string;
+  sueldo?: number;
+  modalidad?: TipoModalidad;
+  horario?: Date[];
+  postuladosIds?: number[];
 }
 
 export interface OfertaResponse {
-    oferta: Oferta;
-    message: string;
+  oferta: Oferta;
+  message: string;
 }
 
 export interface OfertasListResponse {
-    ofertas: Oferta[];
-    total: number;
+  ofertas: Oferta[];
+  total: number;
 }

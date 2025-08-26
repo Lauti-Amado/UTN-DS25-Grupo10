@@ -3,9 +3,6 @@ import * as usuarioService from '../services/usuario.service';
 import {CreateUsuarioRequest, UpdateUsuarioRequest, UsuarioResponse, 
        UsuariosListResponse, UsuarioPostulantesListResponse, UsuarioEmpleadoresListResponse} from '../types/usuarios.types';
 
-
-//CONTROLLER DE POSTULANTES. FALTA DEFINIR FUNCIONES
-
 // Crear Usuario
 export async function createUsuario(
   req: Request<{}, UsuarioResponse, CreateUsuarioRequest>,
@@ -60,8 +57,6 @@ export async function deleteUsuario(
     next(error);
   }
 }
-
-
 
 //Obtener lista de usuarios
 export async function getAllUsuarios(req: Request, res: Response<UsuariosListResponse>, next: NextFunction) {
