@@ -81,15 +81,6 @@ const AbrirModificarProyecto = (nombre) => {
   }
 };
 
-  const ModificarProyecto=(nombre)=>
-    { const proyecto= proyectosagregados.find(proyecto=>proyecto.nombre===nombre); 
-    setModificarProyecto(proyecto); setModoEditar('modificarProyecto')}
-
-    const ConfirmacionModificacion=()=>{ const { nombre, cambios } = modificarProyecto
-    setProyectosAgregados(proyectosagregados.map(proyecto=>proyecto.nombre===nombre ? {...proyecto, ...cambios} : proyecto ));
-    setMostrarConfirmacion(false);
-    setModificarProyecto(null); };
-
   return (
     <div className="vistaEstirada" style={{ position: 'relative' }}>
       <div className={styles.article}>
