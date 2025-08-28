@@ -1,5 +1,8 @@
 import { Router } from 'express';
 import * as usuarioController from '../controllers/usuario.controller';
+import { createProyectoSchema, updateProyectoSchema } from '../validations/proyecto.validation';
+import {validate} from '../middlewares/validation.middleware';
+import { createUsuarioSchema, updateUsuarioSchema } from '../validations/usuario.validations';
 
 const router = Router();
 
@@ -10,10 +13,10 @@ router.get('/', usuarioController.getAllUsuarios);
 router.get('/:id', usuarioController.getUsuarioById);
 
 // Ruta para crear un usuario
-router.post('/', usuarioController.createUsuario);
+router.post('/', validate(createUsuarioSchema),usuarioController.createUsuario);
 
 // Ruta para actualizar un usuario existente
-router.put('/:id', usuarioController.updateUsuario);
+router.put('/:id', validate(updateProyectoSchema), usuarioController.updateUsuario);
 
 // Ruta para eliminar un usuario
 router.delete('/:id', usuarioController.deleteUsuario);

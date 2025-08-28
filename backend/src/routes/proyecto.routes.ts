@@ -12,7 +12,7 @@ router.get('/', proyectoController.getAllProyectos);
 router.get('/:id', proyectoController.getProyectoById);
 
 //POST /api/proyectos
-router.post('/', validate(updateProyectoSchema), proyectoController.createProyecto);
+router.post('/', validate(createProyectoSchema), proyectoController.createProyecto);
 
 // PUT /api/proyectos/:id
 router.put('/:id',validate(updateProyectoSchema) , proyectoController.updateProyecto);
