@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import * as ofertaController from '../controllers/oferta.controller';
+import { createOfertaSchema, updateOfertaSchema } from '../validations/oferta.validation';
+import { validate } from '../middlewares/validation.middleware';
 
 const router = Router();
 
@@ -10,10 +12,10 @@ router.get('/', ofertaController.getAllOfertas);
 router.get('/:id', ofertaController.getOfertaById);
 
 // Ruta para crear una nueva oferta
-router.post('/', ofertaController.createOferta);
+router.post('/', validate(createOfertaSchema),ofertaController.createOferta);
 
 // Ruta para actualizar una oferta existente
-router.put('/:id', ofertaController.updateOferta);
+router.put('/:id', validate(updateOfertaSchema), ofertaController.updateOferta);
 
 // Ruta para eliminar una oferta
 router.delete('/:id', ofertaController.deleteOferta);
