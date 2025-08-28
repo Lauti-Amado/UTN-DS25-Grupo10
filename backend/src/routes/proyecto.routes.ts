@@ -1,5 +1,7 @@
 import {Router} from 'express';
 import * as proyectoController from '../controllers/proyecto.controller';
+import { createProyectoSchema, updateProyectoSchema } from '../validations/proyecto.validation';
+import {validate} from '../middlewares/validation.middleware';
 
 const router = Router();
 
@@ -10,10 +12,10 @@ router.get('/', proyectoController.getAllProyectos);
 router.get('/:id', proyectoController.getProyectoById);
 
 //POST /api/proyectos
-router.post('/', proyectoController.createProyecto);
+router.post('/', validate(updateProyectoSchema), proyectoController.createProyecto);
 
 // PUT /api/proyectos/:id
-router.put('/:id', proyectoController.updateProyecto);
+router.put('/:id',validate(updateProyectoSchema) , proyectoController.updateProyecto);
 
 // DELETE /api/proyectos/:id
 router.delete('/:id', proyectoController.deleteProyecto)

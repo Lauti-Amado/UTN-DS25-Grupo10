@@ -1,4 +1,5 @@
 import prisma from "../config/prisma";
+import { proyectoRouters } from "../routes/proyecto.routes";
 import { Proyecto, CreateProyectoRequest, UpdateProyectoRequest } from "../types/proyectos.types";
 
 // Obtener todos los proyectos
@@ -14,8 +15,12 @@ export async function getProyectoById(id: number): Promise<Proyecto> {
     where: { id },
     include: { creador: true },
   });
-  if (!proyecto) throw new Error("Proyecto no encontrado");
-  return proyecto;
+  if (!proyecto){
+  const error=new Error('Proyecto no encontrado') as any;
+  error.statusCode = 404;
+  throw error;
+}
+return proyecto;
 }
 
 // Crear nuevo proyecto
