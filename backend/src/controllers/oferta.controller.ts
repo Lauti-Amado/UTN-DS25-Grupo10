@@ -1,72 +1,54 @@
 import { Request, Response, NextFunction } from 'express';
 import * as ofertaService from '../services/oferta.service';
-import {
-  CreateOfertaRequest,
-  UpdateOfertaResquest,
-  OfertaResponse,
-  OfertasListResponse
-} from '../types/ofertas.types';
 
 // Obtener todas las ofertas
-export async function getAllOfertas(req: Request, res: Response<OfertasListResponse>, next: NextFunction) {
+export async function getAllOfertas(req: Request, res: Response, next: NextFunction) {
   try {
     const ofertas = await ofertaService.getAllOfertas();
-    res.json({ ofertas, total: ofertas.length });
+    res.json({ success: true, data: ofertas });
   } catch (error) {
     next(error);
   }
 }
 
 // Obtener oferta por ID
-export async function getOfertaById(req: Request, res: Response<OfertaResponse>, next: NextFunction) {
+export async function getOfertaById(req: Request, res: Response, next: NextFunction) {
   try {
     const id = parseInt(req.params.id);
     const oferta = await ofertaService.getOfertaById(id);
-    res.json({ oferta, message: "Oferta encontrada" });
+    res.json({ success:true, data:oferta });
   } catch (error) {
     next(error);
   }
 }
 
 // Crear nueva oferta
-export async function createOferta(
-  req: Request<{}, OfertaResponse, CreateOfertaRequest>,
-  res: Response<OfertaResponse>,
-  next: NextFunction
-) {
+export async function createOferta( req: Request, res: Response, next: NextFunction) {
   try {
     const nueva = await ofertaService.createOferta(req.body);
-    res.status(201).json({ oferta: nueva, message: "Oferta creada" });
+    res.status(201).json({ success:true, data:nueva, message: "Oferta creada" });
   } catch (error) {
     next(error);
   }
 }
 
 // Actualizar oferta existente
-export async function updateOferta(
-  req: Request<{ id: string }, OfertaResponse, UpdateOfertaResquest>,
-  res: Response<OfertaResponse>,
-  next: NextFunction
-) {
+export async function updateOferta( req: Request, res: Response, next: NextFunction) {
   try {
     const id = parseInt(req.params.id);
     const updated = await ofertaService.updateOferta(id, req.body);
-    res.json({ oferta: updated, message: "Oferta actualizada" });
+    res.json({ success:true, data:updated, message: "Oferta actualizada" });
   } catch (error) {
     next(error);
   }
 }
 
 // Obtener todas las ofertas de un empleador especifico por ID
-export async function getOfertasByEmpleadorId(
-  req: Request,
-  res: Response<OfertasListResponse>,
-  next: NextFunction
-) {
+export async function getOfertasByEmpleadorId( req: Request, res: Response, next: NextFunction) {
   try {
     const empleadorId = parseInt(req.params.empleadorId);
     const ofertas = await ofertaService.getOfertasByEmpleadorId(empleadorId);
-    res.json({ ofertas, total: ofertas.length });
+    res.json({ success: true, data: ofertas });
   } catch (error) {
     next(error);
   }
