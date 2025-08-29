@@ -31,6 +31,13 @@ model Usuario {
     postulado Usuario @relation(fields:[postuladoId], references: [id])
     ofertaId Int
     oferta Oferta @relation(fields:[ofertaId], references: [id])
+    nombre String
+    apellido String
+    localidad String
+    pais String
+    genero String
+    descripcion String
+    curriculum String
     @@id([postuladoId, ofertaId])
  }
 
