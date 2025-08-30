@@ -10,9 +10,9 @@ export const createOfertaSchema = z.object({
     .max(50,"La ubicación de la oferta no puede exceder los 50 caracteres")
     .trim(),
     sueldo: z.number()
-    .optional()
     .int()
-    .positive(),
+    .positive()
+    .optional(),
     modalidad: z.literal(["presencial" , "remoto" , "hibrido"]),
     horario: z.array(
         z.iso.datetime()

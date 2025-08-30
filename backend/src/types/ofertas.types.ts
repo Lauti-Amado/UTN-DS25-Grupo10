@@ -1,3 +1,4 @@
+import { Formulario } from "../../generated/prisma";
 import { Usuario } from "./usuarios.types";
 
 export interface Oferta {
@@ -8,7 +9,6 @@ export interface Oferta {
   modalidad: TipoModalidad;
   horario: Date[];
   creador: Usuario;
-  postulados?: Usuario[];
 }
 
 type TipoModalidad = "presencial" | "remoto" | "hibrido";
@@ -20,7 +20,7 @@ export interface CreateOfertaRequest {
   modalidad: TipoModalidad;
   horario: Date[];
   creadorId: number;
-  postuladosIds?: number[];
+  postuladoId: number[];
 }
 
 export interface UpdateOfertaResquest {

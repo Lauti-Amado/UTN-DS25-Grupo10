@@ -4,7 +4,7 @@ import { CreateOfertaRequest, UpdateOfertaResquest, Oferta } from "../types/ofer
 // Obtener todas las ofertas
 export async function getAllOfertas(): Promise<Oferta[]> {
   return prisma.oferta.findMany({
-    include: { creador: true, postulados: true },
+    include: { creador: true},
   }) as unknown as Oferta[];
 }
 
@@ -23,6 +23,7 @@ export async function getOfertaById(id: number): Promise<Oferta> {
 }
 
 // Crear nueva oferta
+// Crear nueva oferta
 export async function createOferta(data: CreateOfertaRequest): Promise<Oferta> {
   return prisma.oferta.create({
     data: {
@@ -32,13 +33,11 @@ export async function createOferta(data: CreateOfertaRequest): Promise<Oferta> {
       modalidad: data.modalidad,
       horario: data.horario,
       creador: { connect: { id: data.creadorId } },
-      postulados: data.postuladosIds
-        ? { connect: data.postuladosIds.map((id) => ({ id })) }
-        : undefined,
     },
-    include: { creador: true, postulados: true },
+    include: { creador: true }, // Solo incluimos al creador, no formularios
   }) as unknown as Oferta;
 }
+
 
 // Actualizar oferta
 export async function updateOferta(id: number, updateData: UpdateOfertaResquest): Promise<Oferta> {
@@ -53,7 +52,7 @@ export async function updateOferta(id: number, updateData: UpdateOfertaResquest)
 export async function getOfertasByEmpleadorId(empleadorId: number): Promise<Oferta[]> {
   return prisma.oferta.findMany({
     where: { creadorId: empleadorId },
-    include: { creador: true, postulados: true },
+    include: { creador: true},
   }) as unknown as Oferta[];
 }
 
