@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Usuario = $Result.DefaultSelection<Prisma.$UsuarioPayload>
 /**
+ * Model Formulario
+ * 
+ */
+export type Formulario = $Result.DefaultSelection<Prisma.$FormularioPayload>
+/**
  * Model Oferta
  * 
  */
@@ -156,6 +161,16 @@ export class PrismaClient<
     * ```
     */
   get usuario(): Prisma.UsuarioDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.formulario`: Exposes CRUD operations for the **Formulario** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Formularios
+    * const formularios = await prisma.formulario.findMany()
+    * ```
+    */
+  get formulario(): Prisma.FormularioDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.oferta`: Exposes CRUD operations for the **Oferta** model.
@@ -617,6 +632,7 @@ export namespace Prisma {
 
   export const ModelName: {
     Usuario: 'Usuario',
+    Formulario: 'Formulario',
     Oferta: 'Oferta',
     Proyecto: 'Proyecto'
   };
@@ -637,7 +653,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "usuario" | "oferta" | "proyecto"
+      modelProps: "usuario" | "formulario" | "oferta" | "proyecto"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -712,6 +728,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UsuarioCountArgs<ExtArgs>
             result: $Utils.Optional<UsuarioCountAggregateOutputType> | number
+          }
+        }
+      }
+      Formulario: {
+        payload: Prisma.$FormularioPayload<ExtArgs>
+        fields: Prisma.FormularioFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FormularioFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FormularioFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>
+          }
+          findFirst: {
+            args: Prisma.FormularioFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FormularioFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>
+          }
+          findMany: {
+            args: Prisma.FormularioFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>[]
+          }
+          create: {
+            args: Prisma.FormularioCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>
+          }
+          createMany: {
+            args: Prisma.FormularioCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FormularioCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>[]
+          }
+          delete: {
+            args: Prisma.FormularioDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>
+          }
+          update: {
+            args: Prisma.FormularioUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>
+          }
+          deleteMany: {
+            args: Prisma.FormularioDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FormularioUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FormularioUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>[]
+          }
+          upsert: {
+            args: Prisma.FormularioUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FormularioPayload>
+          }
+          aggregate: {
+            args: Prisma.FormularioAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFormulario>
+          }
+          groupBy: {
+            args: Prisma.FormularioGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FormularioGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FormularioCountArgs<ExtArgs>
+            result: $Utils.Optional<FormularioCountAggregateOutputType> | number
           }
         }
       }
@@ -956,6 +1046,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     usuario?: UsuarioOmit
+    formulario?: FormularioOmit
     oferta?: OfertaOmit
     proyecto?: ProyectoOmit
   }
@@ -1040,13 +1131,13 @@ export namespace Prisma {
   export type UsuarioCountOutputType = {
     ofertasCreadas: number
     proyectosCreados: number
-    ofertasPostuladas: number
+    formulario: number
   }
 
   export type UsuarioCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ofertasCreadas?: boolean | UsuarioCountOutputTypeCountOfertasCreadasArgs
     proyectosCreados?: boolean | UsuarioCountOutputTypeCountProyectosCreadosArgs
-    ofertasPostuladas?: boolean | UsuarioCountOutputTypeCountOfertasPostuladasArgs
+    formulario?: boolean | UsuarioCountOutputTypeCountFormularioArgs
   }
 
   // Custom InputTypes
@@ -1077,8 +1168,8 @@ export namespace Prisma {
   /**
    * UsuarioCountOutputType without action
    */
-  export type UsuarioCountOutputTypeCountOfertasPostuladasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OfertaWhereInput
+  export type UsuarioCountOutputTypeCountFormularioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FormularioWhereInput
   }
 
 
@@ -1087,11 +1178,11 @@ export namespace Prisma {
    */
 
   export type OfertaCountOutputType = {
-    postulados: number
+    formulario: number
   }
 
   export type OfertaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    postulados?: boolean | OfertaCountOutputTypeCountPostuladosArgs
+    formulario?: boolean | OfertaCountOutputTypeCountFormularioArgs
   }
 
   // Custom InputTypes
@@ -1108,8 +1199,8 @@ export namespace Prisma {
   /**
    * OfertaCountOutputType without action
    */
-  export type OfertaCountOutputTypeCountPostuladosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UsuarioWhereInput
+  export type OfertaCountOutputTypeCountFormularioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FormularioWhereInput
   }
 
 
@@ -1341,7 +1432,7 @@ export namespace Prisma {
     fotoperfil?: boolean
     ofertasCreadas?: boolean | Usuario$ofertasCreadasArgs<ExtArgs>
     proyectosCreados?: boolean | Usuario$proyectosCreadosArgs<ExtArgs>
-    ofertasPostuladas?: boolean | Usuario$ofertasPostuladasArgs<ExtArgs>
+    formulario?: boolean | Usuario$formularioArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["usuario"]>
 
@@ -1382,7 +1473,7 @@ export namespace Prisma {
   export type UsuarioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ofertasCreadas?: boolean | Usuario$ofertasCreadasArgs<ExtArgs>
     proyectosCreados?: boolean | Usuario$proyectosCreadosArgs<ExtArgs>
-    ofertasPostuladas?: boolean | Usuario$ofertasPostuladasArgs<ExtArgs>
+    formulario?: boolean | Usuario$formularioArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UsuarioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1393,7 +1484,7 @@ export namespace Prisma {
     objects: {
       ofertasCreadas: Prisma.$OfertaPayload<ExtArgs>[]
       proyectosCreados: Prisma.$ProyectoPayload<ExtArgs>[]
-      ofertasPostuladas: Prisma.$OfertaPayload<ExtArgs>[]
+      formulario: Prisma.$FormularioPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1800,7 +1891,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     ofertasCreadas<T extends Usuario$ofertasCreadasArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$ofertasCreadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     proyectosCreados<T extends Usuario$proyectosCreadosArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$proyectosCreadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProyectoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    ofertasPostuladas<T extends Usuario$ofertasPostuladasArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$ofertasPostuladasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    formulario<T extends Usuario$formularioArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$formularioArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2274,27 +2365,27 @@ export namespace Prisma {
   }
 
   /**
-   * Usuario.ofertasPostuladas
+   * Usuario.formulario
    */
-  export type Usuario$ofertasPostuladasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Usuario$formularioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Oferta
+     * Select specific fields to fetch from the Formulario
      */
-    select?: OfertaSelect<ExtArgs> | null
+    select?: FormularioSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Oferta
+     * Omit specific fields from the Formulario
      */
-    omit?: OfertaOmit<ExtArgs> | null
+    omit?: FormularioOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OfertaInclude<ExtArgs> | null
-    where?: OfertaWhereInput
-    orderBy?: OfertaOrderByWithRelationInput | OfertaOrderByWithRelationInput[]
-    cursor?: OfertaWhereUniqueInput
+    include?: FormularioInclude<ExtArgs> | null
+    where?: FormularioWhereInput
+    orderBy?: FormularioOrderByWithRelationInput | FormularioOrderByWithRelationInput[]
+    cursor?: FormularioWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: OfertaScalarFieldEnum | OfertaScalarFieldEnum[]
+    distinct?: FormularioScalarFieldEnum | FormularioScalarFieldEnum[]
   }
 
   /**
@@ -2313,6 +2404,1162 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UsuarioInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Formulario
+   */
+
+  export type AggregateFormulario = {
+    _count: FormularioCountAggregateOutputType | null
+    _avg: FormularioAvgAggregateOutputType | null
+    _sum: FormularioSumAggregateOutputType | null
+    _min: FormularioMinAggregateOutputType | null
+    _max: FormularioMaxAggregateOutputType | null
+  }
+
+  export type FormularioAvgAggregateOutputType = {
+    postuladoId: number | null
+    ofertaId: number | null
+  }
+
+  export type FormularioSumAggregateOutputType = {
+    postuladoId: number | null
+    ofertaId: number | null
+  }
+
+  export type FormularioMinAggregateOutputType = {
+    postuladoId: number | null
+    ofertaId: number | null
+    nombre: string | null
+    apellido: string | null
+    localidad: string | null
+    pais: string | null
+    genero: string | null
+    descripcion: string | null
+    curriculum: string | null
+  }
+
+  export type FormularioMaxAggregateOutputType = {
+    postuladoId: number | null
+    ofertaId: number | null
+    nombre: string | null
+    apellido: string | null
+    localidad: string | null
+    pais: string | null
+    genero: string | null
+    descripcion: string | null
+    curriculum: string | null
+  }
+
+  export type FormularioCountAggregateOutputType = {
+    postuladoId: number
+    ofertaId: number
+    nombre: number
+    apellido: number
+    localidad: number
+    pais: number
+    genero: number
+    descripcion: number
+    curriculum: number
+    _all: number
+  }
+
+
+  export type FormularioAvgAggregateInputType = {
+    postuladoId?: true
+    ofertaId?: true
+  }
+
+  export type FormularioSumAggregateInputType = {
+    postuladoId?: true
+    ofertaId?: true
+  }
+
+  export type FormularioMinAggregateInputType = {
+    postuladoId?: true
+    ofertaId?: true
+    nombre?: true
+    apellido?: true
+    localidad?: true
+    pais?: true
+    genero?: true
+    descripcion?: true
+    curriculum?: true
+  }
+
+  export type FormularioMaxAggregateInputType = {
+    postuladoId?: true
+    ofertaId?: true
+    nombre?: true
+    apellido?: true
+    localidad?: true
+    pais?: true
+    genero?: true
+    descripcion?: true
+    curriculum?: true
+  }
+
+  export type FormularioCountAggregateInputType = {
+    postuladoId?: true
+    ofertaId?: true
+    nombre?: true
+    apellido?: true
+    localidad?: true
+    pais?: true
+    genero?: true
+    descripcion?: true
+    curriculum?: true
+    _all?: true
+  }
+
+  export type FormularioAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Formulario to aggregate.
+     */
+    where?: FormularioWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Formularios to fetch.
+     */
+    orderBy?: FormularioOrderByWithRelationInput | FormularioOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FormularioWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Formularios from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Formularios.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Formularios
+    **/
+    _count?: true | FormularioCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FormularioAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FormularioSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FormularioMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FormularioMaxAggregateInputType
+  }
+
+  export type GetFormularioAggregateType<T extends FormularioAggregateArgs> = {
+        [P in keyof T & keyof AggregateFormulario]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFormulario[P]>
+      : GetScalarType<T[P], AggregateFormulario[P]>
+  }
+
+
+
+
+  export type FormularioGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FormularioWhereInput
+    orderBy?: FormularioOrderByWithAggregationInput | FormularioOrderByWithAggregationInput[]
+    by: FormularioScalarFieldEnum[] | FormularioScalarFieldEnum
+    having?: FormularioScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FormularioCountAggregateInputType | true
+    _avg?: FormularioAvgAggregateInputType
+    _sum?: FormularioSumAggregateInputType
+    _min?: FormularioMinAggregateInputType
+    _max?: FormularioMaxAggregateInputType
+  }
+
+  export type FormularioGroupByOutputType = {
+    postuladoId: number
+    ofertaId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+    _count: FormularioCountAggregateOutputType | null
+    _avg: FormularioAvgAggregateOutputType | null
+    _sum: FormularioSumAggregateOutputType | null
+    _min: FormularioMinAggregateOutputType | null
+    _max: FormularioMaxAggregateOutputType | null
+  }
+
+  type GetFormularioGroupByPayload<T extends FormularioGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FormularioGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FormularioGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FormularioGroupByOutputType[P]>
+            : GetScalarType<T[P], FormularioGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FormularioSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    postuladoId?: boolean
+    ofertaId?: boolean
+    nombre?: boolean
+    apellido?: boolean
+    localidad?: boolean
+    pais?: boolean
+    genero?: boolean
+    descripcion?: boolean
+    curriculum?: boolean
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
+    oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["formulario"]>
+
+  export type FormularioSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    postuladoId?: boolean
+    ofertaId?: boolean
+    nombre?: boolean
+    apellido?: boolean
+    localidad?: boolean
+    pais?: boolean
+    genero?: boolean
+    descripcion?: boolean
+    curriculum?: boolean
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
+    oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["formulario"]>
+
+  export type FormularioSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    postuladoId?: boolean
+    ofertaId?: boolean
+    nombre?: boolean
+    apellido?: boolean
+    localidad?: boolean
+    pais?: boolean
+    genero?: boolean
+    descripcion?: boolean
+    curriculum?: boolean
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
+    oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["formulario"]>
+
+  export type FormularioSelectScalar = {
+    postuladoId?: boolean
+    ofertaId?: boolean
+    nombre?: boolean
+    apellido?: boolean
+    localidad?: boolean
+    pais?: boolean
+    genero?: boolean
+    descripcion?: boolean
+    curriculum?: boolean
+  }
+
+  export type FormularioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"postuladoId" | "ofertaId" | "nombre" | "apellido" | "localidad" | "pais" | "genero" | "descripcion" | "curriculum", ExtArgs["result"]["formulario"]>
+  export type FormularioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
+    oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+  }
+  export type FormularioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
+    oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+  }
+  export type FormularioIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
+    oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+  }
+
+  export type $FormularioPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Formulario"
+    objects: {
+      postulado: Prisma.$UsuarioPayload<ExtArgs>
+      oferta: Prisma.$OfertaPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      postuladoId: number
+      ofertaId: number
+      nombre: string
+      apellido: string
+      localidad: string
+      pais: string
+      genero: string
+      descripcion: string
+      curriculum: string
+    }, ExtArgs["result"]["formulario"]>
+    composites: {}
+  }
+
+  type FormularioGetPayload<S extends boolean | null | undefined | FormularioDefaultArgs> = $Result.GetResult<Prisma.$FormularioPayload, S>
+
+  type FormularioCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FormularioFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FormularioCountAggregateInputType | true
+    }
+
+  export interface FormularioDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Formulario'], meta: { name: 'Formulario' } }
+    /**
+     * Find zero or one Formulario that matches the filter.
+     * @param {FormularioFindUniqueArgs} args - Arguments to find a Formulario
+     * @example
+     * // Get one Formulario
+     * const formulario = await prisma.formulario.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FormularioFindUniqueArgs>(args: SelectSubset<T, FormularioFindUniqueArgs<ExtArgs>>): Prisma__FormularioClient<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Formulario that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FormularioFindUniqueOrThrowArgs} args - Arguments to find a Formulario
+     * @example
+     * // Get one Formulario
+     * const formulario = await prisma.formulario.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FormularioFindUniqueOrThrowArgs>(args: SelectSubset<T, FormularioFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FormularioClient<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Formulario that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FormularioFindFirstArgs} args - Arguments to find a Formulario
+     * @example
+     * // Get one Formulario
+     * const formulario = await prisma.formulario.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FormularioFindFirstArgs>(args?: SelectSubset<T, FormularioFindFirstArgs<ExtArgs>>): Prisma__FormularioClient<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Formulario that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FormularioFindFirstOrThrowArgs} args - Arguments to find a Formulario
+     * @example
+     * // Get one Formulario
+     * const formulario = await prisma.formulario.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FormularioFindFirstOrThrowArgs>(args?: SelectSubset<T, FormularioFindFirstOrThrowArgs<ExtArgs>>): Prisma__FormularioClient<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Formularios that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FormularioFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Formularios
+     * const formularios = await prisma.formulario.findMany()
+     * 
+     * // Get first 10 Formularios
+     * const formularios = await prisma.formulario.findMany({ take: 10 })
+     * 
+     * // Only select the `postuladoId`
+     * const formularioWithPostuladoIdOnly = await prisma.formulario.findMany({ select: { postuladoId: true } })
+     * 
+     */
+    findMany<T extends FormularioFindManyArgs>(args?: SelectSubset<T, FormularioFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Formulario.
+     * @param {FormularioCreateArgs} args - Arguments to create a Formulario.
+     * @example
+     * // Create one Formulario
+     * const Formulario = await prisma.formulario.create({
+     *   data: {
+     *     // ... data to create a Formulario
+     *   }
+     * })
+     * 
+     */
+    create<T extends FormularioCreateArgs>(args: SelectSubset<T, FormularioCreateArgs<ExtArgs>>): Prisma__FormularioClient<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Formularios.
+     * @param {FormularioCreateManyArgs} args - Arguments to create many Formularios.
+     * @example
+     * // Create many Formularios
+     * const formulario = await prisma.formulario.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FormularioCreateManyArgs>(args?: SelectSubset<T, FormularioCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Formularios and returns the data saved in the database.
+     * @param {FormularioCreateManyAndReturnArgs} args - Arguments to create many Formularios.
+     * @example
+     * // Create many Formularios
+     * const formulario = await prisma.formulario.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Formularios and only return the `postuladoId`
+     * const formularioWithPostuladoIdOnly = await prisma.formulario.createManyAndReturn({
+     *   select: { postuladoId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FormularioCreateManyAndReturnArgs>(args?: SelectSubset<T, FormularioCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Formulario.
+     * @param {FormularioDeleteArgs} args - Arguments to delete one Formulario.
+     * @example
+     * // Delete one Formulario
+     * const Formulario = await prisma.formulario.delete({
+     *   where: {
+     *     // ... filter to delete one Formulario
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FormularioDeleteArgs>(args: SelectSubset<T, FormularioDeleteArgs<ExtArgs>>): Prisma__FormularioClient<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Formulario.
+     * @param {FormularioUpdateArgs} args - Arguments to update one Formulario.
+     * @example
+     * // Update one Formulario
+     * const formulario = await prisma.formulario.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FormularioUpdateArgs>(args: SelectSubset<T, FormularioUpdateArgs<ExtArgs>>): Prisma__FormularioClient<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Formularios.
+     * @param {FormularioDeleteManyArgs} args - Arguments to filter Formularios to delete.
+     * @example
+     * // Delete a few Formularios
+     * const { count } = await prisma.formulario.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FormularioDeleteManyArgs>(args?: SelectSubset<T, FormularioDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Formularios.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FormularioUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Formularios
+     * const formulario = await prisma.formulario.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FormularioUpdateManyArgs>(args: SelectSubset<T, FormularioUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Formularios and returns the data updated in the database.
+     * @param {FormularioUpdateManyAndReturnArgs} args - Arguments to update many Formularios.
+     * @example
+     * // Update many Formularios
+     * const formulario = await prisma.formulario.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Formularios and only return the `postuladoId`
+     * const formularioWithPostuladoIdOnly = await prisma.formulario.updateManyAndReturn({
+     *   select: { postuladoId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FormularioUpdateManyAndReturnArgs>(args: SelectSubset<T, FormularioUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Formulario.
+     * @param {FormularioUpsertArgs} args - Arguments to update or create a Formulario.
+     * @example
+     * // Update or create a Formulario
+     * const formulario = await prisma.formulario.upsert({
+     *   create: {
+     *     // ... data to create a Formulario
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Formulario we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FormularioUpsertArgs>(args: SelectSubset<T, FormularioUpsertArgs<ExtArgs>>): Prisma__FormularioClient<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Formularios.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FormularioCountArgs} args - Arguments to filter Formularios to count.
+     * @example
+     * // Count the number of Formularios
+     * const count = await prisma.formulario.count({
+     *   where: {
+     *     // ... the filter for the Formularios we want to count
+     *   }
+     * })
+    **/
+    count<T extends FormularioCountArgs>(
+      args?: Subset<T, FormularioCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FormularioCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Formulario.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FormularioAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FormularioAggregateArgs>(args: Subset<T, FormularioAggregateArgs>): Prisma.PrismaPromise<GetFormularioAggregateType<T>>
+
+    /**
+     * Group by Formulario.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FormularioGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FormularioGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FormularioGroupByArgs['orderBy'] }
+        : { orderBy?: FormularioGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FormularioGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFormularioGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Formulario model
+   */
+  readonly fields: FormularioFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Formulario.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FormularioClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    postulado<T extends UsuarioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioDefaultArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    oferta<T extends OfertaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OfertaDefaultArgs<ExtArgs>>): Prisma__OfertaClient<$Result.GetResult<Prisma.$OfertaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Formulario model
+   */
+  interface FormularioFieldRefs {
+    readonly postuladoId: FieldRef<"Formulario", 'Int'>
+    readonly ofertaId: FieldRef<"Formulario", 'Int'>
+    readonly nombre: FieldRef<"Formulario", 'String'>
+    readonly apellido: FieldRef<"Formulario", 'String'>
+    readonly localidad: FieldRef<"Formulario", 'String'>
+    readonly pais: FieldRef<"Formulario", 'String'>
+    readonly genero: FieldRef<"Formulario", 'String'>
+    readonly descripcion: FieldRef<"Formulario", 'String'>
+    readonly curriculum: FieldRef<"Formulario", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Formulario findUnique
+   */
+  export type FormularioFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * Filter, which Formulario to fetch.
+     */
+    where: FormularioWhereUniqueInput
+  }
+
+  /**
+   * Formulario findUniqueOrThrow
+   */
+  export type FormularioFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * Filter, which Formulario to fetch.
+     */
+    where: FormularioWhereUniqueInput
+  }
+
+  /**
+   * Formulario findFirst
+   */
+  export type FormularioFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * Filter, which Formulario to fetch.
+     */
+    where?: FormularioWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Formularios to fetch.
+     */
+    orderBy?: FormularioOrderByWithRelationInput | FormularioOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Formularios.
+     */
+    cursor?: FormularioWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Formularios from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Formularios.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Formularios.
+     */
+    distinct?: FormularioScalarFieldEnum | FormularioScalarFieldEnum[]
+  }
+
+  /**
+   * Formulario findFirstOrThrow
+   */
+  export type FormularioFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * Filter, which Formulario to fetch.
+     */
+    where?: FormularioWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Formularios to fetch.
+     */
+    orderBy?: FormularioOrderByWithRelationInput | FormularioOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Formularios.
+     */
+    cursor?: FormularioWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Formularios from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Formularios.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Formularios.
+     */
+    distinct?: FormularioScalarFieldEnum | FormularioScalarFieldEnum[]
+  }
+
+  /**
+   * Formulario findMany
+   */
+  export type FormularioFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * Filter, which Formularios to fetch.
+     */
+    where?: FormularioWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Formularios to fetch.
+     */
+    orderBy?: FormularioOrderByWithRelationInput | FormularioOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Formularios.
+     */
+    cursor?: FormularioWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Formularios from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Formularios.
+     */
+    skip?: number
+    distinct?: FormularioScalarFieldEnum | FormularioScalarFieldEnum[]
+  }
+
+  /**
+   * Formulario create
+   */
+  export type FormularioCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Formulario.
+     */
+    data: XOR<FormularioCreateInput, FormularioUncheckedCreateInput>
+  }
+
+  /**
+   * Formulario createMany
+   */
+  export type FormularioCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Formularios.
+     */
+    data: FormularioCreateManyInput | FormularioCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Formulario createManyAndReturn
+   */
+  export type FormularioCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * The data used to create many Formularios.
+     */
+    data: FormularioCreateManyInput | FormularioCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Formulario update
+   */
+  export type FormularioUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Formulario.
+     */
+    data: XOR<FormularioUpdateInput, FormularioUncheckedUpdateInput>
+    /**
+     * Choose, which Formulario to update.
+     */
+    where: FormularioWhereUniqueInput
+  }
+
+  /**
+   * Formulario updateMany
+   */
+  export type FormularioUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Formularios.
+     */
+    data: XOR<FormularioUpdateManyMutationInput, FormularioUncheckedUpdateManyInput>
+    /**
+     * Filter which Formularios to update
+     */
+    where?: FormularioWhereInput
+    /**
+     * Limit how many Formularios to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Formulario updateManyAndReturn
+   */
+  export type FormularioUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * The data used to update Formularios.
+     */
+    data: XOR<FormularioUpdateManyMutationInput, FormularioUncheckedUpdateManyInput>
+    /**
+     * Filter which Formularios to update
+     */
+    where?: FormularioWhereInput
+    /**
+     * Limit how many Formularios to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Formulario upsert
+   */
+  export type FormularioUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Formulario to update in case it exists.
+     */
+    where: FormularioWhereUniqueInput
+    /**
+     * In case the Formulario found by the `where` argument doesn't exist, create a new Formulario with this data.
+     */
+    create: XOR<FormularioCreateInput, FormularioUncheckedCreateInput>
+    /**
+     * In case the Formulario was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FormularioUpdateInput, FormularioUncheckedUpdateInput>
+  }
+
+  /**
+   * Formulario delete
+   */
+  export type FormularioDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    /**
+     * Filter which Formulario to delete.
+     */
+    where: FormularioWhereUniqueInput
+  }
+
+  /**
+   * Formulario deleteMany
+   */
+  export type FormularioDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Formularios to delete
+     */
+    where?: FormularioWhereInput
+    /**
+     * Limit how many Formularios to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Formulario without action
+   */
+  export type FormularioDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
   }
 
 
@@ -2535,7 +3782,7 @@ export namespace Prisma {
     horario?: boolean
     creadorId?: boolean
     creador?: boolean | UsuarioDefaultArgs<ExtArgs>
-    postulados?: boolean | Oferta$postuladosArgs<ExtArgs>
+    formulario?: boolean | Oferta$formularioArgs<ExtArgs>
     _count?: boolean | OfertaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["oferta"]>
 
@@ -2574,7 +3821,7 @@ export namespace Prisma {
   export type OfertaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "categoria" | "ubicacion" | "sueldo" | "modalidad" | "horario" | "creadorId", ExtArgs["result"]["oferta"]>
   export type OfertaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     creador?: boolean | UsuarioDefaultArgs<ExtArgs>
-    postulados?: boolean | Oferta$postuladosArgs<ExtArgs>
+    formulario?: boolean | Oferta$formularioArgs<ExtArgs>
     _count?: boolean | OfertaCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OfertaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2588,7 +3835,7 @@ export namespace Prisma {
     name: "Oferta"
     objects: {
       creador: Prisma.$UsuarioPayload<ExtArgs>
-      postulados: Prisma.$UsuarioPayload<ExtArgs>[]
+      formulario: Prisma.$FormularioPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2993,7 +4240,7 @@ export namespace Prisma {
   export interface Prisma__OfertaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     creador<T extends UsuarioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioDefaultArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    postulados<T extends Oferta$postuladosArgs<ExtArgs> = {}>(args?: Subset<T, Oferta$postuladosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    formulario<T extends Oferta$formularioArgs<ExtArgs> = {}>(args?: Subset<T, Oferta$formularioArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3426,27 +4673,27 @@ export namespace Prisma {
   }
 
   /**
-   * Oferta.postulados
+   * Oferta.formulario
    */
-  export type Oferta$postuladosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Oferta$formularioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Usuario
+     * Select specific fields to fetch from the Formulario
      */
-    select?: UsuarioSelect<ExtArgs> | null
+    select?: FormularioSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Usuario
+     * Omit specific fields from the Formulario
      */
-    omit?: UsuarioOmit<ExtArgs> | null
+    omit?: FormularioOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UsuarioInclude<ExtArgs> | null
-    where?: UsuarioWhereInput
-    orderBy?: UsuarioOrderByWithRelationInput | UsuarioOrderByWithRelationInput[]
-    cursor?: UsuarioWhereUniqueInput
+    include?: FormularioInclude<ExtArgs> | null
+    where?: FormularioWhereInput
+    orderBy?: FormularioOrderByWithRelationInput | FormularioOrderByWithRelationInput[]
+    cursor?: FormularioWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UsuarioScalarFieldEnum | UsuarioScalarFieldEnum[]
+    distinct?: FormularioScalarFieldEnum | FormularioScalarFieldEnum[]
   }
 
   /**
@@ -3494,6 +4741,7 @@ export namespace Prisma {
     id: number | null
     nombre: string | null
     descripcion: string | null
+    tecnologiasUsadas: string | null
     createdAt: Date | null
     creadorId: number | null
   }
@@ -3502,6 +4750,7 @@ export namespace Prisma {
     id: number | null
     nombre: string | null
     descripcion: string | null
+    tecnologiasUsadas: string | null
     createdAt: Date | null
     creadorId: number | null
   }
@@ -3531,6 +4780,7 @@ export namespace Prisma {
     id?: true
     nombre?: true
     descripcion?: true
+    tecnologiasUsadas?: true
     createdAt?: true
     creadorId?: true
   }
@@ -3539,6 +4789,7 @@ export namespace Prisma {
     id?: true
     nombre?: true
     descripcion?: true
+    tecnologiasUsadas?: true
     createdAt?: true
     creadorId?: true
   }
@@ -3643,7 +4894,7 @@ export namespace Prisma {
     id: number
     nombre: string
     descripcion: string
-    tecnologiasUsadas: string[]
+    tecnologiasUsadas: string
     createdAt: Date
     creadorId: number
     _count: ProyectoCountAggregateOutputType | null
@@ -3726,7 +4977,7 @@ export namespace Prisma {
       id: number
       nombre: string
       descripcion: string
-      tecnologiasUsadas: string[]
+      tecnologiasUsadas: string
       createdAt: Date
       creadorId: number
     }, ExtArgs["result"]["proyecto"]>
@@ -4156,7 +5407,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Proyecto", 'Int'>
     readonly nombre: FieldRef<"Proyecto", 'String'>
     readonly descripcion: FieldRef<"Proyecto", 'String'>
-    readonly tecnologiasUsadas: FieldRef<"Proyecto", 'String[]'>
+    readonly tecnologiasUsadas: FieldRef<"Proyecto", 'String'>
     readonly createdAt: FieldRef<"Proyecto", 'DateTime'>
     readonly creadorId: FieldRef<"Proyecto", 'Int'>
   }
@@ -4601,6 +5852,21 @@ export namespace Prisma {
   export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
 
 
+  export const FormularioScalarFieldEnum: {
+    postuladoId: 'postuladoId',
+    ofertaId: 'ofertaId',
+    nombre: 'nombre',
+    apellido: 'apellido',
+    localidad: 'localidad',
+    pais: 'pais',
+    genero: 'genero',
+    descripcion: 'descripcion',
+    curriculum: 'curriculum'
+  };
+
+  export type FormularioScalarFieldEnum = (typeof FormularioScalarFieldEnum)[keyof typeof FormularioScalarFieldEnum]
+
+
   export const OfertaScalarFieldEnum: {
     id: 'id',
     categoria: 'categoria',
@@ -4735,7 +6001,7 @@ export namespace Prisma {
     fotoperfil?: StringFilter<"Usuario"> | string
     ofertasCreadas?: OfertaListRelationFilter
     proyectosCreados?: ProyectoListRelationFilter
-    ofertasPostuladas?: OfertaListRelationFilter
+    formulario?: FormularioListRelationFilter
   }
 
   export type UsuarioOrderByWithRelationInput = {
@@ -4749,7 +6015,7 @@ export namespace Prisma {
     fotoperfil?: SortOrder
     ofertasCreadas?: OfertaOrderByRelationAggregateInput
     proyectosCreados?: ProyectoOrderByRelationAggregateInput
-    ofertasPostuladas?: OfertaOrderByRelationAggregateInput
+    formulario?: FormularioOrderByRelationAggregateInput
   }
 
   export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -4766,7 +6032,7 @@ export namespace Prisma {
     fotoperfil?: StringFilter<"Usuario"> | string
     ofertasCreadas?: OfertaListRelationFilter
     proyectosCreados?: ProyectoListRelationFilter
-    ofertasPostuladas?: OfertaListRelationFilter
+    formulario?: FormularioListRelationFilter
   }, "id" | "mail">
 
   export type UsuarioOrderByWithAggregationInput = {
@@ -4799,6 +6065,87 @@ export namespace Prisma {
     fotoperfil?: StringWithAggregatesFilter<"Usuario"> | string
   }
 
+  export type FormularioWhereInput = {
+    AND?: FormularioWhereInput | FormularioWhereInput[]
+    OR?: FormularioWhereInput[]
+    NOT?: FormularioWhereInput | FormularioWhereInput[]
+    postuladoId?: IntFilter<"Formulario"> | number
+    ofertaId?: IntFilter<"Formulario"> | number
+    nombre?: StringFilter<"Formulario"> | string
+    apellido?: StringFilter<"Formulario"> | string
+    localidad?: StringFilter<"Formulario"> | string
+    pais?: StringFilter<"Formulario"> | string
+    genero?: StringFilter<"Formulario"> | string
+    descripcion?: StringFilter<"Formulario"> | string
+    curriculum?: StringFilter<"Formulario"> | string
+    postulado?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
+    oferta?: XOR<OfertaScalarRelationFilter, OfertaWhereInput>
+  }
+
+  export type FormularioOrderByWithRelationInput = {
+    postuladoId?: SortOrder
+    ofertaId?: SortOrder
+    nombre?: SortOrder
+    apellido?: SortOrder
+    localidad?: SortOrder
+    pais?: SortOrder
+    genero?: SortOrder
+    descripcion?: SortOrder
+    curriculum?: SortOrder
+    postulado?: UsuarioOrderByWithRelationInput
+    oferta?: OfertaOrderByWithRelationInput
+  }
+
+  export type FormularioWhereUniqueInput = Prisma.AtLeast<{
+    postuladoId_ofertaId?: FormularioPostuladoIdOfertaIdCompoundUniqueInput
+    AND?: FormularioWhereInput | FormularioWhereInput[]
+    OR?: FormularioWhereInput[]
+    NOT?: FormularioWhereInput | FormularioWhereInput[]
+    postuladoId?: IntFilter<"Formulario"> | number
+    ofertaId?: IntFilter<"Formulario"> | number
+    nombre?: StringFilter<"Formulario"> | string
+    apellido?: StringFilter<"Formulario"> | string
+    localidad?: StringFilter<"Formulario"> | string
+    pais?: StringFilter<"Formulario"> | string
+    genero?: StringFilter<"Formulario"> | string
+    descripcion?: StringFilter<"Formulario"> | string
+    curriculum?: StringFilter<"Formulario"> | string
+    postulado?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
+    oferta?: XOR<OfertaScalarRelationFilter, OfertaWhereInput>
+  }, "postuladoId_ofertaId">
+
+  export type FormularioOrderByWithAggregationInput = {
+    postuladoId?: SortOrder
+    ofertaId?: SortOrder
+    nombre?: SortOrder
+    apellido?: SortOrder
+    localidad?: SortOrder
+    pais?: SortOrder
+    genero?: SortOrder
+    descripcion?: SortOrder
+    curriculum?: SortOrder
+    _count?: FormularioCountOrderByAggregateInput
+    _avg?: FormularioAvgOrderByAggregateInput
+    _max?: FormularioMaxOrderByAggregateInput
+    _min?: FormularioMinOrderByAggregateInput
+    _sum?: FormularioSumOrderByAggregateInput
+  }
+
+  export type FormularioScalarWhereWithAggregatesInput = {
+    AND?: FormularioScalarWhereWithAggregatesInput | FormularioScalarWhereWithAggregatesInput[]
+    OR?: FormularioScalarWhereWithAggregatesInput[]
+    NOT?: FormularioScalarWhereWithAggregatesInput | FormularioScalarWhereWithAggregatesInput[]
+    postuladoId?: IntWithAggregatesFilter<"Formulario"> | number
+    ofertaId?: IntWithAggregatesFilter<"Formulario"> | number
+    nombre?: StringWithAggregatesFilter<"Formulario"> | string
+    apellido?: StringWithAggregatesFilter<"Formulario"> | string
+    localidad?: StringWithAggregatesFilter<"Formulario"> | string
+    pais?: StringWithAggregatesFilter<"Formulario"> | string
+    genero?: StringWithAggregatesFilter<"Formulario"> | string
+    descripcion?: StringWithAggregatesFilter<"Formulario"> | string
+    curriculum?: StringWithAggregatesFilter<"Formulario"> | string
+  }
+
   export type OfertaWhereInput = {
     AND?: OfertaWhereInput | OfertaWhereInput[]
     OR?: OfertaWhereInput[]
@@ -4811,7 +6158,7 @@ export namespace Prisma {
     horario?: DateTimeNullableListFilter<"Oferta">
     creadorId?: IntFilter<"Oferta"> | number
     creador?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
-    postulados?: UsuarioListRelationFilter
+    formulario?: FormularioListRelationFilter
   }
 
   export type OfertaOrderByWithRelationInput = {
@@ -4823,7 +6170,7 @@ export namespace Prisma {
     horario?: SortOrder
     creadorId?: SortOrder
     creador?: UsuarioOrderByWithRelationInput
-    postulados?: UsuarioOrderByRelationAggregateInput
+    formulario?: FormularioOrderByRelationAggregateInput
   }
 
   export type OfertaWhereUniqueInput = Prisma.AtLeast<{
@@ -4838,7 +6185,7 @@ export namespace Prisma {
     horario?: DateTimeNullableListFilter<"Oferta">
     creadorId?: IntFilter<"Oferta"> | number
     creador?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
-    postulados?: UsuarioListRelationFilter
+    formulario?: FormularioListRelationFilter
   }, "id">
 
   export type OfertaOrderByWithAggregationInput = {
@@ -4876,7 +6223,7 @@ export namespace Prisma {
     id?: IntFilter<"Proyecto"> | number
     nombre?: StringFilter<"Proyecto"> | string
     descripcion?: StringFilter<"Proyecto"> | string
-    tecnologiasUsadas?: StringNullableListFilter<"Proyecto">
+    tecnologiasUsadas?: StringFilter<"Proyecto"> | string
     createdAt?: DateTimeFilter<"Proyecto"> | Date | string
     creadorId?: IntFilter<"Proyecto"> | number
     creador?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
@@ -4899,7 +6246,7 @@ export namespace Prisma {
     NOT?: ProyectoWhereInput | ProyectoWhereInput[]
     nombre?: StringFilter<"Proyecto"> | string
     descripcion?: StringFilter<"Proyecto"> | string
-    tecnologiasUsadas?: StringNullableListFilter<"Proyecto">
+    tecnologiasUsadas?: StringFilter<"Proyecto"> | string
     createdAt?: DateTimeFilter<"Proyecto"> | Date | string
     creadorId?: IntFilter<"Proyecto"> | number
     creador?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
@@ -4926,7 +6273,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Proyecto"> | number
     nombre?: StringWithAggregatesFilter<"Proyecto"> | string
     descripcion?: StringWithAggregatesFilter<"Proyecto"> | string
-    tecnologiasUsadas?: StringNullableListFilter<"Proyecto">
+    tecnologiasUsadas?: StringWithAggregatesFilter<"Proyecto"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Proyecto"> | Date | string
     creadorId?: IntWithAggregatesFilter<"Proyecto"> | number
   }
@@ -4941,7 +6288,7 @@ export namespace Prisma {
     fotoperfil: string
     ofertasCreadas?: OfertaCreateNestedManyWithoutCreadorInput
     proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
-    ofertasPostuladas?: OfertaCreateNestedManyWithoutPostuladosInput
+    formulario?: FormularioCreateNestedManyWithoutPostuladoInput
   }
 
   export type UsuarioUncheckedCreateInput = {
@@ -4955,7 +6302,7 @@ export namespace Prisma {
     fotoperfil: string
     ofertasCreadas?: OfertaUncheckedCreateNestedManyWithoutCreadorInput
     proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
-    ofertasPostuladas?: OfertaUncheckedCreateNestedManyWithoutPostuladosInput
+    formulario?: FormularioUncheckedCreateNestedManyWithoutPostuladoInput
   }
 
   export type UsuarioUpdateInput = {
@@ -4968,7 +6315,7 @@ export namespace Prisma {
     fotoperfil?: StringFieldUpdateOperationsInput | string
     ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
     proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
-    ofertasPostuladas?: OfertaUpdateManyWithoutPostuladosNestedInput
+    formulario?: FormularioUpdateManyWithoutPostuladoNestedInput
   }
 
   export type UsuarioUncheckedUpdateInput = {
@@ -4982,7 +6329,7 @@ export namespace Prisma {
     fotoperfil?: StringFieldUpdateOperationsInput | string
     ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
     proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
-    ofertasPostuladas?: OfertaUncheckedUpdateManyWithoutPostuladosNestedInput
+    formulario?: FormularioUncheckedUpdateManyWithoutPostuladoNestedInput
   }
 
   export type UsuarioCreateManyInput = {
@@ -5017,6 +6364,88 @@ export namespace Prisma {
     fotoperfil?: StringFieldUpdateOperationsInput | string
   }
 
+  export type FormularioCreateInput = {
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+    postulado: UsuarioCreateNestedOneWithoutFormularioInput
+    oferta: OfertaCreateNestedOneWithoutFormularioInput
+  }
+
+  export type FormularioUncheckedCreateInput = {
+    postuladoId: number
+    ofertaId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+  }
+
+  export type FormularioUpdateInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+    postulado?: UsuarioUpdateOneRequiredWithoutFormularioNestedInput
+    oferta?: OfertaUpdateOneRequiredWithoutFormularioNestedInput
+  }
+
+  export type FormularioUncheckedUpdateInput = {
+    postuladoId?: IntFieldUpdateOperationsInput | number
+    ofertaId?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FormularioCreateManyInput = {
+    postuladoId: number
+    ofertaId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+  }
+
+  export type FormularioUpdateManyMutationInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FormularioUncheckedUpdateManyInput = {
+    postuladoId?: IntFieldUpdateOperationsInput | number
+    ofertaId?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+  }
+
   export type OfertaCreateInput = {
     categoria: string
     ubicacion: string
@@ -5024,7 +6453,7 @@ export namespace Prisma {
     modalidad: string
     horario?: OfertaCreatehorarioInput | Date[] | string[]
     creador: UsuarioCreateNestedOneWithoutOfertasCreadasInput
-    postulados?: UsuarioCreateNestedManyWithoutOfertasPostuladasInput
+    formulario?: FormularioCreateNestedManyWithoutOfertaInput
   }
 
   export type OfertaUncheckedCreateInput = {
@@ -5035,7 +6464,7 @@ export namespace Prisma {
     modalidad: string
     horario?: OfertaCreatehorarioInput | Date[] | string[]
     creadorId: number
-    postulados?: UsuarioUncheckedCreateNestedManyWithoutOfertasPostuladasInput
+    formulario?: FormularioUncheckedCreateNestedManyWithoutOfertaInput
   }
 
   export type OfertaUpdateInput = {
@@ -5045,7 +6474,7 @@ export namespace Prisma {
     modalidad?: StringFieldUpdateOperationsInput | string
     horario?: OfertaUpdatehorarioInput | Date[] | string[]
     creador?: UsuarioUpdateOneRequiredWithoutOfertasCreadasNestedInput
-    postulados?: UsuarioUpdateManyWithoutOfertasPostuladasNestedInput
+    formulario?: FormularioUpdateManyWithoutOfertaNestedInput
   }
 
   export type OfertaUncheckedUpdateInput = {
@@ -5056,7 +6485,7 @@ export namespace Prisma {
     modalidad?: StringFieldUpdateOperationsInput | string
     horario?: OfertaUpdatehorarioInput | Date[] | string[]
     creadorId?: IntFieldUpdateOperationsInput | number
-    postulados?: UsuarioUncheckedUpdateManyWithoutOfertasPostuladasNestedInput
+    formulario?: FormularioUncheckedUpdateManyWithoutOfertaNestedInput
   }
 
   export type OfertaCreateManyInput = {
@@ -5090,7 +6519,7 @@ export namespace Prisma {
   export type ProyectoCreateInput = {
     nombre: string
     descripcion: string
-    tecnologiasUsadas?: ProyectoCreatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas: string
     createdAt?: Date | string
     creador: UsuarioCreateNestedOneWithoutProyectosCreadosInput
   }
@@ -5099,7 +6528,7 @@ export namespace Prisma {
     id?: number
     nombre: string
     descripcion: string
-    tecnologiasUsadas?: ProyectoCreatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas: string
     createdAt?: Date | string
     creadorId: number
   }
@@ -5107,7 +6536,7 @@ export namespace Prisma {
   export type ProyectoUpdateInput = {
     nombre?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    tecnologiasUsadas?: ProyectoUpdatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creador?: UsuarioUpdateOneRequiredWithoutProyectosCreadosNestedInput
   }
@@ -5116,7 +6545,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    tecnologiasUsadas?: ProyectoUpdatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creadorId?: IntFieldUpdateOperationsInput | number
   }
@@ -5125,7 +6554,7 @@ export namespace Prisma {
     id?: number
     nombre: string
     descripcion: string
-    tecnologiasUsadas?: ProyectoCreatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas: string
     createdAt?: Date | string
     creadorId: number
   }
@@ -5133,7 +6562,7 @@ export namespace Prisma {
   export type ProyectoUpdateManyMutationInput = {
     nombre?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    tecnologiasUsadas?: ProyectoUpdatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -5141,7 +6570,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    tecnologiasUsadas?: ProyectoUpdatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creadorId?: IntFieldUpdateOperationsInput | number
   }
@@ -5200,11 +6629,21 @@ export namespace Prisma {
     none?: ProyectoWhereInput
   }
 
+  export type FormularioListRelationFilter = {
+    every?: FormularioWhereInput
+    some?: FormularioWhereInput
+    none?: FormularioWhereInput
+  }
+
   export type OfertaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type ProyectoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FormularioOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -5305,6 +6744,67 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type UsuarioScalarRelationFilter = {
+    is?: UsuarioWhereInput
+    isNot?: UsuarioWhereInput
+  }
+
+  export type OfertaScalarRelationFilter = {
+    is?: OfertaWhereInput
+    isNot?: OfertaWhereInput
+  }
+
+  export type FormularioPostuladoIdOfertaIdCompoundUniqueInput = {
+    postuladoId: number
+    ofertaId: number
+  }
+
+  export type FormularioCountOrderByAggregateInput = {
+    postuladoId?: SortOrder
+    ofertaId?: SortOrder
+    nombre?: SortOrder
+    apellido?: SortOrder
+    localidad?: SortOrder
+    pais?: SortOrder
+    genero?: SortOrder
+    descripcion?: SortOrder
+    curriculum?: SortOrder
+  }
+
+  export type FormularioAvgOrderByAggregateInput = {
+    postuladoId?: SortOrder
+    ofertaId?: SortOrder
+  }
+
+  export type FormularioMaxOrderByAggregateInput = {
+    postuladoId?: SortOrder
+    ofertaId?: SortOrder
+    nombre?: SortOrder
+    apellido?: SortOrder
+    localidad?: SortOrder
+    pais?: SortOrder
+    genero?: SortOrder
+    descripcion?: SortOrder
+    curriculum?: SortOrder
+  }
+
+  export type FormularioMinOrderByAggregateInput = {
+    postuladoId?: SortOrder
+    ofertaId?: SortOrder
+    nombre?: SortOrder
+    apellido?: SortOrder
+    localidad?: SortOrder
+    pais?: SortOrder
+    genero?: SortOrder
+    descripcion?: SortOrder
+    curriculum?: SortOrder
+  }
+
+  export type FormularioSumOrderByAggregateInput = {
+    postuladoId?: SortOrder
+    ofertaId?: SortOrder
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -5324,24 +6824,9 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type UsuarioScalarRelationFilter = {
-    is?: UsuarioWhereInput
-    isNot?: UsuarioWhereInput
-  }
-
-  export type UsuarioListRelationFilter = {
-    every?: UsuarioWhereInput
-    some?: UsuarioWhereInput
-    none?: UsuarioWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
-  }
-
-  export type UsuarioOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type OfertaCountOrderByAggregateInput = {
@@ -5400,14 +6885,6 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type ProyectoCountOrderByAggregateInput = {
     id?: SortOrder
     nombre?: SortOrder
@@ -5426,6 +6903,7 @@ export namespace Prisma {
     id?: SortOrder
     nombre?: SortOrder
     descripcion?: SortOrder
+    tecnologiasUsadas?: SortOrder
     createdAt?: SortOrder
     creadorId?: SortOrder
   }
@@ -5434,6 +6912,7 @@ export namespace Prisma {
     id?: SortOrder
     nombre?: SortOrder
     descripcion?: SortOrder
+    tecnologiasUsadas?: SortOrder
     createdAt?: SortOrder
     creadorId?: SortOrder
   }
@@ -5457,10 +6936,11 @@ export namespace Prisma {
     connect?: ProyectoWhereUniqueInput | ProyectoWhereUniqueInput[]
   }
 
-  export type OfertaCreateNestedManyWithoutPostuladosInput = {
-    create?: XOR<OfertaCreateWithoutPostuladosInput, OfertaUncheckedCreateWithoutPostuladosInput> | OfertaCreateWithoutPostuladosInput[] | OfertaUncheckedCreateWithoutPostuladosInput[]
-    connectOrCreate?: OfertaCreateOrConnectWithoutPostuladosInput | OfertaCreateOrConnectWithoutPostuladosInput[]
-    connect?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
+  export type FormularioCreateNestedManyWithoutPostuladoInput = {
+    create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
+    createMany?: FormularioCreateManyPostuladoInputEnvelope
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
   }
 
   export type OfertaUncheckedCreateNestedManyWithoutCreadorInput = {
@@ -5477,10 +6957,11 @@ export namespace Prisma {
     connect?: ProyectoWhereUniqueInput | ProyectoWhereUniqueInput[]
   }
 
-  export type OfertaUncheckedCreateNestedManyWithoutPostuladosInput = {
-    create?: XOR<OfertaCreateWithoutPostuladosInput, OfertaUncheckedCreateWithoutPostuladosInput> | OfertaCreateWithoutPostuladosInput[] | OfertaUncheckedCreateWithoutPostuladosInput[]
-    connectOrCreate?: OfertaCreateOrConnectWithoutPostuladosInput | OfertaCreateOrConnectWithoutPostuladosInput[]
-    connect?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
+  export type FormularioUncheckedCreateNestedManyWithoutPostuladoInput = {
+    create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
+    createMany?: FormularioCreateManyPostuladoInputEnvelope
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5523,17 +7004,18 @@ export namespace Prisma {
     deleteMany?: ProyectoScalarWhereInput | ProyectoScalarWhereInput[]
   }
 
-  export type OfertaUpdateManyWithoutPostuladosNestedInput = {
-    create?: XOR<OfertaCreateWithoutPostuladosInput, OfertaUncheckedCreateWithoutPostuladosInput> | OfertaCreateWithoutPostuladosInput[] | OfertaUncheckedCreateWithoutPostuladosInput[]
-    connectOrCreate?: OfertaCreateOrConnectWithoutPostuladosInput | OfertaCreateOrConnectWithoutPostuladosInput[]
-    upsert?: OfertaUpsertWithWhereUniqueWithoutPostuladosInput | OfertaUpsertWithWhereUniqueWithoutPostuladosInput[]
-    set?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
-    disconnect?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
-    delete?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
-    connect?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
-    update?: OfertaUpdateWithWhereUniqueWithoutPostuladosInput | OfertaUpdateWithWhereUniqueWithoutPostuladosInput[]
-    updateMany?: OfertaUpdateManyWithWhereWithoutPostuladosInput | OfertaUpdateManyWithWhereWithoutPostuladosInput[]
-    deleteMany?: OfertaScalarWhereInput | OfertaScalarWhereInput[]
+  export type FormularioUpdateManyWithoutPostuladoNestedInput = {
+    create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
+    upsert?: FormularioUpsertWithWhereUniqueWithoutPostuladoInput | FormularioUpsertWithWhereUniqueWithoutPostuladoInput[]
+    createMany?: FormularioCreateManyPostuladoInputEnvelope
+    set?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    disconnect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    delete?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    update?: FormularioUpdateWithWhereUniqueWithoutPostuladoInput | FormularioUpdateWithWhereUniqueWithoutPostuladoInput[]
+    updateMany?: FormularioUpdateManyWithWhereWithoutPostuladoInput | FormularioUpdateManyWithWhereWithoutPostuladoInput[]
+    deleteMany?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -5572,17 +7054,46 @@ export namespace Prisma {
     deleteMany?: ProyectoScalarWhereInput | ProyectoScalarWhereInput[]
   }
 
-  export type OfertaUncheckedUpdateManyWithoutPostuladosNestedInput = {
-    create?: XOR<OfertaCreateWithoutPostuladosInput, OfertaUncheckedCreateWithoutPostuladosInput> | OfertaCreateWithoutPostuladosInput[] | OfertaUncheckedCreateWithoutPostuladosInput[]
-    connectOrCreate?: OfertaCreateOrConnectWithoutPostuladosInput | OfertaCreateOrConnectWithoutPostuladosInput[]
-    upsert?: OfertaUpsertWithWhereUniqueWithoutPostuladosInput | OfertaUpsertWithWhereUniqueWithoutPostuladosInput[]
-    set?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
-    disconnect?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
-    delete?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
-    connect?: OfertaWhereUniqueInput | OfertaWhereUniqueInput[]
-    update?: OfertaUpdateWithWhereUniqueWithoutPostuladosInput | OfertaUpdateWithWhereUniqueWithoutPostuladosInput[]
-    updateMany?: OfertaUpdateManyWithWhereWithoutPostuladosInput | OfertaUpdateManyWithWhereWithoutPostuladosInput[]
-    deleteMany?: OfertaScalarWhereInput | OfertaScalarWhereInput[]
+  export type FormularioUncheckedUpdateManyWithoutPostuladoNestedInput = {
+    create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
+    upsert?: FormularioUpsertWithWhereUniqueWithoutPostuladoInput | FormularioUpsertWithWhereUniqueWithoutPostuladoInput[]
+    createMany?: FormularioCreateManyPostuladoInputEnvelope
+    set?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    disconnect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    delete?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    update?: FormularioUpdateWithWhereUniqueWithoutPostuladoInput | FormularioUpdateWithWhereUniqueWithoutPostuladoInput[]
+    updateMany?: FormularioUpdateManyWithWhereWithoutPostuladoInput | FormularioUpdateManyWithWhereWithoutPostuladoInput[]
+    deleteMany?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
+  }
+
+  export type UsuarioCreateNestedOneWithoutFormularioInput = {
+    create?: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutFormularioInput
+    connect?: UsuarioWhereUniqueInput
+  }
+
+  export type OfertaCreateNestedOneWithoutFormularioInput = {
+    create?: XOR<OfertaCreateWithoutFormularioInput, OfertaUncheckedCreateWithoutFormularioInput>
+    connectOrCreate?: OfertaCreateOrConnectWithoutFormularioInput
+    connect?: OfertaWhereUniqueInput
+  }
+
+  export type UsuarioUpdateOneRequiredWithoutFormularioNestedInput = {
+    create?: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutFormularioInput
+    upsert?: UsuarioUpsertWithoutFormularioInput
+    connect?: UsuarioWhereUniqueInput
+    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutFormularioInput, UsuarioUpdateWithoutFormularioInput>, UsuarioUncheckedUpdateWithoutFormularioInput>
+  }
+
+  export type OfertaUpdateOneRequiredWithoutFormularioNestedInput = {
+    create?: XOR<OfertaCreateWithoutFormularioInput, OfertaUncheckedCreateWithoutFormularioInput>
+    connectOrCreate?: OfertaCreateOrConnectWithoutFormularioInput
+    upsert?: OfertaUpsertWithoutFormularioInput
+    connect?: OfertaWhereUniqueInput
+    update?: XOR<XOR<OfertaUpdateToOneWithWhereWithoutFormularioInput, OfertaUpdateWithoutFormularioInput>, OfertaUncheckedUpdateWithoutFormularioInput>
   }
 
   export type OfertaCreatehorarioInput = {
@@ -5595,16 +7106,18 @@ export namespace Prisma {
     connect?: UsuarioWhereUniqueInput
   }
 
-  export type UsuarioCreateNestedManyWithoutOfertasPostuladasInput = {
-    create?: XOR<UsuarioCreateWithoutOfertasPostuladasInput, UsuarioUncheckedCreateWithoutOfertasPostuladasInput> | UsuarioCreateWithoutOfertasPostuladasInput[] | UsuarioUncheckedCreateWithoutOfertasPostuladasInput[]
-    connectOrCreate?: UsuarioCreateOrConnectWithoutOfertasPostuladasInput | UsuarioCreateOrConnectWithoutOfertasPostuladasInput[]
-    connect?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
+  export type FormularioCreateNestedManyWithoutOfertaInput = {
+    create?: XOR<FormularioCreateWithoutOfertaInput, FormularioUncheckedCreateWithoutOfertaInput> | FormularioCreateWithoutOfertaInput[] | FormularioUncheckedCreateWithoutOfertaInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutOfertaInput | FormularioCreateOrConnectWithoutOfertaInput[]
+    createMany?: FormularioCreateManyOfertaInputEnvelope
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
   }
 
-  export type UsuarioUncheckedCreateNestedManyWithoutOfertasPostuladasInput = {
-    create?: XOR<UsuarioCreateWithoutOfertasPostuladasInput, UsuarioUncheckedCreateWithoutOfertasPostuladasInput> | UsuarioCreateWithoutOfertasPostuladasInput[] | UsuarioUncheckedCreateWithoutOfertasPostuladasInput[]
-    connectOrCreate?: UsuarioCreateOrConnectWithoutOfertasPostuladasInput | UsuarioCreateOrConnectWithoutOfertasPostuladasInput[]
-    connect?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
+  export type FormularioUncheckedCreateNestedManyWithoutOfertaInput = {
+    create?: XOR<FormularioCreateWithoutOfertaInput, FormularioUncheckedCreateWithoutOfertaInput> | FormularioCreateWithoutOfertaInput[] | FormularioUncheckedCreateWithoutOfertaInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutOfertaInput | FormularioCreateOrConnectWithoutOfertaInput[]
+    createMany?: FormularioCreateManyOfertaInputEnvelope
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -5628,45 +7141,38 @@ export namespace Prisma {
     update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutOfertasCreadasInput, UsuarioUpdateWithoutOfertasCreadasInput>, UsuarioUncheckedUpdateWithoutOfertasCreadasInput>
   }
 
-  export type UsuarioUpdateManyWithoutOfertasPostuladasNestedInput = {
-    create?: XOR<UsuarioCreateWithoutOfertasPostuladasInput, UsuarioUncheckedCreateWithoutOfertasPostuladasInput> | UsuarioCreateWithoutOfertasPostuladasInput[] | UsuarioUncheckedCreateWithoutOfertasPostuladasInput[]
-    connectOrCreate?: UsuarioCreateOrConnectWithoutOfertasPostuladasInput | UsuarioCreateOrConnectWithoutOfertasPostuladasInput[]
-    upsert?: UsuarioUpsertWithWhereUniqueWithoutOfertasPostuladasInput | UsuarioUpsertWithWhereUniqueWithoutOfertasPostuladasInput[]
-    set?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
-    disconnect?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
-    delete?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
-    connect?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
-    update?: UsuarioUpdateWithWhereUniqueWithoutOfertasPostuladasInput | UsuarioUpdateWithWhereUniqueWithoutOfertasPostuladasInput[]
-    updateMany?: UsuarioUpdateManyWithWhereWithoutOfertasPostuladasInput | UsuarioUpdateManyWithWhereWithoutOfertasPostuladasInput[]
-    deleteMany?: UsuarioScalarWhereInput | UsuarioScalarWhereInput[]
+  export type FormularioUpdateManyWithoutOfertaNestedInput = {
+    create?: XOR<FormularioCreateWithoutOfertaInput, FormularioUncheckedCreateWithoutOfertaInput> | FormularioCreateWithoutOfertaInput[] | FormularioUncheckedCreateWithoutOfertaInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutOfertaInput | FormularioCreateOrConnectWithoutOfertaInput[]
+    upsert?: FormularioUpsertWithWhereUniqueWithoutOfertaInput | FormularioUpsertWithWhereUniqueWithoutOfertaInput[]
+    createMany?: FormularioCreateManyOfertaInputEnvelope
+    set?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    disconnect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    delete?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    update?: FormularioUpdateWithWhereUniqueWithoutOfertaInput | FormularioUpdateWithWhereUniqueWithoutOfertaInput[]
+    updateMany?: FormularioUpdateManyWithWhereWithoutOfertaInput | FormularioUpdateManyWithWhereWithoutOfertaInput[]
+    deleteMany?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
   }
 
-  export type UsuarioUncheckedUpdateManyWithoutOfertasPostuladasNestedInput = {
-    create?: XOR<UsuarioCreateWithoutOfertasPostuladasInput, UsuarioUncheckedCreateWithoutOfertasPostuladasInput> | UsuarioCreateWithoutOfertasPostuladasInput[] | UsuarioUncheckedCreateWithoutOfertasPostuladasInput[]
-    connectOrCreate?: UsuarioCreateOrConnectWithoutOfertasPostuladasInput | UsuarioCreateOrConnectWithoutOfertasPostuladasInput[]
-    upsert?: UsuarioUpsertWithWhereUniqueWithoutOfertasPostuladasInput | UsuarioUpsertWithWhereUniqueWithoutOfertasPostuladasInput[]
-    set?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
-    disconnect?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
-    delete?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
-    connect?: UsuarioWhereUniqueInput | UsuarioWhereUniqueInput[]
-    update?: UsuarioUpdateWithWhereUniqueWithoutOfertasPostuladasInput | UsuarioUpdateWithWhereUniqueWithoutOfertasPostuladasInput[]
-    updateMany?: UsuarioUpdateManyWithWhereWithoutOfertasPostuladasInput | UsuarioUpdateManyWithWhereWithoutOfertasPostuladasInput[]
-    deleteMany?: UsuarioScalarWhereInput | UsuarioScalarWhereInput[]
-  }
-
-  export type ProyectoCreatetecnologiasUsadasInput = {
-    set: string[]
+  export type FormularioUncheckedUpdateManyWithoutOfertaNestedInput = {
+    create?: XOR<FormularioCreateWithoutOfertaInput, FormularioUncheckedCreateWithoutOfertaInput> | FormularioCreateWithoutOfertaInput[] | FormularioUncheckedCreateWithoutOfertaInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutOfertaInput | FormularioCreateOrConnectWithoutOfertaInput[]
+    upsert?: FormularioUpsertWithWhereUniqueWithoutOfertaInput | FormularioUpsertWithWhereUniqueWithoutOfertaInput[]
+    createMany?: FormularioCreateManyOfertaInputEnvelope
+    set?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    disconnect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    delete?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    update?: FormularioUpdateWithWhereUniqueWithoutOfertaInput | FormularioUpdateWithWhereUniqueWithoutOfertaInput[]
+    updateMany?: FormularioUpdateManyWithWhereWithoutOfertaInput | FormularioUpdateManyWithWhereWithoutOfertaInput[]
+    deleteMany?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
   }
 
   export type UsuarioCreateNestedOneWithoutProyectosCreadosInput = {
     create?: XOR<UsuarioCreateWithoutProyectosCreadosInput, UsuarioUncheckedCreateWithoutProyectosCreadosInput>
     connectOrCreate?: UsuarioCreateOrConnectWithoutProyectosCreadosInput
     connect?: UsuarioWhereUniqueInput
-  }
-
-  export type ProyectoUpdatetecnologiasUsadasInput = {
-    set?: string[]
-    push?: string | string[]
   }
 
   export type UsuarioUpdateOneRequiredWithoutProyectosCreadosNestedInput = {
@@ -5828,7 +7334,7 @@ export namespace Prisma {
     sueldo?: number | null
     modalidad: string
     horario?: OfertaCreatehorarioInput | Date[] | string[]
-    postulados?: UsuarioCreateNestedManyWithoutOfertasPostuladasInput
+    formulario?: FormularioCreateNestedManyWithoutOfertaInput
   }
 
   export type OfertaUncheckedCreateWithoutCreadorInput = {
@@ -5838,7 +7344,7 @@ export namespace Prisma {
     sueldo?: number | null
     modalidad: string
     horario?: OfertaCreatehorarioInput | Date[] | string[]
-    postulados?: UsuarioUncheckedCreateNestedManyWithoutOfertasPostuladasInput
+    formulario?: FormularioUncheckedCreateNestedManyWithoutOfertaInput
   }
 
   export type OfertaCreateOrConnectWithoutCreadorInput = {
@@ -5854,7 +7360,7 @@ export namespace Prisma {
   export type ProyectoCreateWithoutCreadorInput = {
     nombre: string
     descripcion: string
-    tecnologiasUsadas?: ProyectoCreatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas: string
     createdAt?: Date | string
   }
 
@@ -5862,7 +7368,7 @@ export namespace Prisma {
     id?: number
     nombre: string
     descripcion: string
-    tecnologiasUsadas?: ProyectoCreatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas: string
     createdAt?: Date | string
   }
 
@@ -5876,28 +7382,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OfertaCreateWithoutPostuladosInput = {
-    categoria: string
-    ubicacion: string
-    sueldo?: number | null
-    modalidad: string
-    horario?: OfertaCreatehorarioInput | Date[] | string[]
-    creador: UsuarioCreateNestedOneWithoutOfertasCreadasInput
+  export type FormularioCreateWithoutPostuladoInput = {
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+    oferta: OfertaCreateNestedOneWithoutFormularioInput
   }
 
-  export type OfertaUncheckedCreateWithoutPostuladosInput = {
-    id?: number
-    categoria: string
-    ubicacion: string
-    sueldo?: number | null
-    modalidad: string
-    horario?: OfertaCreatehorarioInput | Date[] | string[]
-    creadorId: number
+  export type FormularioUncheckedCreateWithoutPostuladoInput = {
+    ofertaId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
   }
 
-  export type OfertaCreateOrConnectWithoutPostuladosInput = {
-    where: OfertaWhereUniqueInput
-    create: XOR<OfertaCreateWithoutPostuladosInput, OfertaUncheckedCreateWithoutPostuladosInput>
+  export type FormularioCreateOrConnectWithoutPostuladoInput = {
+    where: FormularioWhereUniqueInput
+    create: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput>
+  }
+
+  export type FormularioCreateManyPostuladoInputEnvelope = {
+    data: FormularioCreateManyPostuladoInput | FormularioCreateManyPostuladoInput[]
+    skipDuplicates?: boolean
   }
 
   export type OfertaUpsertWithWhereUniqueWithoutCreadorInput = {
@@ -5952,58 +7466,43 @@ export namespace Prisma {
     id?: IntFilter<"Proyecto"> | number
     nombre?: StringFilter<"Proyecto"> | string
     descripcion?: StringFilter<"Proyecto"> | string
-    tecnologiasUsadas?: StringNullableListFilter<"Proyecto">
+    tecnologiasUsadas?: StringFilter<"Proyecto"> | string
     createdAt?: DateTimeFilter<"Proyecto"> | Date | string
     creadorId?: IntFilter<"Proyecto"> | number
   }
 
-  export type OfertaUpsertWithWhereUniqueWithoutPostuladosInput = {
-    where: OfertaWhereUniqueInput
-    update: XOR<OfertaUpdateWithoutPostuladosInput, OfertaUncheckedUpdateWithoutPostuladosInput>
-    create: XOR<OfertaCreateWithoutPostuladosInput, OfertaUncheckedCreateWithoutPostuladosInput>
+  export type FormularioUpsertWithWhereUniqueWithoutPostuladoInput = {
+    where: FormularioWhereUniqueInput
+    update: XOR<FormularioUpdateWithoutPostuladoInput, FormularioUncheckedUpdateWithoutPostuladoInput>
+    create: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput>
   }
 
-  export type OfertaUpdateWithWhereUniqueWithoutPostuladosInput = {
-    where: OfertaWhereUniqueInput
-    data: XOR<OfertaUpdateWithoutPostuladosInput, OfertaUncheckedUpdateWithoutPostuladosInput>
+  export type FormularioUpdateWithWhereUniqueWithoutPostuladoInput = {
+    where: FormularioWhereUniqueInput
+    data: XOR<FormularioUpdateWithoutPostuladoInput, FormularioUncheckedUpdateWithoutPostuladoInput>
   }
 
-  export type OfertaUpdateManyWithWhereWithoutPostuladosInput = {
-    where: OfertaScalarWhereInput
-    data: XOR<OfertaUpdateManyMutationInput, OfertaUncheckedUpdateManyWithoutPostuladosInput>
+  export type FormularioUpdateManyWithWhereWithoutPostuladoInput = {
+    where: FormularioScalarWhereInput
+    data: XOR<FormularioUpdateManyMutationInput, FormularioUncheckedUpdateManyWithoutPostuladoInput>
   }
 
-  export type UsuarioCreateWithoutOfertasCreadasInput = {
-    nombre: string
-    contraseña: string
-    mail: string
-    descripcion: string
-    rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
-    proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
-    ofertasPostuladas?: OfertaCreateNestedManyWithoutPostuladosInput
+  export type FormularioScalarWhereInput = {
+    AND?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
+    OR?: FormularioScalarWhereInput[]
+    NOT?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
+    postuladoId?: IntFilter<"Formulario"> | number
+    ofertaId?: IntFilter<"Formulario"> | number
+    nombre?: StringFilter<"Formulario"> | string
+    apellido?: StringFilter<"Formulario"> | string
+    localidad?: StringFilter<"Formulario"> | string
+    pais?: StringFilter<"Formulario"> | string
+    genero?: StringFilter<"Formulario"> | string
+    descripcion?: StringFilter<"Formulario"> | string
+    curriculum?: StringFilter<"Formulario"> | string
   }
 
-  export type UsuarioUncheckedCreateWithoutOfertasCreadasInput = {
-    id?: number
-    nombre: string
-    contraseña: string
-    mail: string
-    descripcion: string
-    rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
-    proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
-    ofertasPostuladas?: OfertaUncheckedCreateNestedManyWithoutPostuladosInput
-  }
-
-  export type UsuarioCreateOrConnectWithoutOfertasCreadasInput = {
-    where: UsuarioWhereUniqueInput
-    create: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
-  }
-
-  export type UsuarioCreateWithoutOfertasPostuladasInput = {
+  export type UsuarioCreateWithoutFormularioInput = {
     nombre: string
     contraseña: string
     mail: string
@@ -6015,7 +7514,7 @@ export namespace Prisma {
     proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
   }
 
-  export type UsuarioUncheckedCreateWithoutOfertasPostuladasInput = {
+  export type UsuarioUncheckedCreateWithoutFormularioInput = {
     id?: number
     nombre: string
     contraseña: string
@@ -6028,9 +7527,161 @@ export namespace Prisma {
     proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
   }
 
-  export type UsuarioCreateOrConnectWithoutOfertasPostuladasInput = {
+  export type UsuarioCreateOrConnectWithoutFormularioInput = {
     where: UsuarioWhereUniqueInput
-    create: XOR<UsuarioCreateWithoutOfertasPostuladasInput, UsuarioUncheckedCreateWithoutOfertasPostuladasInput>
+    create: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
+  }
+
+  export type OfertaCreateWithoutFormularioInput = {
+    categoria: string
+    ubicacion: string
+    sueldo?: number | null
+    modalidad: string
+    horario?: OfertaCreatehorarioInput | Date[] | string[]
+    creador: UsuarioCreateNestedOneWithoutOfertasCreadasInput
+  }
+
+  export type OfertaUncheckedCreateWithoutFormularioInput = {
+    id?: number
+    categoria: string
+    ubicacion: string
+    sueldo?: number | null
+    modalidad: string
+    horario?: OfertaCreatehorarioInput | Date[] | string[]
+    creadorId: number
+  }
+
+  export type OfertaCreateOrConnectWithoutFormularioInput = {
+    where: OfertaWhereUniqueInput
+    create: XOR<OfertaCreateWithoutFormularioInput, OfertaUncheckedCreateWithoutFormularioInput>
+  }
+
+  export type UsuarioUpsertWithoutFormularioInput = {
+    update: XOR<UsuarioUpdateWithoutFormularioInput, UsuarioUncheckedUpdateWithoutFormularioInput>
+    create: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
+    where?: UsuarioWhereInput
+  }
+
+  export type UsuarioUpdateToOneWithWhereWithoutFormularioInput = {
+    where?: UsuarioWhereInput
+    data: XOR<UsuarioUpdateWithoutFormularioInput, UsuarioUncheckedUpdateWithoutFormularioInput>
+  }
+
+  export type UsuarioUpdateWithoutFormularioInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    contraseña?: StringFieldUpdateOperationsInput | string
+    mail?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    fotoperfil?: StringFieldUpdateOperationsInput | string
+    ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
+    proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
+  }
+
+  export type UsuarioUncheckedUpdateWithoutFormularioInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    contraseña?: StringFieldUpdateOperationsInput | string
+    mail?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    fotoperfil?: StringFieldUpdateOperationsInput | string
+    ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
+    proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
+  }
+
+  export type OfertaUpsertWithoutFormularioInput = {
+    update: XOR<OfertaUpdateWithoutFormularioInput, OfertaUncheckedUpdateWithoutFormularioInput>
+    create: XOR<OfertaCreateWithoutFormularioInput, OfertaUncheckedCreateWithoutFormularioInput>
+    where?: OfertaWhereInput
+  }
+
+  export type OfertaUpdateToOneWithWhereWithoutFormularioInput = {
+    where?: OfertaWhereInput
+    data: XOR<OfertaUpdateWithoutFormularioInput, OfertaUncheckedUpdateWithoutFormularioInput>
+  }
+
+  export type OfertaUpdateWithoutFormularioInput = {
+    categoria?: StringFieldUpdateOperationsInput | string
+    ubicacion?: StringFieldUpdateOperationsInput | string
+    sueldo?: NullableIntFieldUpdateOperationsInput | number | null
+    modalidad?: StringFieldUpdateOperationsInput | string
+    horario?: OfertaUpdatehorarioInput | Date[] | string[]
+    creador?: UsuarioUpdateOneRequiredWithoutOfertasCreadasNestedInput
+  }
+
+  export type OfertaUncheckedUpdateWithoutFormularioInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    categoria?: StringFieldUpdateOperationsInput | string
+    ubicacion?: StringFieldUpdateOperationsInput | string
+    sueldo?: NullableIntFieldUpdateOperationsInput | number | null
+    modalidad?: StringFieldUpdateOperationsInput | string
+    horario?: OfertaUpdatehorarioInput | Date[] | string[]
+    creadorId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UsuarioCreateWithoutOfertasCreadasInput = {
+    nombre: string
+    contraseña: string
+    mail: string
+    descripcion: string
+    rolPostulante: boolean
+    fecha: Date | string
+    fotoperfil: string
+    proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
+    formulario?: FormularioCreateNestedManyWithoutPostuladoInput
+  }
+
+  export type UsuarioUncheckedCreateWithoutOfertasCreadasInput = {
+    id?: number
+    nombre: string
+    contraseña: string
+    mail: string
+    descripcion: string
+    rolPostulante: boolean
+    fecha: Date | string
+    fotoperfil: string
+    proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
+    formulario?: FormularioUncheckedCreateNestedManyWithoutPostuladoInput
+  }
+
+  export type UsuarioCreateOrConnectWithoutOfertasCreadasInput = {
+    where: UsuarioWhereUniqueInput
+    create: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
+  }
+
+  export type FormularioCreateWithoutOfertaInput = {
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+    postulado: UsuarioCreateNestedOneWithoutFormularioInput
+  }
+
+  export type FormularioUncheckedCreateWithoutOfertaInput = {
+    postuladoId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+  }
+
+  export type FormularioCreateOrConnectWithoutOfertaInput = {
+    where: FormularioWhereUniqueInput
+    create: XOR<FormularioCreateWithoutOfertaInput, FormularioUncheckedCreateWithoutOfertaInput>
+  }
+
+  export type FormularioCreateManyOfertaInputEnvelope = {
+    data: FormularioCreateManyOfertaInput | FormularioCreateManyOfertaInput[]
+    skipDuplicates?: boolean
   }
 
   export type UsuarioUpsertWithoutOfertasCreadasInput = {
@@ -6053,7 +7704,7 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     fotoperfil?: StringFieldUpdateOperationsInput | string
     proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
-    ofertasPostuladas?: OfertaUpdateManyWithoutPostuladosNestedInput
+    formulario?: FormularioUpdateManyWithoutPostuladoNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutOfertasCreadasInput = {
@@ -6066,37 +7717,23 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     fotoperfil?: StringFieldUpdateOperationsInput | string
     proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
-    ofertasPostuladas?: OfertaUncheckedUpdateManyWithoutPostuladosNestedInput
+    formulario?: FormularioUncheckedUpdateManyWithoutPostuladoNestedInput
   }
 
-  export type UsuarioUpsertWithWhereUniqueWithoutOfertasPostuladasInput = {
-    where: UsuarioWhereUniqueInput
-    update: XOR<UsuarioUpdateWithoutOfertasPostuladasInput, UsuarioUncheckedUpdateWithoutOfertasPostuladasInput>
-    create: XOR<UsuarioCreateWithoutOfertasPostuladasInput, UsuarioUncheckedCreateWithoutOfertasPostuladasInput>
+  export type FormularioUpsertWithWhereUniqueWithoutOfertaInput = {
+    where: FormularioWhereUniqueInput
+    update: XOR<FormularioUpdateWithoutOfertaInput, FormularioUncheckedUpdateWithoutOfertaInput>
+    create: XOR<FormularioCreateWithoutOfertaInput, FormularioUncheckedCreateWithoutOfertaInput>
   }
 
-  export type UsuarioUpdateWithWhereUniqueWithoutOfertasPostuladasInput = {
-    where: UsuarioWhereUniqueInput
-    data: XOR<UsuarioUpdateWithoutOfertasPostuladasInput, UsuarioUncheckedUpdateWithoutOfertasPostuladasInput>
+  export type FormularioUpdateWithWhereUniqueWithoutOfertaInput = {
+    where: FormularioWhereUniqueInput
+    data: XOR<FormularioUpdateWithoutOfertaInput, FormularioUncheckedUpdateWithoutOfertaInput>
   }
 
-  export type UsuarioUpdateManyWithWhereWithoutOfertasPostuladasInput = {
-    where: UsuarioScalarWhereInput
-    data: XOR<UsuarioUpdateManyMutationInput, UsuarioUncheckedUpdateManyWithoutOfertasPostuladasInput>
-  }
-
-  export type UsuarioScalarWhereInput = {
-    AND?: UsuarioScalarWhereInput | UsuarioScalarWhereInput[]
-    OR?: UsuarioScalarWhereInput[]
-    NOT?: UsuarioScalarWhereInput | UsuarioScalarWhereInput[]
-    id?: IntFilter<"Usuario"> | number
-    nombre?: StringFilter<"Usuario"> | string
-    contraseña?: StringFilter<"Usuario"> | string
-    mail?: StringFilter<"Usuario"> | string
-    descripcion?: StringFilter<"Usuario"> | string
-    rolPostulante?: BoolFilter<"Usuario"> | boolean
-    fecha?: DateTimeFilter<"Usuario"> | Date | string
-    fotoperfil?: StringFilter<"Usuario"> | string
+  export type FormularioUpdateManyWithWhereWithoutOfertaInput = {
+    where: FormularioScalarWhereInput
+    data: XOR<FormularioUpdateManyMutationInput, FormularioUncheckedUpdateManyWithoutOfertaInput>
   }
 
   export type UsuarioCreateWithoutProyectosCreadosInput = {
@@ -6108,7 +7745,7 @@ export namespace Prisma {
     fecha: Date | string
     fotoperfil: string
     ofertasCreadas?: OfertaCreateNestedManyWithoutCreadorInput
-    ofertasPostuladas?: OfertaCreateNestedManyWithoutPostuladosInput
+    formulario?: FormularioCreateNestedManyWithoutPostuladoInput
   }
 
   export type UsuarioUncheckedCreateWithoutProyectosCreadosInput = {
@@ -6121,7 +7758,7 @@ export namespace Prisma {
     fecha: Date | string
     fotoperfil: string
     ofertasCreadas?: OfertaUncheckedCreateNestedManyWithoutCreadorInput
-    ofertasPostuladas?: OfertaUncheckedCreateNestedManyWithoutPostuladosInput
+    formulario?: FormularioUncheckedCreateNestedManyWithoutPostuladoInput
   }
 
   export type UsuarioCreateOrConnectWithoutProyectosCreadosInput = {
@@ -6149,7 +7786,7 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     fotoperfil?: StringFieldUpdateOperationsInput | string
     ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
-    ofertasPostuladas?: OfertaUpdateManyWithoutPostuladosNestedInput
+    formulario?: FormularioUpdateManyWithoutPostuladoNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutProyectosCreadosInput = {
@@ -6162,7 +7799,7 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     fotoperfil?: StringFieldUpdateOperationsInput | string
     ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
-    ofertasPostuladas?: OfertaUncheckedUpdateManyWithoutPostuladosNestedInput
+    formulario?: FormularioUncheckedUpdateManyWithoutPostuladoNestedInput
   }
 
   export type OfertaCreateManyCreadorInput = {
@@ -6178,8 +7815,19 @@ export namespace Prisma {
     id?: number
     nombre: string
     descripcion: string
-    tecnologiasUsadas?: ProyectoCreatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas: string
     createdAt?: Date | string
+  }
+
+  export type FormularioCreateManyPostuladoInput = {
+    ofertaId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
   }
 
   export type OfertaUpdateWithoutCreadorInput = {
@@ -6188,7 +7836,7 @@ export namespace Prisma {
     sueldo?: NullableIntFieldUpdateOperationsInput | number | null
     modalidad?: StringFieldUpdateOperationsInput | string
     horario?: OfertaUpdatehorarioInput | Date[] | string[]
-    postulados?: UsuarioUpdateManyWithoutOfertasPostuladasNestedInput
+    formulario?: FormularioUpdateManyWithoutOfertaNestedInput
   }
 
   export type OfertaUncheckedUpdateWithoutCreadorInput = {
@@ -6198,7 +7846,7 @@ export namespace Prisma {
     sueldo?: NullableIntFieldUpdateOperationsInput | number | null
     modalidad?: StringFieldUpdateOperationsInput | string
     horario?: OfertaUpdatehorarioInput | Date[] | string[]
-    postulados?: UsuarioUncheckedUpdateManyWithoutOfertasPostuladasNestedInput
+    formulario?: FormularioUncheckedUpdateManyWithoutOfertaNestedInput
   }
 
   export type OfertaUncheckedUpdateManyWithoutCreadorInput = {
@@ -6213,7 +7861,7 @@ export namespace Prisma {
   export type ProyectoUpdateWithoutCreadorInput = {
     nombre?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    tecnologiasUsadas?: ProyectoUpdatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6221,7 +7869,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    tecnologiasUsadas?: ProyectoUpdatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6229,73 +7877,85 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    tecnologiasUsadas?: ProyectoUpdatetecnologiasUsadasInput | string[]
+    tecnologiasUsadas?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type OfertaUpdateWithoutPostuladosInput = {
-    categoria?: StringFieldUpdateOperationsInput | string
-    ubicacion?: StringFieldUpdateOperationsInput | string
-    sueldo?: NullableIntFieldUpdateOperationsInput | number | null
-    modalidad?: StringFieldUpdateOperationsInput | string
-    horario?: OfertaUpdatehorarioInput | Date[] | string[]
-    creador?: UsuarioUpdateOneRequiredWithoutOfertasCreadasNestedInput
-  }
-
-  export type OfertaUncheckedUpdateWithoutPostuladosInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    ubicacion?: StringFieldUpdateOperationsInput | string
-    sueldo?: NullableIntFieldUpdateOperationsInput | number | null
-    modalidad?: StringFieldUpdateOperationsInput | string
-    horario?: OfertaUpdatehorarioInput | Date[] | string[]
-    creadorId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type OfertaUncheckedUpdateManyWithoutPostuladosInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    ubicacion?: StringFieldUpdateOperationsInput | string
-    sueldo?: NullableIntFieldUpdateOperationsInput | number | null
-    modalidad?: StringFieldUpdateOperationsInput | string
-    horario?: OfertaUpdatehorarioInput | Date[] | string[]
-    creadorId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type UsuarioUpdateWithoutOfertasPostuladasInput = {
+  export type FormularioUpdateWithoutPostuladoInput = {
     nombre?: StringFieldUpdateOperationsInput | string
-    contraseña?: StringFieldUpdateOperationsInput | string
-    mail?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
-    ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
-    proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
+    curriculum?: StringFieldUpdateOperationsInput | string
+    oferta?: OfertaUpdateOneRequiredWithoutFormularioNestedInput
   }
 
-  export type UsuarioUncheckedUpdateWithoutOfertasPostuladasInput = {
-    id?: IntFieldUpdateOperationsInput | number
+  export type FormularioUncheckedUpdateWithoutPostuladoInput = {
+    ofertaId?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
-    contraseña?: StringFieldUpdateOperationsInput | string
-    mail?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
-    ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
-    proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
+    curriculum?: StringFieldUpdateOperationsInput | string
   }
 
-  export type UsuarioUncheckedUpdateManyWithoutOfertasPostuladasInput = {
-    id?: IntFieldUpdateOperationsInput | number
+  export type FormularioUncheckedUpdateManyWithoutPostuladoInput = {
+    ofertaId?: IntFieldUpdateOperationsInput | number
     nombre?: StringFieldUpdateOperationsInput | string
-    contraseña?: StringFieldUpdateOperationsInput | string
-    mail?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
-    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FormularioCreateManyOfertaInput = {
+    postuladoId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+  }
+
+  export type FormularioUpdateWithoutOfertaInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+    postulado?: UsuarioUpdateOneRequiredWithoutFormularioNestedInput
+  }
+
+  export type FormularioUncheckedUpdateWithoutOfertaInput = {
+    postuladoId?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FormularioUncheckedUpdateManyWithoutOfertaInput = {
+    postuladoId?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
   }
 
 

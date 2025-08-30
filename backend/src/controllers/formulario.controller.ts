@@ -5,7 +5,7 @@ import * as formularioService from '../services/formulario.service';
 export async function getFormulariosByOferta (req: Request, res: Response, next: NextFunction){
     try {
       const id = parseInt(req.params.ofertaId)
-      const formularios = await formularioService.getFomulariosByOferta(id);
+      const formularios = await formularioService.getFormulariosByOferta(id);
       res.json({ success: true, data:formularios })
     } catch (error) {
       next(error);
