@@ -25,15 +25,17 @@ export default function Login({ onLogin }) {
   const [mostrarModalConfiguracion, setMostrarModalConfiguracion] = useState(false);
   const [temaOscuro, setTemaOscuro] = useState(false);
 
-
+//Julian: Esta es la funcion para iniciar sesion
   const handleSubmit = async (e) => {
   e.preventDefault();
   setErrorMail('');
   setErrorPassword('');
 
+//Valida que se ingrese algo
   if (!email) setErrorMail('Este campo es obligatorio');
   if (!password) setErrorPassword('Este campo es obligatorio');
 
+  //si se encuentran, hace la llamada al back con un POST
   if (email && password) {
     try {
       const res = await fetch("http://localhost:3000/usuarios/login", {
@@ -46,9 +48,9 @@ export default function Login({ onLogin }) {
       const data = await res.json();
 
       if (res.ok) {
-        setUsuarioLogueado(data.usuario);
-        onLogin(); // Esto activa la redirección o cambio de vista
-      } else {
+        setUsuarioLogueado(data.usuario); //Si encuentra al usuario...
+        onLogin(); // Esto activa la redirección o cambio de vista. O sea me abre la nueva ventana
+      } else { //Si no los encuentra, muestra el cuadrigo que no los encontro
         setMostrarModalError(true);
       }
     } catch (error) {
@@ -58,20 +60,23 @@ export default function Login({ onLogin }) {
   }
 };
 
-
+//Julian: Esta es la opcion para registrar el usuario.
  const handleRegistro = async (e) => { 
     e.preventDefault(); 
+    //obtengo los atributos que tengo que ingresar
     const nombre = e.target.nombre.value.trim();
     const correo = e.target.email.value.trim(); 
      const contraseña = e.target.contraseña.value; 
      const rol = rolSeleccionado; 
      if (!nombre || !correo || !contraseña || !rol) { 
       alert("Todos los campos son obligatorios"); return; } 
+      //hace la llamada a la API, con un metodo POST
       const nuevoUsuario = { nombre, mail: correo, contraseña, rolPostulante: rol === "postulante" ? true : false }; 
       try { const res = await fetch("http://localhost:3000/usuarios", 
         { method: "POST", headers: { "Content-Type": "application/json" }, 
         body: JSON.stringify(nuevoUsuario), credentials: "include" }); 
         const data = await res.json(); if (res.ok) { setUsuarios(prev => [...prev, data.usuario]); 
+          //crea el usuario
            alert("Usuario creado correctamente!"); 
            setVista("login"); 
            setEmail(""); 
@@ -81,6 +86,7 @@ export default function Login({ onLogin }) {
           } catch (err) 
           { console.error(err);
              alert("Error al comunicarse con el servidor"); } };
+
   return (
     <div className={`${styles.loginPageWrapper} ${temaOscuro ? styles.temaOscuro : ''}`}>
       <div className={styles.bodyLogin}>

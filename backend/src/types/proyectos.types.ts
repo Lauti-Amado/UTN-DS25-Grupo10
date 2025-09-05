@@ -4,7 +4,7 @@ export interface Proyecto {
   id: number;
   nombre: string;
   descripcion: string;
-  tecnologiasUsadas: string[];
+  tecnologiasUsadas: string;
   createdAt: Date;
   creador: Usuario;
 }
