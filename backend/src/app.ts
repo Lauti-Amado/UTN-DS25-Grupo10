@@ -24,16 +24,6 @@ app.use(express.json());
 
 // Middleware log
 app.use(logRequest);
-// === ENDPOINT DE PRUEBA POST /test ===
-app.post('/test', (req, res) => {
-  console.log("POST /test recibido con body:", req.body); // esto aparece en la consola del backend
-  res.json({
-    success: true,
-    mensaje: "Backend recibe POST correctamente",
-    datosRecibidos: req.body
-  });
-});
-
 
 // Rutas
 app.use('/ofertas', ofertaRoutes);
