@@ -1,0 +1,32 @@
+
+export interface Formulario {
+    nombre: string,
+    apellido: string,
+    localidad: string,
+    pais: string,
+    genero: string,
+    descripcion: string,
+    curriculum: string,
+}
+
+export interface CreateFormularioRequest {
+    nombre: string,
+    apellido: string,
+    localidad: string,
+    pais: string,
+    genero: string,
+    descripcion: string,
+    curriculum: string,
+    ofertaID: number,
+    postuladoID: number,
+}
+
+export interface FormularioResponse {
+    formulario: Formulario,
+    message: string,
+}
+
+export interface FormulariosListResponse {
+    formularios: Formulario[],
+    total: number,
+}
