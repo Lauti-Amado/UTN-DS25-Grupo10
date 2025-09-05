@@ -28,14 +28,18 @@ model Formulario {
   pais        String
   genero      String
   descripcion String
-  curriculum  String
-  oferta      Oferta  @relation(fields: [ofertaId], references: [id])
-  postulado   Usuario @relation(fields: [postuladoId], references: [id])
+  curriculum  Strin
 
-  @@id([postuladoId, ofertaId])
+
+  // Relaciones
+  ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
+  proyectosCreados Proyecto[]   @relation("UsuarioProyectos")
+  formulario       Formulario[]
 }
 
+
 model Oferta {
+
   id         Int          @id @default(autoincrement())
   categoria  String
   ubicacion  String
@@ -45,6 +49,13 @@ model Oferta {
   creadorId  Int
   formulario Formulario[]
   creador    Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])
+
+
+  // Relaciones
+  creador    Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])
+  creadorId  Int
+  formulario Formulario[]
+
 }
 
 model Proyecto {

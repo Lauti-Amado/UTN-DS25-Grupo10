@@ -140,6 +140,18 @@ exports.Prisma.FormularioScalarFieldEnum = {
   curriculum: 'curriculum'
 };
 
+exports.Prisma.FormularioScalarFieldEnum = {
+  postuladoId: 'postuladoId',
+  ofertaId: 'ofertaId',
+  nombre: 'nombre',
+  apellido: 'apellido',
+  localidad: 'localidad',
+  pais: 'pais',
+  genero: 'genero',
+  descripcion: 'descripcion',
+  curriculum: 'curriculum'
+};
+
 exports.Prisma.OfertaScalarFieldEnum = {
   id: 'id',
   categoria: 'categoria',
