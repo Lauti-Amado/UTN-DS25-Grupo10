@@ -1129,15 +1129,15 @@ export namespace Prisma {
    */
 
   export type UsuarioCountOutputType = {
+    formulario: number
     ofertasCreadas: number
     proyectosCreados: number
-    formulario: number
   }
 
   export type UsuarioCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    formulario?: boolean | UsuarioCountOutputTypeCountFormularioArgs
     ofertasCreadas?: boolean | UsuarioCountOutputTypeCountOfertasCreadasArgs
     proyectosCreados?: boolean | UsuarioCountOutputTypeCountProyectosCreadosArgs
-    formulario?: boolean | UsuarioCountOutputTypeCountFormularioArgs
   }
 
   // Custom InputTypes
@@ -1154,6 +1154,13 @@ export namespace Prisma {
   /**
    * UsuarioCountOutputType without action
    */
+  export type UsuarioCountOutputTypeCountFormularioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FormularioWhereInput
+  }
+
+  /**
+   * UsuarioCountOutputType without action
+   */
   export type UsuarioCountOutputTypeCountOfertasCreadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OfertaWhereInput
   }
@@ -1163,13 +1170,6 @@ export namespace Prisma {
    */
   export type UsuarioCountOutputTypeCountProyectosCreadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProyectoWhereInput
-  }
-
-  /**
-   * UsuarioCountOutputType without action
-   */
-  export type UsuarioCountOutputTypeCountFormularioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FormularioWhereInput
   }
 
 
@@ -1233,10 +1233,7 @@ export namespace Prisma {
     nombre: string | null
     contraseña: string | null
     mail: string | null
-    descripcion: string | null
     rolPostulante: boolean | null
-    fecha: Date | null
-    fotoperfil: string | null
   }
 
   export type UsuarioMaxAggregateOutputType = {
@@ -1244,10 +1241,7 @@ export namespace Prisma {
     nombre: string | null
     contraseña: string | null
     mail: string | null
-    descripcion: string | null
     rolPostulante: boolean | null
-    fecha: Date | null
-    fotoperfil: string | null
   }
 
   export type UsuarioCountAggregateOutputType = {
@@ -1255,10 +1249,7 @@ export namespace Prisma {
     nombre: number
     contraseña: number
     mail: number
-    descripcion: number
     rolPostulante: number
-    fecha: number
-    fotoperfil: number
     _all: number
   }
 
@@ -1276,10 +1267,7 @@ export namespace Prisma {
     nombre?: true
     contraseña?: true
     mail?: true
-    descripcion?: true
     rolPostulante?: true
-    fecha?: true
-    fotoperfil?: true
   }
 
   export type UsuarioMaxAggregateInputType = {
@@ -1287,10 +1275,7 @@ export namespace Prisma {
     nombre?: true
     contraseña?: true
     mail?: true
-    descripcion?: true
     rolPostulante?: true
-    fecha?: true
-    fotoperfil?: true
   }
 
   export type UsuarioCountAggregateInputType = {
@@ -1298,10 +1283,7 @@ export namespace Prisma {
     nombre?: true
     contraseña?: true
     mail?: true
-    descripcion?: true
     rolPostulante?: true
-    fecha?: true
-    fotoperfil?: true
     _all?: true
   }
 
@@ -1396,10 +1378,7 @@ export namespace Prisma {
     nombre: string
     contraseña: string
     mail: string
-    descripcion: string
     rolPostulante: boolean
-    fecha: Date
-    fotoperfil: string
     _count: UsuarioCountAggregateOutputType | null
     _avg: UsuarioAvgAggregateOutputType | null
     _sum: UsuarioSumAggregateOutputType | null
@@ -1426,13 +1405,10 @@ export namespace Prisma {
     nombre?: boolean
     contraseña?: boolean
     mail?: boolean
-    descripcion?: boolean
     rolPostulante?: boolean
-    fecha?: boolean
-    fotoperfil?: boolean
+    formulario?: boolean | Usuario$formularioArgs<ExtArgs>
     ofertasCreadas?: boolean | Usuario$ofertasCreadasArgs<ExtArgs>
     proyectosCreados?: boolean | Usuario$proyectosCreadosArgs<ExtArgs>
-    formulario?: boolean | Usuario$formularioArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["usuario"]>
 
@@ -1441,10 +1417,7 @@ export namespace Prisma {
     nombre?: boolean
     contraseña?: boolean
     mail?: boolean
-    descripcion?: boolean
     rolPostulante?: boolean
-    fecha?: boolean
-    fotoperfil?: boolean
   }, ExtArgs["result"]["usuario"]>
 
   export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1452,10 +1425,7 @@ export namespace Prisma {
     nombre?: boolean
     contraseña?: boolean
     mail?: boolean
-    descripcion?: boolean
     rolPostulante?: boolean
-    fecha?: boolean
-    fotoperfil?: boolean
   }, ExtArgs["result"]["usuario"]>
 
   export type UsuarioSelectScalar = {
@@ -1463,17 +1433,14 @@ export namespace Prisma {
     nombre?: boolean
     contraseña?: boolean
     mail?: boolean
-    descripcion?: boolean
     rolPostulante?: boolean
-    fecha?: boolean
-    fotoperfil?: boolean
   }
 
-  export type UsuarioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "contraseña" | "mail" | "descripcion" | "rolPostulante" | "fecha" | "fotoperfil", ExtArgs["result"]["usuario"]>
+  export type UsuarioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "contraseña" | "mail" | "rolPostulante", ExtArgs["result"]["usuario"]>
   export type UsuarioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    formulario?: boolean | Usuario$formularioArgs<ExtArgs>
     ofertasCreadas?: boolean | Usuario$ofertasCreadasArgs<ExtArgs>
     proyectosCreados?: boolean | Usuario$proyectosCreadosArgs<ExtArgs>
-    formulario?: boolean | Usuario$formularioArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UsuarioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1482,19 +1449,16 @@ export namespace Prisma {
   export type $UsuarioPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Usuario"
     objects: {
+      formulario: Prisma.$FormularioPayload<ExtArgs>[]
       ofertasCreadas: Prisma.$OfertaPayload<ExtArgs>[]
       proyectosCreados: Prisma.$ProyectoPayload<ExtArgs>[]
-      formulario: Prisma.$FormularioPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       nombre: string
       contraseña: string
       mail: string
-      descripcion: string
       rolPostulante: boolean
-      fecha: Date
-      fotoperfil: string
     }, ExtArgs["result"]["usuario"]>
     composites: {}
   }
@@ -1889,9 +1853,9 @@ export namespace Prisma {
    */
   export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    formulario<T extends Usuario$formularioArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$formularioArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ofertasCreadas<T extends Usuario$ofertasCreadasArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$ofertasCreadasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OfertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     proyectosCreados<T extends Usuario$proyectosCreadosArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$proyectosCreadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProyectoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    formulario<T extends Usuario$formularioArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$formularioArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1925,10 +1889,7 @@ export namespace Prisma {
     readonly nombre: FieldRef<"Usuario", 'String'>
     readonly contraseña: FieldRef<"Usuario", 'String'>
     readonly mail: FieldRef<"Usuario", 'String'>
-    readonly descripcion: FieldRef<"Usuario", 'String'>
     readonly rolPostulante: FieldRef<"Usuario", 'Boolean'>
-    readonly fecha: FieldRef<"Usuario", 'DateTime'>
-    readonly fotoperfil: FieldRef<"Usuario", 'String'>
   }
     
 
@@ -2317,6 +2278,30 @@ export namespace Prisma {
   }
 
   /**
+   * Usuario.formulario
+   */
+  export type Usuario$formularioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Formulario
+     */
+    select?: FormularioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Formulario
+     */
+    omit?: FormularioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FormularioInclude<ExtArgs> | null
+    where?: FormularioWhereInput
+    orderBy?: FormularioOrderByWithRelationInput | FormularioOrderByWithRelationInput[]
+    cursor?: FormularioWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FormularioScalarFieldEnum | FormularioScalarFieldEnum[]
+  }
+
+  /**
    * Usuario.ofertasCreadas
    */
   export type Usuario$ofertasCreadasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2362,30 +2347,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProyectoScalarFieldEnum | ProyectoScalarFieldEnum[]
-  }
-
-  /**
-   * Usuario.formulario
-   */
-  export type Usuario$formularioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Formulario
-     */
-    select?: FormularioSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Formulario
-     */
-    omit?: FormularioOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FormularioInclude<ExtArgs> | null
-    where?: FormularioWhereInput
-    orderBy?: FormularioOrderByWithRelationInput | FormularioOrderByWithRelationInput[]
-    cursor?: FormularioWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FormularioScalarFieldEnum | FormularioScalarFieldEnum[]
   }
 
   /**
@@ -2641,8 +2602,8 @@ export namespace Prisma {
     genero?: boolean
     descripcion?: boolean
     curriculum?: boolean
-    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
     oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formulario"]>
 
   export type FormularioSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2655,8 +2616,8 @@ export namespace Prisma {
     genero?: boolean
     descripcion?: boolean
     curriculum?: boolean
-    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
     oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formulario"]>
 
   export type FormularioSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2669,8 +2630,8 @@ export namespace Prisma {
     genero?: boolean
     descripcion?: boolean
     curriculum?: boolean
-    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
     oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["formulario"]>
 
   export type FormularioSelectScalar = {
@@ -2687,23 +2648,23 @@ export namespace Prisma {
 
   export type FormularioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"postuladoId" | "ofertaId" | "nombre" | "apellido" | "localidad" | "pais" | "genero" | "descripcion" | "curriculum", ExtArgs["result"]["formulario"]>
   export type FormularioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
     oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
   }
   export type FormularioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
     oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
   }
   export type FormularioIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
     oferta?: boolean | OfertaDefaultArgs<ExtArgs>
+    postulado?: boolean | UsuarioDefaultArgs<ExtArgs>
   }
 
   export type $FormularioPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Formulario"
     objects: {
-      postulado: Prisma.$UsuarioPayload<ExtArgs>
       oferta: Prisma.$OfertaPayload<ExtArgs>
+      postulado: Prisma.$UsuarioPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       postuladoId: number
@@ -3109,8 +3070,8 @@ export namespace Prisma {
    */
   export interface Prisma__FormularioClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    postulado<T extends UsuarioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioDefaultArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     oferta<T extends OfertaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OfertaDefaultArgs<ExtArgs>>): Prisma__OfertaClient<$Result.GetResult<Prisma.$OfertaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    postulado<T extends UsuarioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioDefaultArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3781,8 +3742,8 @@ export namespace Prisma {
     modalidad?: boolean
     horario?: boolean
     creadorId?: boolean
-    creador?: boolean | UsuarioDefaultArgs<ExtArgs>
     formulario?: boolean | Oferta$formularioArgs<ExtArgs>
+    creador?: boolean | UsuarioDefaultArgs<ExtArgs>
     _count?: boolean | OfertaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["oferta"]>
 
@@ -3820,8 +3781,8 @@ export namespace Prisma {
 
   export type OfertaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "categoria" | "ubicacion" | "sueldo" | "modalidad" | "horario" | "creadorId", ExtArgs["result"]["oferta"]>
   export type OfertaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    creador?: boolean | UsuarioDefaultArgs<ExtArgs>
     formulario?: boolean | Oferta$formularioArgs<ExtArgs>
+    creador?: boolean | UsuarioDefaultArgs<ExtArgs>
     _count?: boolean | OfertaCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OfertaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3834,8 +3795,8 @@ export namespace Prisma {
   export type $OfertaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Oferta"
     objects: {
-      creador: Prisma.$UsuarioPayload<ExtArgs>
       formulario: Prisma.$FormularioPayload<ExtArgs>[]
+      creador: Prisma.$UsuarioPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4239,8 +4200,8 @@ export namespace Prisma {
    */
   export interface Prisma__OfertaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    creador<T extends UsuarioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioDefaultArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     formulario<T extends Oferta$formularioArgs<ExtArgs> = {}>(args?: Subset<T, Oferta$formularioArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FormularioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    creador<T extends UsuarioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioDefaultArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5843,10 +5804,7 @@ export namespace Prisma {
     nombre: 'nombre',
     contraseña: 'contraseña',
     mail: 'mail',
-    descripcion: 'descripcion',
-    rolPostulante: 'rolPostulante',
-    fecha: 'fecha',
-    fotoperfil: 'fotoperfil'
+    rolPostulante: 'rolPostulante'
   };
 
   export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
@@ -5957,16 +5915,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'DateTime[]'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
   /**
-   * Reference to a field of type 'DateTime[]'
+   * Reference to a field of type 'DateTime'
    */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
 
 
@@ -5995,13 +5953,10 @@ export namespace Prisma {
     nombre?: StringFilter<"Usuario"> | string
     contraseña?: StringFilter<"Usuario"> | string
     mail?: StringFilter<"Usuario"> | string
-    descripcion?: StringFilter<"Usuario"> | string
     rolPostulante?: BoolFilter<"Usuario"> | boolean
-    fecha?: DateTimeFilter<"Usuario"> | Date | string
-    fotoperfil?: StringFilter<"Usuario"> | string
+    formulario?: FormularioListRelationFilter
     ofertasCreadas?: OfertaListRelationFilter
     proyectosCreados?: ProyectoListRelationFilter
-    formulario?: FormularioListRelationFilter
   }
 
   export type UsuarioOrderByWithRelationInput = {
@@ -6009,13 +5964,10 @@ export namespace Prisma {
     nombre?: SortOrder
     contraseña?: SortOrder
     mail?: SortOrder
-    descripcion?: SortOrder
     rolPostulante?: SortOrder
-    fecha?: SortOrder
-    fotoperfil?: SortOrder
+    formulario?: FormularioOrderByRelationAggregateInput
     ofertasCreadas?: OfertaOrderByRelationAggregateInput
     proyectosCreados?: ProyectoOrderByRelationAggregateInput
-    formulario?: FormularioOrderByRelationAggregateInput
   }
 
   export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -6026,13 +5978,10 @@ export namespace Prisma {
     NOT?: UsuarioWhereInput | UsuarioWhereInput[]
     nombre?: StringFilter<"Usuario"> | string
     contraseña?: StringFilter<"Usuario"> | string
-    descripcion?: StringFilter<"Usuario"> | string
     rolPostulante?: BoolFilter<"Usuario"> | boolean
-    fecha?: DateTimeFilter<"Usuario"> | Date | string
-    fotoperfil?: StringFilter<"Usuario"> | string
+    formulario?: FormularioListRelationFilter
     ofertasCreadas?: OfertaListRelationFilter
     proyectosCreados?: ProyectoListRelationFilter
-    formulario?: FormularioListRelationFilter
   }, "id" | "mail">
 
   export type UsuarioOrderByWithAggregationInput = {
@@ -6040,10 +5989,7 @@ export namespace Prisma {
     nombre?: SortOrder
     contraseña?: SortOrder
     mail?: SortOrder
-    descripcion?: SortOrder
     rolPostulante?: SortOrder
-    fecha?: SortOrder
-    fotoperfil?: SortOrder
     _count?: UsuarioCountOrderByAggregateInput
     _avg?: UsuarioAvgOrderByAggregateInput
     _max?: UsuarioMaxOrderByAggregateInput
@@ -6059,10 +6005,7 @@ export namespace Prisma {
     nombre?: StringWithAggregatesFilter<"Usuario"> | string
     contraseña?: StringWithAggregatesFilter<"Usuario"> | string
     mail?: StringWithAggregatesFilter<"Usuario"> | string
-    descripcion?: StringWithAggregatesFilter<"Usuario"> | string
     rolPostulante?: BoolWithAggregatesFilter<"Usuario"> | boolean
-    fecha?: DateTimeWithAggregatesFilter<"Usuario"> | Date | string
-    fotoperfil?: StringWithAggregatesFilter<"Usuario"> | string
   }
 
   export type FormularioWhereInput = {
@@ -6078,8 +6021,8 @@ export namespace Prisma {
     genero?: StringFilter<"Formulario"> | string
     descripcion?: StringFilter<"Formulario"> | string
     curriculum?: StringFilter<"Formulario"> | string
-    postulado?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
     oferta?: XOR<OfertaScalarRelationFilter, OfertaWhereInput>
+    postulado?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
   }
 
   export type FormularioOrderByWithRelationInput = {
@@ -6092,8 +6035,8 @@ export namespace Prisma {
     genero?: SortOrder
     descripcion?: SortOrder
     curriculum?: SortOrder
-    postulado?: UsuarioOrderByWithRelationInput
     oferta?: OfertaOrderByWithRelationInput
+    postulado?: UsuarioOrderByWithRelationInput
   }
 
   export type FormularioWhereUniqueInput = Prisma.AtLeast<{
@@ -6110,8 +6053,8 @@ export namespace Prisma {
     genero?: StringFilter<"Formulario"> | string
     descripcion?: StringFilter<"Formulario"> | string
     curriculum?: StringFilter<"Formulario"> | string
-    postulado?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
     oferta?: XOR<OfertaScalarRelationFilter, OfertaWhereInput>
+    postulado?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
   }, "postuladoId_ofertaId">
 
   export type FormularioOrderByWithAggregationInput = {
@@ -6157,8 +6100,8 @@ export namespace Prisma {
     modalidad?: StringFilter<"Oferta"> | string
     horario?: DateTimeNullableListFilter<"Oferta">
     creadorId?: IntFilter<"Oferta"> | number
-    creador?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
     formulario?: FormularioListRelationFilter
+    creador?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
   }
 
   export type OfertaOrderByWithRelationInput = {
@@ -6169,8 +6112,8 @@ export namespace Prisma {
     modalidad?: SortOrder
     horario?: SortOrder
     creadorId?: SortOrder
-    creador?: UsuarioOrderByWithRelationInput
     formulario?: FormularioOrderByRelationAggregateInput
+    creador?: UsuarioOrderByWithRelationInput
   }
 
   export type OfertaWhereUniqueInput = Prisma.AtLeast<{
@@ -6184,8 +6127,8 @@ export namespace Prisma {
     modalidad?: StringFilter<"Oferta"> | string
     horario?: DateTimeNullableListFilter<"Oferta">
     creadorId?: IntFilter<"Oferta"> | number
-    creador?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
     formulario?: FormularioListRelationFilter
+    creador?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
   }, "id">
 
   export type OfertaOrderByWithAggregationInput = {
@@ -6282,13 +6225,10 @@ export namespace Prisma {
     nombre: string
     contraseña: string
     mail: string
-    descripcion: string
     rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
+    formulario?: FormularioCreateNestedManyWithoutPostuladoInput
     ofertasCreadas?: OfertaCreateNestedManyWithoutCreadorInput
     proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
-    formulario?: FormularioCreateNestedManyWithoutPostuladoInput
   }
 
   export type UsuarioUncheckedCreateInput = {
@@ -6296,26 +6236,20 @@ export namespace Prisma {
     nombre: string
     contraseña: string
     mail: string
-    descripcion: string
     rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
+    formulario?: FormularioUncheckedCreateNestedManyWithoutPostuladoInput
     ofertasCreadas?: OfertaUncheckedCreateNestedManyWithoutCreadorInput
     proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
-    formulario?: FormularioUncheckedCreateNestedManyWithoutPostuladoInput
   }
 
   export type UsuarioUpdateInput = {
     nombre?: StringFieldUpdateOperationsInput | string
     contraseña?: StringFieldUpdateOperationsInput | string
     mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
     rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
+    formulario?: FormularioUpdateManyWithoutPostuladoNestedInput
     ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
     proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
-    formulario?: FormularioUpdateManyWithoutPostuladoNestedInput
   }
 
   export type UsuarioUncheckedUpdateInput = {
@@ -6323,13 +6257,10 @@ export namespace Prisma {
     nombre?: StringFieldUpdateOperationsInput | string
     contraseña?: StringFieldUpdateOperationsInput | string
     mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
     rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
+    formulario?: FormularioUncheckedUpdateManyWithoutPostuladoNestedInput
     ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
     proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
-    formulario?: FormularioUncheckedUpdateManyWithoutPostuladoNestedInput
   }
 
   export type UsuarioCreateManyInput = {
@@ -6337,20 +6268,14 @@ export namespace Prisma {
     nombre: string
     contraseña: string
     mail: string
-    descripcion: string
     rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
   }
 
   export type UsuarioUpdateManyMutationInput = {
     nombre?: StringFieldUpdateOperationsInput | string
     contraseña?: StringFieldUpdateOperationsInput | string
     mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
     rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
   }
 
   export type UsuarioUncheckedUpdateManyInput = {
@@ -6358,10 +6283,7 @@ export namespace Prisma {
     nombre?: StringFieldUpdateOperationsInput | string
     contraseña?: StringFieldUpdateOperationsInput | string
     mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
     rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
   }
 
   export type FormularioCreateInput = {
@@ -6372,8 +6294,8 @@ export namespace Prisma {
     genero: string
     descripcion: string
     curriculum: string
-    postulado: UsuarioCreateNestedOneWithoutFormularioInput
     oferta: OfertaCreateNestedOneWithoutFormularioInput
+    postulado: UsuarioCreateNestedOneWithoutFormularioInput
   }
 
   export type FormularioUncheckedCreateInput = {
@@ -6396,8 +6318,8 @@ export namespace Prisma {
     genero?: StringFieldUpdateOperationsInput | string
     descripcion?: StringFieldUpdateOperationsInput | string
     curriculum?: StringFieldUpdateOperationsInput | string
-    postulado?: UsuarioUpdateOneRequiredWithoutFormularioNestedInput
     oferta?: OfertaUpdateOneRequiredWithoutFormularioNestedInput
+    postulado?: UsuarioUpdateOneRequiredWithoutFormularioNestedInput
   }
 
   export type FormularioUncheckedUpdateInput = {
@@ -6452,8 +6374,8 @@ export namespace Prisma {
     sueldo?: number | null
     modalidad: string
     horario?: OfertaCreatehorarioInput | Date[] | string[]
-    creador: UsuarioCreateNestedOneWithoutOfertasCreadasInput
     formulario?: FormularioCreateNestedManyWithoutOfertaInput
+    creador: UsuarioCreateNestedOneWithoutOfertasCreadasInput
   }
 
   export type OfertaUncheckedCreateInput = {
@@ -6473,8 +6395,8 @@ export namespace Prisma {
     sueldo?: NullableIntFieldUpdateOperationsInput | number | null
     modalidad?: StringFieldUpdateOperationsInput | string
     horario?: OfertaUpdatehorarioInput | Date[] | string[]
-    creador?: UsuarioUpdateOneRequiredWithoutOfertasCreadasNestedInput
     formulario?: FormularioUpdateManyWithoutOfertaNestedInput
+    creador?: UsuarioUpdateOneRequiredWithoutOfertasCreadasNestedInput
   }
 
   export type OfertaUncheckedUpdateInput = {
@@ -6606,15 +6528,10 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type DateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  export type FormularioListRelationFilter = {
+    every?: FormularioWhereInput
+    some?: FormularioWhereInput
+    none?: FormularioWhereInput
   }
 
   export type OfertaListRelationFilter = {
@@ -6629,10 +6546,8 @@ export namespace Prisma {
     none?: ProyectoWhereInput
   }
 
-  export type FormularioListRelationFilter = {
-    every?: FormularioWhereInput
-    some?: FormularioWhereInput
-    none?: FormularioWhereInput
+  export type FormularioOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type OfertaOrderByRelationAggregateInput = {
@@ -6643,19 +6558,12 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type FormularioOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type UsuarioCountOrderByAggregateInput = {
     id?: SortOrder
     nombre?: SortOrder
     contraseña?: SortOrder
     mail?: SortOrder
-    descripcion?: SortOrder
     rolPostulante?: SortOrder
-    fecha?: SortOrder
-    fotoperfil?: SortOrder
   }
 
   export type UsuarioAvgOrderByAggregateInput = {
@@ -6667,10 +6575,7 @@ export namespace Prisma {
     nombre?: SortOrder
     contraseña?: SortOrder
     mail?: SortOrder
-    descripcion?: SortOrder
     rolPostulante?: SortOrder
-    fecha?: SortOrder
-    fotoperfil?: SortOrder
   }
 
   export type UsuarioMinOrderByAggregateInput = {
@@ -6678,10 +6583,7 @@ export namespace Prisma {
     nombre?: SortOrder
     contraseña?: SortOrder
     mail?: SortOrder
-    descripcion?: SortOrder
     rolPostulante?: SortOrder
-    fecha?: SortOrder
-    fotoperfil?: SortOrder
   }
 
   export type UsuarioSumOrderByAggregateInput = {
@@ -6730,28 +6632,14 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
+  export type OfertaScalarRelationFilter = {
+    is?: OfertaWhereInput
+    isNot?: OfertaWhereInput
   }
 
   export type UsuarioScalarRelationFilter = {
     is?: UsuarioWhereInput
     isNot?: UsuarioWhereInput
-  }
-
-  export type OfertaScalarRelationFilter = {
-    is?: OfertaWhereInput
-    isNot?: OfertaWhereInput
   }
 
   export type FormularioPostuladoIdOfertaIdCompoundUniqueInput = {
@@ -6885,6 +6773,17 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
   export type ProyectoCountOrderByAggregateInput = {
     id?: SortOrder
     nombre?: SortOrder
@@ -6922,6 +6821,27 @@ export namespace Prisma {
     creadorId?: SortOrder
   }
 
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type FormularioCreateNestedManyWithoutPostuladoInput = {
+    create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
+    createMany?: FormularioCreateManyPostuladoInputEnvelope
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+  }
+
   export type OfertaCreateNestedManyWithoutCreadorInput = {
     create?: XOR<OfertaCreateWithoutCreadorInput, OfertaUncheckedCreateWithoutCreadorInput> | OfertaCreateWithoutCreadorInput[] | OfertaUncheckedCreateWithoutCreadorInput[]
     connectOrCreate?: OfertaCreateOrConnectWithoutCreadorInput | OfertaCreateOrConnectWithoutCreadorInput[]
@@ -6936,7 +6856,7 @@ export namespace Prisma {
     connect?: ProyectoWhereUniqueInput | ProyectoWhereUniqueInput[]
   }
 
-  export type FormularioCreateNestedManyWithoutPostuladoInput = {
+  export type FormularioUncheckedCreateNestedManyWithoutPostuladoInput = {
     create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
     connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
     createMany?: FormularioCreateManyPostuladoInputEnvelope
@@ -6957,13 +6877,6 @@ export namespace Prisma {
     connect?: ProyectoWhereUniqueInput | ProyectoWhereUniqueInput[]
   }
 
-  export type FormularioUncheckedCreateNestedManyWithoutPostuladoInput = {
-    create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
-    connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
-    createMany?: FormularioCreateManyPostuladoInputEnvelope
-    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
-  }
-
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -6972,8 +6885,18 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
+  export type FormularioUpdateManyWithoutPostuladoNestedInput = {
+    create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
+    connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
+    upsert?: FormularioUpsertWithWhereUniqueWithoutPostuladoInput | FormularioUpsertWithWhereUniqueWithoutPostuladoInput[]
+    createMany?: FormularioCreateManyPostuladoInputEnvelope
+    set?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    disconnect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    delete?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+    update?: FormularioUpdateWithWhereUniqueWithoutPostuladoInput | FormularioUpdateWithWhereUniqueWithoutPostuladoInput[]
+    updateMany?: FormularioUpdateManyWithWhereWithoutPostuladoInput | FormularioUpdateManyWithWhereWithoutPostuladoInput[]
+    deleteMany?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
   }
 
   export type OfertaUpdateManyWithoutCreadorNestedInput = {
@@ -7004,7 +6927,15 @@ export namespace Prisma {
     deleteMany?: ProyectoScalarWhereInput | ProyectoScalarWhereInput[]
   }
 
-  export type FormularioUpdateManyWithoutPostuladoNestedInput = {
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type FormularioUncheckedUpdateManyWithoutPostuladoNestedInput = {
     create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
     connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
     upsert?: FormularioUpsertWithWhereUniqueWithoutPostuladoInput | FormularioUpsertWithWhereUniqueWithoutPostuladoInput[]
@@ -7016,14 +6947,6 @@ export namespace Prisma {
     update?: FormularioUpdateWithWhereUniqueWithoutPostuladoInput | FormularioUpdateWithWhereUniqueWithoutPostuladoInput[]
     updateMany?: FormularioUpdateManyWithWhereWithoutPostuladoInput | FormularioUpdateManyWithWhereWithoutPostuladoInput[]
     deleteMany?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type OfertaUncheckedUpdateManyWithoutCreadorNestedInput = {
@@ -7054,38 +6977,16 @@ export namespace Prisma {
     deleteMany?: ProyectoScalarWhereInput | ProyectoScalarWhereInput[]
   }
 
-  export type FormularioUncheckedUpdateManyWithoutPostuladoNestedInput = {
-    create?: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput> | FormularioCreateWithoutPostuladoInput[] | FormularioUncheckedCreateWithoutPostuladoInput[]
-    connectOrCreate?: FormularioCreateOrConnectWithoutPostuladoInput | FormularioCreateOrConnectWithoutPostuladoInput[]
-    upsert?: FormularioUpsertWithWhereUniqueWithoutPostuladoInput | FormularioUpsertWithWhereUniqueWithoutPostuladoInput[]
-    createMany?: FormularioCreateManyPostuladoInputEnvelope
-    set?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
-    disconnect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
-    delete?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
-    connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
-    update?: FormularioUpdateWithWhereUniqueWithoutPostuladoInput | FormularioUpdateWithWhereUniqueWithoutPostuladoInput[]
-    updateMany?: FormularioUpdateManyWithWhereWithoutPostuladoInput | FormularioUpdateManyWithWhereWithoutPostuladoInput[]
-    deleteMany?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
-  }
-
-  export type UsuarioCreateNestedOneWithoutFormularioInput = {
-    create?: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
-    connectOrCreate?: UsuarioCreateOrConnectWithoutFormularioInput
-    connect?: UsuarioWhereUniqueInput
-  }
-
   export type OfertaCreateNestedOneWithoutFormularioInput = {
     create?: XOR<OfertaCreateWithoutFormularioInput, OfertaUncheckedCreateWithoutFormularioInput>
     connectOrCreate?: OfertaCreateOrConnectWithoutFormularioInput
     connect?: OfertaWhereUniqueInput
   }
 
-  export type UsuarioUpdateOneRequiredWithoutFormularioNestedInput = {
+  export type UsuarioCreateNestedOneWithoutFormularioInput = {
     create?: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
     connectOrCreate?: UsuarioCreateOrConnectWithoutFormularioInput
-    upsert?: UsuarioUpsertWithoutFormularioInput
     connect?: UsuarioWhereUniqueInput
-    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutFormularioInput, UsuarioUpdateWithoutFormularioInput>, UsuarioUncheckedUpdateWithoutFormularioInput>
   }
 
   export type OfertaUpdateOneRequiredWithoutFormularioNestedInput = {
@@ -7096,14 +6997,16 @@ export namespace Prisma {
     update?: XOR<XOR<OfertaUpdateToOneWithWhereWithoutFormularioInput, OfertaUpdateWithoutFormularioInput>, OfertaUncheckedUpdateWithoutFormularioInput>
   }
 
-  export type OfertaCreatehorarioInput = {
-    set: Date[] | string[]
+  export type UsuarioUpdateOneRequiredWithoutFormularioNestedInput = {
+    create?: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutFormularioInput
+    upsert?: UsuarioUpsertWithoutFormularioInput
+    connect?: UsuarioWhereUniqueInput
+    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutFormularioInput, UsuarioUpdateWithoutFormularioInput>, UsuarioUncheckedUpdateWithoutFormularioInput>
   }
 
-  export type UsuarioCreateNestedOneWithoutOfertasCreadasInput = {
-    create?: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
-    connectOrCreate?: UsuarioCreateOrConnectWithoutOfertasCreadasInput
-    connect?: UsuarioWhereUniqueInput
+  export type OfertaCreatehorarioInput = {
+    set: Date[] | string[]
   }
 
   export type FormularioCreateNestedManyWithoutOfertaInput = {
@@ -7111,6 +7014,12 @@ export namespace Prisma {
     connectOrCreate?: FormularioCreateOrConnectWithoutOfertaInput | FormularioCreateOrConnectWithoutOfertaInput[]
     createMany?: FormularioCreateManyOfertaInputEnvelope
     connect?: FormularioWhereUniqueInput | FormularioWhereUniqueInput[]
+  }
+
+  export type UsuarioCreateNestedOneWithoutOfertasCreadasInput = {
+    create?: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutOfertasCreadasInput
+    connect?: UsuarioWhereUniqueInput
   }
 
   export type FormularioUncheckedCreateNestedManyWithoutOfertaInput = {
@@ -7133,14 +7042,6 @@ export namespace Prisma {
     push?: Date | string | Date[] | string[]
   }
 
-  export type UsuarioUpdateOneRequiredWithoutOfertasCreadasNestedInput = {
-    create?: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
-    connectOrCreate?: UsuarioCreateOrConnectWithoutOfertasCreadasInput
-    upsert?: UsuarioUpsertWithoutOfertasCreadasInput
-    connect?: UsuarioWhereUniqueInput
-    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutOfertasCreadasInput, UsuarioUpdateWithoutOfertasCreadasInput>, UsuarioUncheckedUpdateWithoutOfertasCreadasInput>
-  }
-
   export type FormularioUpdateManyWithoutOfertaNestedInput = {
     create?: XOR<FormularioCreateWithoutOfertaInput, FormularioUncheckedCreateWithoutOfertaInput> | FormularioCreateWithoutOfertaInput[] | FormularioUncheckedCreateWithoutOfertaInput[]
     connectOrCreate?: FormularioCreateOrConnectWithoutOfertaInput | FormularioCreateOrConnectWithoutOfertaInput[]
@@ -7153,6 +7054,14 @@ export namespace Prisma {
     update?: FormularioUpdateWithWhereUniqueWithoutOfertaInput | FormularioUpdateWithWhereUniqueWithoutOfertaInput[]
     updateMany?: FormularioUpdateManyWithWhereWithoutOfertaInput | FormularioUpdateManyWithWhereWithoutOfertaInput[]
     deleteMany?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
+  }
+
+  export type UsuarioUpdateOneRequiredWithoutOfertasCreadasNestedInput = {
+    create?: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutOfertasCreadasInput
+    upsert?: UsuarioUpsertWithoutOfertasCreadasInput
+    connect?: UsuarioWhereUniqueInput
+    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutOfertasCreadasInput, UsuarioUpdateWithoutOfertasCreadasInput>, UsuarioUncheckedUpdateWithoutOfertasCreadasInput>
   }
 
   export type FormularioUncheckedUpdateManyWithoutOfertaNestedInput = {
@@ -7173,6 +7082,10 @@ export namespace Prisma {
     create?: XOR<UsuarioCreateWithoutProyectosCreadosInput, UsuarioUncheckedCreateWithoutProyectosCreadosInput>
     connectOrCreate?: UsuarioCreateOrConnectWithoutProyectosCreadosInput
     connect?: UsuarioWhereUniqueInput
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type UsuarioUpdateOneRequiredWithoutProyectosCreadosNestedInput = {
@@ -7211,17 +7124,6 @@ export namespace Prisma {
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedDateTimeFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -7276,20 +7178,6 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -7326,6 +7214,63 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type FormularioCreateWithoutPostuladoInput = {
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+    oferta: OfertaCreateNestedOneWithoutFormularioInput
+  }
+
+  export type FormularioUncheckedCreateWithoutPostuladoInput = {
+    ofertaId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
+  }
+
+  export type FormularioCreateOrConnectWithoutPostuladoInput = {
+    where: FormularioWhereUniqueInput
+    create: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput>
+  }
+
+  export type FormularioCreateManyPostuladoInputEnvelope = {
+    data: FormularioCreateManyPostuladoInput | FormularioCreateManyPostuladoInput[]
+    skipDuplicates?: boolean
   }
 
   export type OfertaCreateWithoutCreadorInput = {
@@ -7382,36 +7327,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FormularioCreateWithoutPostuladoInput = {
-    nombre: string
-    apellido: string
-    localidad: string
-    pais: string
-    genero: string
-    descripcion: string
-    curriculum: string
-    oferta: OfertaCreateNestedOneWithoutFormularioInput
-  }
-
-  export type FormularioUncheckedCreateWithoutPostuladoInput = {
-    ofertaId: number
-    nombre: string
-    apellido: string
-    localidad: string
-    pais: string
-    genero: string
-    descripcion: string
-    curriculum: string
-  }
-
-  export type FormularioCreateOrConnectWithoutPostuladoInput = {
+  export type FormularioUpsertWithWhereUniqueWithoutPostuladoInput = {
     where: FormularioWhereUniqueInput
+    update: XOR<FormularioUpdateWithoutPostuladoInput, FormularioUncheckedUpdateWithoutPostuladoInput>
     create: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput>
   }
 
-  export type FormularioCreateManyPostuladoInputEnvelope = {
-    data: FormularioCreateManyPostuladoInput | FormularioCreateManyPostuladoInput[]
-    skipDuplicates?: boolean
+  export type FormularioUpdateWithWhereUniqueWithoutPostuladoInput = {
+    where: FormularioWhereUniqueInput
+    data: XOR<FormularioUpdateWithoutPostuladoInput, FormularioUncheckedUpdateWithoutPostuladoInput>
+  }
+
+  export type FormularioUpdateManyWithWhereWithoutPostuladoInput = {
+    where: FormularioScalarWhereInput
+    data: XOR<FormularioUpdateManyMutationInput, FormularioUncheckedUpdateManyWithoutPostuladoInput>
+  }
+
+  export type FormularioScalarWhereInput = {
+    AND?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
+    OR?: FormularioScalarWhereInput[]
+    NOT?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
+    postuladoId?: IntFilter<"Formulario"> | number
+    ofertaId?: IntFilter<"Formulario"> | number
+    nombre?: StringFilter<"Formulario"> | string
+    apellido?: StringFilter<"Formulario"> | string
+    localidad?: StringFilter<"Formulario"> | string
+    pais?: StringFilter<"Formulario"> | string
+    genero?: StringFilter<"Formulario"> | string
+    descripcion?: StringFilter<"Formulario"> | string
+    curriculum?: StringFilter<"Formulario"> | string
   }
 
   export type OfertaUpsertWithWhereUniqueWithoutCreadorInput = {
@@ -7471,67 +7415,6 @@ export namespace Prisma {
     creadorId?: IntFilter<"Proyecto"> | number
   }
 
-  export type FormularioUpsertWithWhereUniqueWithoutPostuladoInput = {
-    where: FormularioWhereUniqueInput
-    update: XOR<FormularioUpdateWithoutPostuladoInput, FormularioUncheckedUpdateWithoutPostuladoInput>
-    create: XOR<FormularioCreateWithoutPostuladoInput, FormularioUncheckedCreateWithoutPostuladoInput>
-  }
-
-  export type FormularioUpdateWithWhereUniqueWithoutPostuladoInput = {
-    where: FormularioWhereUniqueInput
-    data: XOR<FormularioUpdateWithoutPostuladoInput, FormularioUncheckedUpdateWithoutPostuladoInput>
-  }
-
-  export type FormularioUpdateManyWithWhereWithoutPostuladoInput = {
-    where: FormularioScalarWhereInput
-    data: XOR<FormularioUpdateManyMutationInput, FormularioUncheckedUpdateManyWithoutPostuladoInput>
-  }
-
-  export type FormularioScalarWhereInput = {
-    AND?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
-    OR?: FormularioScalarWhereInput[]
-    NOT?: FormularioScalarWhereInput | FormularioScalarWhereInput[]
-    postuladoId?: IntFilter<"Formulario"> | number
-    ofertaId?: IntFilter<"Formulario"> | number
-    nombre?: StringFilter<"Formulario"> | string
-    apellido?: StringFilter<"Formulario"> | string
-    localidad?: StringFilter<"Formulario"> | string
-    pais?: StringFilter<"Formulario"> | string
-    genero?: StringFilter<"Formulario"> | string
-    descripcion?: StringFilter<"Formulario"> | string
-    curriculum?: StringFilter<"Formulario"> | string
-  }
-
-  export type UsuarioCreateWithoutFormularioInput = {
-    nombre: string
-    contraseña: string
-    mail: string
-    descripcion: string
-    rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
-    ofertasCreadas?: OfertaCreateNestedManyWithoutCreadorInput
-    proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
-  }
-
-  export type UsuarioUncheckedCreateWithoutFormularioInput = {
-    id?: number
-    nombre: string
-    contraseña: string
-    mail: string
-    descripcion: string
-    rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
-    ofertasCreadas?: OfertaUncheckedCreateNestedManyWithoutCreadorInput
-    proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
-  }
-
-  export type UsuarioCreateOrConnectWithoutFormularioInput = {
-    where: UsuarioWhereUniqueInput
-    create: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
-  }
-
   export type OfertaCreateWithoutFormularioInput = {
     categoria: string
     ubicacion: string
@@ -7556,40 +7439,28 @@ export namespace Prisma {
     create: XOR<OfertaCreateWithoutFormularioInput, OfertaUncheckedCreateWithoutFormularioInput>
   }
 
-  export type UsuarioUpsertWithoutFormularioInput = {
-    update: XOR<UsuarioUpdateWithoutFormularioInput, UsuarioUncheckedUpdateWithoutFormularioInput>
+  export type UsuarioCreateWithoutFormularioInput = {
+    nombre: string
+    contraseña: string
+    mail: string
+    rolPostulante: boolean
+    ofertasCreadas?: OfertaCreateNestedManyWithoutCreadorInput
+    proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
+  }
+
+  export type UsuarioUncheckedCreateWithoutFormularioInput = {
+    id?: number
+    nombre: string
+    contraseña: string
+    mail: string
+    rolPostulante: boolean
+    ofertasCreadas?: OfertaUncheckedCreateNestedManyWithoutCreadorInput
+    proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
+  }
+
+  export type UsuarioCreateOrConnectWithoutFormularioInput = {
+    where: UsuarioWhereUniqueInput
     create: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
-    where?: UsuarioWhereInput
-  }
-
-  export type UsuarioUpdateToOneWithWhereWithoutFormularioInput = {
-    where?: UsuarioWhereInput
-    data: XOR<UsuarioUpdateWithoutFormularioInput, UsuarioUncheckedUpdateWithoutFormularioInput>
-  }
-
-  export type UsuarioUpdateWithoutFormularioInput = {
-    nombre?: StringFieldUpdateOperationsInput | string
-    contraseña?: StringFieldUpdateOperationsInput | string
-    mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
-    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
-    ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
-    proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
-  }
-
-  export type UsuarioUncheckedUpdateWithoutFormularioInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nombre?: StringFieldUpdateOperationsInput | string
-    contraseña?: StringFieldUpdateOperationsInput | string
-    mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
-    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
-    ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
-    proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
   }
 
   export type OfertaUpsertWithoutFormularioInput = {
@@ -7622,34 +7493,34 @@ export namespace Prisma {
     creadorId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type UsuarioCreateWithoutOfertasCreadasInput = {
-    nombre: string
-    contraseña: string
-    mail: string
-    descripcion: string
-    rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
-    proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
-    formulario?: FormularioCreateNestedManyWithoutPostuladoInput
+  export type UsuarioUpsertWithoutFormularioInput = {
+    update: XOR<UsuarioUpdateWithoutFormularioInput, UsuarioUncheckedUpdateWithoutFormularioInput>
+    create: XOR<UsuarioCreateWithoutFormularioInput, UsuarioUncheckedCreateWithoutFormularioInput>
+    where?: UsuarioWhereInput
   }
 
-  export type UsuarioUncheckedCreateWithoutOfertasCreadasInput = {
-    id?: number
-    nombre: string
-    contraseña: string
-    mail: string
-    descripcion: string
-    rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
-    proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
-    formulario?: FormularioUncheckedCreateNestedManyWithoutPostuladoInput
+  export type UsuarioUpdateToOneWithWhereWithoutFormularioInput = {
+    where?: UsuarioWhereInput
+    data: XOR<UsuarioUpdateWithoutFormularioInput, UsuarioUncheckedUpdateWithoutFormularioInput>
   }
 
-  export type UsuarioCreateOrConnectWithoutOfertasCreadasInput = {
-    where: UsuarioWhereUniqueInput
-    create: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
+  export type UsuarioUpdateWithoutFormularioInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    contraseña?: StringFieldUpdateOperationsInput | string
+    mail?: StringFieldUpdateOperationsInput | string
+    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
+    ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
+    proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
+  }
+
+  export type UsuarioUncheckedUpdateWithoutFormularioInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    contraseña?: StringFieldUpdateOperationsInput | string
+    mail?: StringFieldUpdateOperationsInput | string
+    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
+    ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
+    proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
   }
 
   export type FormularioCreateWithoutOfertaInput = {
@@ -7684,40 +7555,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UsuarioUpsertWithoutOfertasCreadasInput = {
-    update: XOR<UsuarioUpdateWithoutOfertasCreadasInput, UsuarioUncheckedUpdateWithoutOfertasCreadasInput>
+  export type UsuarioCreateWithoutOfertasCreadasInput = {
+    nombre: string
+    contraseña: string
+    mail: string
+    rolPostulante: boolean
+    formulario?: FormularioCreateNestedManyWithoutPostuladoInput
+    proyectosCreados?: ProyectoCreateNestedManyWithoutCreadorInput
+  }
+
+  export type UsuarioUncheckedCreateWithoutOfertasCreadasInput = {
+    id?: number
+    nombre: string
+    contraseña: string
+    mail: string
+    rolPostulante: boolean
+    formulario?: FormularioUncheckedCreateNestedManyWithoutPostuladoInput
+    proyectosCreados?: ProyectoUncheckedCreateNestedManyWithoutCreadorInput
+  }
+
+  export type UsuarioCreateOrConnectWithoutOfertasCreadasInput = {
+    where: UsuarioWhereUniqueInput
     create: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
-    where?: UsuarioWhereInput
-  }
-
-  export type UsuarioUpdateToOneWithWhereWithoutOfertasCreadasInput = {
-    where?: UsuarioWhereInput
-    data: XOR<UsuarioUpdateWithoutOfertasCreadasInput, UsuarioUncheckedUpdateWithoutOfertasCreadasInput>
-  }
-
-  export type UsuarioUpdateWithoutOfertasCreadasInput = {
-    nombre?: StringFieldUpdateOperationsInput | string
-    contraseña?: StringFieldUpdateOperationsInput | string
-    mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
-    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
-    proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
-    formulario?: FormularioUpdateManyWithoutPostuladoNestedInput
-  }
-
-  export type UsuarioUncheckedUpdateWithoutOfertasCreadasInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    nombre?: StringFieldUpdateOperationsInput | string
-    contraseña?: StringFieldUpdateOperationsInput | string
-    mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
-    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
-    proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
-    formulario?: FormularioUncheckedUpdateManyWithoutPostuladoNestedInput
   }
 
   export type FormularioUpsertWithWhereUniqueWithoutOfertaInput = {
@@ -7736,16 +7595,43 @@ export namespace Prisma {
     data: XOR<FormularioUpdateManyMutationInput, FormularioUncheckedUpdateManyWithoutOfertaInput>
   }
 
+  export type UsuarioUpsertWithoutOfertasCreadasInput = {
+    update: XOR<UsuarioUpdateWithoutOfertasCreadasInput, UsuarioUncheckedUpdateWithoutOfertasCreadasInput>
+    create: XOR<UsuarioCreateWithoutOfertasCreadasInput, UsuarioUncheckedCreateWithoutOfertasCreadasInput>
+    where?: UsuarioWhereInput
+  }
+
+  export type UsuarioUpdateToOneWithWhereWithoutOfertasCreadasInput = {
+    where?: UsuarioWhereInput
+    data: XOR<UsuarioUpdateWithoutOfertasCreadasInput, UsuarioUncheckedUpdateWithoutOfertasCreadasInput>
+  }
+
+  export type UsuarioUpdateWithoutOfertasCreadasInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    contraseña?: StringFieldUpdateOperationsInput | string
+    mail?: StringFieldUpdateOperationsInput | string
+    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
+    formulario?: FormularioUpdateManyWithoutPostuladoNestedInput
+    proyectosCreados?: ProyectoUpdateManyWithoutCreadorNestedInput
+  }
+
+  export type UsuarioUncheckedUpdateWithoutOfertasCreadasInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    contraseña?: StringFieldUpdateOperationsInput | string
+    mail?: StringFieldUpdateOperationsInput | string
+    rolPostulante?: BoolFieldUpdateOperationsInput | boolean
+    formulario?: FormularioUncheckedUpdateManyWithoutPostuladoNestedInput
+    proyectosCreados?: ProyectoUncheckedUpdateManyWithoutCreadorNestedInput
+  }
+
   export type UsuarioCreateWithoutProyectosCreadosInput = {
     nombre: string
     contraseña: string
     mail: string
-    descripcion: string
     rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
-    ofertasCreadas?: OfertaCreateNestedManyWithoutCreadorInput
     formulario?: FormularioCreateNestedManyWithoutPostuladoInput
+    ofertasCreadas?: OfertaCreateNestedManyWithoutCreadorInput
   }
 
   export type UsuarioUncheckedCreateWithoutProyectosCreadosInput = {
@@ -7753,12 +7639,9 @@ export namespace Prisma {
     nombre: string
     contraseña: string
     mail: string
-    descripcion: string
     rolPostulante: boolean
-    fecha: Date | string
-    fotoperfil: string
-    ofertasCreadas?: OfertaUncheckedCreateNestedManyWithoutCreadorInput
     formulario?: FormularioUncheckedCreateNestedManyWithoutPostuladoInput
+    ofertasCreadas?: OfertaUncheckedCreateNestedManyWithoutCreadorInput
   }
 
   export type UsuarioCreateOrConnectWithoutProyectosCreadosInput = {
@@ -7781,12 +7664,9 @@ export namespace Prisma {
     nombre?: StringFieldUpdateOperationsInput | string
     contraseña?: StringFieldUpdateOperationsInput | string
     mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
     rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
-    ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
     formulario?: FormularioUpdateManyWithoutPostuladoNestedInput
+    ofertasCreadas?: OfertaUpdateManyWithoutCreadorNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutProyectosCreadosInput = {
@@ -7794,12 +7674,20 @@ export namespace Prisma {
     nombre?: StringFieldUpdateOperationsInput | string
     contraseña?: StringFieldUpdateOperationsInput | string
     mail?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
     rolPostulante?: BoolFieldUpdateOperationsInput | boolean
-    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
-    fotoperfil?: StringFieldUpdateOperationsInput | string
-    ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
     formulario?: FormularioUncheckedUpdateManyWithoutPostuladoNestedInput
+    ofertasCreadas?: OfertaUncheckedUpdateManyWithoutCreadorNestedInput
+  }
+
+  export type FormularioCreateManyPostuladoInput = {
+    ofertaId: number
+    nombre: string
+    apellido: string
+    localidad: string
+    pais: string
+    genero: string
+    descripcion: string
+    curriculum: string
   }
 
   export type OfertaCreateManyCreadorInput = {
@@ -7819,15 +7707,37 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type FormularioCreateManyPostuladoInput = {
-    ofertaId: number
-    nombre: string
-    apellido: string
-    localidad: string
-    pais: string
-    genero: string
-    descripcion: string
-    curriculum: string
+  export type FormularioUpdateWithoutPostuladoInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+    oferta?: OfertaUpdateOneRequiredWithoutFormularioNestedInput
+  }
+
+  export type FormularioUncheckedUpdateWithoutPostuladoInput = {
+    ofertaId?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FormularioUncheckedUpdateManyWithoutPostuladoInput = {
+    ofertaId?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    apellido?: StringFieldUpdateOperationsInput | string
+    localidad?: StringFieldUpdateOperationsInput | string
+    pais?: StringFieldUpdateOperationsInput | string
+    genero?: StringFieldUpdateOperationsInput | string
+    descripcion?: StringFieldUpdateOperationsInput | string
+    curriculum?: StringFieldUpdateOperationsInput | string
   }
 
   export type OfertaUpdateWithoutCreadorInput = {
@@ -7879,39 +7789,6 @@ export namespace Prisma {
     descripcion?: StringFieldUpdateOperationsInput | string
     tecnologiasUsadas?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FormularioUpdateWithoutPostuladoInput = {
-    nombre?: StringFieldUpdateOperationsInput | string
-    apellido?: StringFieldUpdateOperationsInput | string
-    localidad?: StringFieldUpdateOperationsInput | string
-    pais?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
-    curriculum?: StringFieldUpdateOperationsInput | string
-    oferta?: OfertaUpdateOneRequiredWithoutFormularioNestedInput
-  }
-
-  export type FormularioUncheckedUpdateWithoutPostuladoInput = {
-    ofertaId?: IntFieldUpdateOperationsInput | number
-    nombre?: StringFieldUpdateOperationsInput | string
-    apellido?: StringFieldUpdateOperationsInput | string
-    localidad?: StringFieldUpdateOperationsInput | string
-    pais?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
-    curriculum?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type FormularioUncheckedUpdateManyWithoutPostuladoInput = {
-    ofertaId?: IntFieldUpdateOperationsInput | number
-    nombre?: StringFieldUpdateOperationsInput | string
-    apellido?: StringFieldUpdateOperationsInput | string
-    localidad?: StringFieldUpdateOperationsInput | string
-    pais?: StringFieldUpdateOperationsInput | string
-    genero?: StringFieldUpdateOperationsInput | string
-    descripcion?: StringFieldUpdateOperationsInput | string
-    curriculum?: StringFieldUpdateOperationsInput | string
   }
 
   export type FormularioCreateManyOfertaInput = {

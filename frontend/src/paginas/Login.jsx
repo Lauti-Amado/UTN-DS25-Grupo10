@@ -26,57 +26,61 @@ export default function Login({ onLogin }) {
   const [temaOscuro, setTemaOscuro] = useState(false);
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setErrorMail('');
-    setErrorPassword('');
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setErrorMail('');
+  setErrorPassword('');
 
-    if (!email) setErrorMail('Este campo es obligatorio');
-    if (!password) setErrorPassword('Este campo es obligatorio');
+  if (!email) setErrorMail('Este campo es obligatorio');
+  if (!password) setErrorPassword('Este campo es obligatorio');
 
-    if (email && password) {
-      const usuarioEncontrado = usuarios.find(
-        (u) => u.email === email && u.contraseña === password
-      );
-      if (usuarioEncontrado) {
-        setUsuarioLogueado(usuarioEncontrado);
-        onLogin();
+  if (email && password) {
+    try {
+      const res = await fetch("http://localhost:3000/usuarios/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({email, contraseña: password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setUsuarioLogueado(data.usuario);
+        onLogin(); // Esto activa la redirección o cambio de vista
       } else {
         setMostrarModalError(true);
       }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      setMostrarModalError(true);
     }
-  };
+  }
+};
 
-  const handleRegistro = (e) => {
-    e.preventDefault();
-    const nombre = e.target.nombre.value;
-    const usuario = e.target.usuario.value;
 
-    const emailExiste = usuarios.some(u => u.email === email);
-    const usuarioExiste = usuarios.some(u => u.usuario === usuario);
-
-    if (emailExiste || usuarioExiste) {
-      setMostrarModalUsuarioExistente(true);
-      return;
-    }
-
-    const nuevoUsuario = {
-      id: Date.now(),
-      nombre,
-      usuario,
-      email,
-      contraseña: password,
-      rol: rolSeleccionado
-    };
-
-    setUsuarios(prev => [...prev, nuevoUsuario]);
-    setEmail('');
-    setPassword('');
-    setRolSeleccionado('');
-    setVista('login');
-    setMostrarModalRegistro(true);
-  };
-
+ const handleRegistro = async (e) => { 
+    e.preventDefault(); 
+    const nombre = e.target.nombre.value.trim();
+    const correo = e.target.email.value.trim(); 
+     const contraseña = e.target.contraseña.value; 
+     const rol = rolSeleccionado; 
+     if (!nombre || !correo || !contraseña || !rol) { 
+      alert("Todos los campos son obligatorios"); return; } 
+      const nuevoUsuario = { nombre, mail: correo, contraseña, rolPostulante: rol === "postulante" ? true : false }; 
+      try { const res = await fetch("http://localhost:3000/usuarios", 
+        { method: "POST", headers: { "Content-Type": "application/json" }, 
+        body: JSON.stringify(nuevoUsuario), credentials: "include" }); 
+        const data = await res.json(); if (res.ok) { setUsuarios(prev => [...prev, data.usuario]); 
+           alert("Usuario creado correctamente!"); 
+           setVista("login"); 
+           setEmail(""); 
+           setPassword(""); 
+           setRolSeleccionado(""); } 
+           else { alert("Error al registrar: " + (data.message || "Desconocido")); } 
+          } catch (err) 
+          { console.error(err);
+             alert("Error al comunicarse con el servidor"); } };
   return (
     <div className={`${styles.loginPageWrapper} ${temaOscuro ? styles.temaOscuro : ''}`}>
       <div className={styles.bodyLogin}>

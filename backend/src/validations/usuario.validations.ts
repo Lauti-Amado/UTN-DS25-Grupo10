@@ -18,15 +18,9 @@ export const createUsuarioSchema=z.object({
    .email('El mail de usuario debe contener un formato valido')
    .trim(),
 
-   descripcion:z.string()
-   .max(300, 'La descripcion no puede exceder los 25 caracteres')
-   .trim(),
-
    rolPostulante:z.boolean()
    .refine(val=>val!==undefined,{message: 'Seleccionar una opcion'}),
 
-   fotoperfil:z.string()
-   .regex(/\.(jpg|jpeg|png|gif)$/, "Debe ser una imagen válida"),
 
    proyectosCreados:z.array(
     z.number()

@@ -44,3 +44,14 @@ export async function updateUsuario(id: number, data: UpdateUsuarioRequest) {
 export async function deleteUsuario(id: number) {
   await prisma.usuario.delete({ where: { id } });
 }
+
+
+// buscar por Login
+export async function loginUsuario(email: string, contraseña: string) {
+  const usuario = await prisma.usuario.findFirst({
+    where: { mail: email, contraseña },
+  });
+  return usuario || null;
+}
+
+
