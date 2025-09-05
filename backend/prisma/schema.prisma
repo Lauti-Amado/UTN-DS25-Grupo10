@@ -9,53 +9,50 @@ datasource db {
 }
 
 model Usuario {
-  id              Int        @id @default(autoincrement())
-  nombre          String
+  id               Int          @id @default(autoincrement())
+  nombre           String
   contraseña      String
-  mail            String     @unique
-  descripcion     String
-  rolPostulante   Boolean
-  fecha           DateTime
-  fotoperfil      String
-
-  // Relaciones
-  ofertasCreadas    Oferta[]   @relation("UsuarioOfertas")
-  proyectosCreados  Proyecto[] @relation("UsuarioProyectos")
-  formulario Formulario[]
- 
+  mail             String       @unique
+  rolPostulante    Boolean
+  formulario       Formulario[]
+  ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
+  proyectosCreados Proyecto[]   @relation("UsuarioProyectos")
 }
 
- //Creamos la entidad intermedia entre postulante y oferta
- model Formulario{
-    postuladoId Int
-    postulado Usuario @relation(fields:[postuladoId], references: [id])
-    ofertaId Int
-    oferta Oferta @relation(fields:[ofertaId], references: [id])
-    @@id([postuladoId, ofertaId])
- }
+model Formulario {
+  postuladoId Int
+  ofertaId    Int
+  nombre      String
+  apellido    String
+  localidad   String
+  pais        String
+  genero      String
+  descripcion String
+  curriculum  String
+  oferta      Oferta  @relation(fields: [ofertaId], references: [id])
+  postulado   Usuario @relation(fields: [postuladoId], references: [id])
+
+  @@id([postuladoId, ofertaId])
+}
 
 model Oferta {
-  id         Int       @id @default(autoincrement())
+  id         Int          @id @default(autoincrement())
   categoria  String
   ubicacion  String
   sueldo     Int?
   modalidad  String
   horario    DateTime[]
-
-  // Relaciones
-  creador     Usuario   @relation("UsuarioOfertas", fields: [creadorId], references: [id])
-  creadorId   Int
+  creadorId  Int
   formulario Formulario[]
+  creador    Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])
 }
 
 model Proyecto {
-  id               Int      @id @default(autoincrement())
-  nombre           String
-  descripcion      String
+  id                Int      @id @default(autoincrement())
+  nombre            String
+  descripcion       String
   tecnologiasUsadas String
-  createdAt        DateTime @default(now())
-
-  // Relaciones
-  creador   Usuario @relation("UsuarioProyectos", fields: [creadorId], references: [id])
-  creadorId Int
+  createdAt         DateTime @default(now())
+  creadorId         Int
+  creador           Usuario  @relation("UsuarioProyectos", fields: [creadorId], references: [id])
 }

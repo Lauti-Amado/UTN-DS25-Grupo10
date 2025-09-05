@@ -21,6 +21,9 @@ router.put('/:id', validate(updateProyectoSchema), usuarioController.updateUsuar
 // Ruta para eliminar un usuario
 router.delete('/:id', usuarioController.deleteUsuario);
 
+router.post('/login', usuarioController.loginUsuarioController);
+
+
 // Ruta para obtener todos los usuarios
 router.get('/particulares/p', usuarioController.getAllUsuariosPostulantes);
 

@@ -125,10 +125,19 @@ exports.Prisma.UsuarioScalarFieldEnum = {
   nombre: 'nombre',
   contraseña: 'contraseña',
   mail: 'mail',
+  rolPostulante: 'rolPostulante'
+};
+
+exports.Prisma.FormularioScalarFieldEnum = {
+  postuladoId: 'postuladoId',
+  ofertaId: 'ofertaId',
+  nombre: 'nombre',
+  apellido: 'apellido',
+  localidad: 'localidad',
+  pais: 'pais',
+  genero: 'genero',
   descripcion: 'descripcion',
-  rolPostulante: 'rolPostulante',
-  fecha: 'fecha',
-  fotoperfil: 'fotoperfil'
+  curriculum: 'curriculum'
 };
 
 exports.Prisma.OfertaScalarFieldEnum = {
@@ -168,6 +177,7 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   Usuario: 'Usuario',
+  Formulario: 'Formulario',
   Oferta: 'Oferta',
   Proyecto: 'Proyecto'
 };
