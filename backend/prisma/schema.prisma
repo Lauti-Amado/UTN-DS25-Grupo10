@@ -17,6 +17,8 @@ model Usuario {
   formulario       Formulario[]
   ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
   proyectosCreados Proyecto[]   @relation("UsuarioProyectos")
+
+  @@map("usuario")
 }
 
 
@@ -33,6 +35,7 @@ model Usuario {
     genero String
     descripcion String
     curriculum String
+    
     @@id([postuladoId, ofertaId])
  }
 
