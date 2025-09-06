@@ -11,6 +11,9 @@ import ListaProyectos from '../componentes/listaproyectos';
 import Confirmar from '../componentes/confirmar'
 import styles from '../paginas/perfil.module.css';
 import Pensamiento from '../componentes/quepensas'
+import { DatosContexto } from '../datosContext';
+import { useContext, useEffect } from 'react';
+
 
 export default function Perfil() {
  
@@ -80,6 +83,17 @@ const AbrirModificarProyecto = (nombre) => {
     setModoEditar('modificarProyecto');     
   }
 };
+
+const { usuarioLogueado } = useContext(DatosContexto);
+
+
+// Actualizar el nombre del perfil cuando cambia el usuario logueado
+useEffect(() => {
+  if (usuarioLogueado) {
+    setNombrePerfil(usuarioLogueado.nombreUsuario); // o usuarioLogueado.nombre según quieras
+  }
+}, [usuarioLogueado]);
+
 
   return (
     <div className="vistaEstirada" style={{ position: 'relative' }}>

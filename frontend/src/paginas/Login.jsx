@@ -7,6 +7,7 @@ import { BiCog } from "react-icons/bi";
 import { DatosContexto } from '../datosContext';
 
 export default function Login({ onLogin }) {
+  const [nombreUsuario, setUsuario]=useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMail, setErrorMail] = useState('');
@@ -67,12 +68,13 @@ export default function Login({ onLogin }) {
     const nombre = e.target.nombre.value.trim();
     const correo = e.target.email.value.trim(); 
      const contraseña = e.target.contraseña.value; 
+    const nombreUsuario=e.target.nombreUsuario.value;
      const rol = rolSeleccionado; 
-     if (!nombre || !correo || !contraseña || !rol) { 
+     if (!nombre || !correo || !contraseña || !rol ||!nombreUsuario) { 
       alert("Todos los campos son obligatorios"); return; } 
       //hace la llamada a la API, con un metodo POST
-      const nuevoUsuario = { nombre, mail: correo, contraseña, rolPostulante: rol === "postulante" ? true : false }; 
-      try { const res = await fetch("http://localhost:3000/usuarios", 
+      const nuevoUsuario = { nombre, mail: correo, nombreUsuario, contraseña, rolPostulante: rol === "postulante" ? true : false }; 
+      try { const res = await fetch("http://localhost:3000/usuarios/${usuarioLogueado.id}", 
         { method: "POST", headers: { "Content-Type": "application/json" }, 
         body: JSON.stringify(nuevoUsuario), credentials: "include" }); 
         const data = await res.json(); if (res.ok) { setUsuarios(prev => [...prev, data.usuario]); 
@@ -81,7 +83,8 @@ export default function Login({ onLogin }) {
            setVista("login"); 
            setEmail(""); 
            setPassword(""); 
-           setRolSeleccionado(""); } 
+           setRolSeleccionado("");
+           setUsuario("") } 
            else { alert("Error al registrar: " + (data.message || "Desconocido")); } 
           } catch (err) 
           { console.error(err);
@@ -154,7 +157,7 @@ export default function Login({ onLogin }) {
                 <input type="email" id="email" placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
                 <label htmlFor="usuario">Nombre de usuario</label>
-                <input type="text" id="usuario" name="usuario" placeholder="Usuario deseado" required />
+                <input type="text" id="nombreUsuario" name="nombreUsuario" placeholder="Usuario deseado" onChange={(e) => setUsuario(e.target.value)} required />
 
                 <label htmlFor="contraseña">Contraseña</label>
                 <input type="password" id="contraseña" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} required />

@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import imagen from '../assets/perfilx.png';
 import styles from '../paginas/perfil.module.css';
+import { DatosContexto } from '../datosContext';
 
 function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, imagen }) {
   const [previewSrc, setPreviewSrc] = useState(imagen);
@@ -8,37 +9,55 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
   const [nuevaDescripcion, setNuevaDescripcion] = useState(descripcion || '');
   const [nuevaFechaNac, setNuevafecha]= useState(FechaNac || '');
   const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    setNuevoNombre(nombre);
-    setNuevaDescripcion(descripcion);
-    setNuevafecha(FechaNac);
-    setPreviewSrc(imagen);
-  }, [nombre, descripcion, FechaNac, imagen]);
-
+  const { usuarioLogueado } = useContext(DatosContexto); 
+ 
   const abrirSelector = () => {
-    fileInputRef.current?.click();
-  };
+  fileInputRef.current?.click();
+};
 
-  const handleFileChange = (e) => {
-    const archivo = e.target.files[0];
-    if (archivo && archivo.type.startsWith('image/')) {
-      const lector = new FileReader();
-      lector.onload = (event) => {
-        setPreviewSrc(event.target.result);
-      };
-      lector.readAsDataURL(archivo);
-    } else {
-      alert('Por favor selecciona una imagen válida.');
+const handleFileChange = (e) => {
+  const archivo = e.target.files[0];
+  if (archivo && archivo.type.startsWith('image/')) {
+    const lector = new FileReader();
+    lector.onload = (event) => {
+      setPreviewSrc(event.target.result);
+    };
+    lector.readAsDataURL(archivo);
+  } else {
+    alert('Por favor selecciona una imagen válida.');
+  }
+};
+
+
+  const aceptarCambios = async () => {
+  try {
+    if (!usuarioLogueado?.id) throw new Error('Usuario no logueado'); // ✅ AGREGADO
+
+    const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, { // ✅ MODIFICADO
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombreUsuario: nuevoNombre // ✅ MODIFICADO
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al actualizar el nombre de usuario');
     }
-  };
 
-  const aceptarCambios = () => {
+    const datosActualizados = await response.json();
+
     if (onActualizarPerfil) {
-      onActualizarPerfil(previewSrc, nuevoNombre, nuevaDescripcion, nuevaFechaNac);
+      onActualizarPerfil(previewSrc, datosActualizados.data.nombreUsuario, nuevaDescripcion, nuevaFechaNac); // ✅ MODIFICADO
     }
+
     if (onCerrar) onCerrar();
-  };
+  } catch (error) {
+    console.error(error);
+    alert('No se pudo actualizar el nombre de usuario. Intenta nuevamente.');
+  }
+};
+
 
   return (
      <div>
