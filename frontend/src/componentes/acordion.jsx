@@ -19,7 +19,7 @@ function Acordion() {
   const [modalVisible, setModalVisible] = useState(false);
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState(null);
 
-  const cargarDesdeLocalStorage = () => {
+  const cargarDesdeLocalStorage = () => { //funcion para guardar empleos en forma local
     const datosGuardados = localStorage.getItem('empleos');
     if (datosGuardados) {
       return JSON.parse(datosGuardados);
@@ -53,7 +53,8 @@ function Acordion() {
       item.contenido.toLowerCase().includes(busquedaGlobal.toLowerCase())
   );
 
-  const manejarSubmit = (e) => {
+  //boton para cargar el formulario de la oferta , se usan la coneccion con la base de datos supabase
+  const manejarSubmit = async (e) => {
     e.preventDefault();
     if (nuevoTitulo.trim() && nuevoContenido.trim()) {
       const nuevo = {
@@ -68,19 +69,43 @@ function Acordion() {
         contacto,
         logo
       };
-      const actualizados = [...items, nuevo];
-      setItems(actualizados);
-      localStorage.setItem('empleos', JSON.stringify(actualizados)); // Forzar sincronización
-      setNuevoTitulo('');
-      setNuevoContenido('');
-      setNuevaCategoria('');
-      setUbicacion('');
-      setSueldo('');
-      setModalidad('');
-      setHorario('');
-      setContacto('');
-      setLogo('');
-      setMostrarFormulario(false);
+
+      //inserto en supabase
+      try{
+        const response = await fetch('http://localhost:3000/ofertas',
+        {
+          method: "POST",
+          headers: {'Content-Type' : 'application/json'},
+          body: JSON.stringify(nuevo), credentials: "include"
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al insertar en Supabase");
+        }
+
+        const data = await response.json();
+        //actualizar estado 
+        const actualizados = [...items, data[0]];
+        
+        setItems(actualizados);
+
+        //limpia formulario
+        setNuevoTitulo('');
+        setNuevoContenido('');
+        setNuevaCategoria('');
+        setUbicacion('');
+        setSueldo('');
+        setModalidad('');
+        setHorario('');
+        setContacto('');
+        setLogo('');
+        setMostrarFormulario(false);
+
+      } catch (error) {
+        console.error("Error al insertar en Supabase:", error);
+      
+      }
+ 
     }
   };
 
@@ -89,13 +114,25 @@ function Acordion() {
     setMostrarModal(true);
   };
 
-  const eliminarConfirmado = () => {
-    const nuevas = items.filter((item) => item.id !== idAEliminar);
-    setItems(nuevas);
-    setMostrarModal(false);
+  //esta linea fue modificada por juan para que elimine de la base de datos una oferta
+  const eliminarConfirmado = async () => {
+    try{
+      const response = await fetch(`http://localhost:3000/ofertas/${idAEliminar}`,
+      { method: "DELETE"});
+      if (!response.ok) {
+        throw new Error("Error al eliminar en la base de datos");
+      }
+
+      const nuevas = items.filter((item) => item.id !== idAEliminar);
+      setItems(nuevas);
+      setMostrarModal(false);
+
+    } catch (error) {
+      console.error("Error al eliminar en la base de datos:", error);
+    }
   };
 
-   const handlePostular = (empresa) => {
+  const handlePostular = (empresa) => {
     setEmpresaSeleccionada(empresa);
     setModalVisible(true);
   };
