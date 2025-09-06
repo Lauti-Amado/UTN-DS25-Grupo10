@@ -25,67 +25,92 @@ export default function Login({ onLogin }) {
   const [mostrarModalConfiguracion, setMostrarModalConfiguracion] = useState(false);
   const [temaOscuro, setTemaOscuro] = useState(false);
 
-//Julian: Esta es la funcion para iniciar sesion
+  // 🔴 Estado para errores de registro (vienen del backend con Zod)
+  const [erroresRegistro, setErroresRegistro] = useState([]);
+
+  // --- LOGIN ---
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setErrorMail('');
-  setErrorPassword('');
+    e.preventDefault();
+    setErrorMail('');
+    setErrorPassword('');
 
-//Valida que se ingrese algo
-  if (!email) setErrorMail('Este campo es obligatorio');
-  if (!password) setErrorPassword('Este campo es obligatorio');
+    if (!email) setErrorMail('Este campo es obligatorio');
+    if (!password) setErrorPassword('Este campo es obligatorio');
 
-  //si se encuentran, hace la llamada al back con un POST
-  if (email && password) {
+    if (email && password) {
+      try {
+        const res = await fetch("http://localhost:3000/usuarios/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ mail: email, contraseña: password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setUsuarioLogueado(data.usuario);
+          onLogin();
+        } else {
+          setMostrarModalError(true);
+        }
+      } catch (error) {
+        console.error("Error al iniciar sesión:", error);
+        setMostrarModalError(true);
+      }
+    }
+  };
+
+  // --- REGISTRO ---
+  const handleRegistro = async (e) => {
+    e.preventDefault();
+    setErroresRegistro([]);
+
+    const nombre = e.target.nombre.value.trim();
+    const correo = e.target.email.value.trim();
+    const contraseña = e.target.contraseña.value;
+    const rol = rolSeleccionado;
+
+    if (!nombre || !correo || !contraseña || !rol) {
+      setErroresRegistro([{ field: "general", message: "Todos los campos son obligatorios" }]);
+      return;
+    }
+
+    const nuevoUsuario = { nombre, mail: correo, contraseña, rolPostulante: rol === "postulante" ? true : false };
+
     try {
-      const res = await fetch("http://localhost:3000/usuarios/login", {
+      const res = await fetch("http://localhost:3000/usuarios", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({email, contraseña: password })
+        body: JSON.stringify(nuevoUsuario),
+        credentials: "include"
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        setUsuarioLogueado(data.usuario); //Si encuentra al usuario...
-        onLogin(); // Esto activa la redirección o cambio de vista. O sea me abre la nueva ventana
-      } else { //Si no los encuentra, muestra el cuadrigo que no los encontro
-        setMostrarModalError(true);
-      }
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-      setMostrarModalError(true);
+        setUsuarios(prev => [...prev, data.usuario]);
+        setMostrarModalRegistro(true); // modal de éxito
+        setVista("login");
+        setEmail("");
+        setPassword("");
+        setRolSeleccionado("");
+      } else {
+          if (data.errores) {
+            // Errores de validación Zod
+            setErroresRegistro(data.errores);
+          } else if (data.message && data.message.includes("registrado")) {
+            // Error de email ya existente
+            setMostrarModalUsuarioExistente(true);
+          } else {
+            setErroresRegistro([{ field: "general", message: data.message || "Error desconocido" }]);
+          }
+        }
+    } catch (err) {
+      console.error(err);
+      setErroresRegistro([{ field: "general", message: "Error al comunicarse con el servidor" }]);
     }
-  }
-};
-
-//Julian: Esta es la opcion para registrar el usuario.
- const handleRegistro = async (e) => { 
-    e.preventDefault(); 
-    //obtengo los atributos que tengo que ingresar
-    const nombre = e.target.nombre.value.trim();
-    const correo = e.target.email.value.trim(); 
-     const contraseña = e.target.contraseña.value; 
-     const rol = rolSeleccionado; 
-     if (!nombre || !correo || !contraseña || !rol) { 
-      alert("Todos los campos son obligatorios"); return; } 
-      //hace la llamada a la API, con un metodo POST
-      const nuevoUsuario = { nombre, mail: correo, contraseña, rolPostulante: rol === "postulante" ? true : false }; 
-      try { const res = await fetch("http://localhost:3000/usuarios", 
-        { method: "POST", headers: { "Content-Type": "application/json" }, 
-        body: JSON.stringify(nuevoUsuario), credentials: "include" }); 
-        const data = await res.json(); if (res.ok) { setUsuarios(prev => [...prev, data.usuario]); 
-          //crea el usuario
-           alert("Usuario creado correctamente!"); 
-           setVista("login"); 
-           setEmail(""); 
-           setPassword(""); 
-           setRolSeleccionado(""); } 
-           else { alert("Error al registrar: " + (data.message || "Desconocido")); } 
-          } catch (err) 
-          { console.error(err);
-             alert("Error al comunicarse con el servidor"); } };
+  };
 
   return (
     <div className={`${styles.loginPageWrapper} ${temaOscuro ? styles.temaOscuro : ''}`}>
@@ -97,6 +122,7 @@ export default function Login({ onLogin }) {
         </header>
 
         <div className={styles.contenedor}>
+          {/* --- LOGIN --- */}
           {vista === 'login' && (
             <>
               <div className={styles.opcionesRol}>
@@ -144,6 +170,7 @@ export default function Login({ onLogin }) {
             </>
           )}
 
+          {/* --- REGISTRO --- */}
           {vista === 'registro' && (
             <form onSubmit={handleRegistro}>
               <div className={styles.datos}>
@@ -153,9 +180,6 @@ export default function Login({ onLogin }) {
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-                <label htmlFor="usuario">Nombre de usuario</label>
-                <input type="text" id="usuario" name="usuario" placeholder="Usuario deseado" required />
-
                 <label htmlFor="contraseña">Contraseña</label>
                 <input type="password" id="contraseña" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
@@ -164,9 +188,18 @@ export default function Login({ onLogin }) {
                   <option value="" disabled>Selecciona un rol</option>
                   <option value="postulante">Postulante</option>
                   <option value="empleador">Empleador</option>
-                  <option value="Administrador">Administrador</option>
                 </select>
-                {!rolSeleccionado && <p className={styles.error}>Por favor seleccioná un rol</p>}
+
+                {/* Mostrar errores del backend */}
+                {erroresRegistro.length > 0 && (
+                  <div className={styles.errorBox}>
+                    <ul>
+                      {erroresRegistro.map((err, i) => (
+                        <li key={i}><strong>{err.field}:</strong> {err.message}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <button type="submit" className={styles.submit}>Registrarme</button>
 

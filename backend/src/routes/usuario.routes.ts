@@ -16,7 +16,7 @@ router.get('/:id', usuarioController.getUsuarioById);
 router.post('/', validate(createUsuarioSchema),usuarioController.createUsuario);
 
 // Ruta para actualizar un usuario existente
-router.put('/:id', validate(updateProyectoSchema), usuarioController.updateUsuario);
+router.put('/:id', validate(updateUsuarioSchema), usuarioController.updateUsuario);
 
 // Ruta para eliminar un usuario
 router.delete('/:id', usuarioController.deleteUsuario);

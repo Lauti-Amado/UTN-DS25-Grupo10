@@ -29,7 +29,16 @@ export async function getUsuarioById(id: number) {
 
 // Crear un nuevo usuario
 export async function createUsuario(data: CreateUsuarioRequest) {
-  return await prisma.usuario.create({ data });
+  try {
+    return await prisma.usuario.create({
+      data,
+    });
+  } catch (error: any) {
+    if (error.code === 'P2002') {
+      throw new Error('El mail ya está registrado');
+    }
+    throw error;
+  }
 }
 
 // Actualizar un usuario
