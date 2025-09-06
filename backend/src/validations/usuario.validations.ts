@@ -18,6 +18,11 @@ export const createUsuarioSchema=z.object({
    .email('El mail de usuario debe contener un formato valido')
    .trim(),
 
+   nombreUsuario:z.string()
+   .min(1, 'El nombre del usuario es requerido')
+   .max(25, 'El nombre del usuario no puede exceder los 25 caracteres')
+   .trim(),
+   
    rolPostulante:z.boolean()
    .refine(val=>val!==undefined,{message: 'Seleccionar una opcion'}),
 
