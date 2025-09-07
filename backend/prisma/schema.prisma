@@ -14,6 +14,7 @@ model Usuario {
   contraseña      String
   mail             String       @unique
   rolPostulante    Boolean
+  nombreUsuario    String
   formulario       Formulario[]
   ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
   proyectosCreados Proyecto[]   @relation("UsuarioProyectos")
