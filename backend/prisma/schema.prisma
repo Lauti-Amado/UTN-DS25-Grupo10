@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -18,6 +18,8 @@ model Usuario {
   formulario       Formulario[]
   ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
   proyectosCreados Proyecto[]   @relation("UsuarioProyectos")
+
+  @@map("usuario")
 }
 
 
@@ -34,6 +36,7 @@ model Usuario {
     genero String
     descripcion String
     curriculum String
+    
     @@id([postuladoId, ofertaId])
  }
 

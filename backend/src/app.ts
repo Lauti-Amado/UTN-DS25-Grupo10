@@ -14,7 +14,7 @@ const app = express();
 const PORT = 3000;
 
 const corsOptions={
-  origin:process.env.FRONTEND_URL || 'http://localhost:5173/',
+  origin:process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials:true
 };
 
@@ -24,16 +24,6 @@ app.use(express.json());
 
 // Middleware log
 app.use(logRequest);
-// === ENDPOINT DE PRUEBA POST /test ===
-app.post('/test', (req, res) => {
-  console.log("POST /test recibido con body:", req.body); // esto aparece en la consola del backend
-  res.json({
-    success: true,
-    mensaje: "Backend recibe POST correctamente",
-    datosRecibidos: req.body
-  });
-});
-
 
 // Rutas
 app.use('/ofertas', ofertaRoutes);
