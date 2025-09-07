@@ -9,12 +9,16 @@ export async function createUsuario(
 ) {
   try {
     const newUsuario = await usuarioService.createUsuario(req.body);
-    res.status(201).json({
-      success:true,
-      message: 'Proyecto creado', data:newUsuario
-     });
-  } catch (error) {
-    next(error);
+    return res.status(201).json({
+      success: true,
+      message: 'Usuario creado',
+      usuario: newUsuario,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || 'Error al crear el usuario',
+    });
   }
 }
 
@@ -107,11 +111,11 @@ export async function getAllUsuariosEmpleadores(req: Request, res: Response, nex
 
 
 export async function loginUsuarioController(req: Request, res: Response) {
-  const { email, contraseña } = req.body;
+  const { mail, contraseña } = req.body;
 
   try {
     // Buscar al usuario con email y contraseña
-    const usuario = await usuarioService.loginUsuario(email, contraseña);
+    const usuario = await usuarioService.loginUsuario(mail, contraseña);
 
     if (!usuario) {
       return res.status(401).json({ message: "Usuario no encontrado o contraseña incorrecta" });
