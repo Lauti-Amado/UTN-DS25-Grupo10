@@ -32,9 +32,9 @@ const handleFileChange = (e) => {
   // Guardar cambios
   const aceptarCambios = async () => {
   try {
-    if (!usuarioLogueado?.id) throw new Error('Usuario no logueado'); // ✅ AGREGADO
+    if (!usuarioLogueado?.id) throw new Error('Usuario no logueado');
 
-    const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, { // ✅ MODIFICADO
+    const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -49,7 +49,7 @@ const handleFileChange = (e) => {
     const datosActualizados = await response.json();
 
     if (onActualizarPerfil) {
-      onActualizarPerfil(previewSrc, datosActualizados.data.nombreUsuario, nuevaDescripcion, nuevaFechaNac); // ✅ MODIFICADO
+      onActualizarPerfil(previewSrc, datosActualizados.data.nombreUsuario, nuevaDescripcion, nuevaFechaNac);
     }
 
     if (onCerrar) onCerrar();
