@@ -11,6 +11,7 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
   const fileInputRef = useRef(null);
   const { usuarioLogueado } = useContext(DatosContexto); 
  
+  // Imagen de perfil
   const abrirSelector = () => {
   fileInputRef.current?.click();
 };
@@ -28,7 +29,7 @@ const handleFileChange = (e) => {
   }
 };
 
-
+  // Guardar cambios
   const aceptarCambios = async () => {
   try {
     if (!usuarioLogueado?.id) throw new Error('Usuario no logueado'); // ✅ AGREGADO
@@ -37,7 +38,7 @@ const handleFileChange = (e) => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        nombreUsuario: nuevoNombre // ✅ MODIFICADO
+      nombreUsuario: nuevoNombre
       }),
     });
 
@@ -58,7 +59,7 @@ const handleFileChange = (e) => {
   }
 };
 
-
+  // Botones y funcionalidades
   return (
      <div>
       <div className={styles.barra1}>
