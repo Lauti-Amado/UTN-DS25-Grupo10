@@ -68,6 +68,7 @@ export default function Login({ onLogin }) {
     setErroresRegistro([]);
 
     const nombre = e.target.nombre.value.trim();
+    const usuario = e.target.nombreUsuario.value.trim();
     const correo = e.target.email.value.trim();
     const contraseña = e.target.contraseña.value;
     const rol = rolSeleccionado;
@@ -77,7 +78,13 @@ export default function Login({ onLogin }) {
       return;
     }
 
-    const nuevoUsuario = { nombre, mail: correo, contraseña, rolPostulante: rol === "postulante" ? true : false };
+    const nuevoUsuario = { 
+      nombre, 
+      nombreUsuario: usuario,
+      mail: correo, 
+      contraseña, 
+      rolPostulante: rol === "postulante" 
+    };
 
     try {
       const res = await fetch("http://localhost:3000/usuarios", {
@@ -97,56 +104,21 @@ export default function Login({ onLogin }) {
         setPassword("");
         setRolSeleccionado("");
       } else {
-          if (data.errores) {
-            // Errores de validación Zod
-            setErroresRegistro(data.errores);
-          } else if (data.message && data.message.includes("registrado")) {
-            // Error de email ya existente
-            setMostrarModalUsuarioExistente(true);
-          } else {
-            setErroresRegistro([{ field: "general", message: data.message || "Error desconocido" }]);
-          }
+        if (data.errores) {
+          // Errores de validación Zod
+          setErroresRegistro(data.errores);
+        } else if (data.message && data.message.includes("registrado")) {
+          // Error de email ya existente
+          setMostrarModalUsuarioExistente(true);
+        } else {
+          setErroresRegistro([{ field: "general", message: data.message || "Error desconocido" }]);
         }
+      }
     } catch (err) {
       console.error(err);
       setErroresRegistro([{ field: "general", message: "Error al comunicarse con el servidor" }]);
     }
-
-   
-  }
-};
-
-//Julian: Esta es la opcion para registrar el usuario.
- const handleRegistro = async (e) => { 
-    e.preventDefault(); 
-    //obtengo los atributos que tengo que ingresar
-    const nombre = e.target.nombre.value.trim();
-    const correo = e.target.email.value.trim(); 
-     const contraseña = e.target.contraseña.value; 
-    const nombreUsuario=e.target.nombreUsuario.value;
-     const rol = rolSeleccionado; 
-     if (!nombre || !correo || !contraseña || !rol ||!nombreUsuario) { 
-      alert("Todos los campos son obligatorios"); return; } 
-      //hace la llamada a la API, con un metodo POST
-      const nuevoUsuario = { nombre, mail: correo, nombreUsuario, contraseña, rolPostulante: rol === "postulante" ? true : false }; 
-      try { const res = await fetch("http://localhost:3000/usuarios/${usuarioLogueado.id}", 
-        { method: "POST", headers: { "Content-Type": "application/json" }, 
-        body: JSON.stringify(nuevoUsuario), credentials: "include" }); 
-        const data = await res.json(); if (res.ok) { setUsuarios(prev => [...prev, data.usuario]); 
-          //crea el usuario
-           alert("Usuario creado correctamente!"); 
-           setVista("login"); 
-           setEmail(""); 
-           setPassword(""); 
-           setRolSeleccionado("");
-           setUsuario("") } 
-           else { alert("Error al registrar: " + (data.message || "Desconocido")); } 
-          } catch (err) 
-          { console.error(err);
-             alert("Error al comunicarse con el servidor"); } };
-
   };
-
 
   return (
     <div className={`${styles.loginPageWrapper} ${temaOscuro ? styles.temaOscuro : ''}`}>
@@ -216,11 +188,8 @@ export default function Login({ onLogin }) {
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-<<<
                 <label htmlFor="usuario">Nombre de usuario</label>
                 <input type="text" id="nombreUsuario" name="nombreUsuario" placeholder="Usuario deseado" onChange={(e) => setUsuario(e.target.value)} required />
-
-
 
                 <label htmlFor="contraseña">Contraseña</label>
                 <input type="password" id="contraseña" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} required />
@@ -415,16 +384,16 @@ export default function Login({ onLogin }) {
             </div>
           )}
 
-          <br />
-          <a href="#" onClick={(e) => { e.preventDefault(); setVista('recuperar'); }}>Olvidé Mi Contraseña</a>
-          <br />
-          <p>
-            ¿No tienes cuenta?
-            <a href="#" onClick={(e) => { e.preventDefault(); setVista('registro'); }}> Registrate</a>
-          </p>
-          <br />
+            <br />
+            <a href="#" onClick={(e) => { e.preventDefault(); setVista('recuperar'); }}>Olvidé Mi Contraseña</a>
+            <br />
+            <p>
+              ¿No tienes cuenta?
+              <a href="#" onClick={(e) => { e.preventDefault(); setVista('registro'); }}> Registrate</a>
+            </p>
+            <br />
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
