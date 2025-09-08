@@ -28,15 +28,17 @@ export default function Login({ onLogin }) {
   const [mostrarModalConfiguracion, setMostrarModalConfiguracion] = useState(false);
   const [temaOscuro, setTemaOscuro] = useState(false);
 
-  // 🔴 Estado para errores de registro (vienen del backend con Zod)
+ //LLAMADAS DEL BACK PARA REGISTRAR USUARIO E INICIAR SESION
+
+  //  Estado para errores de registro (vienen del backend con Zod)
   const [erroresRegistro, setErroresRegistro] = useState([]);
 
-  // --- LOGIN ---
+  // --- Iniciar sesion ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMail('');
     setErrorPassword('');
-
+//Si no ingresa el mail o contraseña, lo informa
     if (!email) setErrorMail('Este campo es obligatorio');
     if (!password) setErrorPassword('Este campo es obligatorio');
 
@@ -45,6 +47,7 @@ export default function Login({ onLogin }) {
     return;
   }
 
+//Hacemos la llamada al back para poder iniciar sesion de un usuario, con un Post
   try {
     const res = await fetch("http://localhost:3000/usuarios/login", {
       method: "POST",
@@ -56,34 +59,35 @@ export default function Login({ onLogin }) {
     const data = await res.json();
     console.log("Respuesta login:", data);
 
+//Si cumple res.ok loguea al usuario y llama a onLogin. De no ser asi, muestra el error
     if (res.ok) {
       setUsuarioLogueado(data.usuario);
       onLogin();
     } else {
       setMostrarModalError(true);
-    }
+    } //Si hay un error, lo muestra por consola
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
     setMostrarModalError(true);
   }
 };
 
-  // --- REGISTRO ---
+  // --- Registrar usuario ---
   const handleRegistro = async (e) => {
     e.preventDefault();
     setErroresRegistro([]);
-
+//Obtiene los atributos
     const nombre = e.target.nombre.value.trim();
     const usuario = e.target.nombreUsuario.value.trim();
     const correo = e.target.email.value.trim();
     const contraseña = e.target.contraseña.value;
     const rol = rolSeleccionado;
-
+//Si no estan todos, llama al error
     if (!nombre || !correo || !contraseña || !rol) {
       setErroresRegistro([{ field: "general", message: "Todos los campos son obligatorios" }]);
       return;
     }
-
+//Caso contrario, define los atributos del usuario
     const nuevoUsuario = { 
       nombre, 
       nombreUsuario: usuario,
@@ -91,7 +95,7 @@ export default function Login({ onLogin }) {
       contraseña, 
       rolPostulante: rol === "postulante" 
     };
-
+//y hace la llamada a la Api con un post para registrarlo
     try {
       const res = await fetch("http://localhost:3000/usuarios", {
         method: "POST",
@@ -101,7 +105,7 @@ export default function Login({ onLogin }) {
       });
 
       const data = await res.json();
-
+//Si todo se encuentra en orden, lo registra
       if (res.ok) {
         setUsuarios(prev => [...prev, data.usuario]);
         setMostrarModalRegistro(true); // modal de éxito
@@ -109,7 +113,8 @@ export default function Login({ onLogin }) {
         setEmail("");
         setPassword("");
         setRolSeleccionado("");
-      } else {
+      } //De no ser asi, analiza las posibilidades de mail, usuario duplicado. etc
+      else {
         if (data.code === "USUARIO_DUPLICADO") {
           setMostrarModalUsuarioDuplicado(true);
         } else if (data.code === "MAIL_DUPLICADO") {
@@ -121,7 +126,7 @@ export default function Login({ onLogin }) {
           setErroresRegistro([{ field: "general", message: data.message || "Error desconocido" }]);
           setMostrarModalErroresRegistro(true);
         }
-      }
+      } //En caso de hallar un error, lo informa por consola
     } catch (err) {
       console.error(err);
       setErroresRegistro([{ field: "general", message: "Error al comunicarse con el servidor" }]);
