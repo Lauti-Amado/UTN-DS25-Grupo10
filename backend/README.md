@@ -13,67 +13,67 @@ El objetivo principal del backend es implementar las funcionalidades de la gesti
 
 > **Endpoints De Formulario**
 
-//Ruta para obtener los formularios de una oferta
+- Ruta para obtener los formularios de una oferta
 router.get('/:id', formularioController.getFormulariosByOferta);
 
-//Ruta para crear un formulario
+- Ruta para crear un formulario
 router.post('/:id', validate(createFormularioSchema), formularioController.createFormulario);
 
 > **Endpoints De Oferta**
 
-// Ruta para obtener todas las ofertas
+- Ruta para obtener todas las ofertas
 router.get('/', ofertaController.getAllOfertas);
 
-// Ruta para obtener una oferta por ID
+- Ruta para obtener una oferta por ID
 router.get('/:id', ofertaController.getOfertaById);
 
-// Ruta para crear una nueva oferta
+- Ruta para crear una nueva oferta
 router.post('/', validate(createOfertaSchema),ofertaController.createOferta);
 
-// Ruta para actualizar una oferta existente
+- Ruta para actualizar una oferta existente
 router.put('/:id', validate(updateOfertaSchema), ofertaController.updateOferta);
 
-// Ruta para eliminar una oferta
+- Ruta para eliminar una oferta
 router.delete('/:id', ofertaController.deleteOferta);
 
-// Ruta para obtener todas las ofertas de un empleador
+- Ruta para obtener todas las ofertas de un empleador
 router.get('/empleador/:empleadorId', ofertaController.getOfertasByEmpleadorId);
 
 > **Endpoints De Proyecto**
 
-// GET /api/proyectos
+- GET /api/proyectos
 router.get('/', proyectoController.getAllProyectos);
 
-// GET/api/proectos/:id
+- GET/api/proyectos/:id
 router.get('/:id', proyectoController.getProyectoById);
 
-//POST /api/proyectos
+- POST /api/proyectos
 router.post('/', validate(createProyectoSchema), proyectoController.createProyecto);
 
-// PUT /api/proyectos/:id
+- PUT /api/proyectos/:id
 router.put('/:id',validate(updateProyectoSchema) , proyectoController.updateProyecto);
 
-// DELETE /api/proyectos/:id
+- DELETE /api/proyectos/:id
 router.delete('/:id', proyectoController.deleteProyecto)
 
-// Ruta para obtener todas los proyectos de un postulado
+- Ruta para obtener todas los proyectos de un postulado
 router.get('/postulado/:postuladoId', proyectoController.getProyectosByPostuladoId);
 
 > **Endpoints De Usuario**
 
-// Ruta para obtener todos los usuarios
+- Ruta para obtener todos los usuarios
 router.get('/', usuarioController.getAllUsuarios);
 
-// Ruta para obtener un usuario por ID
+- Ruta para obtener un usuario por ID
 router.get('/:id', usuarioController.getUsuarioById);
 
-// Ruta para crear un usuario
+- Ruta para crear un usuario
 router.post('/', validate(createUsuarioSchema),usuarioController.createUsuario);
 
-// Ruta para actualizar un usuario existente
+- Ruta para actualizar un usuario existente
 router.put('/:id', validate(updateUsuarioSchema), usuarioController.updateUsuario);
 
-// Ruta para eliminar un usuario
+- Ruta para eliminar un usuario
 router.delete('/:id', usuarioController.deleteUsuario);
 
 router.post('/login', usuarioController.loginUsuarioController);
