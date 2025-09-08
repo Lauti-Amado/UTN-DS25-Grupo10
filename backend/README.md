@@ -13,77 +13,77 @@ El objetivo principal del backend es implementar las funcionalidades de la gesti
 
 > **Endpoints De Formulario**
 
-- Ruta para obtener los formularios de una oferta (el id pertenece a la oferta)
+- Ruta para obtener los formularios de una oferta (el id pertenece a la oferta):
   GET /formularios/:id
   
-- Ruta para crear un formulario (el id pertenece a la oferta)
+- Ruta para crear un formulario (el id pertenece a la oferta):
   POST /formulario/:id
 
 > **Endpoints De Oferta**
 
-- Ruta para obtener todas las ofertas
+- Ruta para obtener todas las ofertas:
   GET /ofertas
 
-- Ruta para obtener una oferta por ID
+- Ruta para obtener una oferta por ID:
   GET /ofertas/:id
 
-- Ruta para crear una nueva oferta
+- Ruta para crear una nueva oferta:
   POST /ofertas
 
-- Ruta para actualizar una oferta existente
+- Ruta para actualizar una oferta existente:
   PUT /ofertas/:id
 
-- Ruta para eliminar una oferta
+- Ruta para eliminar una oferta:
   DELETE /ofertas/:id
 
-- Ruta para obtener todas las ofertas de un empleador
+- Ruta para obtener todas las ofertas de un empleador:
   GET /ofertas/empleador/:id
 
 > **Endpoints De Proyecto**
 
-- Ruta para obtener todos los proyectos
+- Ruta para obtener todos los proyectos:
   GET /proyectos
 
-- Ruta para obtener un proyecto
+- Ruta para obtener un proyecto:
   GET /proyectos/:id
 
-- Ruta para crear un proyecto
+- Ruta para crear un proyecto:
   POST /proyectos/
 
-- Ruta para actualizar un proyecto
+- Ruta para actualizar un proyecto:
   PUT /proyectos/:id
 
-- Ruta para eliminar un proyecto
+- Ruta para eliminar un proyecto:
   DELETE /proyectos/:id
 
-- Ruta para obtener todas los proyectos de un postulante
+- Ruta para obtener todas los proyectos de un postulante:
   GET /proyectos/postulado/:postuladoId
 
 > **Endpoints De Usuario**
 
-- Ruta para obtener todos los usuarios
+- Ruta para obtener todos los usuarios:
   GET /usuarios
 
-- Ruta para obtener un usuario por ID
+- Ruta para obtener un usuario por ID:
   GET /usuarios/:id
 
-- Ruta para crear un usuario
+- Ruta para crear un usuario:
   POST /usuarios
 
-- Ruta para actualizar un usuario existente
+- Ruta para actualizar un usuario existente:
   PUT /usuarios/:id
 
-- Ruta para eliminar un usuario
+- Ruta para eliminar un usuario:
   DELETE /usuarios/:id
 
-- Ruta para loguearse
+- Ruta para loguearse:
   POST /usuarios/login
 
 
-- Ruta para obtener todos los usuarios POSTULANTES
+- Ruta para obtener todos los usuarios POSTULANTES:
   GET /usuarios/particulares/p
 
-- Ruta para obtener todos los usuarios EMPLEADORES
+- Ruta para obtener todos los usuarios EMPLEADORES:
   GET /usuarios/particulares/e
 
 **COMENTARIOS:**
