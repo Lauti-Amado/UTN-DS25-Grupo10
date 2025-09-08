@@ -14,9 +14,11 @@ El objetivo principal del backend es implementar las funcionalidades de la gesti
 > **Endpoints De Formulario**
 
 - Ruta para obtener los formularios de una oferta
+  
 router.get('/:id', formularioController.getFormulariosByOferta);
 
 - Ruta para crear un formulario
+  
 router.post('/:id', validate(createFormularioSchema), formularioController.createFormulario);
 
 > **Endpoints De Oferta**
