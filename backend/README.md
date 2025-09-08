@@ -15,76 +15,94 @@ El objetivo principal del backend es implementar las funcionalidades de la gesti
 
 - Ruta para obtener los formularios de una oferta
   
-router.get('/:id', formularioController.getFormulariosByOferta);
+  router.get('/:id', formularioController.getFormulariosByOferta);
 
 - Ruta para crear un formulario
   
-router.post('/:id', validate(createFormularioSchema), formularioController.createFormulario);
+  router.post('/:id', validate(createFormularioSchema), formularioController.createFormulario);
 
 > **Endpoints De Oferta**
 
 - Ruta para obtener todas las ofertas
-router.get('/', ofertaController.getAllOfertas);
+  
+  router.get('/', ofertaController.getAllOfertas);
 
 - Ruta para obtener una oferta por ID
-router.get('/:id', ofertaController.getOfertaById);
+  
+  router.get('/:id', ofertaController.getOfertaById);
 
 - Ruta para crear una nueva oferta
-router.post('/', validate(createOfertaSchema),ofertaController.createOferta);
+  
+  router.post('/', validate(createOfertaSchema),ofertaController.createOferta);
 
 - Ruta para actualizar una oferta existente
-router.put('/:id', validate(updateOfertaSchema), ofertaController.updateOferta);
+  
+  router.put('/:id', validate(updateOfertaSchema), ofertaController.updateOferta);
 
 - Ruta para eliminar una oferta
-router.delete('/:id', ofertaController.deleteOferta);
+  
+  router.delete('/:id', ofertaController.deleteOferta);
 
 - Ruta para obtener todas las ofertas de un empleador
-router.get('/empleador/:empleadorId', ofertaController.getOfertasByEmpleadorId);
+  
+  router.get('/empleador/:empleadorId', ofertaController.getOfertasByEmpleadorId);
 
 > **Endpoints De Proyecto**
 
 - GET /api/proyectos
-router.get('/', proyectoController.getAllProyectos);
+  
+  router.get('/', proyectoController.getAllProyectos);
 
 - GET/api/proyectos/:id
-router.get('/:id', proyectoController.getProyectoById);
+  
+  router.get('/:id', proyectoController.getProyectoById);
 
 - POST /api/proyectos
-router.post('/', validate(createProyectoSchema), proyectoController.createProyecto);
+  
+  router.post('/', validate(createProyectoSchema), proyectoController.createProyecto);
 
 - PUT /api/proyectos/:id
-router.put('/:id',validate(updateProyectoSchema) , proyectoController.updateProyecto);
+  
+  router.put('/:id',validate(updateProyectoSchema) , proyectoController.updateProyecto);
 
 - DELETE /api/proyectos/:id
-router.delete('/:id', proyectoController.deleteProyecto)
+  
+  router.delete('/:id', proyectoController.deleteProyecto)
 
 - Ruta para obtener todas los proyectos de un postulado
-router.get('/postulado/:postuladoId', proyectoController.getProyectosByPostuladoId);
+  
+  router.get('/postulado/:postuladoId', proyectoController.getProyectosByPostuladoId);
 
 > **Endpoints De Usuario**
 
 - Ruta para obtener todos los usuarios
-router.get('/', usuarioController.getAllUsuarios);
+  
+  router.get('/', usuarioController.getAllUsuarios);
 
 - Ruta para obtener un usuario por ID
-router.get('/:id', usuarioController.getUsuarioById);
+  
+  router.get('/:id', usuarioController.getUsuarioById);
 
 - Ruta para crear un usuario
-router.post('/', validate(createUsuarioSchema),usuarioController.createUsuario);
+  
+  router.post('/', validate(createUsuarioSchema),usuarioController.createUsuario);
 
 - Ruta para actualizar un usuario existente
-router.put('/:id', validate(updateUsuarioSchema), usuarioController.updateUsuario);
+  
+  router.put('/:id', validate(updateUsuarioSchema), usuarioController.updateUsuario);
 
 - Ruta para eliminar un usuario
-router.delete('/:id', usuarioController.deleteUsuario);
+  
+  router.delete('/:id', usuarioController.deleteUsuario);
 
-router.post('/login', usuarioController.loginUsuarioController);
+  router.post('/login', usuarioController.loginUsuarioController);
 
 
-// Ruta para obtener todos los usuarios
-router.get('/particulares/p', usuarioController.getAllUsuariosPostulantes);
+- Ruta para obtener todos los usuarios
 
-router.get('/particulares/e', usuarioController.getAllUsuariosEmpleadores);
+  router.get('/particulares/p', usuarioController.getAllUsuariosPostulantes);
+
+  router.get('/particulares/e', usuarioController.getAllUsuariosEmpleadores);
 
 **COMENTARIOS:**
 
