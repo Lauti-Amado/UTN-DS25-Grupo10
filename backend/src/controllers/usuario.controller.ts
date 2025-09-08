@@ -2,25 +2,43 @@ import { Request, Response, NextFunction } from 'express';
 import * as usuarioService from '../services/usuario.service';
 
 // Crear Usuario
-export async function createUsuario(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export const createUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const newUsuario = await usuarioService.createUsuario(req.body);
-    return res.status(201).json({
-      success: true,
-      message: 'Usuario creado',
-      usuario: newUsuario,
+    const nuevoUsuario = await usuarioService.createUsuario(req.body); // ✅ CORREGIDO
+    return res.status(201).json({ 
+      success: true, 
+      usuario: nuevoUsuario, 
+      message: 'Usuario creado exitosamente' 
     });
-  } catch (error: any) {
-    return res.status(400).json({
+  } catch (err: any) {
+    console.error("Error en createUsuario:", err);
+
+    const errorMessage = err?.message || "";
+    const errores = err?.errores;
+
+    if (errorMessage === "MAIL_DUPLICADO") {
+      return res.status(400).json({
+        success: false,
+        code: "MAIL_DUPLICADO",
+        message: "El mail ya está registrado. ¿Olvidaste tu contraseña o querés iniciar sesión?",
+      });
+    } else if (errorMessage === "USUARIO_DUPLICADO") {
+      return res.status(400).json({
+        success: false,
+        code: "USUARIO_DUPLICADO",
+        message: "El nombre de usuario ya está en uso, por favor elige otro.",
+      });
+    } else if (errores) {
+      return res.status(400).json({ success: false, errores });
+    }
+
+    return res.status(500).json({
       success: false,
-      message: error.message || 'Error al crear el usuario',
+      code: "ERROR_INTERNO",
+      message: "Error al crear el usuario",
     });
   }
-}
+};
 
 //Obtener usuario por ID
 export async function getUsuarioById(req: Request, res: Response, next: NextFunction) {

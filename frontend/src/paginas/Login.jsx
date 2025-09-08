@@ -18,10 +18,12 @@ export default function Login({ onLogin }) {
   const [mostrarModalError, setMostrarModalError] = useState(false);
   const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
   const [mostrarModalUsuarioExistente, setMostrarModalUsuarioExistente] = useState(false);
+  const [mostrarModalErroresRegistro, setMostrarModalErroresRegistro] = useState(false);
 
   const { usuarios, setUsuarios, setUsuarioLogueado } = useContext(DatosContexto);
   const [mostrarModalRecuperacionError, setMostrarModalRecuperacionError] = useState(false);
   const [mostrarModalRecuperacion, setMostrarModalRecuperacion] = useState(false);
+  const [mostrarModalUsuarioDuplicado, setMostrarModalUsuarioDuplicado] = useState(false);
 
   const [mostrarModalConfiguracion, setMostrarModalConfiguracion] = useState(false);
   const [temaOscuro, setTemaOscuro] = useState(false);
@@ -38,29 +40,33 @@ export default function Login({ onLogin }) {
     if (!email) setErrorMail('Este campo es obligatorio');
     if (!password) setErrorPassword('Este campo es obligatorio');
 
-    if (email && password) {
-      try {
-        const res = await fetch("http://localhost:3000/usuarios/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ mail: email, contraseña: password })
-        });
+  if (!email || !password) {
+    setMostrarModalError(true);
+    return;
+  }
 
-        const data = await res.json();
+  try {
+    const res = await fetch("http://localhost:3000/usuarios/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ mail: email, contraseña: password })
+    });
 
-        if (res.ok) {
-          setUsuarioLogueado(data.usuario);
-          onLogin();
-        } else {
-          setMostrarModalError(true);
-        }
-      } catch (error) {
-        console.error("Error al iniciar sesión:", error);
-        setMostrarModalError(true);
-      }
+    const data = await res.json();
+    console.log("Respuesta login:", data);
+
+    if (res.ok) {
+      setUsuarioLogueado(data.usuario);
+      onLogin();
+    } else {
+      setMostrarModalError(true);
     }
-  };
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    setMostrarModalError(true);
+  }
+};
 
   // --- REGISTRO ---
   const handleRegistro = async (e) => {
@@ -104,14 +110,16 @@ export default function Login({ onLogin }) {
         setPassword("");
         setRolSeleccionado("");
       } else {
-        if (data.errores) {
-          // Errores de validación Zod
-          setErroresRegistro(data.errores);
-        } else if (data.message && data.message.includes("registrado")) {
-          // Error de email ya existente
+        if (data.code === "USUARIO_DUPLICADO") {
+          setMostrarModalUsuarioDuplicado(true);
+        } else if (data.code === "MAIL_DUPLICADO") {
           setMostrarModalUsuarioExistente(true);
+        } else if (data.errores) {
+          setErroresRegistro(data.errores);
+          setMostrarModalErroresRegistro(true);
         } else {
           setErroresRegistro([{ field: "general", message: data.message || "Error desconocido" }]);
+          setMostrarModalErroresRegistro(true);
         }
       }
     } catch (err) {
@@ -201,17 +209,6 @@ export default function Login({ onLogin }) {
                   <option value="empleador">Empleador</option>
                 </select>
 
-                {/* Mostrar errores del backend */}
-                {erroresRegistro.length > 0 && (
-                  <div className={styles.errorBox}>
-                    <ul>
-                      {erroresRegistro.map((err, i) => (
-                        <li key={i}><strong>{err.field}:</strong> {err.message}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
                 <button type="submit" className={styles.submit}>Registrarme</button>
 
                 <div className="text-center mt-3">
@@ -252,11 +249,15 @@ export default function Login({ onLogin }) {
               <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
                   <div className="modal-header bg-danger text-white">
-                    <h5 className="modal-title">Error al iniciar sesión</h5>
+                    <h5 className="modal-title">Error</h5>
                     <button type="button" className="btn-close" onClick={() => setMostrarModalError(false)}></button>
                   </div>
                   <div className="modal-body">
-                    <p>Usuario no registrado o datos incorrectos.</p>
+                    {!email || !password ? (
+                      <p>Debes completar todos los campos.</p>
+                    ) : (
+                      <p>Usuario no registrado o datos incorrectos.</p>
+                    )}
                   </div>
                   <div className="modal-footer">
                     <button className="btn btn-secondary" onClick={() => setMostrarModalError(false)}>Cerrar</button>
@@ -294,7 +295,7 @@ export default function Login({ onLogin }) {
                     <button type="button" className="btn-close" onClick={() => setMostrarModalUsuarioExistente(false)}></button>
                   </div>
                   <div className="modal-body">
-                    <p>El nombre de usuario o el email ya están en uso.</p>
+                    <p>El email ya está en uso, intente iniciar sesion o recuperar la contraseña.</p>
                   </div>
                   <div className="modal-footer">
                     <button className="btn btn-warning" onClick={() => setMostrarModalUsuarioExistente(false)}>Cerrar</button>
@@ -378,6 +379,48 @@ export default function Login({ onLogin }) {
                   </div>
                   <div className="modal-footer">
                     <button className="btn btn-dark" onClick={() => setMostrarModalConfiguracion(false)}>Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {mostrarModalErroresRegistro && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+              <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-content">
+                  <div className="modal-header bg-danger text-white">
+                    <h5 className="modal-title">Error en el registro</h5>
+                    <button type="button" className="btn-close" onClick={() => setMostrarModalErroresRegistro(false)}></button>
+                  </div>
+                  <div className="modal-body">
+                    <ul>
+                      {erroresRegistro.map((err, i) => (
+                        <li key={i}><strong>{err.field}:</strong> {err.message}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="modal-footer">
+                    <button className="btn btn-danger" onClick={() => setMostrarModalErroresRegistro(false)}>Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {mostrarModalUsuarioDuplicado && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+              <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-content">
+                  <div className="modal-header bg-warning text-dark">
+                    <h5 className="modal-title">Nombre de usuario en uso</h5>
+                    <button type="button" className="btn-close" onClick={() => setMostrarModalUsuarioDuplicado(false)}></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>El nombre de usuario que ingresaste ya está en uso. Por favor, elegí otro.</p>
+                  </div>
+                  <div className="modal-footer">
+                    <button className="btn btn-warning" onClick={() => setMostrarModalUsuarioDuplicado(false)}>Cerrar</button>
                   </div>
                 </div>
               </div>
