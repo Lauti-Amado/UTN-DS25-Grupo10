@@ -4,10 +4,10 @@ Este backend fue desarrollado con Node.JS y se encarga de manejar la logica de n
 **OBJETIVO:**
 El objetivo principal del backend es implementar las funcionalidades de la gestión de usuarios, proyectos, ofertas y formularios.
 
-> Usuarios: personas que vayan a interactuar con el software diferenciandose por postulantes y empleadores.
-> Proyectos: se crean a partir de la necesidad de los postulantes de mostrar sus conocimientos y experiencia.
-> Ofertas: se crean a partir de la necesidad de los empleadores de reclutar postulantes para un trabajo específico.
-> Formularios: actúan en forma de documentación formal entre una oferta de trabajo y un postulante interesado.
+- Usuarios: personas que vayan a interactuar con el software diferenciandose por postulantes y empleadores.
+- Proyectos: se crean a partir de la necesidad de los postulantes de mostrar sus conocimientos y experiencia.
+- Ofertas: se crean a partir de la necesidad de los empleadores de reclutar postulantes para un trabajo específico.
+- Formularios: actúan en forma de documentación formal entre una oferta de trabajo y un postulante interesado.
 
 **ENDPOINTS:**
 
@@ -86,8 +86,8 @@ router.get('/particulares/e', usuarioController.getAllUsuariosEmpleadores);
 
 **COMENTARIOS:**
 
-> Se documentaron los endpoints para validaciones y autenticación.
-> Se uso zod para la validación de los endpoints mas importantes.
-> El proyecto se encuentra escalable para futuras mejoras.
+- Se documentaron los endpoints para validaciones y autenticación.
+- Se uso zod para la validación de los endpoints mas importantes.
+- El proyecto se encuentra escalable para futuras mejoras.
 
 
