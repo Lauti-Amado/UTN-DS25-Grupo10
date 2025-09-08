@@ -33,6 +33,7 @@ const handleFileChange = (e) => {
   // Cuando se cambia el nombre, se hace la llamada a la API con un PUT para actualizar y guardar cambios
   const aceptarCambios = async () => {
   try {
+
     if (!usuarioLogueado?.id) throw new Error('Usuario no logueado'); //  AGREGADO
 
     const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, { //  MODIFICADO
@@ -51,7 +52,9 @@ const handleFileChange = (e) => {
     
 //Modifica el perfil
     if (onActualizarPerfil) {
+
       onActualizarPerfil(previewSrc, datosActualizados.data.nombreUsuario, nuevaDescripcion, nuevaFechaNac); //  MODIFICADO
+
     }
 
     if (onCerrar) onCerrar();
