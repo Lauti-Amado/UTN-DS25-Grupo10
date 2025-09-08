@@ -10,7 +10,8 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
   const [nuevaFechaNac, setNuevafecha]= useState(FechaNac || '');
   const fileInputRef = useRef(null);
   const { usuarioLogueado } = useContext(DatosContexto); 
- 
+
+  //LLAMADA AL BACK PARA MODIFICAR NOMBRE DE USUARIO DESDE EL PERFIL
   // Imagen de perfil
   const abrirSelector = () => {
   fileInputRef.current?.click();
@@ -29,32 +30,33 @@ const handleFileChange = (e) => {
   }
 };
 
-  // Guardar cambios
+  // Cuando se cambia el nombre, se hace la llamada a la API con un PUT para actualizar y guardar cambios
   const aceptarCambios = async () => {
   try {
-    if (!usuarioLogueado?.id) throw new Error('Usuario no logueado'); // ✅ AGREGADO
+    if (!usuarioLogueado?.id) throw new Error('Usuario no logueado'); //  AGREGADO
 
-    const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, { // ✅ MODIFICADO
+    const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, { //  MODIFICADO
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-      nombreUsuario: nuevoNombre
+      nombreUsuario: nuevoNombre //nuevo nombre
       }),
     });
-
+ //En caso contrario, muestra el error
     if (!response.ok) {
       throw new Error('Error al actualizar el nombre de usuario');
     }
 
     const datosActualizados = await response.json();
-
+    
+//Modifica el perfil
     if (onActualizarPerfil) {
-      onActualizarPerfil(previewSrc, datosActualizados.data.nombreUsuario, nuevaDescripcion, nuevaFechaNac); // ✅ MODIFICADO
+      onActualizarPerfil(previewSrc, datosActualizados.data.nombreUsuario, nuevaDescripcion, nuevaFechaNac); //  MODIFICADO
     }
 
     if (onCerrar) onCerrar();
   } catch (error) {
-    console.error(error);
+    console.error(error); //En caso de error, lo muestra
     alert('No se pudo actualizar el nombre de usuario. Intenta nuevamente.');
   }
 };
