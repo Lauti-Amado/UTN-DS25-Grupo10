@@ -10,7 +10,9 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
   const [nuevaFechaNac, setNuevafecha] = useState(FechaNac || '');
   const fileInputRef = useRef(null);
 
+
   const { usuarioLogueado, setUsuarioLogueado } = useContext(DatosContexto);
+
 
   // Imagen de perfil
   const abrirSelector = () => {
@@ -30,8 +32,9 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
     }
   };
 
-  // Guardar cambios
+  // Cuando se cambia el nombre, se hace la llamada a la API con un PUT para actualizar y guardar cambios
   const aceptarCambios = async () => {
+
     try {
       if (!usuarioLogueado?.id) throw new Error('Usuario no logueado');
 
@@ -77,6 +80,7 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
       alert('No se pudo actualizar el perfil. Intenta nuevamente.');
     }
   };
+
 
   // Botones y funcionalidades
   return (
