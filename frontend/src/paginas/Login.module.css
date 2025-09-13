@@ -279,3 +279,12 @@ select option {
 .temaOscuro .contenedor {
   background-color: #2a2a2a;
 }
+
+.errorBox {
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+}

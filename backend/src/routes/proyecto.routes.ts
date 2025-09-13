@@ -1,18 +1,26 @@
 import {Router} from 'express';
 import * as proyectoController from '../controllers/proyecto.controller';
+import { createProyectoSchema, updateProyectoSchema } from '../validations/proyecto.validation';
+import {validate} from '../middlewares/validation.middleware';
 
 const router = Router();
 
-// GET /api/Proyectos
+// GET /api/proyectos
 router.get('/', proyectoController.getAllProyectos);
 
-// GET/api/Proyectos/:id
+// GET/api/proectos/:id
 router.get('/:id', proyectoController.getProyectoById);
 
-//POST /api/Proyecto
-router.post('/', proyectoController.createProyecto);
+//POST /api/proyectos
+router.post('/', validate(createProyectoSchema), proyectoController.createProyecto);
 
-// PUT /api/Proyecto/:id
-router.put('/:id', proyectoController.updateProyecto)
+// PUT /api/proyectos/:id
+router.put('/:id',validate(updateProyectoSchema) , proyectoController.updateProyecto);
+
+// DELETE /api/proyectos/:id
+router.delete('/:id', proyectoController.deleteProyecto)
+
+// Ruta para obtener todas los proyectos de un postulado
+router.get('/postulado/:postuladoId', proyectoController.getProyectosByPostuladoId);
 
 export const proyectoRouters = router;

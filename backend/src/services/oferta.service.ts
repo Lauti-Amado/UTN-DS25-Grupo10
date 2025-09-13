@@ -1,72 +1,70 @@
-import {
-  CreateOfertaRequest,
-  UpdateOfertaResquest,
-  Oferta
-} from '../types/ofertas.types';
-
-// Lista con una oferta de prueba
-let ofertas: Oferta[] = [
-  {
-    id: 1,
-    categoria: 'Categoria 1',
-    ubicacion: 'Ubicacion 1',
-    sueldo: 50000,
-    modalidad: 'remoto',
-    horario: [new Date('1970-01-01T09:00:00')],
-    creador: {
-      id: 1,
-      nombre: 'Creador 1',
-      contraseña: 'contraseña1',
-      mail: 'creador1@example.com',
-      descripcion: 'Descripcion del creador 1',
-      fechaCreacion: new Date(), 
-      logo: 'logo1.png'
-    },
-    postulados: [{
-        id: 2,
-        nombre: 'Postulante 2',
-        contraseña: 'contraseña2',
-        mail: 'postulante2@example.com',
-        descripcion: 'Descripcion del postulante 2',
-        fechaNacimiento: new Date(), 
-        fotoperfil: 'foto2.png'
-    }]
-  }
-];
+import prisma from "../config/prisma";
+import { CreateOfertaRequest, UpdateOfertaResquest, Oferta } from "../types/ofertas.types";
 
 // Obtener todas las ofertas
 export async function getAllOfertas(): Promise<Oferta[]> {
-  return ofertas;
+  return prisma.oferta.findMany({
+    include: { creador: true},
+  }) as unknown as Oferta[];
 }
 
 // Obtener oferta por ID
 export async function getOfertaById(id: number): Promise<Oferta> {
-  const oferta = ofertas.find(o => o.id === id);
-  if (!oferta) throw new Error('Oferta no encontrada');
-  return oferta;
+  const oferta = await prisma.oferta.findUnique({
+    where: { id },
+    include: { creador: true },
+  });
+  if (!oferta){
+    const error=new Error('Oferta no encontrada') as any;
+    error.statusCode= 404;
+    throw Error
+  }
+  return oferta as unknown as Oferta;
 }
 
 // Crear nueva oferta
 export async function createOferta(data: CreateOfertaRequest): Promise<Oferta> {
-  const newOferta: Oferta = {
-    id: Math.max(0, ...ofertas.map(o => o.id)) + 1,
-    ...data
-  };
-  ofertas.push(newOferta);
-  return newOferta;
+  return prisma.oferta.create({
+    data: {
+      categoria: data.categoria,
+      ubicacion: data.ubicacion,
+      sueldo: data.sueldo,
+      modalidad: data.modalidad,
+      horario: data.horario,
+      creador: { connect: { id: data.creadorId } },
+    },
+    include: { creador: true }, // Solo incluimos al creador, no formularios
+  }) as unknown as Oferta;
 }
 
-// Actualizar oferta existente
-export async function updateOferta(id: number, data: UpdateOfertaResquest): Promise<Oferta> {
-  const index = ofertas.findIndex(o => o.id === id);
-  if (index === -1) throw new Error('Oferta no encontrada');
-  ofertas[index] = { ...ofertas[index], ...data };
-  return ofertas[index];
+
+// Actualizar oferta
+export async function updateOferta(id: number, updateData: UpdateOfertaResquest): Promise<Oferta> {
+  return prisma.oferta.update({
+    where: { id },
+    data: updateData,
+    include : { creador: true }
+  }) as unknown as Oferta;
+}
+
+// Obtener todas las ofertas de un empleador
+export async function getOfertasByEmpleadorId(empleadorId: number): Promise<Oferta[]> {
+  return prisma.oferta.findMany({
+    where: { creadorId: empleadorId },
+    include: { creador: true},
+  }) as unknown as Oferta[];
 }
 
 // Eliminar oferta
 export async function deleteOferta(id: number): Promise<void> {
-  const index = ofertas.findIndex(o => o.id === id);
-  if (index === -1) throw new Error('Oferta no encontrada');
-  ofertas.splice(index, 1);
+  try {
+    await prisma.oferta.delete({ where: { id } });
+  } catch (e: any) {
+    if (e.code === 'P2025') {
+      const error = new Error('Oferta no encontrada') as any;
+      error.statusCode = 404;
+      throw error;
+    }
+    throw e;
+  }
 }

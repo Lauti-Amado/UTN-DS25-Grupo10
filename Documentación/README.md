@@ -11,6 +11,7 @@ Fase 1
 Fase 2
 
 	2.1 Glosario Oficial y Diagrama De Clases
+ 	2.1 Diagrama De Clases Actualizado
 	2.2 Definición De Las Reglas De Negocio
 
 Fase 3

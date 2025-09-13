@@ -1,35 +1,25 @@
-
 export interface Usuario {
     id: number;
-    nombre: string;
-    nombreUsuario: string,
     contraseña: string;
+    nombre: string;
     mail: string;
-    descripcion: string;
     rolPostulante: boolean;
-    fecha: Date;
-    fotoperfil: string;
+    nombreUsuario: string
 }
 
 // Crear un usuario. Acepta tanto para crear un postulante como a un empleador
 export interface CreateUsuarioRequest {
     nombre: string;
-    nombreUsuario: string,
     contraseña: string;
     mail: string;
-    descripcion: string;
     rolPostulante: boolean;
-    fecha: Date;
-    fotoperfil: string;
+    nombreUsuario: string
 }
 
 export interface UpdateUsuarioRequest {
     nombre?: string;
     contraseña?: string;
     mail?: string;
-    descripcion?: string;
-    fecha?: Date;
-    fotoperfil?: string;
 }
 
 export interface UsuarioResponse {
@@ -51,17 +41,3 @@ export interface UsuarioEmpleadoresListResponse {
     usuarios: Usuario[];
     total: number;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

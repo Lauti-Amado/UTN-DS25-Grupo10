@@ -7,6 +7,7 @@ import { BiCog } from "react-icons/bi";
 import { DatosContexto } from '../datosContext';
 
 export default function Login({ onLogin }) {
+  const [nombreUsuario, setUsuario]=useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMail, setErrorMail] = useState('');
@@ -17,64 +18,119 @@ export default function Login({ onLogin }) {
   const [mostrarModalError, setMostrarModalError] = useState(false);
   const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
   const [mostrarModalUsuarioExistente, setMostrarModalUsuarioExistente] = useState(false);
+  const [mostrarModalErroresRegistro, setMostrarModalErroresRegistro] = useState(false);
 
   const { usuarios, setUsuarios, setUsuarioLogueado } = useContext(DatosContexto);
   const [mostrarModalRecuperacionError, setMostrarModalRecuperacionError] = useState(false);
   const [mostrarModalRecuperacion, setMostrarModalRecuperacion] = useState(false);
+  const [mostrarModalUsuarioDuplicado, setMostrarModalUsuarioDuplicado] = useState(false);
 
   const [mostrarModalConfiguracion, setMostrarModalConfiguracion] = useState(false);
   const [temaOscuro, setTemaOscuro] = useState(false);
 
+ //LLAMADAS DEL BACK PARA REGISTRAR USUARIO E INICIAR SESION
 
-  const handleSubmit = (e) => {
+  //  Estado para errores de registro (vienen del backend con Zod)
+  const [erroresRegistro, setErroresRegistro] = useState([]);
+
+  // --- Iniciar sesion ---
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMail('');
     setErrorPassword('');
-
+//Si no ingresa el mail o contraseña, lo informa
     if (!email) setErrorMail('Este campo es obligatorio');
     if (!password) setErrorPassword('Este campo es obligatorio');
 
-    if (email && password) {
-      const usuarioEncontrado = usuarios.find(
-        (u) => u.email === email && u.contraseña === password
-      );
-      if (usuarioEncontrado) {
-        setUsuarioLogueado(usuarioEncontrado);
-        onLogin();
-      } else {
-        setMostrarModalError(true);
-      }
-    }
-  };
+  if (!email || !password) {
+    setMostrarModalError(true);
+    return;
+  }
 
-  const handleRegistro = (e) => {
+//Hacemos la llamada al back para poder iniciar sesion de un usuario, con un Post
+  try {
+    const res = await fetch("http://localhost:3000/usuarios/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ mail: email, contraseña: password })
+    });
+
+    const data = await res.json();
+    console.log("Respuesta login:", data);
+
+//Si cumple res.ok loguea al usuario y llama a onLogin. De no ser asi, muestra el error
+    if (res.ok) {
+      setUsuarioLogueado(data.usuario);
+      onLogin();
+    } else {
+      setMostrarModalError(true);
+    } //Si hay un error, lo muestra por consola
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    setMostrarModalError(true);
+  }
+};
+
+  // --- Registrar usuario ---
+  const handleRegistro = async (e) => {
     e.preventDefault();
-    const nombre = e.target.nombre.value;
-    const usuario = e.target.usuario.value;
-
-    const emailExiste = usuarios.some(u => u.email === email);
-    const usuarioExiste = usuarios.some(u => u.usuario === usuario);
-
-    if (emailExiste || usuarioExiste) {
-      setMostrarModalUsuarioExistente(true);
+    setErroresRegistro([]);
+//Obtiene los atributos
+    const nombre = e.target.nombre.value.trim();
+    const usuario = e.target.nombreUsuario.value.trim();
+    const correo = e.target.email.value.trim();
+    const contraseña = e.target.contraseña.value;
+    const rol = rolSeleccionado;
+//Si no estan todos, llama al error
+    if (!nombre || !correo || !contraseña || !rol) {
+      setErroresRegistro([{ field: "general", message: "Todos los campos son obligatorios" }]);
       return;
     }
-
-    const nuevoUsuario = {
-      id: Date.now(),
-      nombre,
-      usuario,
-      email,
-      contraseña: password,
-      rol: rolSeleccionado
+//Caso contrario, define los atributos del usuario
+    const nuevoUsuario = { 
+      nombre, 
+      nombreUsuario: usuario,
+      mail: correo, 
+      contraseña, 
+      rolPostulante: rol === "postulante" 
     };
+//y hace la llamada a la Api con un post para registrarlo
+    try {
+      const res = await fetch("http://localhost:3000/usuarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevoUsuario),
+        credentials: "include"
+      });
 
-    setUsuarios(prev => [...prev, nuevoUsuario]);
-    setEmail('');
-    setPassword('');
-    setRolSeleccionado('');
-    setVista('login');
-    setMostrarModalRegistro(true);
+      const data = await res.json();
+//Si todo se encuentra en orden, lo registra
+      if (res.ok) {
+        setUsuarios(prev => [...prev, data.usuario]);
+        setMostrarModalRegistro(true); // modal de éxito
+        setVista("login");
+        setEmail("");
+        setPassword("");
+        setRolSeleccionado("");
+      } //De no ser asi, analiza las posibilidades de mail, usuario duplicado. etc
+      else {
+        if (data.code === "USUARIO_DUPLICADO") {
+          setMostrarModalUsuarioDuplicado(true);
+        } else if (data.code === "MAIL_DUPLICADO") {
+          setMostrarModalUsuarioExistente(true);
+        } else if (data.errores) {
+          setErroresRegistro(data.errores);
+          setMostrarModalErroresRegistro(true);
+        } else {
+          setErroresRegistro([{ field: "general", message: data.message || "Error desconocido" }]);
+          setMostrarModalErroresRegistro(true);
+        }
+      } //En caso de hallar un error, lo informa por consola
+    } catch (err) {
+      console.error(err);
+      setErroresRegistro([{ field: "general", message: "Error al comunicarse con el servidor" }]);
+    }
   };
 
   return (
@@ -87,6 +143,7 @@ export default function Login({ onLogin }) {
         </header>
 
         <div className={styles.contenedor}>
+          {/* --- LOGIN --- */}
           {vista === 'login' && (
             <>
               <div className={styles.opcionesRol}>
@@ -134,6 +191,7 @@ export default function Login({ onLogin }) {
             </>
           )}
 
+          {/* --- REGISTRO --- */}
           {vista === 'registro' && (
             <form onSubmit={handleRegistro}>
               <div className={styles.datos}>
@@ -144,7 +202,7 @@ export default function Login({ onLogin }) {
                 <input type="email" id="email" placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
                 <label htmlFor="usuario">Nombre de usuario</label>
-                <input type="text" id="usuario" name="usuario" placeholder="Usuario deseado" required />
+                <input type="text" id="nombreUsuario" name="nombreUsuario" placeholder="Usuario deseado" onChange={(e) => setUsuario(e.target.value)} required />
 
                 <label htmlFor="contraseña">Contraseña</label>
                 <input type="password" id="contraseña" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} required />
@@ -154,9 +212,7 @@ export default function Login({ onLogin }) {
                   <option value="" disabled>Selecciona un rol</option>
                   <option value="postulante">Postulante</option>
                   <option value="empleador">Empleador</option>
-                  <option value="Administrador">Administrador</option>
                 </select>
-                {!rolSeleccionado && <p className={styles.error}>Por favor seleccioná un rol</p>}
 
                 <button type="submit" className={styles.submit}>Registrarme</button>
 
@@ -198,11 +254,15 @@ export default function Login({ onLogin }) {
               <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
                   <div className="modal-header bg-danger text-white">
-                    <h5 className="modal-title">Error al iniciar sesión</h5>
+                    <h5 className="modal-title">Error</h5>
                     <button type="button" className="btn-close" onClick={() => setMostrarModalError(false)}></button>
                   </div>
                   <div className="modal-body">
-                    <p>Usuario no registrado o datos incorrectos.</p>
+                    {!email || !password ? (
+                      <p>Debes completar todos los campos.</p>
+                    ) : (
+                      <p>Usuario no registrado o datos incorrectos.</p>
+                    )}
                   </div>
                   <div className="modal-footer">
                     <button className="btn btn-secondary" onClick={() => setMostrarModalError(false)}>Cerrar</button>
@@ -240,7 +300,7 @@ export default function Login({ onLogin }) {
                     <button type="button" className="btn-close" onClick={() => setMostrarModalUsuarioExistente(false)}></button>
                   </div>
                   <div className="modal-body">
-                    <p>El nombre de usuario o el email ya están en uso.</p>
+                    <p>El email ya está en uso, intente iniciar sesion o recuperar la contraseña.</p>
                   </div>
                   <div className="modal-footer">
                     <button className="btn btn-warning" onClick={() => setMostrarModalUsuarioExistente(false)}>Cerrar</button>
@@ -330,16 +390,58 @@ export default function Login({ onLogin }) {
             </div>
           )}
 
-          <br />
-          <a href="#" onClick={(e) => { e.preventDefault(); setVista('recuperar'); }}>Olvidé Mi Contraseña</a>
-          <br />
-          <p>
-            ¿No tienes cuenta?
-            <a href="#" onClick={(e) => { e.preventDefault(); setVista('registro'); }}> Registrate</a>
-          </p>
-          <br />
+          {mostrarModalErroresRegistro && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+              <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-content">
+                  <div className="modal-header bg-danger text-white">
+                    <h5 className="modal-title">Error en el registro</h5>
+                    <button type="button" className="btn-close" onClick={() => setMostrarModalErroresRegistro(false)}></button>
+                  </div>
+                  <div className="modal-body">
+                    <ul>
+                      {erroresRegistro.map((err, i) => (
+                        <li key={i}><strong>{err.field}:</strong> {err.message}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="modal-footer">
+                    <button className="btn btn-danger" onClick={() => setMostrarModalErroresRegistro(false)}>Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {mostrarModalUsuarioDuplicado && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+              <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-content">
+                  <div className="modal-header bg-warning text-dark">
+                    <h5 className="modal-title">Nombre de usuario en uso</h5>
+                    <button type="button" className="btn-close" onClick={() => setMostrarModalUsuarioDuplicado(false)}></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>El nombre de usuario que ingresaste ya está en uso. Por favor, elegí otro.</p>
+                  </div>
+                  <div className="modal-footer">
+                    <button className="btn btn-warning" onClick={() => setMostrarModalUsuarioDuplicado(false)}>Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+            <br />
+            <a href="#" onClick={(e) => { e.preventDefault(); setVista('recuperar'); }}>Olvidé Mi Contraseña</a>
+            <br />
+            <p>
+              ¿No tienes cuenta?
+              <a href="#" onClick={(e) => { e.preventDefault(); setVista('registro'); }}> Registrate</a>
+            </p>
+            <br />
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }

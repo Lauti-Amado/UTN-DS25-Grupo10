@@ -1,17 +1,14 @@
-
-import {Request, Response, NextFunction} from 'express';
-import { Proyecto, CreateProyectoRequest, UpdateProyectoRequest, 
-ProyectoResponse, ProyectosListResponse } from '../types/proyectos.types';
+import {Request, Response, NextFunction } from 'express';
 import * as proyectoService from '../services/proyecto.service';
 
 // Obtener todos los proyectos
 export async function getAllProyectos(req: Request, res: 
-Response<ProyectosListResponse>, next: NextFunction) {
+Response, next: NextFunction) {
   try {
     const proyectos = await proyectoService.getAllProyectos();
     res.json({
-      proyectos,
-      total: proyectos.length
+      success:true,
+      data:proyectos
     });
   } catch (error) {
     next(error);
@@ -19,13 +16,13 @@ Response<ProyectosListResponse>, next: NextFunction) {
 }
 // Obtener proyecto por ID
 export async function getProyectoById(req: Request, res: 
-Response<ProyectoResponse>, next: NextFunction) {
+Response, next: NextFunction) {
   try {
-    const { id } = req.params;
-    const proyecto = await proyectoService.getProyectoById(parseInt(id));
+    const id = parseInt(req.params.id);
+    const proyecto = await proyectoService.getProyectoById(id);
     res.json({
-      proyecto,
-      message: 'Proyecto encontrado'
+      success:true,
+      data:proyecto
     });
   } catch (error) {
     next(error);
@@ -34,15 +31,13 @@ Response<ProyectoResponse>, next: NextFunction) {
 
 // Crear nuevo proyecto
 export async function createProyecto(
-   req: Request<{}, ProyectoResponse, CreateProyectoRequest>,
-   res: Response<ProyectoResponse>,
-   next: NextFunction
+   req: Request, res: Response, next: NextFunction
 ) {
   try {
     const newProyecto = await proyectoService.createProyecto(req.body);
     res.status(201).json({
-      proyecto: newProyecto,
-      message: 'Proyecto creado'
+      success:true,
+      message: 'Proyecto creado', data:newProyecto
     });
   } catch (error) {
     next(error);
@@ -51,33 +46,48 @@ export async function createProyecto(
 
 // Actualizar proyecto existente
 export async function updateProyecto(
-  req: Request<{ id: string }, ProyectoResponse , UpdateProyectoRequest >,
-  res: Response<ProyectoResponse>,
-  next: NextFunction
+  req: Request, res: Response, next: NextFunction
 ) {
   try {
-    const { id } = req.params;
-    const updatedProyecto = await proyectoService.updateProyecto(parseInt(id), req.body);
+    const id = parseInt(req.params.id);
+    const updatedProyecto = await proyectoService.updateProyecto(id, req.body);
     res.json({
-      proyecto: updatedProyecto,
-      message: 'Proyecto updated successfully'
+      success:true,
+      message: 'Proyecto actualizado exitosamente', data:updatedProyecto
     });
   } catch (error) {
     next(error);
   }
 }
 
+// Obtener todos los proyectos de un postulado específico
+export async function getProyectosByPostuladoId(
+  req: Request, res: Response, next: NextFunction
+) {
+  try {
+    const postuladoId = parseInt(req.params.postuladoId);
+    const proyectos = await proyectoService.getProyectosByPostuladoId(postuladoId);
+    res.json({ success:true,
+      data:proyectos });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
 // Eliminar proyecto
 export async function deleteProyecto(
   req: Request,
-  res: Response<{ message: string }>,
+  res: Response,
   next: NextFunction
 ) {
   try {
-    const { id } = req.params;
-    await proyectoService.deleteProyecto(parseInt(id));
-    res.json({ message: 'Proyecto eliminado' });
-  } catch (error) {
+    const id = parseInt(req.params.id);
+    await proyectoService.deleteProyecto(id);
+    res.json({success:true,
+      message:'Libro eliminado'
+      });
+     } catch (error) {
     next(error);
   }
 }
