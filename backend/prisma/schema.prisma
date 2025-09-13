@@ -15,6 +15,7 @@ model Usuario {
   mail             String       @unique
   rolPostulante    Boolean
   nombreUsuario    String       @unique
+  esAdmin          Boolean      @default(false)
   formulario       Formulario[]
   ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
   proyectosCreados Proyecto[]   @relation("UsuarioProyectos")

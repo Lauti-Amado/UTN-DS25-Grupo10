@@ -4,7 +4,7 @@ import * as usuarioService from '../services/usuario.service';
 // Crear Usuario
 export const createUsuario = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const nuevoUsuario = await usuarioService.createUsuario(req.body); // ✅ CORREGIDO
+    const nuevoUsuario = await usuarioService.createUsuario(req.body);
     return res.status(201).json({ 
       success: true, 
       usuario: nuevoUsuario, 
@@ -133,7 +133,6 @@ export async function loginUsuarioController(req: Request, res: Response) {
   try {
     const result = await usuarioService.loginUsuario(mail, contraseña);
 
-    // `result` ahora es { usuario, token }
     return res.status(200).json({
       success: true,
       message: "Login exitoso",

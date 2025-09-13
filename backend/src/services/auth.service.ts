@@ -21,7 +21,7 @@ export async function login(data: LoginRequest) {
   }
 
   // Configuración del JWT
-  const JWT_SECRET: string = process.env.JWT_SECRET || "RoDi_grupo10";
+  const JWT_SECRET: string = process.env.JWT_SECRET || "default_secret";
   const expiresIn: string = process.env.JWT_EXPIRES_IN || '2h';
 
   const payload = { id: usuario.id, email: usuario.mail, rolPostulante: usuario.rolPostulante };

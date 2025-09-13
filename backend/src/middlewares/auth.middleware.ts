@@ -13,7 +13,6 @@ declare global {
   }
 }
 
-// Middleware de autenticación
 export function authenticate(req: Request, res: Response, next: NextFunction) {
   try {
     const authHeader = req.headers.authorization;
@@ -39,14 +38,19 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-// Middleware de autorización por rol
-export function authorize(...roles: ("POSTULANTE" | "EMPLEADOR")[]) {
+export function authorize(...roles: ("ADMIN" | "POSTULANTE" | "EMPLEADOR")[]) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
       return res.status(401).json({ success: false, error: "No autenticado" });
     }
 
-    const roleFromUser = req.user.rolPostulante ? "POSTULANTE" : "EMPLEADOR";
+    let roleFromUser: "ADMIN" | "POSTULANTE" | "EMPLEADOR";
+
+    if ((req.user as any).esAdmin) {
+      roleFromUser = "ADMIN";
+    } else {
+      roleFromUser = req.user.rolPostulante ? "POSTULANTE" : "EMPLEADOR";
+    }
 
     if (!roles.includes(roleFromUser)) {
       return res.status(403).json({ success: false, error: "No tienes permisos" });
