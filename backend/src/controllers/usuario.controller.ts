@@ -127,25 +127,25 @@ export async function getAllUsuariosEmpleadores(req: Request, res: Response, nex
   }
 }
 
-
 export async function loginUsuarioController(req: Request, res: Response) {
   const { mail, contraseña } = req.body;
 
   try {
-    // Buscar al usuario con email y contraseña
-    const usuario = await usuarioService.loginUsuario(mail, contraseña);
+    const result = await usuarioService.loginUsuario(mail, contraseña);
 
-    if (!usuario) {
-      return res.status(401).json({ message: "Usuario no encontrado o contraseña incorrecta" });
-    }
+    // `result` ahora es { usuario, token }
+    return res.status(200).json({
+      success: true,
+      message: "Login exitoso",
+      data: result
+    });
 
-    // Devolver usuario (sin contraseña)
-    const { contraseña: _, ...usuarioSinPass } = usuario;
-    return res.status(200).json({ usuario: usuarioSinPass, message: "Login exitoso" });
-
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
-    return res.status(500).json({ message: "Error del servidor" });
+    return res.status(err?.statusCode || 500).json({
+      success: false,
+      message: err?.message || "Error del servidor"
+    });
   }
 }
 
