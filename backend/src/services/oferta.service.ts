@@ -23,7 +23,6 @@ export async function getOfertaById(id: number): Promise<Oferta> {
 }
 
 // Crear nueva oferta
-// Crear nueva oferta
 export async function createOferta(data: CreateOfertaRequest): Promise<Oferta> {
   return prisma.oferta.create({
     data: {

@@ -86,6 +86,7 @@ export async function createUsuario(data: CreateUsuarioRequest) {
     return await prisma.usuario.create({
       data: {
         ...data,
+        rolPostulante: data.rolPostulante ?? true,
         contraseña: hashedPassword
       },
       select: {
@@ -171,8 +172,7 @@ export async function loginUsuario(email: string, contraseña: string) {
     throw error;
   }
 
-  // Clave secreta del .env
-  const secret: Secret = process.env.JWT_SECRET || "RoDi_grupo10";
+  const secret: Secret = process.env.JWT_SECRET || "default_secret";
 
   // Generar token
   const token = jwt.sign(
