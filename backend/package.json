@@ -9,7 +9,7 @@
     "seed": "ts-node orisma/seed.ts"
   },
   "prisma": {
-    "seed": "ts-node prisa/seed.ts"
+    "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
