@@ -61,7 +61,9 @@ export default function Login({ onLogin }) {
 
 //Si cumple res.ok loguea al usuario y llama a onLogin. De no ser asi, muestra el error
     if (res.ok) {
-      setUsuarioLogueado(data.usuario);
+      // Guardar usuario y token
+      setUsuarioLogueado(data.data.usuario);
+      localStorage.setItem("token", data.data.token);
       onLogin();
     } else {
       setMostrarModalError(true);
@@ -107,7 +109,6 @@ export default function Login({ onLogin }) {
       const data = await res.json();
 //Si todo se encuentra en orden, lo registra
       if (res.ok) {
-        setUsuarios(prev => [...prev, data.usuario]);
         setMostrarModalRegistro(true); // modal de éxito
         setVista("login");
         setEmail("");

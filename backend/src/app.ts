@@ -5,6 +5,7 @@ import dotenv from  'dotenv';
 import { usuarioRoutes } from './routes/usuario.routes';
 import { proyectoRouters } from './routes/proyecto.routes';
 import { formularioRoutes } from './routes/formulario.routes';
+import { authRoutes } from './routes/auth.routes';
 import { logRequest } from './middlewares/logger.middleware';
 import { handleError } from './middlewares/error.middleware';
 
@@ -24,6 +25,9 @@ app.use(express.json());
 
 // Middleware log
 app.use(logRequest);
+
+// Rutas públicas
+app.use('/auth', authRoutes);
 
 // Rutas
 app.use('/ofertas', ofertaRoutes);

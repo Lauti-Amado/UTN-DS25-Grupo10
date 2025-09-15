@@ -17,6 +17,7 @@ function AppContent() {
 
   const handleLogout = () => {
     setUsuarioLogueado(null);
+    localStorage.removeItem("token"); // limpiar JWT
   };
 
   return (
