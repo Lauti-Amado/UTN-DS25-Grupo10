@@ -4,13 +4,9 @@ import { Proyecto, CreateProyectoRequest, UpdateProyectoRequest } from "../types
 
 // Obtener todos los proyectos
 export async function getAllProyectos(): Promise<Proyecto[]> {
-  const proyectos = await prisma.proyecto.findMany({
+  return prisma.proyecto.findMany({
     include: { creador: true },
-  });
-  return proyectos.map(p => ({
-    ...p,
-    tecnologiasUsadas: typeof p.tecnologiasUsadas === "string" ? p.tecnologiasUsadas.split(",").map(t => t.trim()) : p.tecnologiasUsadas
-  }));
+  }) as unknown as Proyecto[];
 }
 
 // Obtener proyecto por id
@@ -24,65 +20,38 @@ export async function getProyectoById(id: number): Promise<Proyecto> {
   error.statusCode = 404;
   throw error;
 }
-return {
-  ...proyecto,
-  tecnologiasUsadas: typeof proyecto.tecnologiasUsadas === "string"
-    ? proyecto.tecnologiasUsadas.split(",").map(t => t.trim())
-    : proyecto.tecnologiasUsadas
-};
+return proyecto as unknown as Proyecto;
 }
 
 // Crear nuevo proyecto
 export async function createProyecto(data: CreateProyectoRequest): Promise<Proyecto> {
-  const proyecto = await prisma.proyecto.create({
+  return prisma.proyecto.create({
     data: {
       nombre: data.nombre,
       descripcion: data.descripcion,
-      tecnologiasUsadas: Array.isArray(data.tecnologiasUsadas) ? data.tecnologiasUsadas.join(",") : data.tecnologiasUsadas,
+      tecnologiasUsadas: data.tecnologiasUsadas,
       creador: { connect: { id: data.creadorId } },
     },
     include: { creador: true },
-  });
-  return {
-    ...proyecto,
-    tecnologiasUsadas: typeof proyecto.tecnologiasUsadas === "string"
-      ? proyecto.tecnologiasUsadas.split(",").map(t => t.trim())
-      : proyecto.tecnologiasUsadas
-  };
+  }) as unknown as Proyecto;
 }
 
 // Actualizar proyecto existente
 export async function updateProyecto(id: number, updateData: UpdateProyectoRequest): Promise<Proyecto> {
-  const { tecnologiasUsadas, ...rest } = updateData;
-  const data = {
-    ...rest,
-    ...(tecnologiasUsadas !== undefined
-      ? { tecnologiasUsadas: Array.isArray(tecnologiasUsadas) ? tecnologiasUsadas.join(",") : tecnologiasUsadas }
-      : {}),
-  };
-  const proyecto = await prisma.proyecto.update({
+ 
+  return prisma.proyecto.update({
     where: { id },
-    data,
+    data: updateData,
     include: { creador: true },
-  });
-  return {
-    ...proyecto,
-    tecnologiasUsadas: typeof proyecto.tecnologiasUsadas === "string"
-      ? proyecto.tecnologiasUsadas.split(",").map(t => t.trim())
-      : proyecto.tecnologiasUsadas
-  };
+  }) as unknown as Proyecto;
 }
 
 // Obtener todos los proyectos de un postulante
 export async function getProyectosByPostuladoId(postuladoId: number): Promise<Proyecto[]> {
-  const proyectos = await prisma.proyecto.findMany({
+  return prisma.proyecto.findMany({
     where: { creadorId: postuladoId },
     include: { creador: true },
-  });
-  return proyectos.map(p => ({
-    ...p,
-    tecnologiasUsadas: typeof p.tecnologiasUsadas === "string" ? p.tecnologiasUsadas.split(",").map(t => t.trim()) : p.tecnologiasUsadas
-  }));
+  }) as unknown as Proyecto[];
 }
 
 // Eliminar proyecto

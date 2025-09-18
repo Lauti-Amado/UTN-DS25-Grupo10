@@ -7,7 +7,7 @@ export interface Oferta {
   ubicacion: string;
   sueldo?: number;
   modalidad: TipoModalidad;
-  horario: Date[];
+  horario: string;
   creador: Usuario;
 }
 
@@ -18,7 +18,7 @@ export interface CreateOfertaRequest {
   ubicacion: string;
   sueldo?: number;
   modalidad: TipoModalidad;
-  horario: Date[];
+  horario: string;
   creadorId: number;
   postuladoId: number[];
 }
@@ -28,7 +28,7 @@ export interface UpdateOfertaResquest {
   ubicacion?: string;
   sueldo?: number;
   modalidad?: TipoModalidad;
-  horario?: Date[];
+  horario?: string;
   postuladosIds?: number[];
 }
 
