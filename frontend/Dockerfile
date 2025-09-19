@@ -1,0 +1,20 @@
+# Frontend Dockerfile
+FROM node:20-alpine
+
+# Directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Copiar solo archivos de dependencias
+COPY package*.json ./
+
+# Instalar dependencias en la imagen
+RUN npm install
+
+# Copiar el resto del código fuente
+COPY . .
+
+# Exponer en el puerto que la app escucha
+EXPOSE 5173
+
+# Comando por defecto al iniciar el contenedor
+CMD ["npm", "run", "dev" , "--", "--host"]
