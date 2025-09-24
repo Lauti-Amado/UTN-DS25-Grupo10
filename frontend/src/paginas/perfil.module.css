@@ -322,7 +322,7 @@ button:hover {
     border-radius: 16px 16px 0 0;
 }
 
-.barra1 h1 {
+.barra1 h1 { /*titulo de modal para agregar proyecto*/
     color: #ffffff;
     font-size: 1.5rem;
     font-weight: 700;
@@ -403,8 +403,8 @@ button:hover {
     margin-bottom: 2rem;
 }
 
-.barra3 label {
-    color: #e5e7eb;
+.barra3 label { /*color de label del modal para agregar proyecto*/
+    color: #000000;
     font-weight: 600;
     margin-bottom: 0.5rem;
     font-size: 0.875rem;

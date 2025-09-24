@@ -35,6 +35,31 @@ export default function Perfil() {
       tecnologias: "C++" }
   ]);
 
+  //este useEffect trae los proyectos desde el backend
+  
+  useEffect(() => {
+    const fetchProyectos = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/proyectos");
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        const data = await res.json();
+
+        // 🔑 Forzar array si viene null
+        setProyectosAgregados(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error al traer proyectos:", err);
+        setProyectosAgregados([]); // mantener array aunque haya error
+      }
+    };
+    fetchProyectos();
+
+  }, []);
+
+  //hasta aca
+
+
+  
+
   const manejarActualizarPerfil = (nuevaImagen, nuevoNombre, nuevaDescripcion, nuevaFechaNac) => {
     if (nuevaImagen) setImagenPerfil(nuevaImagen);
     if (nuevoNombre) setNombrePerfil(nuevoNombre);
@@ -48,9 +73,27 @@ export default function Perfil() {
     setModoEditar(null);
   };
 
-  const agregarProyecto = (nuevoproy) => {
-    setProyectosAgregados([...proyectosagregados,nuevoproy]) 
-    setModoEditar(null);
+  const agregarProyecto = async (nuevoproy) => {
+    try {
+      const res = await fetch('http://localhost:3000/proyectos', {
+        method: 'POST',
+        headers: { "Content-Type":"application/json"},
+        body:JSON.stringify({
+          nombre: nuevoproy.nombre,
+          descripcion: nuevoproy.descripcion,
+          tecnologiasUsadas: nuevoproy.tecnologias,
+          creadorId:usuarioLogueado.id
+        }),
+      });
+      if (!res.ok) throw new Error("Error al crear proyecto");
+      const data = await res.json();
+
+      //actualizar estado con lo que devuelve el backend (incluye id autogenerado)
+      setProyectosAgregados(prev => [...(prev || []), data]);
+      setModoEditar(null);
+    } catch (error) {
+      console.error('Error al agregar proyecto:', error);
+    }
   };
 
   const SolicitarEliminar=(nombre)=>{
@@ -227,7 +270,7 @@ useEffect(() => {
     </div>
   </>
 )}
-      <Pensamiento/>
+      {/* <Pensamiento/> */}
 </div>
   );
 }
