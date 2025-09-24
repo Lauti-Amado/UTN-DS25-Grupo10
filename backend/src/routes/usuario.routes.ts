@@ -10,13 +10,13 @@ const router = Router();
 router.post("/login", usuarioController.loginUsuarioController);
 
 // Rutas protegidas
-router.get("/", authenticate, authorize("ADMIN"), usuarioController.getAllUsuarios);
-router.get("/:id", authenticate, authorize("ADMIN"), usuarioController.getUsuarioById);
+router.get("/", authenticate, authorize(["POSTULANTE", "ADMIN", "EMPLEADOR"]), usuarioController.getAllUsuarios);
+router.get("/:id", authenticate, authorize(["POSTULANTE", "ADMIN", "EMPLEADOR"]), usuarioController.getUsuarioById);
 router.post("/", validate(createUsuarioSchema), usuarioController.createUsuario);
 router.put("/:id", upload.single('fotoPerfil'), validate(updateUsuarioSchema), usuarioController.updateUsuario);
 router.delete("/:id", usuarioController.deleteUsuario);
 
-router.get("/particulares/p", authenticate, authorize("ADMIN"), usuarioController.getAllUsuariosPostulantes);
-router.get("/particulares/e", authenticate, authorize("ADMIN"), usuarioController.getAllUsuariosEmpleadores);
+router.get("/particulares/p", authenticate, authorize(["POSTULANTE", "ADMIN", "EMPLEADOR"]), usuarioController.getAllUsuariosPostulantes);
+router.get("/particulares/e", authenticate, authorize(["POSTULANTE", "ADMIN", "EMPLEADOR"]), usuarioController.getAllUsuariosEmpleadores);
 
 export const usuarioRoutes = router;
