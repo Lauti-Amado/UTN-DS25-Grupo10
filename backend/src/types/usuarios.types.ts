@@ -4,7 +4,10 @@ export interface Usuario {
     nombre: string;
     mail: string;
     rolPostulante: boolean;
-    nombreUsuario: string
+    nombreUsuario: string;
+    fotoPerfil?: string | null;
+    fechaNacimiento?: Date | null;
+    descripcion?: string | null;
 }
 
 // Crear un usuario. Acepta tanto para crear un postulante como a un empleador
@@ -13,13 +16,20 @@ export interface CreateUsuarioRequest {
     contraseña: string;
     mail: string;
     rolPostulante: boolean;
-    nombreUsuario: string
+    nombreUsuario: string;
+    fotoPerfil?: string | null;
+    fechaNacimiento?: Date | null;
+    descripcion?: string | null;
 }
 
 export interface UpdateUsuarioRequest {
     nombre?: string;
     contraseña?: string;
     mail?: string;
+    nombreUsuario?: string;
+    fotoPerfil?: string | null;
+    fechaNacimiento?: Date | null;
+    descripcion?: string | null;
 }
 
 export interface UsuarioResponse {

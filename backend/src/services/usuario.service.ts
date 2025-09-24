@@ -55,7 +55,10 @@ export async function getUsuarioById(id: number) {
       nombre: true,
       nombreUsuario: true,
       mail: true,
-      rolPostulante: true
+      rolPostulante: true,
+      fotoPerfil: true,
+      fechaNacimiento: true,
+      descripcion: true,
     }
   });
 
@@ -121,6 +124,10 @@ export async function updateUsuario(id: number, data: UpdateUsuarioRequest) {
       delete updateData.contraseña;
     }
 
+    if (data.fotoPerfil) {
+      updateData.fotoPerfil = data.fotoPerfil;
+    }
+
     return await prisma.usuario.update({
       where: { id },
       data: updateData,
@@ -129,7 +136,10 @@ export async function updateUsuario(id: number, data: UpdateUsuarioRequest) {
         nombre: true,
         nombreUsuario: true,
         mail: true,
-        rolPostulante: true
+        rolPostulante: true,
+        fotoPerfil: true,
+        fechaNacimiento: true,
+        descripcion: true,
       }
     });
   } catch (e: any) {
