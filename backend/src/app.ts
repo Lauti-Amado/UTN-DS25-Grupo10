@@ -8,6 +8,7 @@ import { formularioRoutes } from './routes/formulario.routes';
 import { authRoutes } from './routes/auth.routes';
 import { logRequest } from './middlewares/logger.middleware';
 import { handleError } from './middlewares/error.middleware';
+import path from 'path';
 
 dotenv.config();
 
@@ -23,7 +24,9 @@ const corsOptions={
 
 // Middleware para JSON
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: '10mb'}));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Middleware log
 app.use(logRequest);

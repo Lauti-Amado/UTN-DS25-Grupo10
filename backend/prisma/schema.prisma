@@ -16,6 +16,9 @@ model Usuario {
   rolPostulante    Boolean
   nombreUsuario    String       @unique
   esAdmin          Boolean      @default(false)
+  fotoPerfil     String?
+  fechaNacimiento DateTime?
+  descripcion      String?
   formulario       Formulario[]
   ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
   proyectosCreados Proyecto[]   @relation("UsuarioProyectos")

@@ -60,10 +60,16 @@ export async function updateUsuario(
 ) {
   try {
     const id = parseInt(req.params.id);
+
+    if (req.file){
+      req.body.fotoPerfil = `/uploads/${req.file.filename}`;
+    }
+
     const updatedUsuario = await usuarioService.updateUsuario(id, req.body);
     res.json({ 
       success:true,
-      message: 'Proyecto actualizado exitosamente', data:updatedUsuario
+      message: 'Usuario actualizado exitosamente',
+      data: updatedUsuario
     });
   } catch (error) {
     next(error);

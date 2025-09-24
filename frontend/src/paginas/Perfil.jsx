@@ -14,16 +14,12 @@ import Pensamiento from '../componentes/quepensas'
 import { DatosContexto } from '../datosContext';
 import { useContext, useEffect } from 'react';
 
-
 export default function Perfil() {
  
   const [modoEditar, setModoEditar] = useState(null);
-
   const[proyectoaEliminar, setProyectoaEliminar]=useState(null)
   const[mostrarConfirmacion, setMostrarConfirmacion]=useState(false)
-
   const[modificarProyecto, setModificarProyecto]=useState(null)
-
   const [imagenPerfil, setImagenPerfil] = useState(imagen);
   const [nombrePerfil, setNombrePerfil] = useState('Nombre Perfil');
   const [descripcionPerfil, setDescripcionPerfil] = useState(
@@ -46,14 +42,12 @@ export default function Perfil() {
     if(nuevaFechaNac) setNuevafecha(nuevaFechaNac);
     setModoEditar(null);
   };
-
   
   const manejarActualizarProyecto = (nombreProyecto, descripcionProyecto, tecnologias) => {
     console.log('Proyecto agregado o actualizado:', nombreProyecto, descripcionProyecto, tecnologias);
     setModoEditar(null);
   };
 
- 
   const agregarProyecto = (nuevoproy) => {
     setProyectosAgregados([...proyectosagregados,nuevoproy]) 
     setModoEditar(null);
@@ -74,7 +68,6 @@ export default function Perfil() {
      setMostrarConfirmacion(false)
      setProyectoaEliminar(null)
   }
-
   
 const AbrirModificarProyecto = (nombre) => {
   const proyecto = proyectosagregados.find(p => p.nombre === nombre);
@@ -86,14 +79,25 @@ const AbrirModificarProyecto = (nombre) => {
 
 const { usuarioLogueado } = useContext(DatosContexto);
 
-
 // Actualizar el nombre del perfil cuando cambia el usuario logueado
 useEffect(() => {
   if (usuarioLogueado) {
-    setNombrePerfil(usuarioLogueado.nombreUsuario); // o usuarioLogueado.nombre según quieras
+    setNombrePerfil(usuarioLogueado.nombreUsuario);
+    setDescripcionPerfil(usuarioLogueado.descripcion || '');
+
+    const fechaISO = usuarioLogueado.fechaNacimiento
+      ? new Date(usuarioLogueado.fechaNacimiento).toISOString().split('T')[0]
+      : '';
+    setNuevafecha(fechaISO);
+
+    // 🔑 Si hay fotoPerfil, construir la URL completa
+    if (usuarioLogueado.fotoPerfil) {
+      setImagenPerfil(`http://localhost:3000${usuarioLogueado.fotoPerfil}`);
+    } else {
+      setImagenPerfil(imagen); // la imagen por defecto
+    }
   }
 }, [usuarioLogueado]);
-
 
   return (
     <div className="vistaEstirada" style={{ position: 'relative' }}>

@@ -23,9 +23,23 @@ export const createUsuarioSchema=z.object({
    .max(25, 'El nombre del usuario no puede exceder los 25 caracteres')
    .trim(),
    
+    fotoPerfil: z.string()
+    .url("La imagen debe ser una URL válida")
+    .optional()
+    .nullable(),
+
+    fechaNacimiento: z.preprocess(
+      (arg) => (arg ? new Date(arg as string) : undefined),
+      z.date().optional().nullable()
+    ),
+
+    descripcion: z.string()
+    .max(255, "La descripción no puede exceder 255 caracteres")
+    .optional()
+    .nullable(),
+
    rolPostulante:z.boolean()
    .refine(val=>val!==undefined,{message: 'Seleccionar una opcion'}),
-
 
    proyectosCreados:z.array(
     z.number()
@@ -40,4 +54,4 @@ export const createUsuarioSchema=z.object({
    ).optional()
 });
 
-export const updateUsuarioSchema=createUsuarioSchema.partial()
+export const updateUsuarioSchema = createUsuarioSchema.partial()
