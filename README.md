@@ -71,7 +71,7 @@ profesionales con años de trayectoria.
 
 **Usuarios principales:**
 ★ Postulantes
-★ Empleadore
+★ Empleadores
 
 ## Objetivos del Proyecto
 

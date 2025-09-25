@@ -5,6 +5,7 @@ import postulanteImg from '../assets/Empleado.png';
 import empleadorImg from '../assets/Empleador.png';
 import { BiCog } from "react-icons/bi";
 import { DatosContexto } from '../datosContext';
+import { setToken } from '../helpers/auth';
 
 export default function Login({ onLogin }) {
   const [nombreUsuario, setUsuario]=useState('');
@@ -57,11 +58,14 @@ export default function Login({ onLogin }) {
     });
 
     const data = await res.json();
+    setToken(data.token);
     console.log("Respuesta login:", data);
 
 //Si cumple res.ok loguea al usuario y llama a onLogin. De no ser asi, muestra el error
     if (res.ok) {
-      setUsuarioLogueado(data.usuario);
+      // Guardar usuario y token
+      setUsuarioLogueado(data.data.usuario);
+      localStorage.setItem("token", data.data.token);
       onLogin();
     } else {
       setMostrarModalError(true);
@@ -107,7 +111,6 @@ export default function Login({ onLogin }) {
       const data = await res.json();
 //Si todo se encuentra en orden, lo registra
       if (res.ok) {
-        setUsuarios(prev => [...prev, data.usuario]);
         setMostrarModalRegistro(true); // modal de éxito
         setVista("login");
         setEmail("");

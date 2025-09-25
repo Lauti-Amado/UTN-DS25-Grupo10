@@ -5,8 +5,10 @@ import dotenv from  'dotenv';
 import { usuarioRoutes } from './routes/usuario.routes';
 import { proyectoRouters } from './routes/proyecto.routes';
 import { formularioRoutes } from './routes/formulario.routes';
+import { authRoutes } from './routes/auth.routes';
 import { logRequest } from './middlewares/logger.middleware';
 import { handleError } from './middlewares/error.middleware';
+import path from 'path';
 
 dotenv.config();
 
@@ -15,15 +17,22 @@ const PORT = 3000;
 
 const corsOptions={
   origin:process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials:true
+  credentials:true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeader: ['Content-Type', 'Authorization']
 };
 
 // Middleware para JSON
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: '10mb'}));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 // Middleware log
 app.use(logRequest);
+
+// Rutas públicas
+app.use('/auth', authRoutes);
 
 // Rutas
 app.use('/ofertas', ofertaRoutes);

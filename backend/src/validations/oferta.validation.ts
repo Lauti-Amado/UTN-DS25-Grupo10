@@ -14,9 +14,8 @@ export const createOfertaSchema = z.object({
     .positive()
     .optional(),
     modalidad: z.literal(["presencial" , "remoto" , "hibrido"]),
-    horario: z.array(
-        z.iso.datetime()
-    ),
+    horario: z.string()
+    .min(1,"Debe informar los horarios del trabajo"),
     creadorId: z.number()
     .positive(),
     formulario: z.array(

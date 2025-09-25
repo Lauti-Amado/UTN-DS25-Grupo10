@@ -9,12 +9,8 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
   const [nuevaDescripcion, setNuevaDescripcion] = useState(descripcion || '');
   const [nuevaFechaNac, setNuevafecha] = useState(FechaNac || '');
   const fileInputRef = useRef(null);
-
-
   const { usuarioLogueado, setUsuarioLogueado } = useContext(DatosContexto);
 
-
-  // Imagen de perfil
   const abrirSelector = () => {
     fileInputRef.current?.click();
   };
@@ -34,52 +30,53 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
 
   // Cuando se cambia el nombre, se hace la llamada a la API con un PUT para actualizar y guardar cambios
   const aceptarCambios = async () => {
-
     try {
       if (!usuarioLogueado?.id) throw new Error('Usuario no logueado');
 
+      const formData = new FormData();
+      formData.append('nombreUsuario', nuevoNombre);
+      formData.append('descripcion', nuevaDescripcion);
+      if (nuevaFechaNac) formData.append('fechaNacimiento', nuevaFechaNac);
+    
+      // Solo si el usuario selecciona un archivo real
+      if (fileInputRef.current?.files[0]) {
+        formData.append('fotoPerfil', fileInputRef.current.files[0]);
+      }
+
       const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombreUsuario: nuevoNombre,
-          descripcion: nuevaDescripcion,
-          fechaNacimiento: nuevaFechaNac,
-          fotoPerfil: previewSrc, // opcional: solo si lo manejás en backend
-        }),
+        body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error('Error al actualizar el perfil');
-      }
+      if (!response.ok) throw new Error('Error al actualizar el perfil');
 
       const datosActualizados = await response.json();
 
-      // 🔑 Actualizamos también el contexto global
-      setUsuarioLogueado((prev) => ({
-        ...prev,
-        nombreUsuario: datosActualizados.data.nombreUsuario,
-        descripcion: datosActualizados.data.descripcion,
-        fechaNacimiento: datosActualizados.data.fechaNacimiento,
-        fotoPerfil: datosActualizados.data.fotoPerfil || prev.fotoPerfil,
-      }));
+    // Actualizamos el contexto global
+    setUsuarioLogueado((prev) => ({
+      ...prev,
+      nombreUsuario: datosActualizados.data.nombreUsuario,
+      descripcion: datosActualizados.data.descripcion,
+      fechaNacimiento: datosActualizados.data.fechaNacimiento,
+      fotoPerfil: datosActualizados.data.fotoPerfil || prev.fotoPerfil,
+    }));
 
-      // Actualizamos el estado local del perfil
-      if (onActualizarPerfil) {
-        onActualizarPerfil(
-          previewSrc,
-          datosActualizados.data.nombreUsuario,
-          datosActualizados.data.descripcion,
-          datosActualizados.data.fechaNacimiento
-        );
-      }
-
-      if (onCerrar) onCerrar();
-    } catch (error) {
-      console.error(error);
-      alert('No se pudo actualizar el perfil. Intenta nuevamente.');
+    // Actualizamos el estado local del perfil
+    if (onActualizarPerfil) {
+      onActualizarPerfil(
+        datosActualizados.data.fotoPerfil || previewSrc,
+        datosActualizados.data.nombreUsuario,
+        datosActualizados.data.descripcion,
+        datosActualizados.data.fechaNacimiento
+      );
     }
-  };
+
+    if (onCerrar) onCerrar();
+  } catch (error) {
+    console.error(error);
+    alert('No se pudo actualizar el perfil. Intenta nuevamente.');
+  }
+};
 
 
   // Botones y funcionalidades

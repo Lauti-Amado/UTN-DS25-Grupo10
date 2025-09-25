@@ -6,7 +6,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-} 
+}
 
 model Usuario {
   id               Int          @id @default(autoincrement())
@@ -16,6 +16,9 @@ model Usuario {
   rolPostulante    Boolean
   nombreUsuario    String       @unique
   esAdmin          Boolean      @default(false)
+  fotoPerfil     String?
+  fechaNacimiento DateTime?
+  descripcion      String?
   formulario       Formulario[]
   ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
   proyectosCreados Proyecto[]   @relation("UsuarioProyectos")
@@ -23,24 +26,22 @@ model Usuario {
   @@map("usuario")
 }
 
+//Creamos la entidad intermedia entre postulante y oferta
+model Formulario {
+  postuladoId Int
+  postulado   Usuario @relation(fields: [postuladoId], references: [id])
+  ofertaId    Int
+  oferta      Oferta  @relation(fields: [ofertaId], references: [id])
+  nombre      String
+  apellido    String
+  localidad   String
+  pais        String
+  genero      String
+  descripcion String
+  curriculum  String
 
- //Creamos la entidad intermedia entre postulante y oferta
- model Formulario{
-    postuladoId Int
-    postulado Usuario @relation(fields:[postuladoId], references: [id])
-    ofertaId Int
-    oferta Oferta @relation(fields:[ofertaId], references: [id])
-    nombre String
-    apellido String
-    localidad String
-    pais String
-    genero String
-    descripcion String
-    curriculum String
-    
-    @@id([postuladoId, ofertaId])
- }
-
+  @@id([postuladoId, ofertaId])
+}
 
 model Oferta {
   id         Int          @id @default(autoincrement())
@@ -49,7 +50,7 @@ model Oferta {
   ubicacion  String
   sueldo     Int?
   modalidad  String
-  horario    DateTime[]
+  horario    String
   creadorId  Int
   formulario Formulario[]
   creador    Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])
