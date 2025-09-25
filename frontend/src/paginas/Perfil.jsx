@@ -26,36 +26,73 @@ export default function Perfil() {
     'Soy un estudiante de sistemas con ganas de insertarme en el mundo laboral. Poseo los conocimientos de algunas tecnologías, idiomas y trabajo en equipo.'
   );
   const [FechaNac, setNuevafecha]=useState('');
-  const [proyectosagregados, setProyectosAgregados] = useState([
-    {  nombre: "Sistema para una biblioteca", descripcion: "Las funcionalidades son variadas y utiles",
-      tecnologias: "Python y SQL Server" },
-    {  nombre: "Ta-te-ti", descripcion: "Juego de ta-te-ti con manejo de estados previos",
-      tecnologias: "React y tecnologias frontend" },
-    {  nombre: "Juego de Ajedrez", descripcion: "Se pueden jugar partidas con un excelente diseño",
-      tecnologias: "C++" }
-  ]);
+  const [proyectosagregados, setProyectosAgregados] = useState([]);
+  const { usuarioLogueado } = useContext(DatosContexto); //carga los usuarios logueados
 
-  //este useEffect trae los proyectos desde el backend
-  
+
+  //este useEffect TRAER los Proyectos desde el backend
   useEffect(() => {
-    const fetchProyectos = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/proyectos");
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        const data = await res.json();
+  const fetchProyectos = async () => {
+    if (!usuarioLogueado) return; // espera a que esté cargado el usuario
 
-        // 🔑 Forzar array si viene null
-        setProyectosAgregados(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Error al traer proyectos:", err);
-        setProyectosAgregados([]); // mantener array aunque haya error
-      }
-    };
-    fetchProyectos();
+    try {
+      const res = await fetch(`http://localhost:3000/proyectos/usuario/${usuarioLogueado.id}`);
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      const json = await res.json();
 
-  }, []);
+      setProyectosAgregados(Array.isArray(json.data) ? json.data : []);
+    } catch (err) {
+      console.error("Error al traer proyectos:", err);
+      setProyectosAgregados([]);
+    }
+  };
 
-  //hasta aca
+  fetchProyectos();
+}, [usuarioLogueado]);
+
+  //Funcion para ELIMINAR PROYECTO
+  const eliminarProyecto = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3000/proyectos/${id}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error("Error al eliminar proyecto");
+
+      //sacar el estado
+      setProyectosAgregados(prev => prev.filter(p => p.id !== id ));
+      setMostrarConfirmacion(false);
+      setProyectoaEliminar(null); 
+    } catch (error) {
+      console.error('Error al eliminar proyecto:', error);
+    }
+  };
+
+  //funcion para MODIFICAR PROYECTO
+  const modificarProyectoBD = async (id,nuevoNombre,nuevaDescripcion,nuevasTecnologias) => {
+    try {
+      const res = await fetch(`http://localhost:3000/proyectos/${id}`, {
+        method: 'PUT',
+        headers: { "Content-Type":"application/json"},
+        body:JSON.stringify({
+          nombre: nuevoNombre,
+          descripcion: nuevaDescripcion,
+          tecnologiasUsadas: nuevasTecnologias,
+        }),
+      });
+      if (!res.ok) throw new Error("Error al modificar proyecto");
+      const json = await res.json();
+
+      //actualizar estado local con lo que devuelve el backend
+      setProyectosAgregados (prev =>
+        prev.map (p => (p.id === id ? json.data:p))
+      );
+
+      setModificarProyecto(null);
+      setModoEditar('verproyectos');
+    } catch (error) {
+      console.error('Error al modificar proyecto:', error);
+    }
+  };
 
 
   
@@ -86,41 +123,39 @@ export default function Perfil() {
         }),
       });
       if (!res.ok) throw new Error("Error al crear proyecto");
-      const data = await res.json();
+      const json = await res.json();
 
       //actualizar estado con lo que devuelve el backend (incluye id autogenerado)
-      setProyectosAgregados(prev => [...(prev || []), data]);
+      setProyectosAgregados(prev => [...(prev || []), json.data]);
       setModoEditar(null);
     } catch (error) {
       console.error('Error al agregar proyecto:', error);
     }
   };
 
-  const SolicitarEliminar=(nombre)=>{
-    setProyectoaEliminar(nombre);
+  const SolicitarEliminar=(id)=>{
+    setProyectoaEliminar(id);
     setMostrarConfirmacion(true)
-  }
+  };
 
   const CuadroConfirmacion=()=>{
-     setProyectosAgregados (proyectosagregados.filter(proyecto => proyecto.nombre !== proyectoaEliminar))
-     setMostrarConfirmacion(false)
-     setProyectoaEliminar(null)
-  }
+    eliminarProyecto(proyectoaEliminar);
+  };
   
   const Cancelar=()=>{
      setMostrarConfirmacion(false)
      setProyectoaEliminar(null)
   }
   
-const AbrirModificarProyecto = (nombre) => {
-  const proyecto = proyectosagregados.find(p => p.nombre === nombre);
+const AbrirModificarProyecto = (id) => {
+  const proyecto = proyectosagregados.find(p => p.id === id);
   if (proyecto) {
     setModificarProyecto(proyecto);         
     setModoEditar('modificarProyecto');     
   }
 };
 
-const { usuarioLogueado } = useContext(DatosContexto);
+
 
 // Actualizar el nombre del perfil cuando cambia el usuario logueado
 useEffect(() => {
@@ -218,17 +253,26 @@ useEffect(() => {
               />
             )}
             {modoEditar === 'modificarProyecto' && modificarProyecto && 
-            ( <Proyecto nombre={modificarProyecto.nombre} 
-            descripcion={modificarProyecto.descripcion} 
-            tecnologias={modificarProyecto.tecnologias} 
-            onCerrar={() => 
-            { setModoEditar('verproyectos'); 
-              setModificarProyecto(null); }} 
-            onModificarProyecto= {(nuevoNombre, nuevaDescripcion, nuevasTecnologias) => 
-              { setProyectosAgregados(proyectosagregados.map
-            (p => p.nombre === modificarProyecto.nombre ? { nombre: nuevoNombre, descripcion: nuevaDescripcion, 
-              tecnologias: nuevasTecnologias } : p )); 
-            setModificarProyecto(null); setModoEditar('verproyectos'); }} /> )}
+            ( <Proyecto 
+              nombre={modificarProyecto.nombre} 
+              descripcion={modificarProyecto.descripcion} 
+              tecnologias={modificarProyecto.tecnologias} 
+              onCerrar={() => 
+                { setModoEditar('verproyectos'); 
+                  setModificarProyecto(null);
+                }
+              } 
+              onModificarProyecto= {(nuevoNombre, nuevaDescripcion, nuevasTecnologias) => {
+                
+                modificarProyectoBD (
+                  modificarProyecto.id, 
+                  nuevoNombre, 
+                  nuevaDescripcion,
+                  nuevasTecnologias
+                );
+              }}
+            />
+            )}
 
           </div>
         </>
@@ -271,6 +315,41 @@ useEffect(() => {
   </>
 )}
       {/* <Pensamiento/> */}
+
+      <div className="container mt-4">
+        <h3 className="mb-3">Mis Proyectos</h3>
+        <div className="row">
+          {proyectosagregados.length === 0 ? (
+            <p>No tienes proyectos creados aún.</p>
+          ) : (
+            proyectosagregados.map((proyecto) => (
+              <div className="col-md-4 mb-3" key={proyecto.id}>
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">{proyecto.nombre}</h5>
+                    <p className="card-text">{proyecto.descripcion}</p>
+                    <p className="text-muted">
+                      <strong>Tecnologías:</strong> {proyecto.tecnologiasUsadas}
+                    </p>
+                    <button
+                      className="btn btn-sm btn-primary me-2"
+                      onClick={() => AbrirModificarProyecto(proyecto.id)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => SolicitarEliminar(proyecto.id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
 </div>
   );
 }
