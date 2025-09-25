@@ -173,7 +173,8 @@ useEffect(() => {
       setImagenPerfil(`http://localhost:3000${usuarioLogueado.fotoPerfil}`);
     } else {
       setImagenPerfil(imagen); // la imagen por defecto
-    }
+    } 
+    //comentario de prueba
   }
 }, [usuarioLogueado]);
 
@@ -340,7 +341,7 @@ useEffect(() => {
                     <button
                       className="btn btn-sm btn-danger"
                       onClick={() => SolicitarEliminar(proyecto.id)}
-                    >
+                    > 
                       Eliminar
                     </button>
                   </div>
