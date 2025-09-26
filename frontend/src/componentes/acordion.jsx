@@ -53,57 +53,60 @@ function Acordion() {
       item.contenido.toLowerCase().includes(busquedaGlobal.toLowerCase())
   );
 
-  const manejarSubmit = (e) => {
-    e.preventDefault();
-    if (nuevoTitulo.trim() && nuevoContenido.trim()) {
-      const nuevo = {
-        id: Date.now(),
-        titulo: nuevoTitulo,
-        contenido: nuevoContenido,
-        categoria: nuevaCategoria,
-        ubicacion,
-        sueldo,
-        modalidad,
-        horario,
-        contacto,
-        logo
-      };
-      const actualizados = [...items, nuevo];
-      setItems(actualizados);
-      localStorage.setItem('empleos', JSON.stringify(actualizados)); // Forzar sincronización
-      setNuevoTitulo('');
-      setNuevoContenido('');
-      setNuevaCategoria('');
-      setUbicacion('');
-      setSueldo('');
-      setModalidad('');
-      setHorario('');
-      setContacto('');
-      setLogo('');
-      setMostrarFormulario(false);
-    }
-  };
+ const manejarSubmit = (e) => {
+  e.preventDefault();
 
-  const confirmarEliminar = (id) => {
-    setIdAEliminar(id);
-    setMostrarModal(true);
-  };
+  if (nuevoTitulo.trim() && nuevoContenido.trim()) {
+    const nuevaOferta = {
+      categoria: nuevaCategoria,
+      ubicacion,
+      sueldo: sueldo ? parseInt(sueldo) : undefined,
+      modalidad,
+      horario,
+      creadorId: usuarioLogueado.id,
+      postuladoId: []
+    };
 
-  const eliminarConfirmado = () => {
-    const nuevas = items.filter((item) => item.id !== idAEliminar);
-    setItems(nuevas);
-    setMostrarModal(false);
-  };
+    fetch('http://localhost:3000/ofertas', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(nuevaOferta)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Error al guardar la oferta en el backend");
+        }
+        return res.json();
+      })
+      .then(data => {
+        // ⚠️ Si el backend devuelve la oferta en `data.oferta`, accedé así:
+        const nueva = {
+          ...data.oferta,
+          titulo: nuevoTitulo,
+          contenido: nuevoContenido,
+          contacto,
+          logo
+        };
 
-   const handlePostular = (empresa) => {
-    setEmpresaSeleccionada(empresa);
-    setModalVisible(true);
-  };
+        setItems(prev => [...prev, nueva]);
+        limpiarFormulario();
+        setMostrarFormulario(false);
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("Ocurrió un error al guardar la oferta.");
+      });
+  }
+};
+
+
 
   return (
     <div className="container mt-4">
      
-    {usuarioLogueado.rol === "empleador" && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
+    {usuarioLogueado.rolPostulante === false && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
       <>
         <button
           className="btn-toggle-formulario mb-3"
