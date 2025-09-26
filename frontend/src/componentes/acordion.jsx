@@ -141,6 +141,7 @@ console.log('itemsFiltrados:', itemsFiltrados);
     <div className="container mt-4">
      
     {usuarioLogueado.rolPostulante === false && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
+    {usuarioLogueado.rolPostulante === false && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
       <>
         <button
           className="btn-toggle-formulario mb-3"
