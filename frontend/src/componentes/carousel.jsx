@@ -2,7 +2,6 @@ import Carousel from 'react-bootstrap/Carousel';
 import OfertaCard from './ofertaCard';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
-import datosEmpleosIniciales from './datosIniciales';
 import datosPostulantes from './datosPostulantes';
 import { DatosContexto } from '../datosContext';
 
@@ -12,9 +11,9 @@ function OfertasCarousel() {
   const navigate = useNavigate();
   const { usuarioLogueado } = useContext(DatosContexto);
 
-
   useEffect(() => {
-    if (usuarioLogueado?.rol === "empleador") {
+      localStorage.removeItem('empleos');
+    if (usuarioLogueado?.rolPostulante === "false") {
       // Si es empleador, se usan los postulantes
       const postulantesConvertidos = datosPostulantes.map((p, index) => ({
         id: index,
@@ -24,17 +23,11 @@ function OfertasCarousel() {
       }));
       setOfertas(postulantesConvertidos);
     } else {
-      // Si no es empleador, mostrar empleos desde localStorage o iniciales
+      // Si no es empleador, mostrar empleos desde localStorage
       const data = localStorage.getItem('empleos');
-      if (data) {
-        setOfertas(JSON.parse(data));
-      } else {
-        localStorage.setItem('empleos', JSON.stringify(datosEmpleosIniciales));
-        setOfertas(datosEmpleosIniciales);
-      }
+      setOfertas(data ? JSON.parse(data) : []); // Array vacío si no hay nada
     }
   }, [usuarioLogueado]);
-
 
   useEffect(() => {
     const actualizarCantidad = () => {
@@ -49,7 +42,6 @@ function OfertasCarousel() {
     return () => window.removeEventListener('resize', actualizarCantidad);
   }, []);
 
- 
   const completarOfertas = () => {
     const total = ofertas.length;
     const resto = total % itemsPorSlide;
@@ -64,11 +56,9 @@ function OfertasCarousel() {
 
   const ofertasEnSlides = [];
   for (let i = 0; i < ofertasCompletas.length; i += itemsPorSlide) {
-    const grupo = ofertasCompletas.slice(i, i + itemsPorSlide);
-    ofertasEnSlides.push(grupo);
+    ofertasEnSlides.push(ofertasCompletas.slice(i, i + itemsPorSlide));
   }
 
- 
   const irAOferta = (index) => {
     navigate('/trabajos', { state: { mensaje: index % ofertas.length } });
   };

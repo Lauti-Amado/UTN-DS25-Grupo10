@@ -53,57 +53,94 @@ function Acordion() {
       item.contenido.toLowerCase().includes(busquedaGlobal.toLowerCase())
   );
 
-  const manejarSubmit = (e) => {
-    e.preventDefault();
-    if (nuevoTitulo.trim() && nuevoContenido.trim()) {
-      const nuevo = {
-        id: Date.now(),
-        titulo: nuevoTitulo,
-        contenido: nuevoContenido,
-        categoria: nuevaCategoria,
-        ubicacion,
-        sueldo,
-        modalidad,
-        horario,
-        contacto,
-        logo
-      };
-      const actualizados = [...items, nuevo];
-      setItems(actualizados);
-      localStorage.setItem('empleos', JSON.stringify(actualizados)); // Forzar sincronización
-      setNuevoTitulo('');
-      setNuevoContenido('');
-      setNuevaCategoria('');
-      setUbicacion('');
-      setSueldo('');
-      setModalidad('');
-      setHorario('');
-      setContacto('');
-      setLogo('');
-      setMostrarFormulario(false);
-    }
-  };
+ const manejarSubmit = (e) => {
+  e.preventDefault();
 
-  const confirmarEliminar = (id) => {
-    setIdAEliminar(id);
-    setMostrarModal(true);
-  };
+  if (nuevoTitulo.trim() && nuevoContenido.trim()) {
+    const nuevaOferta = {
+      categoria: nuevaCategoria,
+      ubicacion,
+      sueldo: sueldo ? parseInt(sueldo) : undefined,
+      modalidad,
+      horario,
+      creadorId: usuarioLogueado.id,
+      postuladoId: []
+    };
 
-  const eliminarConfirmado = () => {
-    const nuevas = items.filter((item) => item.id !== idAEliminar);
-    setItems(nuevas);
-    setMostrarModal(false);
-  };
+    fetch('http://localhost:3000/ofertas', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(nuevaOferta)
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Error al guardar la oferta en el backend");
+        }
+        return res.json();
+      })
+        .then(data => {
+       const nueva = {
+       id: data.data.id,      // ✅ aquí está el ID real
+    titulo: nuevoTitulo,
+    contenido: nuevoContenido,
+    contacto,
+    logo,
+    categoria: data.data.categoria,
+    ubicacion: data.data.ubicacion,
+    sueldo: data.data.sueldo,
+    modalidad: data.data.modalidad,
+    horario: data.data.horario
+       };
 
-   const handlePostular = (empresa) => {
-    setEmpresaSeleccionada(empresa);
-    setModalVisible(true);
-  };
+       setItems(prev => [...prev, nueva]); // ahora item.id existe
+       limpiarFormulario();
+       setMostrarFormulario(false);  
+      })
+
+      .catch(err => {
+        console.error("Error:", err);
+        alert("Ocurrió un error al guardar la oferta.");
+      });
+  }
+};
+
+
+// Función para abrir el modal de confirmación y guardar el ID a eliminar
+const confirmarEliminar = (id) => {
+  setIdAEliminar(id);
+  setMostrarModal(true);
+};
+
+// Función que se ejecuta al confirmar la eliminación
+const eliminarConfirmado = () => {
+  // Eliminar del estado local
+  setItems(prevItems => prevItems.filter(item => item.id !== idAEliminar));
+
+  // Opcional: eliminar del backend
+  console.log('ID a eliminar:', idAEliminar);
+  fetch(`http://localhost:3000/ofertas/${idAEliminar}`, {
+    method: 'DELETE'
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Error al eliminar la oferta del backend');
+    console.log('Oferta eliminada correctamente');
+  })
+  .catch(err => console.error(err));
+
+  // Cerrar modal y resetear ID
+  setMostrarModal(false);
+  setIdAEliminar(null);
+};
+
+console.log('itemsFiltrados:', itemsFiltrados);
+
 
   return (
     <div className="container mt-4">
      
-    {usuarioLogueado.rol === "empleador" && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
+    {usuarioLogueado.rolPostulante === false && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
       <>
         <button
           className="btn-toggle-formulario mb-3"
@@ -146,7 +183,7 @@ function Acordion() {
               
               {usuarioLogueado.rol!=="postulante" && (
                   <div className="text-end mt-2">
-                  <button className="btn btn-sm btn-bordo-danger" onClick={() => confirmarEliminar(item.id)}>
+                  <button className="btn btn-sm btn-bordo-danger" onClick={() =>{   console.log('ID que voy a eliminar:', item.id); confirmarEliminar(item.id)}}>
                     <i className="bi bi-trash3-fill me-1"></i> Eliminar
                   </button>
                 </div>
