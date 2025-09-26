@@ -67,6 +67,7 @@ function Acordion() {
       postuladoId: []
     };
 
+
     fetch('http://localhost:3000/ofertas', {
       method: 'POST',
       headers: {
@@ -137,10 +138,10 @@ const eliminarConfirmado = () => {
 console.log('itemsFiltrados:', itemsFiltrados);
 
 
+
   return (
     <div className="container mt-4">
      
-    {usuarioLogueado.rolPostulante === false && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
     {usuarioLogueado.rolPostulante === false && ( //si el usuario es empleador le muestra la opcion para agregar una ferta laboral
       <>
         <button

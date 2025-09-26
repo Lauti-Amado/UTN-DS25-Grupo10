@@ -12,7 +12,7 @@ router.get('/', ofertaController.getAllOfertas);
 router.get('/:id', ofertaController.getOfertaById);
 
 // Ruta para crear una nueva oferta
-router.post('/', validate(createOfertaSchema),ofertaController.createOferta);
+router.post('/', ofertaController.createOferta);
 
 // Ruta para actualizar una oferta existente
 router.put('/:id', validate(updateOfertaSchema), ofertaController.updateOferta);
