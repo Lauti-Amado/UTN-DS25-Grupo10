@@ -67,6 +67,7 @@ function Acordion() {
       postuladoId: []
     };
 
+
     fetch('http://localhost:3000/ofertas', {
       method: 'POST',
       headers: {
@@ -80,26 +81,61 @@ function Acordion() {
         }
         return res.json();
       })
-      .then(data => {
-        // ⚠️ Si el backend devuelve la oferta en `data.oferta`, accedé así:
-        const nueva = {
-          ...data.oferta,
-          titulo: nuevoTitulo,
-          contenido: nuevoContenido,
-          contacto,
-          logo
-        };
+        .then(data => {
+       const nueva = {
+       id: data.data.id,      // ✅ aquí está el ID real
+    titulo: nuevoTitulo,
+    contenido: nuevoContenido,
+    contacto,
+    logo,
+    categoria: data.data.categoria,
+    ubicacion: data.data.ubicacion,
+    sueldo: data.data.sueldo,
+    modalidad: data.data.modalidad,
+    horario: data.data.horario
+       };
 
-        setItems(prev => [...prev, nueva]);
-        limpiarFormulario();
-        setMostrarFormulario(false);
+       setItems(prev => [...prev, nueva]); // ahora item.id existe
+       limpiarFormulario();
+       setMostrarFormulario(false);  
       })
+
       .catch(err => {
         console.error("Error:", err);
         alert("Ocurrió un error al guardar la oferta.");
       });
   }
 };
+
+
+// Función para abrir el modal de confirmación y guardar el ID a eliminar
+const confirmarEliminar = (id) => {
+  setIdAEliminar(id);
+  setMostrarModal(true);
+};
+
+// Función que se ejecuta al confirmar la eliminación
+const eliminarConfirmado = () => {
+  // Eliminar del estado local
+  setItems(prevItems => prevItems.filter(item => item.id !== idAEliminar));
+
+  // Opcional: eliminar del backend
+  console.log('ID a eliminar:', idAEliminar);
+  fetch(`http://localhost:3000/ofertas/${idAEliminar}`, {
+    method: 'DELETE'
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Error al eliminar la oferta del backend');
+    console.log('Oferta eliminada correctamente');
+  })
+  .catch(err => console.error(err));
+
+  // Cerrar modal y resetear ID
+  setMostrarModal(false);
+  setIdAEliminar(null);
+};
+
+console.log('itemsFiltrados:', itemsFiltrados);
 
 
 
@@ -149,7 +185,7 @@ function Acordion() {
               
               {usuarioLogueado.rol!=="postulante" && (
                   <div className="text-end mt-2">
-                  <button className="btn btn-sm btn-bordo-danger" onClick={() => confirmarEliminar(item.id)}>
+                  <button className="btn btn-sm btn-bordo-danger" onClick={() =>{   console.log('ID que voy a eliminar:', item.id); confirmarEliminar(item.id)}}>
                     <i className="bi bi-trash3-fill me-1"></i> Eliminar
                   </button>
                 </div>
