@@ -78,7 +78,6 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
   }
 };
 
-
   // Botones y funcionalidades
   return (
     <div>

@@ -26,16 +26,14 @@ export default function Perfil() {
   );
   const [FechaNac, setNuevafecha] = useState('');
   const [proyectosagregados, setProyectosAgregados] = useState([]);
-  const { usuarioLogueado } = useContext(DatosContexto); //carga los usuarios logueados
-
+  const { usuarioLogueado } = useContext(DatosContexto);
 
   //este useEffect TRAER los Proyectos desde el backend
   useEffect(() => {
     const fetchProyectos = async () => {
-      if (!usuarioLogueado) return; // espera a que esté cargado el usuario
+      if (!usuarioLogueado) return; 
 
       try {
-        // 🔹 Corregida la ruta
         const res = await fetch(`http://localhost:3000/proyectos/postulado/${usuarioLogueado.id}`);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         const json = await res.json();
@@ -305,7 +303,6 @@ export default function Perfil() {
           </div>
         </>
       )}
-      {/* <Pensamiento/> */}
 
       <div className="container mt-4">
         <h3 className="mb-3">Mis Proyectos</h3>
@@ -336,7 +333,7 @@ export default function Perfil() {
                     <h5 className="card-title">{proyecto.nombre}</h5>
                     <p className="card-text">{proyecto.descripcion}</p>
                     
-                    {/* 🔹 Tecnologías como chips de colores */}
+                    {/* Tecnologías */}
                     <div className="mt-2">
                       <strong>Tecnologías:</strong>
                       <div className="mt-1 d-flex flex-wrap gap-2">

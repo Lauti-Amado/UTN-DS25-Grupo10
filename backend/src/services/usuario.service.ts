@@ -166,6 +166,77 @@ export async function deleteUsuario(id: number): Promise<void> {
   }
 }
 
+// Obtener usuarios aleatorios mejorado
+export async function getUsuariosSugeridos(usuarioId: number, limit: number = 5) {
+  try {
+    // Primero obtener el total de usuarios (excluyendo el usuario actual)
+    const totalUsuarios = await prisma.usuario.count({
+      where: {
+        id: { not: usuarioId }
+      }
+    });
+
+    console.log(`Total usuarios disponibles: ${totalUsuarios}`);
+
+    if (totalUsuarios === 0) {
+      console.log("No hay usuarios para sugerir");
+      return [];
+    }
+
+    // Si hay pocos usuarios, devolver todos
+    if (totalUsuarios <= limit) {
+      console.log("Pocos usuarios disponibles, devolviendo todos");
+      return await prisma.usuario.findMany({
+        where: {
+          id: { not: usuarioId }
+        },
+        select: {
+          id: true,
+          nombre: true,
+          nombreUsuario: true,
+          mail: true,
+          rolPostulante: true,
+          fotoPerfil: true,
+          descripcion: true,
+        },
+        orderBy: {
+          id: "asc"
+        }
+      });
+    }
+    
+    // Obtener todos los usuarios primero
+    const todosLosUsuarios = await prisma.usuario.findMany({
+      where: {
+        id: { not: usuarioId }
+      },
+      select: {
+        id: true,
+        nombre: true,
+        nombreUsuario: true,
+        mail: true,
+        rolPostulante: true,
+        fotoPerfil: true,
+        descripcion: true,
+      },
+      orderBy: {
+        id: "asc"
+      }
+    });
+
+    // Mezclar aleatoriamente 
+    const usuariosMezclados = todosLosUsuarios.sort(() => Math.random() - 0.5);
+    const usuariosSeleccionados = usuariosMezclados.slice(0, limit);
+
+    console.log(`Devolviendo ${usuariosSeleccionados.length} usuarios sugeridos`);
+    return usuariosSeleccionados;
+
+  } catch (error) {
+    console.error("Error en getUsuariosSugeridos:", error);
+    throw error;
+  }
+}
+
 // Login con JWT
 export async function loginUsuario(email: string, contraseña: string) {
   const usuario = await prisma.usuario.findUnique({ where: { mail: email } });

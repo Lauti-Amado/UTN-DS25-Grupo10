@@ -40,14 +40,30 @@ export const createUsuario = async (req: Request, res: Response): Promise<Respon
   }
 };
 
-//Obtener usuario por ID
+// Obtener usuario por ID
 export async function getUsuarioById(req: Request, res: Response, next: NextFunction) {
   try {
     const id = parseInt(req.params.id);
+    
+    if (isNaN(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "ID de usuario inválido"
+      });
+    }
+
     const usuario = await usuarioService.getUsuarioById(id);
-    res.json({success:true,
-      data:usuario });
-  } catch (error) {
+    res.json({
+      success: true,
+      data: usuario 
+    });
+  } catch (error: any) {
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        success: false,
+        message: "Usuario no encontrado"
+      });
+    }
     next(error);
   }
 }
@@ -133,6 +149,30 @@ export async function getAllUsuariosEmpleadores(req: Request, res: Response, nex
   }
 }
 
+// Obtener usuarios sugeridos 
+export async function getUsuariosSugeridos(req: Request, res: Response, next: NextFunction) {
+  try {
+    const usuarioId = req.user?.id ?? 0;
+    console.log("Usuario logueado ID:", usuarioId);
+    
+    if (!usuarioId) {
+      return res.status(401).json({
+        success: false,
+        message: "Usuario no autenticado"
+      });
+    }
+
+    const sugeridos = await usuarioService.getUsuariosSugeridos(usuarioId);
+    res.json({
+      success: true,
+      data: sugeridos
+    });
+  } catch (error) {
+    console.error("Error en getUsuariosSugeridos:", error);
+    next(error);
+  }
+}
+
 export async function loginUsuarioController(req: Request, res: Response) {
   const { mail, contraseña } = req.body;
 
@@ -153,5 +193,3 @@ export async function loginUsuarioController(req: Request, res: Response) {
     });
   }
 }
-
-
