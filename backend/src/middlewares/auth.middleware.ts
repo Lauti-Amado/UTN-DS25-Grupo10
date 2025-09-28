@@ -26,8 +26,8 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     req.user = {
       id: decoded.id,
       email: decoded.email,
-      rolPostulante: decoded.rolPostulante,
-    }
+      rolPostulante: decoded.rolPostulante
+    };
     
     next();
   } catch (error: any) {
