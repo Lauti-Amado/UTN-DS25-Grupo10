@@ -49,7 +49,7 @@ export async function getAllUsuariosEmpleadores() {
 // Obtener usuario por ID (sin contraseña)
 export async function getUsuarioById( id: number ) {
   const usuario = await prisma.usuario.findUnique({
-    where: { id: usuarioID },
+    where: { id },
     select: {
       id: true,
       nombre: true,
