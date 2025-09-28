@@ -4,7 +4,7 @@ import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import { CreateUsuarioRequest, UpdateUsuarioRequest } from "../types/usuarios.types";
 
 // Obtener todos los usuarios (sin contraseña)
-export async function getAllUsuarios(limit: number = 5) {
+export async function getAllUsuarios(limit: number = 10) {
   return await prisma.usuario.findMany({
     orderBy: { id: "asc" },
     take: limit,
@@ -47,8 +47,8 @@ export async function getAllUsuariosEmpleadores() {
 }
 
 // Obtener usuario por ID (sin contraseña)
-export async function getUsuarioById( usuarioID: number ) {
-  const user = await prisma.usuario.findUnique({
+export async function getUsuarioById( id: number ) {
+  const usuario = await prisma.usuario.findUnique({
     where: { id: usuarioID },
     select: {
       id: true,
@@ -62,13 +62,13 @@ export async function getUsuarioById( usuarioID: number ) {
     }
   });
 
-  if (!user) {
+  if (!usuario) {
     const error = new Error("Usuario no encontrado") as any;
     error.statusCode = 404;
     throw error;
   }
 
-  return user;
+  return usuario;
 }
 
 // Crear un nuevo usuario (hash de contraseña)
