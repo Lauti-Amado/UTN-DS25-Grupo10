@@ -1,6 +1,12 @@
 import { z } from 'zod';
 
 export const createOfertaSchema = z.object({
+    titulo: z.string()
+    .min(1,"El titulo es requerido en la oferta")
+    .max(50,"El titulo no se debe exceder de los 50 caracteres"),
+    descripcion: z.string()
+    .min(1,"La descripcion es requerida en la oferta")
+    .max(150,"La descripcion no se debe exceder de los 150 caracteres"),
     categoria: z.string()
     .min(1,"La categoria de la oferta es requerida")
     .max(50,"La categoria de la oferta no puede exceder los 50 caracteres")
@@ -16,6 +22,9 @@ export const createOfertaSchema = z.object({
     modalidad: z.literal(["presencial" , "remoto" , "hibrido"]),
     horario: z.string()
     .min(1,"Debe informar los horarios del trabajo"),
+    contacto: z.string()
+    .min(1,"Se debe ingresar algun medio de contacto")
+    .max(80,"El contacto no debe superar los 80 caracteres"),
     creadorId: z.number()
     .positive(),
     formulario: z.array(

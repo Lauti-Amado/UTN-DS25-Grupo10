@@ -16,8 +16,8 @@ model Usuario {
   rolPostulante    Boolean
   nombreUsuario    String       @unique
   esAdmin          Boolean      @default(false)
-  fotoPerfil     String?
-  fechaNacimiento DateTime?
+  fotoPerfil       String?
+  fechaNacimiento  DateTime?
   descripcion      String?
   formulario       Formulario[]
   ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
@@ -44,15 +44,18 @@ model Formulario {
 }
 
 model Oferta {
-  id         Int          @id @default(autoincrement())
-  categoria  String
-  ubicacion  String
-  sueldo     Int?
-  modalidad  String
-  horario    String
-  creadorId  Int
-  formulario Formulario[]
-  creador    Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])
+  id          Int          @id @default(autoincrement())
+  titulo      String
+  descripcion String
+  categoria   String
+  ubicacion   String
+  sueldo      Int?
+  modalidad   String
+  horario     String
+  contacto    String
+  creadorId   Int
+  formulario  Formulario[]
+  creador     Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])
 }
 
 model Proyecto {
