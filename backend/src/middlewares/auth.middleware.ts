@@ -8,7 +8,6 @@ declare global {
         id: number;
         email: string;
         rolPostulante: boolean;
-        esAdmin?: boolean;
       };
     }
   }
@@ -28,7 +27,6 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
       id: decoded.id,
       email: decoded.email,
       rolPostulante: decoded.rolPostulante,
-      esAdmin: decoded.esAdmin,
     }
     
     next();
@@ -40,23 +38,21 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export function authorize(rolesPermitidos: ("ADMIN" | "POSTULANTE" | "EMPLEADOR")[]) {
+export function authorize(...roles: ("ADMIN" | "POSTULANTE" | "EMPLEADOR")[]) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
       return res.status(401).json({ success: false, error: "No autenticado" });
     }
 
-    let roleFromUser: "ADMIN" | "POSTULANTE" | "EMPLEADOR" ;
+    let roleFromUser: "ADMIN" | "POSTULANTE" | "EMPLEADOR";
 
-    if (req.user.esAdmin) {
+    if ((req.user as any).esAdmin) {
       roleFromUser = "ADMIN";
-    } else if (req.user.rolPostulante !== undefined) {
-      roleFromUser = req.user.rolPostulante ? "POSTULANTE" : "EMPLEADOR";
     } else {
-      return res.status(403).json({ success: false, error:"Rol de usuario no definido en el token"})
+      roleFromUser = req.user.rolPostulante ? "POSTULANTE" : "EMPLEADOR";
     }
 
-    if (!rolesPermitidos.includes(roleFromUser)) {
+    if (!roles.includes(roleFromUser)) {
       return res.status(403).json({ success: false, error: "No tienes permisos" });
     }
 
