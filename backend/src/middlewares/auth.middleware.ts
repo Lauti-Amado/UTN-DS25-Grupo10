@@ -28,7 +28,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
       email: decoded.email,
       rolPostulante: decoded.rolPostulante
     };
-
+    
     next();
   } catch (error: any) {
     if (error.name === "TokenExpiredError") {

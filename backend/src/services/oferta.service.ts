@@ -26,11 +26,14 @@ export async function getOfertaById(id: number): Promise<Oferta> {
 export async function createOferta(data: CreateOfertaRequest): Promise<Oferta> {
   return prisma.oferta.create({
     data: {
+      titulo: data.titulo,
+      descripcion: data.descripcion,
       categoria: data.categoria,
       ubicacion: data.ubicacion,
       sueldo: data.sueldo,
       modalidad: data.modalidad,
       horario: data.horario,
+      contacto: data.contacto,
       creador: { connect: { id: data.creadorId } },
     },
     include: { creador: true }, // Solo incluimos al creador, no formularios

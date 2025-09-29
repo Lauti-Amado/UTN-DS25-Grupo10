@@ -31,7 +31,7 @@ function Acordion() {
 
   const [items, setItems] = useState(cargarDesdeLocalStorage);
   const [nuevoTitulo, setNuevoTitulo] = useState('');
-  const [nuevoContenido, setNuevoContenido] = useState('');
+  const [nuevaDescripcion, setNuevaDescripcion] = useState('');
   const [nuevaCategoria, setNuevaCategoria] = useState('');
   const [ubicacion, setUbicacion] = useState('');
   const [sueldo, setSueldo] = useState('');
@@ -50,19 +50,22 @@ function Acordion() {
   const itemsFiltrados = items.filter(
     item =>
       item.titulo.toLowerCase().includes(busquedaGlobal.toLowerCase()) ||
-      item.contenido.toLowerCase().includes(busquedaGlobal.toLowerCase())
+      item.descripcion.toLowerCase().includes(busquedaGlobal.toLowerCase())
   );
 
  const manejarSubmit = (e) => {
   e.preventDefault();
 
-  if (nuevoTitulo.trim() && nuevoContenido.trim()) {
+  if (nuevoTitulo.trim() && nuevaDescripcion.trim()) {
     const nuevaOferta = {
+      titulo: nuevoTitulo,
+      descripcion: nuevaDescripcion,
       categoria: nuevaCategoria,
       ubicacion,
       sueldo: sueldo ? parseInt(sueldo) : undefined,
       modalidad,
       horario,
+      contacto,
       creadorId: usuarioLogueado.id,
       postuladoId: []
     };
@@ -84,15 +87,15 @@ function Acordion() {
         .then(data => {
        const nueva = {
        id: data.data.id,      // ✅ aquí está el ID real
-    titulo: nuevoTitulo,
-    contenido: nuevoContenido,
-    contacto,
+    titulo: data.data.nuevoTitulo,
+    descripcion: data.data.nuevaDescripcion,
+    contacto: data.data.contacto,
     logo,
     categoria: data.data.categoria,
     ubicacion: data.data.ubicacion,
     sueldo: data.data.sueldo,
     modalidad: data.data.modalidad,
-    horario: data.data.horario
+    horario: data.data.horario,
        };
 
        setItems(prev => [...prev, nueva]); // ahora item.id existe
@@ -155,7 +158,7 @@ console.log('itemsFiltrados:', itemsFiltrados);
         <div className={`formulario-oferta transition ${mostrarFormulario ? 'mostrar' : 'ocultar'}`}>
           <form onSubmit={manejarSubmit} className="mb-4">
             <input type="text" className="form-control mb-2" placeholder="Título del empleo" value={nuevoTitulo} onChange={(e) => setNuevoTitulo(e.target.value)} />
-            <textarea className="form-control mb-2" placeholder="Descripción del empleo" value={nuevoContenido} onChange={(e) => setNuevoContenido(e.target.value)} />
+            <textarea className="form-control mb-2" placeholder="Descripción del empleo" value={nuevaDescripcion} onChange={(e) => setNuevaDescripcion(e.target.value)} />
             <input type="text" className="form-control mb-2" placeholder="Categoría del empleo" value={nuevaCategoria} onChange={(e) => setNuevaCategoria(e.target.value)} />
             <input type="text" className="form-control mb-2" placeholder="Ubicación" value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
             <input type="text" className="form-control mb-2" placeholder="Sueldo (o escribí 'A convenir')" value={sueldo} onChange={(e) => setSueldo(e.target.value)} />
