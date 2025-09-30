@@ -14,11 +14,13 @@ export async function getOfertaById(id: number): Promise<Oferta> {
     where: { id },
     include: { creador: true },
   });
-  if (!oferta){
-    const error=new Error('Oferta no encontrada') as any;
-    error.statusCode= 404;
-    throw Error
+  
+  if (!oferta) {
+    const error = new Error("Oferta no encontrada") as any;
+    error.statusCode = 404;
+    throw error;
   }
+
   return oferta as unknown as Oferta;
 }
 
@@ -34,9 +36,10 @@ export async function createOferta(data: CreateOfertaRequest): Promise<Oferta> {
       modalidad: data.modalidad,
       horario: data.horario,
       contacto: data.contacto,
+      logo: data.logo ? String(data.logo) : null,
       creador: { connect: { id: data.creadorId } },
     },
-    include: { creador: true }, // Solo incluimos al creador, no formularios
+    include: { creador: true },
   }) as unknown as Oferta;
 }
 
@@ -45,7 +48,10 @@ export async function createOferta(data: CreateOfertaRequest): Promise<Oferta> {
 export async function updateOferta(id: number, updateData: UpdateOfertaResquest): Promise<Oferta> {
   return prisma.oferta.update({
     where: { id },
-    data: updateData,
+    data: { 
+      ...updateData,
+      logo: updateData.logo ? String(updateData.logo) : null,
+  },
     include : { creador: true }
   }) as unknown as Oferta;
 }

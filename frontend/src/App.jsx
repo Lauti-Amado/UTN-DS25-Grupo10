@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import NavBar from './layouts/navBar/navBar';
 import Footer from './componentes/Footer.jsx';
 import Login from './paginas/Login.jsx';

@@ -7,10 +7,11 @@ export interface Oferta {
   descripcion: string;
   categoria: string;
   ubicacion: string;
-  sueldo?: number;
+  sueldo?: string;
   modalidad: TipoModalidad;
   horario: string;
   contacto: string;
+  logo?: string;
   creador: Usuario;
 }
 
@@ -21,12 +22,12 @@ export interface CreateOfertaRequest {
   descripcion: string;
   categoria: string;
   ubicacion: string;
-  sueldo?: number;
+  sueldo?: string;
   modalidad: TipoModalidad;
   horario: string;
   contacto: string;
+  logo?: String;
   creadorId: number;
-  postuladoId: number[];
 }
 
 export interface UpdateOfertaResquest {
@@ -34,10 +35,11 @@ export interface UpdateOfertaResquest {
   descripcion?: string;
   categoria?: string;
   ubicacion?: string;
-  sueldo?: number;
+  sueldo?: string;
   modalidad?: TipoModalidad;
   horario?: string;
   contacto?: string;
+  logo?: string;
   postuladosIds?: number[];
 }
 
