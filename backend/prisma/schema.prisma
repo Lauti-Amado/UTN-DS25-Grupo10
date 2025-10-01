@@ -49,10 +49,11 @@ model Oferta {
   descripcion String
   categoria   String
   ubicacion   String
-  sueldo      Int?
-  modalidad   String
-  horario     String
-  contacto    String
+  sueldo      String?
+  modalidad   String?
+  horario     String?
+  contacto    String?
+  logo        String?
   creadorId   Int
   formulario  Formulario[]
   creador     Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])

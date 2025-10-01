@@ -29,7 +29,6 @@ export default function PantallaHomePostulante() {
               <h2 style={{ textDecoration: "brown 1.5px underline" }}>Postulante</h2>
               <OfertasCarousel />
               <br />
-
               <Button
                 variant="dark"
                 className="mb-3 mt-3 float-end"

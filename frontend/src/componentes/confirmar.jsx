@@ -9,7 +9,6 @@ function Confirmar({onCancelar, onAceptar}){
         
     }
 
-
 return (
     <div className={styles.cuadro}>
       <div className={styles.Confirmo}>Confirmacion de eliminacion</div>

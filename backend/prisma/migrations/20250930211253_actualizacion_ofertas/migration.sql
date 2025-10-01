@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "public"."Oferta" ADD COLUMN     "logo" TEXT,
+ALTER COLUMN "sueldo" SET DATA TYPE TEXT,
+ALTER COLUMN "modalidad" DROP NOT NULL,
+ALTER COLUMN "horario" DROP NOT NULL,
+ALTER COLUMN "contacto" DROP NOT NULL;
