@@ -7,7 +7,6 @@ import Proyecto from '../componentes/proyecto';
 import '../componentes/ofertaCard.css';
 import imagen from '../assets/perfilx.png';
 import Compartir from '../componentes/compartir';
-import ListaProyectos from '../componentes/listaproyectos';
 import Confirmar from '../componentes/confirmar'
 import styles from '../paginas/perfil.module.css';
 import { DatosContexto } from '../datosContext';
@@ -86,7 +85,7 @@ export default function Perfil() {
       );
 
       setModificarProyecto(null);
-      setModoEditar('verproyectos');
+      setModoEditar(null);
     } catch (error) {
       console.error('Error al modificar proyecto:', error);
     }
@@ -233,24 +232,19 @@ export default function Perfil() {
               />
             )}
             {modoEditar === 'compartir' && (
-              <Compartir onCerrar={()=> setModoEditar(null)}/>
-            )}
-
-            {modoEditar === 'verproyectos' && (
-              <ListaProyectos
+              <Compartir
                 onCerrar={()=> setModoEditar(null)}
-                onEliminar={SolicitarEliminar}
-                onModificar={AbrirModificarProyecto}
-                onProyectos={proyectosagregados}
+                usuarioId={usuarioLogueado?.id}
               />
             )}
+
             {modoEditar === 'modificarProyecto' && modificarProyecto && 
               ( <Proyecto 
                   nombre={modificarProyecto.nombre} 
                   descripcion={modificarProyecto.descripcion} 
                   tecnologias={modificarProyecto.tecnologias} 
                   onCerrar={() => { 
-                    setModoEditar('verproyectos'); 
+                    setModoEditar(null); 
                     setModificarProyecto(null);
                   }} 
                   onModificarProyecto= {(nuevoNombre, nuevaDescripcion, nuevasTecnologias) => {
