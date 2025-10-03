@@ -66,6 +66,7 @@ export default function Login({ onLogin }) {
       // Guardar usuario y token
       setUsuarioLogueado(data.data.usuario);
       localStorage.setItem("token", data.data.token);
+      localStorage.setItem("usuarioID", data.data.usuario.id);
       onLogin();
     } else {
       setMostrarModalError(true);

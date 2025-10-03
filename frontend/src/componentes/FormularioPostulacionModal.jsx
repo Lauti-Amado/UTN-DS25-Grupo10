@@ -38,9 +38,33 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+     if (!empresa || !empresa.id) {
+      alert("No se encontró la información de la empresa. Intenta de nuevo.");
+      return;
+    }
+
     //obtener usuarioID y token del localStorage
     const usuarioId = localStorage.getItem('usuarioID');
     const token = localStorage.getItem('token');
+
+    // Validación de campos obligatorios
+    if (
+      !formData.nombre ||
+      !formData.apellido ||
+      !formData.localidad ||
+      !formData.pais ||
+      !formData.genero ||
+      !formData.descripcion ||
+      !formData.archivo
+    ) {
+      alert("Por favor, completá todos los campos y subí tu curriculum.");
+      return;
+    }
+
+
+     // Logs para depuración
+    console.log('empresa.id:', empresa.id);
+    console.log('usuarioId:', usuarioId);
 
     // Crear un objeto FormData para enviar los datos del formulario, incluyendo el archivo
     const formDataToSend = new FormData();
@@ -51,8 +75,13 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
     formDataToSend.append('genero', formData.genero);
     formDataToSend.append('descripcion', formData.descripcion);
     formDataToSend.append('curriculum', formData.archivo);
-    formDataToSend.append('postuladoID', usuarioId);
-    formDataToSend.append("ofertaID", empresa.id);
+    formDataToSend.append('postuladoId', usuarioId);
+    formDataToSend.append("ofertaId", empresa.id);
+
+     // Mostrar el contenido de FormData en consola
+    for (let pair of formDataToSend.entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
 
     try {
         const response = await fetch(`http://localhost:3000/formularios/${empresa.id}`, {
@@ -63,12 +92,17 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
           },
         });
 
+           // Mostrar status y respuesta en consola
+        console.log('Status:', response.status);
+
         const result = await response.json();
+        console.log('Respuesta backend:', result);
+
         if (result.success) {
           alert("Formulario enviado con éxito");
           handleClose();
         } else {
-          alert("Error al enviar el formulario");
+          alert("Error al enviar el formulario:" + (result.message || ''));
         }
       } catch (error) {
         console.error("Error al enviar el formulario:", error);

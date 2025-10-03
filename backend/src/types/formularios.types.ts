@@ -16,8 +16,8 @@ export interface CreateFormularioRequest {
     genero: string,
     descripcion: string,
     curriculum: string,
-    ofertaID: number,
-    postuladoID: number,
+    ofertaId: number,
+    postuladoId: number,
 }
 
 export interface FormularioResponse {
