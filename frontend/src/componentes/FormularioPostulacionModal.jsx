@@ -35,11 +35,45 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Formulario enviado:', formData);
-    alert('Formulario enviado con éxito');
-    handleClose();
+
+    //obtener usuarioID y token del localStorage
+    const usuarioId = localStorage.getItem('usuarioID');
+    const token = localStorage.getItem('token');
+
+    // Crear un objeto FormData para enviar los datos del formulario, incluyendo el archivo
+    const formDataToSend = new FormData();
+    formDataToSend.append('nombre', formData.nombre);
+    formDataToSend.append('apellido', formData.apellido);
+    formDataToSend.append('localidad', formData.localidad);
+    formDataToSend.append('pais', formData.pais);
+    formDataToSend.append('genero', formData.genero);
+    formDataToSend.append('descripcion', formData.descripcion);
+    formDataToSend.append('curriculum', formData.archivo);
+    formDataToSend.append('postuladoID', usuarioId);
+    formDataToSend.append("ofertaID", empresa.id);
+
+    try {
+        const response = await fetch(`http://localhost:3000/formularios/${empresa.id}`, {
+          method: "POST",
+          body: formDataToSend,
+          headers: {
+            Authorization: `Bearer ${token}`, //  usando JWT
+          },
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          alert("Formulario enviado con éxito");
+          handleClose();
+        } else {
+          alert("Error al enviar el formulario");
+        }
+      } catch (error) {
+        console.error("Error al enviar el formulario:", error);
+      alert("Hubo un problema al enviar el formulario");
+    }
   };
 
   return (
