@@ -44,18 +44,6 @@ model Formulario {
 }
 
 model Oferta {
-<<<<<<< HEAD
-  id         Int          @id @default(autoincrement())
-  titulo     String //se lo agregó juan
-  categoria  String
-  ubicacion  String
-  sueldo     Int?
-  modalidad  String
-  horario    String
-  creadorId  Int
-  formulario Formulario[]
-  creador    Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])
-=======
   id          Int          @id @default(autoincrement())
   titulo      String
   descripcion String
@@ -69,7 +57,6 @@ model Oferta {
   creadorId   Int
   formulario  Formulario[]
   creador     Usuario      @relation("UsuarioOfertas", fields: [creadorId], references: [id])
->>>>>>> ccfdf64d2385e2d0682bd23ff42ca3a701bbef7d
 }
 
 model Proyecto {
