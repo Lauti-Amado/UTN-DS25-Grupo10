@@ -48,12 +48,16 @@ function Acordion() {
     localStorage.setItem('empleos', JSON.stringify(items));
   }, [items]);
 
-  const itemsFiltrados = items.filter(
-    (item) =>
-      item.titulo.toLowerCase().includes(busquedaGlobal.toLowerCase()) ||
-      item.descripcion.toLowerCase().includes(busquedaGlobal.toLowerCase())
-  );
+    // 🔎 Filtro por búsqueda global
+    const itemsFiltrados = items.filter((item) => {
+    const titulo = (item.titulo || '').toLowerCase();
+    const descripcion = (item.descripcion || '').toLowerCase();
+    const busqueda = (busquedaGlobal || '').toLowerCase();
 
+    return titulo.includes(busqueda) || descripcion.includes(busqueda);
+  });
+
+  // Limpia el formulario y resetea estados de edición
   const limpiarFormulario = () => {
     setNuevoTitulo('');
     setNuevaDescripcion('');
@@ -68,10 +72,55 @@ function Acordion() {
     setOfertaEditando(null);
   };
 
+  // Muestra una notificación modal
   const mostrarNotificacion = (titulo, mensaje, tipo = 'success') => {
     setNotificacion({ show: true, titulo, mensaje, tipo });
   };
 
+  //traigo las ofertas del backend 
+  // 🟢 Cargar ofertas desde la base de datos del usuario logueado
+ useEffect(() => {
+  if (!usuarioLogueado?.id) return;
+
+  const fetchOfertas = async () => {
+      try {
+        // 🔗 Cambiá este link si tu backend no corre en localhost:3000
+        const API_URL = `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
+        
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Error al obtener las ofertas");
+        const data = await res.json();
+
+        // Si tu backend devuelve directamente un array:
+        if (Array.isArray(data)) {
+          setItems(data);
+        } 
+        // O si tu backend devuelve { success: true, data: [...] }:
+        else if (data.success && Array.isArray(data.data)) {
+          setItems(data.data);
+        } 
+        else {
+          console.warn("Formato de datos inesperado:", data);
+          setItems([]);
+        }
+
+      } catch (err) {
+        console.error("Error al cargar las ofertas:", err);
+        setNotificacion({
+          show: true,
+          titulo: 'Error',
+          mensaje: 'No se pudieron cargar las ofertas del usuario.',
+          tipo: 'error'
+        });
+      }
+    };
+
+    fetchOfertas();
+  }, [usuarioLogueado]);
+
+
+
+  // Validación del formulario
   const validarFormulario = () => {
     if (!nuevoTitulo.trim()) {
       mostrarNotificacion('Campo requerido', 'Por favor ingresa un título para la oferta', 'warning');
@@ -100,6 +149,7 @@ function Acordion() {
     return true;
   };
 
+  // Maneja el envío del formulario para crear o editar una oferta
   const manejarSubmit = (e) => {
     e.preventDefault();
     
@@ -353,12 +403,14 @@ function Acordion() {
         </>
       )}
 
-      <Accordion defaultActiveKey={(s ?? 0).toString()}>
+       <Accordion defaultActiveKey={(s ?? 0).toString()}>
         {itemsFiltrados.map((item, index) => (
           <Accordion.Item eventKey={index.toString()} key={item.id}>
             <Accordion.Header>{item.titulo}</Accordion.Header>
             <Accordion.Body>
-              {item.logo && <img src={item.logo} alt="Logo empresa" style={{ maxHeight: '60px' }} className="mb-3" />}
+              {item.logo && (
+                <img src={item.logo} alt="Logo empresa" style={{ maxHeight: '60px' }} className="mb-3" />
+              )}
               <p><strong>Categoría:</strong> {item.categoria || 'No especificada'}</p>
               <p><strong>Ubicación:</strong> {item.ubicacion || 'No especificada'}</p>
               <p><strong>Sueldo:</strong> {item.sueldo || 'A convenir'}</p>
@@ -367,6 +419,7 @@ function Acordion() {
               <p><strong>Contacto:</strong> {item.contacto || 'No especificado'}</p>
               <p className="mt-2">{item.descripcion}</p>
 
+              {/* Botones según el rol del usuario */}
               <div className="d-flex gap-2 mt-3">
                 {usuarioLogueado?.rolPostulante === false ? (
                   <>

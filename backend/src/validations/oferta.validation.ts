@@ -19,8 +19,7 @@ export const createOfertaSchema = z.object({
       .optional(),
     modalidad: z.string()
       .optional(),
-    horario: z.string()
-      .min(1,"Debe informar los horarios del trabajo"),
+    horario: z.string().optional(),
     contacto: z.string()
       .min(1,"Se debe ingresar algun medio de contacto")
       .max(80,"El contacto no debe superar los 80 caracteres"),
