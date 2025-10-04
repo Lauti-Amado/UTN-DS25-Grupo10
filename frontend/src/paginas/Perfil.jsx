@@ -7,48 +7,45 @@ import Proyecto from '../componentes/proyecto';
 import '../componentes/ofertaCard.css';
 import imagen from '../assets/perfilx.png';
 import Compartir from '../componentes/compartir';
-import ListaProyectos from '../componentes/listaproyectos';
 import Confirmar from '../componentes/confirmar'
 import styles from '../paginas/perfil.module.css';
-import Pensamiento from '../componentes/quepensas'
 import { DatosContexto } from '../datosContext';
 import { useContext, useEffect } from 'react';
 
 export default function Perfil() {
  
   const [modoEditar, setModoEditar] = useState(null);
-  const[proyectoaEliminar, setProyectoaEliminar]=useState(null)
-  const[mostrarConfirmacion, setMostrarConfirmacion]=useState(false)
-  const[modificarProyecto, setModificarProyecto]=useState(null)
+  const [proyectoaEliminar, setProyectoaEliminar] = useState(null)
+  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false)
+  const [modificarProyecto, setModificarProyecto] = useState(null)
   const [imagenPerfil, setImagenPerfil] = useState(imagen);
   const [nombrePerfil, setNombrePerfil] = useState('Nombre Perfil');
   const [descripcionPerfil, setDescripcionPerfil] = useState(
     'Soy un estudiante de sistemas con ganas de insertarme en el mundo laboral. Poseo los conocimientos de algunas tecnologías, idiomas y trabajo en equipo.'
   );
-  const [FechaNac, setNuevafecha]=useState('');
+  const [FechaNac, setNuevafecha] = useState('');
   const [proyectosagregados, setProyectosAgregados] = useState([]);
-  const { usuarioLogueado } = useContext(DatosContexto); //carga los usuarios logueados
-
+  const { usuarioLogueado } = useContext(DatosContexto);
 
   //este useEffect TRAER los Proyectos desde el backend
   useEffect(() => {
-  const fetchProyectos = async () => {
-    if (!usuarioLogueado) return; // espera a que esté cargado el usuario
+    const fetchProyectos = async () => {
+      if (!usuarioLogueado) return; 
 
-    try {
-      const res = await fetch(`http://localhost:3000/proyectos/usuario/${usuarioLogueado.id}`);
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      const json = await res.json();
+      try {
+        const res = await fetch(`http://localhost:3000/proyectos/postulado/${usuarioLogueado.id}`);
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        const json = await res.json();
 
-      setProyectosAgregados(Array.isArray(json.data) ? json.data : []);
-    } catch (err) {
-      console.error("Error al traer proyectos:", err);
-      setProyectosAgregados([]);
-    }
-  };
+        setProyectosAgregados(Array.isArray(json.data) ? json.data : []);
+      } catch (err) {
+        console.error("Error al traer proyectos:", err);
+        setProyectosAgregados([]);
+      }
+    };
 
-  fetchProyectos();
-}, [usuarioLogueado]);
+    fetchProyectos();
+  }, [usuarioLogueado]);
 
   //Funcion para ELIMINAR PROYECTO
   const eliminarProyecto = async (id) => {
@@ -88,20 +85,17 @@ export default function Perfil() {
       );
 
       setModificarProyecto(null);
-      setModoEditar('verproyectos');
+      setModoEditar(null);
     } catch (error) {
       console.error('Error al modificar proyecto:', error);
     }
   };
 
-
-  
-
   const manejarActualizarPerfil = (nuevaImagen, nuevoNombre, nuevaDescripcion, nuevaFechaNac) => {
     if (nuevaImagen) setImagenPerfil(nuevaImagen);
     if (nuevoNombre) setNombrePerfil(nuevoNombre);
     if (nuevaDescripcion) setDescripcionPerfil(nuevaDescripcion);
-    if(nuevaFechaNac) setNuevafecha(nuevaFechaNac);
+    if (nuevaFechaNac) setNuevafecha(nuevaFechaNac);
     setModoEditar(null);
   };
   
@@ -143,40 +137,37 @@ export default function Perfil() {
   };
   
   const Cancelar=()=>{
-     setMostrarConfirmacion(false)
-     setProyectoaEliminar(null)
+    setMostrarConfirmacion(false)
+    setProyectoaEliminar(null)
   }
   
-const AbrirModificarProyecto = (id) => {
-  const proyecto = proyectosagregados.find(p => p.id === id);
-  if (proyecto) {
-    setModificarProyecto(proyecto);         
-    setModoEditar('modificarProyecto');     
-  }
-};
+  const AbrirModificarProyecto = (id) => {
+    const proyecto = proyectosagregados.find(p => p.id === id);
+    if (proyecto) {
+      setModificarProyecto(proyecto);         
+      setModoEditar('modificarProyecto');     
+    }
+  };
 
+  // Actualizar el nombre del perfil cuando cambia el usuario logueado
+  useEffect(() => {
+    if (usuarioLogueado) {
+      setNombrePerfil(usuarioLogueado.nombreUsuario);
+      setDescripcionPerfil(usuarioLogueado.descripcion || '');
 
+      const fechaISO = usuarioLogueado.fechaNacimiento
+        ? new Date(usuarioLogueado.fechaNacimiento).toISOString().split('T')[0]
+        : '';
+      setNuevafecha(fechaISO);
 
-// Actualizar el nombre del perfil cuando cambia el usuario logueado
-useEffect(() => {
-  if (usuarioLogueado) {
-    setNombrePerfil(usuarioLogueado.nombreUsuario);
-    setDescripcionPerfil(usuarioLogueado.descripcion || '');
-
-    const fechaISO = usuarioLogueado.fechaNacimiento
-      ? new Date(usuarioLogueado.fechaNacimiento).toISOString().split('T')[0]
-      : '';
-    setNuevafecha(fechaISO);
-
-    // 🔑 Si hay fotoPerfil, construir la URL completa
-    if (usuarioLogueado.fotoPerfil) {
-      setImagenPerfil(`http://localhost:3000${usuarioLogueado.fotoPerfil}`);
-    } else {
-      setImagenPerfil(imagen); // la imagen por defecto
-    } 
-    //comentario de prueba
-  }
-}, [usuarioLogueado]);
+      // Si hay fotoPerfil, construir la URL completa
+      if (usuarioLogueado.fotoPerfil) {
+        setImagenPerfil(`http://localhost:3000${usuarioLogueado.fotoPerfil}`);
+      } else {
+        setImagenPerfil(imagen); // la imagen por defecto
+      }
+    }
+  }, [usuarioLogueado]);
 
   return (
     <div className="vistaEstirada" style={{ position: 'relative' }}>
@@ -242,80 +233,70 @@ useEffect(() => {
             )}
             {modoEditar === 'compartir' && (
               <Compartir
-               onCerrar={()=> setModoEditar(null)}/>
-            )}
-
-            {modoEditar === 'verproyectos' && (
-              <ListaProyectos
                 onCerrar={()=> setModoEditar(null)}
-                onEliminar={SolicitarEliminar}
-                onModificar={AbrirModificarProyecto}
-                onProyectos={proyectosagregados}
+                usuarioId={usuarioLogueado?.id}
               />
             )}
-            {modoEditar === 'modificarProyecto' && modificarProyecto && 
-            ( <Proyecto 
-              nombre={modificarProyecto.nombre} 
-              descripcion={modificarProyecto.descripcion} 
-              tecnologias={modificarProyecto.tecnologias} 
-              onCerrar={() => 
-                { setModoEditar('verproyectos'); 
-                  setModificarProyecto(null);
-                }
-              } 
-              onModificarProyecto= {(nuevoNombre, nuevaDescripcion, nuevasTecnologias) => {
-                
-                modificarProyectoBD (
-                  modificarProyecto.id, 
-                  nuevoNombre, 
-                  nuevaDescripcion,
-                  nuevasTecnologias
-                );
-              }}
-            />
-            )}
 
+            {modoEditar === 'modificarProyecto' && modificarProyecto && 
+              ( <Proyecto 
+                  nombre={modificarProyecto.nombre} 
+                  descripcion={modificarProyecto.descripcion} 
+                  tecnologias={modificarProyecto.tecnologias} 
+                  onCerrar={() => { 
+                    setModoEditar(null); 
+                    setModificarProyecto(null);
+                  }} 
+                  onModificarProyecto= {(nuevoNombre, nuevaDescripcion, nuevasTecnologias) => {
+                    modificarProyectoBD (
+                      modificarProyecto.id, 
+                      nuevoNombre, 
+                      nuevaDescripcion,
+                      nuevasTecnologias
+                    );
+                  }}
+                />
+            )}
           </div>
         </>
       )}
         
-          {mostrarConfirmacion && (
-  <>
-    <div
-      onClick={Cancelar}
-      style={{
-        position: 'fixed',
-        top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        backdropFilter: 'blur(5px)',
-        WebkitBackdropFilter: 'blur(5px)',
-        zIndex: 1100, 
-      }}
-    />
-    <div
-      style={{
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        zIndex: 1101,
-        backgroundColor: 'white',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-        maxWidth: '90%',
-        maxHeight: '90%',
-        overflowY: 'auto',
-      }}
-    >
-      <Confirmar
-        onCancelar={Cancelar}
-        onAceptar={CuadroConfirmacion}
-      />
-    </div>
-  </>
-)}
-      {/* <Pensamiento/> */}
+      {mostrarConfirmacion && (
+        <>
+          <div
+            onClick={Cancelar}
+            style={{
+              position: 'fixed',
+              top: 0, left: 0, right: 0, bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              backdropFilter: 'blur(5px)',
+              WebkitBackdropFilter: 'blur(5px)',
+              zIndex: 1100, 
+            }}
+          />
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 1101,
+              backgroundColor: 'white',
+              padding: '20px',
+              borderRadius: '8px',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+              maxWidth: '90%',
+              maxHeight: '90%',
+              overflowY: 'auto',
+            }}
+          >
+            <Confirmar
+              onCancelar={Cancelar}
+              onAceptar={CuadroConfirmacion}
+            />
+          </div>
+        </>
+      )}
 
       <div className="container mt-4">
         <h3 className="mb-3">Mis Proyectos</h3>
@@ -325,25 +306,63 @@ useEffect(() => {
           ) : (
             proyectosagregados.map((proyecto) => (
               <div className="col-md-4 mb-3" key={proyecto.id}>
-                <div className="card">
-                  <div className="card-body">
+                <div 
+                  className="card h-100" 
+                  style={{
+                    border: 'none',
+                    borderRadius: '12px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-5px)';
+                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                  }}
+                >
+                  <div className="card-body d-flex flex-column">
                     <h5 className="card-title">{proyecto.nombre}</h5>
                     <p className="card-text">{proyecto.descripcion}</p>
-                    <p className="text-muted">
-                      <strong>Tecnologías:</strong> {proyecto.tecnologiasUsadas}
-                    </p>
-                    <button
-                      className="btn btn-sm btn-primary me-2"
-                      onClick={() => AbrirModificarProyecto(proyecto.id)}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => SolicitarEliminar(proyecto.id)}
-                    > 
-                      Eliminar
-                    </button>
+                    
+                    {/* Tecnologías */}
+                    <div className="mt-2">
+                      <strong>Tecnologías:</strong>
+                      <div className="mt-1 d-flex flex-wrap gap-2">
+                        {proyecto.tecnologiasUsadas.split(",").map((tec, i) => (
+                          <span
+                            key={i}
+                            className="badge"
+                            style={{
+                              backgroundColor: ["#FF4500", "#D32F2F", "#212121", "#9E9E9E", "#F5F5F5"][i % 5],
+                              color: i % 5 === 4 ? "#000" : "#fff",
+                              padding: "6px 10px",
+                              borderRadius: "20px",
+                              fontSize: "0.85rem",
+                            }}
+                          >
+                            {tec.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-auto pt-3">
+                      <button
+                        className="btn btn-sm btn-primary me-2"
+                        onClick={() => AbrirModificarProyecto(proyecto.id)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => SolicitarEliminar(proyecto.id)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -351,6 +370,6 @@ useEffect(() => {
           )}
         </div>
       </div>
-</div>
+    </div>
   );
 }

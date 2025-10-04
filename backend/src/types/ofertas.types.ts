@@ -3,32 +3,43 @@ import { Usuario } from "./usuarios.types";
 
 export interface Oferta {
   id: number;
+  titulo: string;
+  descripcion: string;
   categoria: string;
   ubicacion: string;
-  sueldo?: number;
+  sueldo?: string;
   modalidad: TipoModalidad;
   horario: string;
+  contacto: string;
+  logo?: string;
   creador: Usuario;
 }
 
 type TipoModalidad = "presencial" | "remoto" | "hibrido";
 
 export interface CreateOfertaRequest {
+  titulo: string;
+  descripcion: string;
   categoria: string;
   ubicacion: string;
-  sueldo?: number;
+  sueldo?: string;
   modalidad: TipoModalidad;
   horario: string;
+  contacto: string;
+  logo?: String;
   creadorId: number;
-  postuladoId: number[];
 }
 
 export interface UpdateOfertaResquest {
+  titulo?: string;
+  descripcion?: string;
   categoria?: string;
   ubicacion?: string;
-  sueldo?: number;
+  sueldo?: string;
   modalidad?: TipoModalidad;
   horario?: string;
+  contacto?: string;
+  logo?: string;
   postuladosIds?: number[];
 }
 

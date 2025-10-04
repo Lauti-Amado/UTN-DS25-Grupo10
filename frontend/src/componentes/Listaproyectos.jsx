@@ -1,3 +1,4 @@
+//Mensaje de Lauti: Creo que esta pagina no se usa más, pero como no estoy seguro la dejo.
 import React from "react";
 import styles from '../paginas/perfil.module.css';
 

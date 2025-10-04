@@ -17,7 +17,6 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
           <BotonesPerfil texto="Editar perfil" onClick={() => onEditarClick('perfil')} />
           <BotonesPerfil texto="Compartir perfil" onClick={() =>onEditarClick('compartir')}/>
           <BotonesPerfil texto="Agregar proyecto" onClick={() => onEditarClick('proyecto')} />
-          <BotonesPerfil texto="Visualizar proyectos" onClick={() => onEditarClick('verproyectos')} />
         </div>
       </div>
     </section>

@@ -2,7 +2,6 @@ import Carousel from 'react-bootstrap/Carousel';
 import OfertaCard from './ofertaCard';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
-import datosEmpleosIniciales from './datosIniciales';
 import datosPostulantes from './datosPostulantes';
 import { DatosContexto } from '../datosContext';
 
@@ -12,30 +11,39 @@ function OfertasCarousel() {
   const navigate = useNavigate();
   const { usuarioLogueado } = useContext(DatosContexto);
 
-
+  // Cargar ofertas o postulantes según el rol
   useEffect(() => {
-    if (usuarioLogueado?.rol === "empleador") {
-      // Si es empleador, se usan los postulantes
-      const postulantesConvertidos = datosPostulantes.map((p, index) => ({
-        id: index,
-        titulo: `${p.nombre} ${p.apellido}`,
-        categoria: p.puesto,
-        contenido: `Postulante para el puesto de ${p.puesto}`
-      }));
-      setOfertas(postulantesConvertidos);
-    } else {
-      // Si no es empleador, mostrar empleos desde localStorage o iniciales
-      const data = localStorage.getItem('empleos');
-      if (data) {
-        setOfertas(JSON.parse(data));
+    const cargarDatos = async () => {
+      if (usuarioLogueado && usuarioLogueado.rolPostulante === false) {
+        // Si es empleador -> mostrar postulantes mock
+        const postulantesConvertidos = datosPostulantes.map((p, index) => ({
+          id: index,
+          titulo: `${p.nombre} ${p.apellido}`,
+          categoria: p.puesto,
+          descripcion: `Postulante para el puesto de ${p.puesto}`,
+        }));
+        setOfertas(postulantesConvertidos);
       } else {
-        localStorage.setItem('empleos', JSON.stringify(datosEmpleosIniciales));
-        setOfertas(datosEmpleosIniciales);
+        // Si es postulante -> traer ofertas desde backend
+        try {
+          const resp = await fetch("http://localhost:3000/ofertas");
+          const data = await resp.json();
+          if (data.success) {
+            setOfertas(data.data);
+          } else {
+            setOfertas([]);
+          }
+        } catch (err) {
+          console.error("Error al cargar ofertas:", err);
+          setOfertas([]);
+        }
       }
-    }
+    };
+
+    cargarDatos();
   }, [usuarioLogueado]);
 
-
+  // Ajustar cantidad de items por slide según ancho
   useEffect(() => {
     const actualizarCantidad = () => {
       const ancho = window.innerWidth;
@@ -49,7 +57,7 @@ function OfertasCarousel() {
     return () => window.removeEventListener('resize', actualizarCantidad);
   }, []);
 
- 
+  // Repetir elementos para completar slides y no dejar espacios vacíos
   const completarOfertas = () => {
     const total = ofertas.length;
     const resto = total % itemsPorSlide;
@@ -62,13 +70,13 @@ function OfertasCarousel() {
 
   const ofertasCompletas = completarOfertas();
 
+  // Agrupar ofertas en slides
   const ofertasEnSlides = [];
   for (let i = 0; i < ofertasCompletas.length; i += itemsPorSlide) {
-    const grupo = ofertasCompletas.slice(i, i + itemsPorSlide);
-    ofertasEnSlides.push(grupo);
+    ofertasEnSlides.push(ofertasCompletas.slice(i, i + itemsPorSlide));
   }
 
- 
+  // Redirigir al detalle de la oferta (o trabajos)
   const irAOferta = (index) => {
     navigate('/trabajos', { state: { mensaje: index % ofertas.length } });
   };
@@ -88,11 +96,14 @@ function OfertasCarousel() {
           <Carousel.Item key={i}>
             <div style={{ display: "flex", justifyContent: "center" }}>
               {grupo.map((oferta, index) => (
-                <div key={`${oferta.id}-${i}-${index}`} onClick={() => irAOferta(i * itemsPorSlide + index)}>
+                <div
+                  key={`${oferta.id}-${i}-${index}`}
+                  onClick={() => irAOferta(i * itemsPorSlide + index)}
+                >
                   <OfertaCard
                     titulo={oferta.titulo}
                     categoria={oferta.categoria}
-                    texto={oferta.contenido}
+                    texto={oferta.descripcion}
                     n={(i * itemsPorSlide + index) % ofertas.length}
                   />
                 </div>

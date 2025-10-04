@@ -7,16 +7,17 @@ import { upload } from "../middlewares/upload.middleware";
 
 const router = Router();
 
+// Rutas públicas
 router.post("/login", usuarioController.loginUsuarioController);
-
-// Rutas protegidas
-router.get("/", authenticate, authorize("ADMIN"), usuarioController.getAllUsuarios);
-router.get("/:id", authenticate, authorize("ADMIN"), usuarioController.getUsuarioById);
 router.post("/", validate(createUsuarioSchema), usuarioController.createUsuario);
-router.put("/:id", upload.single('fotoPerfil'), validate(updateUsuarioSchema), usuarioController.updateUsuario);
-router.delete("/:id", usuarioController.deleteUsuario);
 
+router.get("/sugeridos", authenticate, usuarioController.getUsuariosSugeridos);
 router.get("/particulares/p", authenticate, authorize("ADMIN"), usuarioController.getAllUsuariosPostulantes);
 router.get("/particulares/e", authenticate, authorize("ADMIN"), usuarioController.getAllUsuariosEmpleadores);
+
+router.get("/", authenticate, authorize("ADMIN"), usuarioController.getAllUsuarios);
+router.get("/:id", authenticate, usuarioController.getUsuarioById);
+router.put("/:id", authenticate, upload.single('fotoPerfil'), validate(updateUsuarioSchema), usuarioController.updateUsuario);
+router.delete("/:id", authenticate, authorize("ADMIN"), usuarioController.deleteUsuario);
 
 export const usuarioRoutes = router;
