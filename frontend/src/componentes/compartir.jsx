@@ -63,7 +63,7 @@ export default function Compartir({ onCerrar, usuarioId }) {
           className={styles.itemLista}
         >
           <Image src={wsp} roundedCircle className={styles.logoEmpresa} />
-          <p className={styles.nombreEmpresa}>Compartir en WhatsApp</p>
+          <p className={styles.nombreEmpresa}>WhatsApp</p>
         </ListGroup.Item>
 
         <ListGroup.Item
@@ -72,7 +72,7 @@ export default function Compartir({ onCerrar, usuarioId }) {
           className={styles.itemLista}
         >
           <Image src={facebook} roundedCircle className={styles.logoEmpresa} />
-          <p className={styles.nombreEmpresa}>Compartir en Facebook</p>
+          <p className={styles.nombreEmpresa}>Facebook</p>
         </ListGroup.Item>
 
         <ListGroup.Item
@@ -81,7 +81,7 @@ export default function Compartir({ onCerrar, usuarioId }) {
           className={styles.itemLista}
         >
           <Image src={twx} roundedCircle className={styles.logoEmpresa} />
-          <p className={styles.nombreEmpresa}>Compartir en Twitter (X)</p>
+          <p className={styles.nombreEmpresa}>X</p>
         </ListGroup.Item>
 
         <ListGroup.Item
@@ -90,7 +90,7 @@ export default function Compartir({ onCerrar, usuarioId }) {
           className={styles.itemLista}
         >
           <Image src={ig} roundedCircle className={styles.logoEmpresa} />
-          <p className={styles.nombreEmpresa}>Compartir en Instagram</p>
+          <p className={styles.nombreEmpresa}>Instagram</p>
         </ListGroup.Item>
 
         <ListGroup.Item
