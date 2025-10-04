@@ -1,0 +1,97 @@
+/* 🌟 Estilos generales para la pantalla del postulante */
+.vistaEstirada {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 40px 60px;
+  font-family: 'Poppins', sans-serif;
+  color: #212529;
+  transition: all 0.3s ease;
+}
+
+/* 📌 Título principal (Postulante / Empleador) */
+.vistaEstirada h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  color: #1a1a1a;
+  text-align: center; /* 🔹 alineamos el texto a la izquierda */
+  margin: 2rem 0 2rem 0; /* 🔹 más aire arriba y abajo */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+
+.vistaEstirada h2::after {
+  content: none;
+}
+
+/* 🎛️ Botones */
+.vistaEstirada .btn-dark {
+  background-color: #212529;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 10px 18px;
+  transition: all 0.3s ease;
+}
+
+.vistaEstirada .btn-dark:hover {
+  background-color: #0d6efd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* 💼 Sección de trabajos disponibles */
+.trabajos-section {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.trabajos-section:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 🏢 Sección de empresas destacadas */
+.empresas-section {
+  background: #f1f3f5;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.6s ease;
+}
+
+/* ✨ Animación de aparición */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsividad */
+@media (max-width: 768px) {
+  .vistaEstirada {
+    padding: 20px;
+  }
+
+  .vistaEstirada h2 {
+    font-size: 1.6rem;
+  }
+
+  .trabajos-section,
+  .empresas-section {
+    padding: 20px;
+  }
+
+  .vistaEstirada .btn-dark {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
