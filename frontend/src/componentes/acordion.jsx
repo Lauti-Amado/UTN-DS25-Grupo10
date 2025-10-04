@@ -79,25 +79,31 @@ function Acordion() {
 
   //traigo las ofertas del backend 
   // 🟢 Cargar ofertas desde la base de datos del usuario logueado
-  useEffect(() => {
-    if (!usuarioLogueado?.id) return;
+ useEffect(() => {
+  if (!usuarioLogueado?.id) return;
 
-    const fetchOfertas = async () => {
+  const fetchOfertas = async () => {
       try {
-        // ⬇️ Reemplaza este link con el tuyo (por ejemplo, el endpoint de tu backend o Supabase Function)
-        const API_URL = `http://localhost:3000/proyectos/postulado/${usuarioLogueado.id}`;
+        // 🔗 Cambiá este link si tu backend no corre en localhost:3000
+        const API_URL = `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
         
         const res = await fetch(API_URL);
         if (!res.ok) throw new Error("Error al obtener las ofertas");
         const data = await res.json();
 
-        // Aseguramos que la respuesta tenga formato esperado
-        if (data.success && Array.isArray(data.data)) {
+        // Si tu backend devuelve directamente un array:
+        if (Array.isArray(data)) {
+          setItems(data);
+        } 
+        // O si tu backend devuelve { success: true, data: [...] }:
+        else if (data.success && Array.isArray(data.data)) {
           setItems(data.data);
-        } else {
+        } 
+        else {
           console.warn("Formato de datos inesperado:", data);
           setItems([]);
         }
+
       } catch (err) {
         console.error("Error al cargar las ofertas:", err);
         setNotificacion({
