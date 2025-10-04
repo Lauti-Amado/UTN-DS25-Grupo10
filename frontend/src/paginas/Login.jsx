@@ -69,6 +69,7 @@ export default function Login({ onLogin }) {
         token: data.data.token,
     });
       localStorage.setItem("token", data.data.token);
+      localStorage.setItem("usuarioID", data.data.usuario.id);
       onLogin();
     } else {
       setMostrarModalError(true);

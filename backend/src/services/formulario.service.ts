@@ -11,8 +11,8 @@ export async function createFormulario(data: CreateFormularioRequest): Promise<F
             genero: data.genero,
             descripcion: data.descripcion,
             curriculum: data.curriculum,
-            postulado: { connect: { id: data.postuladoID } },
-            oferta: { connect: { id: data.ofertaID } }
+            postulado: { connect: { id: data.postuladoId } },
+            oferta: { connect: { id: data.ofertaId } }
         },
         select: {
             nombre: true,

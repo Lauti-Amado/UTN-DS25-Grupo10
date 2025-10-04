@@ -9,10 +9,8 @@ const router = Router()
 //Ruta para obtener los formularios de una oferta
 router.get('/:id', formularioController.getFormulariosByOferta);
 
-//Ruta para crear un formulario
-router.post('/:id', validate(createFormularioSchema), formularioController.createFormulario);
-
-router.post('/:id', upload.single('curriculum'),validate(createFormularioSchema), formularioController.createFormulario);
+// Ruta para crear un formulario (con multer para archivos)
+router.post('/:id', upload.single('curriculum'), validate(createFormularioSchema), formularioController.createFormulario);
 
 // con "/:id" me refiero al id de la oferta 
 export const formularioRoutes = router;
