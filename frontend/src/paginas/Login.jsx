@@ -64,7 +64,10 @@ export default function Login({ onLogin }) {
 //Si cumple res.ok loguea al usuario y llama a onLogin. De no ser asi, muestra el error
     if (res.ok) {
       // Guardar usuario y token
-      setUsuarioLogueado(data.data.usuario);
+      setUsuarioLogueado({
+        ...data.data.usuario,
+        token: data.data.token,
+    });
       localStorage.setItem("token", data.data.token);
       onLogin();
     } else {

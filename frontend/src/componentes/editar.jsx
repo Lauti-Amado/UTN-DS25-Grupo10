@@ -31,7 +31,9 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
   // Cuando se cambia el nombre, se hace la llamada a la API con un PUT para actualizar y guardar cambios
   const aceptarCambios = async () => {
     try {
-      if (!usuarioLogueado?.id) throw new Error('Usuario no logueado');
+      if (!usuarioLogueado?.id || !usuarioLogueado?.token) {
+        throw new Error('Usuario no logueado');
+      }
 
       const formData = new FormData();
       formData.append('nombreUsuario', nuevoNombre);
@@ -45,6 +47,9 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
 
       const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, {
         method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${usuarioLogueado.token}`,
+        },
         body: formData,
       });
 
