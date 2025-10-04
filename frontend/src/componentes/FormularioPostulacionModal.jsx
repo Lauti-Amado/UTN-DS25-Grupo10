@@ -45,6 +45,11 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
 
     //obtener usuarioID y token del localStorage
     const usuarioId = localStorage.getItem('usuarioID');
+    if (!usuarioId) {
+      alert("No se encontró la información del usuario. Iniciá sesión e intentá de nuevo.");
+      return;
+    }
+    
     const token = localStorage.getItem('token');
 
     // Validación de campos obligatorios
@@ -158,24 +163,24 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
                 type="checkbox"
                 label="Masculino"
                 name="genero"
-                value="Masculino"
-                checked={formData.genero === 'Masculino'}
+                value="masculino"
+                checked={formData.genero === 'masculino'}
                 onChange={handleChange}
               />
               <Form.Check
                 type="checkbox"
                 label="Femenino"
                 name="genero"
-                value="Femenino"
-                checked={formData.genero === 'Femenino'}
+                value="femenino"
+                checked={formData.genero === 'femenino'}
                 onChange={handleChange}
               />
               <Form.Check
                 type="checkbox"
                 label="Otro"
                 name="genero"
-                value="Otro"
-                checked={formData.genero === 'Otro'}
+                value="otro"
+                checked={formData.genero === 'otro'}
                 onChange={handleChange}
               />
             </div>
