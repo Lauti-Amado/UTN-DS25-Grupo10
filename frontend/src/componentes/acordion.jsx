@@ -79,46 +79,51 @@ function Acordion() {
 
   //traigo las ofertas del backend 
   // 🟢 Cargar ofertas desde la base de datos del usuario logueado
- useEffect(() => {
-  if (!usuarioLogueado?.id) return;
+useEffect(() => {
+  if (!usuarioLogueado) return;
 
   const fetchOfertas = async () => {
-      try {
-        // 🔗 Cambiá este link si tu backend no corre en localhost:3000
-        const API_URL = `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
-        
-        const res = await fetch(API_URL);
-        if (!res.ok) throw new Error("Error al obtener las ofertas");
-        const data = await res.json();
-
-        // Si tu backend devuelve directamente un array:
-        if (Array.isArray(data)) {
-          setItems(data);
-        } 
-        // O si tu backend devuelve { success: true, data: [...] }:
-        else if (data.success && Array.isArray(data.data)) {
-          setItems(data.data);
-        } 
-        else {
-          console.warn("Formato de datos inesperado:", data);
-          setItems([]);
-        }
-
-      } catch (err) {
-        console.error("Error al cargar las ofertas:", err);
-        setNotificacion({
-          show: true,
-          titulo: 'Error',
-          mensaje: 'No se pudieron cargar las ofertas del usuario.',
-          tipo: 'error'
-        });
+    try {
+      let API_URL;
+      if (usuarioLogueado.rolPostulante) {
+        // Si es postulante, trae todas las ofertas
+        API_URL = `http://localhost:3000/ofertas`;
+      } else {
+        // Si es empleador, trae solo sus ofertas
+        API_URL = `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
       }
-    };
 
-    fetchOfertas();
-  }, [usuarioLogueado]);
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error("Error al obtener las ofertas");
+      const data = await res.json();
 
+      console.log("Ofertas obtenidas del backend:", data);
 
+      if (Array.isArray(data)) {
+        setItems(data);
+      } else if (data.success && Array.isArray(data.data)) {
+        setItems(data.data);
+      } else {
+        console.warn("Formato de datos inesperado:", data);
+        setItems([]);
+      }
+    } catch (err) {
+      console.error("Error al cargar las ofertas:", err);
+      setNotificacion({
+        show: true,
+        titulo: 'Error',
+  mensaje: 'No se pudieron cargar las ofertas.',
+        tipo: 'error'
+      });
+    }
+  };
+
+  fetchOfertas();
+}, [usuarioLogueado]);
+
+  console.log("Usuario logueado:", usuarioLogueado);
+  console.log("Ofertas:", items);
+  console.log("Ofertas filtradas:", itemsFiltrados);
 
   // Validación del formulario
   const validarFormulario = () => {

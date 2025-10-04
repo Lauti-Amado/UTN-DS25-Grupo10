@@ -15,10 +15,18 @@ export const createFormularioSchema = z.object({
     .min(1,"Debes ingresar tu nacionalidad")
     .max(30,"No se deben exceder los 30 caracteres")
     .trim(),
-    genero: z.literal(["masculino" , "femenino" , "otro"]),
+    genero: z.enum(["masculino" , "femenino" , "otro"]),
     descripcion: z.string()
     .min(1,"Debes ingresar una descripcion")
     .max(100,"No se deben exceder los 100 caracteres")
     .trim(),
-    curriculum: z.file()
-})
+    postuladoId: z.preprocess((val) => {
+    if (typeof val === 'string') return Number(val);
+    return val;
+  }, z.number().int().positive()),
+  
+    ofertaId: z.preprocess((val) => {
+    if (typeof val === 'string') return Number(val);
+    return val;
+  }, z.number().int().positive()),
+    });
