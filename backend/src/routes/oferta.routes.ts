@@ -23,5 +23,8 @@ router.put('/:id', validate(updateOfertaSchema), ofertaController.updateOferta);
 // Ruta para eliminar una oferta
 router.delete('/:id', ofertaController.deleteOferta);
 
+// Ruta para obtener todos los formularios de una oferta
+router.get('/:ofertaId/formularios', ofertaController.getFormularios);
+
 // Exportamos las rutas como "ofertaRoutes"
 export const ofertaRoutes = router;

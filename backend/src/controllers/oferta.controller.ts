@@ -68,3 +68,13 @@ export async function deleteOferta(
     next(error);
   }
 }
+
+export async function getFormularios( req: Request, res: Response, next: NextFunction) {
+  try {
+    const ofertaId = parseInt(req.params.ofertaId);
+    const formularios = await ofertaService.getFormularios(ofertaId);
+    res.json({ success: true, data: formularios})
+  } catch (error) {
+    next(error);
+  }
+}
