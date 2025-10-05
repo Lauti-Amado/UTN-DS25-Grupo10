@@ -1,8 +1,13 @@
 import BotonesPerfil from './BotonesPerfil';
 import styles from '../paginas/perfil.module.css';
 import React, {Component, useContext} from 'react';
+import { DatosContexto } from '../datosContext.jsx';
 
 function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, FechaNac }) {
+
+  
+  const { busquedaGlobal, usuarioLogueado } = useContext(DatosContexto);
+
   return (
     <section className="seccionPerfil">
       <div id={styles['chau']}>
@@ -16,7 +21,10 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
         <div id={styles['botones']}>
           <BotonesPerfil texto="Editar perfil" onClick={() => onEditarClick('perfil')} />
           <BotonesPerfil texto="Compartir perfil" onClick={() =>onEditarClick('compartir')}/>
-          <BotonesPerfil texto="Agregar proyecto" onClick={() => onEditarClick('proyecto')} />
+          {usuarioLogueado.rolPostulante && ( // 👈 solo se muestra si es true
+            <BotonesPerfil texto="Agregar proyecto" onClick={() => onEditarClick('proyecto')} />
+          )}
+
         </div>
       </div>
     </section>
