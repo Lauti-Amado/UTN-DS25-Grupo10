@@ -8,6 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Button, Modal } from 'react-bootstrap';
 import { IoIosPaper } from "react-icons/io";
 import FormularioPostulacionModal from './FormularioPostulacionModal';
+import PostuladosModal from './PostuladosModal';
 import NotificacionModal from './NotificacionModal';
 
 function Acordion() {
@@ -36,6 +37,8 @@ function Acordion() {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [idAEliminar, setIdAEliminar] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [mostrarPostulados, setMostrarModalPostulados] = useState(false);
+  const [idOfertaSeleccionada, setIdOfertaSeleccionada] = useState(null);
 
   // Estados para edición
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -247,6 +250,12 @@ useEffect(() => {
     setMostrarModal(true);
   };
 
+  const verPostulados = (id) => {
+    setIdOfertaSeleccionada(id);
+    setMostrarModalPostulados(true);
+  };
+
+
   const eliminarConfirmado = () => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== idAEliminar));
     fetch(`http://localhost:3000/ofertas/${idAEliminar}`, { method: 'DELETE' })
@@ -440,6 +449,14 @@ useEffect(() => {
                     >
                       <i className="bi bi-trash3-fill me-1"></i> Eliminar
                     </button>
+
+                    <button
+                      className="btn btn-sm btn-bordo-danger"
+                      onClick={() => verPostulados(item.id)}
+                    >
+                      <i className="bi bi-eye"></i> Ver Postulados
+                    </button>
+
                   </>
                 ) : (
                   <Button variant="dark" onClick={() => handlePostular(item)}>
@@ -489,6 +506,14 @@ useEffect(() => {
         mensaje={notificacion.mensaje}
         tipo={notificacion.tipo}
       />
+
+      {/* Modal para ver los postulados */}
+      <PostuladosModal
+        show={mostrarPostulados}
+        handleClose={() => setMostrarModalPostulados(false)}
+        ofertaId={idOfertaSeleccionada}
+      />
+
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import prisma from "../config/prisma";
+import { Formulario } from "../generated/prisma";
 import { CreateOfertaRequest, UpdateOfertaResquest, Oferta } from "../types/ofertas.types";
 
 // Obtener todas las ofertas
@@ -76,4 +77,11 @@ export async function deleteOferta(id: number): Promise<void> {
     }
     throw e;
   }
+}
+
+// Traer todos los formularios asociados a una oferta
+export async function getFormularios(id: number): Promise<Formulario[]> {
+  return prisma.formulario.findMany({
+    where: { ofertaId : id }
+  }) as unknown as Formulario[];
 }
