@@ -61,7 +61,7 @@ export default function PantallaHomePostulante() {
             </div>
 
             <div className="trabajos-section">
-              <PostulantesScrollBox />
+              <PostulantesScrollBox empleadorId={usuarioLogueado.id} />
             </div>
           </div>
         )
