@@ -9,6 +9,8 @@ import { Button, Modal } from 'react-bootstrap';
 import { IoIosPaper } from "react-icons/io";
 import FormularioPostulacionModal from './FormularioPostulacionModal';
 import NotificacionModal from './NotificacionModal';
+import { ofertaSchema } from '../validations/oferta.js'; 
+
 
 function Acordion() {
   const location = useLocation();
@@ -126,39 +128,44 @@ useEffect(() => {
   console.log("Ofertas filtradas:", itemsFiltrados);
 
   // Validación del formulario
-  const validarFormulario = () => {
-    if (!nuevoTitulo.trim()) {
-      mostrarNotificacion('Campo requerido', 'Por favor ingresa un título para la oferta', 'warning');
-      return false;
-    }
-    if (!nuevaDescripcion.trim()) {
-      mostrarNotificacion('Campo requerido', 'Por favor ingresa una descripción', 'warning');
-      return false;
-    }
-    if (!nuevaCategoria.trim()) {
-      mostrarNotificacion('Campo requerido', 'Por favor ingresa una categoría', 'warning');
-      return false;
-    }
-    if (!ubicacion.trim()) {
-      mostrarNotificacion('Campo requerido', 'Por favor ingresa una ubicación', 'warning');
-      return false;
-    }
-    if (!horario.trim()) {
-      mostrarNotificacion('Campo requerido', 'Por favor ingresa el horario', 'warning');
-      return false;
-    }
-    if (!contacto.trim()) {
-      mostrarNotificacion('Campo requerido', 'Por favor ingresa un medio de contacto', 'warning');
-      return false;
-    }
-    return true;
+ const validarFormularioYup = async () => {
+  const ofertaData = {
+    titulo: nuevoTitulo,
+    descripcion: nuevaDescripcion,
+    categoria: nuevaCategoria,
+    ubicacion: ubicacion,
+    sueldo: sueldo,
+    modalidad: modalidad,
+    horario: horario,
+    contacto: contacto,
+    logo: logo,
   };
 
+  try {
+    await ofertaSchema.validate(ofertaData, { abortEarly: false });
+    return true; // todo ok
+  } catch (err) {
+    if (err.inner && err.inner.length > 0) {
+      // Mostrar todas las notificaciones de errores
+      err.inner.forEach(e => {
+        mostrarNotificacion('Error de validación', e.message, 'warning');
+      });
+    } else {
+      mostrarNotificacion('Error de validación', err.message, 'warning');
+    }
+    return false;
+  }
+};
+
+
+
   // Maneja el envío del formulario para crear o editar una oferta
-  const manejarSubmit = (e) => {
+  const manejarSubmit = async (e) => {
     e.preventDefault();
     
-    if (!validarFormulario()) return;
+     const esValido = await validarFormularioYup();
+     if (!esValido) return;
+
 
     const ofertaData = {
       titulo: nuevoTitulo,
