@@ -5,7 +5,6 @@
   background-color: rgb(222, 219, 219);
 }
 
-
 .loginPageWrapper input {
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
@@ -287,4 +286,39 @@ select option {
   border-radius: 5px;
   padding: 10px;
   margin-top: 10px;
+}
+
+.inputError {
+  border: 2px solid #d32f2f !important;
+  background-color: #fff5f5 !important;
+  outline: none;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.datos input:focus:not(.inputError) {
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+  outline: none;
 }
