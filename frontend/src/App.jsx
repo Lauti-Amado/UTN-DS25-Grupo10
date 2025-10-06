@@ -11,6 +11,7 @@ import Perfil from './paginas/Perfil.jsx';
 import { DatosProvider, DatosContexto } from './datosContext.jsx';
 import EmpresasDestacadas from './paginas/empresasDestacadas.jsx';
 
+
 function AppContent() {
   const { usuarioLogueado, setUsuarioLogueado } = useContext(DatosContexto);
 
