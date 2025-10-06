@@ -1,4 +1,6 @@
 import React, { useState, useContext } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './Login.module.css';
 import logo from '../assets/RoDi-LogoPeque3.jpg';
 import postulanteImg from '../assets/Empleado.png';
@@ -6,13 +8,11 @@ import empleadorImg from '../assets/Empleador.png';
 import { BiCog } from "react-icons/bi";
 import { DatosContexto } from '../datosContext';
 import { setToken } from '../helpers/auth';
+import { loginSchema } from '../validations/loginSchema';
+import { registroSchema } from '../validations/registroSchema';
 
 export default function Login({ onLogin }) {
-  const [nombreUsuario, setUsuario]=useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMail, setErrorMail] = useState('');
-  const [errorPassword, setErrorPassword] = useState('');
+  const [nombreUsuario, setUsuario] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
   const [vista, setVista] = useState("login");
 
@@ -29,81 +29,68 @@ export default function Login({ onLogin }) {
   const [mostrarModalConfiguracion, setMostrarModalConfiguracion] = useState(false);
   const [temaOscuro, setTemaOscuro] = useState(false);
 
- //LLAMADAS DEL BACK PARA REGISTRAR USUARIO E INICIAR SESION
-
-  //  Estado para errores de registro (vienen del backend con Zod)
   const [erroresRegistro, setErroresRegistro] = useState([]);
 
-  // --- Iniciar sesion ---
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMail('');
-    setErrorPassword('');
-//Si no ingresa el mail o contraseña, lo informa
-    if (!email) setErrorMail('Este campo es obligatorio');
-    if (!password) setErrorPassword('Este campo es obligatorio');
+  const {
+    register: registerLogin,
+    handleSubmit: handleSubmitLogin,
+    formState: { errors: errorsLogin, isSubmitting: isSubmittingLogin }
+  } = useForm({
+    resolver: yupResolver(loginSchema)
+  });
 
-  if (!email || !password) {
-    setMostrarModalError(true);
-    return;
-  }
+  const {
+    register: registerRegistro,
+    handleSubmit: handleSubmitRegistro,
+    formState: { errors: errorsRegistro, isSubmitting: isSubmittingRegistro },
+    setValue: setValueRegistro
+  } = useForm({
+    resolver: yupResolver(registroSchema)
+  });
 
-//Hacemos la llamada al back para poder iniciar sesion de un usuario, con un Post
-  try {
-    const res = await fetch("http://localhost:3000/usuarios/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ mail: email, contraseña: password })
-    });
+  // Iniciar sesion con Yup
+  const onSubmitLogin = async (data) => {
+    try {
+      const res = await fetch("http://localhost:3000/usuarios/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ mail: data.email, contraseña: data.password })
+      });
 
-    const data = await res.json();
-    setToken(data.token);
-    console.log("Respuesta login:", data);
+      const responseData = await res.json();
+      setToken(responseData.token);
+      console.log("Respuesta login:", responseData);
 
-//Si cumple res.ok loguea al usuario y llama a onLogin. De no ser asi, muestra el error
-    if (res.ok) {
-      // Guardar usuario y token
-      setUsuarioLogueado({
-        ...data.data.usuario,
-        token: data.data.token,
-    });
-      localStorage.setItem("token", data.data.token);
-      localStorage.setItem("usuarioID", data.data.usuario.id);
-      onLogin();
-    } else {
+      if (res.ok) {
+        setUsuarioLogueado({
+          ...responseData.data.usuario,
+          token: responseData.data.token,
+        });
+        localStorage.setItem("token", responseData.data.token);
+        localStorage.setItem("usuarioID", responseData.data.usuario.id);
+        onLogin();
+      } else {
+        setMostrarModalError(true);
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
       setMostrarModalError(true);
-    } //Si hay un error, lo muestra por consola
-  } catch (error) {
-    console.error("Error al iniciar sesión:", error);
-    setMostrarModalError(true);
-  }
-};
-
-  // --- Registrar usuario ---
-  const handleRegistro = async (e) => {
-    e.preventDefault();
-    setErroresRegistro([]);
-//Obtiene los atributos
-    const nombre = e.target.nombre.value.trim();
-    const usuario = e.target.nombreUsuario.value.trim();
-    const correo = e.target.email.value.trim();
-    const contraseña = e.target.contraseña.value;
-    const rol = rolSeleccionado;
-//Si no estan todos, llama al error
-    if (!nombre || !correo || !contraseña || !rol) {
-      setErroresRegistro([{ field: "general", message: "Todos los campos son obligatorios" }]);
-      return;
     }
-//Caso contrario, define los atributos del usuario
-    const nuevoUsuario = { 
-      nombre, 
-      nombreUsuario: usuario,
-      mail: correo, 
-      contraseña, 
-      rolPostulante: rol === "postulante" 
+  };
+
+  // Registrar usuario con Yup
+  const onSubmitRegistro = async (data) => {
+    setErroresRegistro([]);
+
+    const nuevoUsuario = {
+      nombre: data.nombre,
+      nombreUsuario: data.nombreUsuario,
+      mail: data.email,
+      contraseña: data.contraseña,
+      rolPostulante: data.rol === "postulante"
     };
-//y hace la llamada a la Api con un post para registrarlo
+
     try {
       const res = await fetch("http://localhost:3000/usuarios", {
         method: "POST",
@@ -112,28 +99,25 @@ export default function Login({ onLogin }) {
         credentials: "include"
       });
 
-      const data = await res.json();
-//Si todo se encuentra en orden, lo registra
+      const responseData = await res.json();
+
       if (res.ok) {
-        setMostrarModalRegistro(true); // modal de éxito
+        setMostrarModalRegistro(true);
         setVista("login");
-        setEmail("");
-        setPassword("");
         setRolSeleccionado("");
-      } //De no ser asi, analiza las posibilidades de mail, usuario duplicado. etc
-      else {
-        if (data.code === "USUARIO_DUPLICADO") {
+      } else {
+        if (responseData.code === "USUARIO_DUPLICADO") {
           setMostrarModalUsuarioDuplicado(true);
-        } else if (data.code === "MAIL_DUPLICADO") {
+        } else if (responseData.code === "MAIL_DUPLICADO") {
           setMostrarModalUsuarioExistente(true);
-        } else if (data.errores) {
-          setErroresRegistro(data.errores);
+        } else if (responseData.errores) {
+          setErroresRegistro(responseData.errores);
           setMostrarModalErroresRegistro(true);
         } else {
-          setErroresRegistro([{ field: "general", message: data.message || "Error desconocido" }]);
+          setErroresRegistro([{ field: "general", message: responseData.message || "Error desconocido" }]);
           setMostrarModalErroresRegistro(true);
         }
-      } //En caso de hallar un error, lo informa por consola
+      }
     } catch (err) {
       console.error(err);
       setErroresRegistro([{ field: "general", message: "Error al comunicarse con el servidor" }]);
@@ -170,29 +154,35 @@ export default function Login({ onLogin }) {
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmitLogin(onSubmitLogin)}>
                 <div className={styles.datos}>
                   <label htmlFor="email">Email</label>
                   <input
                     type="email"
                     id="email"
                     placeholder="Example@dominio"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    {...registerLogin("email")}
+                    className={errorsLogin.email ? styles.inputError : ''}
                   />
-                  <span className={styles.error}>{errorMail}</span>
+                  {errorsLogin.email && (
+                    <span className={styles.error}>{errorsLogin.email.message}</span>
+                  )}
 
                   <label htmlFor="contraseña">Contraseña</label>
                   <input
                     type="password"
                     id="contraseña"
                     placeholder="********"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    {...registerLogin("password")}
+                    className={errorsLogin.password ? styles.inputError : ''}
                   />
-                  <span className={styles.error}>{errorPassword}</span>
+                  {errorsLogin.password && (
+                    <span className={styles.error}>{errorsLogin.password.message}</span>
+                  )}
 
-                  <button type="submit" className={styles.submit}>Iniciar Sesión</button>
+                  <button type="submit" className={styles.submit} disabled={isSubmittingLogin}>
+                    {isSubmittingLogin ? 'Ingresando...' : 'Iniciar Sesión'}
+                  </button>
                 </div>
               </form>
             </>
@@ -200,28 +190,76 @@ export default function Login({ onLogin }) {
 
           {/* --- REGISTRO --- */}
           {vista === 'registro' && (
-            <form onSubmit={handleRegistro}>
+            <form onSubmit={handleSubmitRegistro(onSubmitRegistro)}>
               <div className={styles.datos}>
                 <label htmlFor="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+                <input
+                  type="text"
+                  id="nombre"
+                  placeholder="Tu nombre"
+                  {...registerRegistro("nombre")}
+                  className={errorsRegistro.nombre ? styles.inputError : ''}
+                />
+                {errorsRegistro.nombre && (
+                  <span className={styles.error}>{errorsRegistro.nombre.message}</span>
+                )}
 
                 <label htmlFor="email">Email</label>
-                <input type="email" id="email" placeholder="tu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="tu@email.com"
+                  {...registerRegistro("email")}
+                  className={errorsRegistro.email ? styles.inputError : ''}
+                />
+                {errorsRegistro.email && (
+                  <span className={styles.error}>{errorsRegistro.email.message}</span>
+                )}
 
                 <label htmlFor="usuario">Nombre de usuario</label>
-                <input type="text" id="nombreUsuario" name="nombreUsuario" placeholder="Usuario deseado" onChange={(e) => setUsuario(e.target.value)} required />
+                <input
+                  type="text"
+                  id="nombreUsuario"
+                  placeholder="Usuario deseado"
+                  {...registerRegistro("nombreUsuario")}
+                  className={errorsRegistro.nombreUsuario ? styles.inputError : ''}
+                />
+                {errorsRegistro.nombreUsuario && (
+                  <span className={styles.error}>{errorsRegistro.nombreUsuario.message}</span>
+                )}
 
                 <label htmlFor="contraseña">Contraseña</label>
-                <input type="password" id="contraseña" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <input
+                  type="password"
+                  id="contraseña"
+                  placeholder="********"
+                  {...registerRegistro("contraseña")}
+                  className={errorsRegistro.contraseña ? styles.inputError : ''}
+                />
+                {errorsRegistro.contraseña && (
+                  <span className={styles.error}>{errorsRegistro.contraseña.message}</span>
+                )}
 
                 <label htmlFor="rol">Rol</label>
-                <select id="rol" value={rolSeleccionado} onChange={(e) => setRolSeleccionado(e.target.value)} className={styles.selectRol} required>
-                  <option value="" disabled>Selecciona un rol</option>
+                <select
+                  id="rol"
+                  {...registerRegistro("rol", {
+                    onChange: (e) => setRolSeleccionado(e.target.value)
+                  })}
+                  className={errorsRegistro.rol ? `${styles.selectRol} ${styles.inputError}` : styles.selectRol}
+                  value={rolSeleccionado}
+                >
+                  <option value="">Selecciona un rol</option>
                   <option value="postulante">Postulante</option>
                   <option value="empleador">Empleador</option>
                 </select>
+                {errorsRegistro.rol && (
+                  <span className={styles.error}>{errorsRegistro.rol.message}</span>
+                )}
 
-                <button type="submit" className={styles.submit}>Registrarme</button>
+                <button type="submit" className={styles.submit} disabled={isSubmittingRegistro}>
+                  {isSubmittingRegistro ? 'Registrando...' : 'Registrarme'}
+                </button>
 
                 <div className="text-center mt-3">
                   <a href="#" onClick={(e) => { e.preventDefault(); setVista('login'); }}>Volver al inicio de sesión</a>
@@ -255,7 +293,7 @@ export default function Login({ onLogin }) {
             </form>
           )}
 
-          {/* Modales */}
+          {/* Modals */}
           {mostrarModalError && (
             <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
               <div className="modal-dialog modal-dialog-centered" role="document">
@@ -265,11 +303,7 @@ export default function Login({ onLogin }) {
                     <button type="button" className="btn-close" onClick={() => setMostrarModalError(false)}></button>
                   </div>
                   <div className="modal-body">
-                    {!email || !password ? (
-                      <p>Debes completar todos los campos.</p>
-                    ) : (
-                      <p>Usuario no registrado o datos incorrectos.</p>
-                    )}
+                    <p>Usuario no registrado o datos incorrectos.</p>
                   </div>
                   <div className="modal-footer">
                     <button className="btn btn-secondary" onClick={() => setMostrarModalError(false)}>Cerrar</button>
@@ -439,16 +473,16 @@ export default function Login({ onLogin }) {
             </div>
           )}
 
-            <br />
-            <a href="#" onClick={(e) => { e.preventDefault(); setVista('recuperar'); }}>Olvidé Mi Contraseña</a>
-            <br />
-            <p>
-              ¿No tienes cuenta?
-              <a href="#" onClick={(e) => { e.preventDefault(); setVista('registro'); }}> Registrate</a>
-            </p>
-            <br />
-          </div>
+          <br />
+          <a href="#" onClick={(e) => { e.preventDefault(); setVista('recuperar'); }}>Olvidé Mi Contraseña</a>
+          <br />
+          <p>
+            ¿No tienes cuenta?
+            <a href="#" onClick={(e) => { e.preventDefault(); setVista('registro'); }}> Registrate</a>
+          </p>
+          <br />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
