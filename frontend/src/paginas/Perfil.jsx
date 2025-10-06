@@ -27,10 +27,11 @@ export default function Perfil() {
   const [proyectosagregados, setProyectosAgregados] = useState([]);
   const { usuarioLogueado } = useContext(DatosContexto);
 
-  //este useEffect TRAER los Proyectos desde el backend
+  //este useEffect TRAER los Proyectos desde el backend (SOLO POSTULANTES)
   useEffect(() => {
     const fetchProyectos = async () => {
-      if (!usuarioLogueado) return; 
+      // Solo si es postulante
+      if (!usuarioLogueado || !usuarioLogueado.rolPostulante) return; 
 
       try {
         const res = await fetch(`http://localhost:3000/proyectos/postulado/${usuarioLogueado.id}`);
@@ -298,78 +299,81 @@ export default function Perfil() {
         </>
       )}
 
-      <div className="container mt-4">
-        <h3 className="mb-3">Mis Proyectos</h3>
-        <div className="row">
-          {proyectosagregados.length === 0 ? (
-            <p>No tienes proyectos creados aún.</p>
-          ) : (
-            proyectosagregados.map((proyecto) => (
-              <div className="col-md-4 mb-3" key={proyecto.id}>
-                <div 
-                  className="card h-100" 
-                  style={{
-                    border: 'none',
-                    borderRadius: '12px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-5px)';
-                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-                  }}
-                >
-                  <div className="card-body d-flex flex-column">
-                    <h5 className="card-title">{proyecto.nombre}</h5>
-                    <p className="card-text">{proyecto.descripcion}</p>
-                    
-                    {/* Tecnologías */}
-                    <div className="mt-2">
-                      <strong>Tecnologías:</strong>
-                      <div className="mt-1 d-flex flex-wrap gap-2">
-                        {proyecto.tecnologiasUsadas.split(",").map((tec, i) => (
-                          <span
-                            key={i}
-                            className="badge"
-                            style={{
-                              backgroundColor: ["#FF4500", "#D32F2F", "#212121", "#9E9E9E", "#F5F5F5"][i % 5],
-                              color: i % 5 === 4 ? "#000" : "#fff",
-                              padding: "6px 10px",
-                              borderRadius: "20px",
-                              fontSize: "0.85rem",
-                            }}
-                          >
-                            {tec.trim()}
-                          </span>
-                        ))}
+      {/* Solo mostrar proyectos si es postulante */}
+      {usuarioLogueado?.rolPostulante && (
+        <div className="container mt-4">
+          <h3 className="mb-3">Mis Proyectos</h3>
+          <div className="row">
+            {proyectosagregados.length === 0 ? (
+              <p>No tienes proyectos creados aún.</p>
+            ) : (
+              proyectosagregados.map((proyecto) => (
+                <div className="col-md-4 mb-3" key={proyecto.id}>
+                  <div 
+                    className="card h-100" 
+                    style={{
+                      border: 'none',
+                      borderRadius: '12px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-5px)';
+                      e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                    }}
+                  >
+                    <div className="card-body d-flex flex-column">
+                      <h5 className="card-title">{proyecto.nombre}</h5>
+                      <p className="card-text">{proyecto.descripcion}</p>
+                      
+                      {/* Tecnologías */}
+                      <div className="mt-2">
+                        <strong>Tecnologías:</strong>
+                        <div className="mt-1 d-flex flex-wrap gap-2">
+                          {proyecto.tecnologiasUsadas.split(",").map((tec, i) => (
+                            <span
+                              key={i}
+                              className="badge"
+                              style={{
+                                backgroundColor: ["#FF4500", "#D32F2F", "#212121", "#9E9E9E", "#F5F5F5"][i % 5],
+                                color: i % 5 === 4 ? "#000" : "#fff",
+                                padding: "6px 10px",
+                                borderRadius: "20px",
+                                fontSize: "0.85rem",
+                              }}
+                            >
+                              {tec.trim()}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="mt-auto pt-3">
-                      <button
-                        className="btn btn-sm btn-primary me-2"
-                        onClick={() => AbrirModificarProyecto(proyecto.id)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => SolicitarEliminar(proyecto.id)}
-                      >
-                        Eliminar
-                      </button>
+                      <div className="mt-auto pt-3">
+                        <button
+                          className="btn btn-sm btn-primary me-2"
+                          onClick={() => AbrirModificarProyecto(proyecto.id)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="btn btn-sm btn-danger"
+                          onClick={() => SolicitarEliminar(proyecto.id)}
+                        >
+                          Eliminar
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
-          )}
+              ))
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
