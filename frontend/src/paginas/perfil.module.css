@@ -615,4 +615,21 @@ button[style*="marginLeft"] {
         padding: 6px 12px !important;
         font-size: 0.8rem !important;
     }
+
+    /* Input con borde rojo brillante si hay error */
+.inputError {
+  border: 2px solid #ff0000; /* rojo brillante */
+  outline: none;
+  box-shadow: 0 0 5px #ff0000; /* efecto brillante */
+}
+
+/* Mensaje de error en rojo brillante */
+.errorBrillante {
+  color: #ff0000; /* rojo brillante */
+  font-weight: bold;
+  margin-top: 4px;
+  display: block;
+  text-shadow: 0 0 2px #ff0000; /* efecto brillante */
+}
+
 }
