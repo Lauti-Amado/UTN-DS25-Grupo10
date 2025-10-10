@@ -13,6 +13,9 @@ router.get('/:id', formularioController.getFormulariosByOferta);
 // Ruta para crear un formulario (con multer para archivos)
 router.post('/:id', upload.single('curriculum'), validate(createFormularioSchema), formularioController.createFormulario);
 
+// Ruta para consultar si un usuario postulante ya se postuló o no a una oferta
+router.get('/:UsuarioId/:OfertaId', formularioController.getExistePostulacion);
+
 // con "/:id" me refiero al id de la oferta 
 export const formularioRoutes = router;
 
