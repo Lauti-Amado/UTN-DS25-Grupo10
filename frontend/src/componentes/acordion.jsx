@@ -11,7 +11,7 @@ import FormularioPostulacionModal from './FormularioPostulacionModal';
 import PostuladosModal from './PostuladosModal';
 import NotificacionModal from './NotificacionModal';
 import { ofertaSchema } from '../validations/oferta.js'; 
-
+import { API_URL } from '../config.js';
 
 function Acordion() {
   const location = useLocation();
@@ -92,7 +92,7 @@ function Acordion() {
   // 🔹 Función para chequear si el usuario ya se postuló a una oferta
   const checkPostulacion = async (usuarioId, ofertaId) => {
     try {
-      const res = await fetch(`http://localhost:3000/formularios/${usuarioId}/${ofertaId}`);
+      const res = await fetch(`${API_URL}/formularios/${usuarioId}/${ofertaId}`);
       if (!res.ok) {
         console.warn(`checkPostulacion fallo para oferta ${ofertaId} con status ${res.status}`);
         return false; // devolvemos false si falla
@@ -110,8 +110,8 @@ function Acordion() {
   const fetchOfertas = async () => {
     try {
       const API_URL = usuarioLogueado.rolPostulante
-        ? `http://localhost:3000/ofertas`
-        : `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
+        ? `${API_URL}/ofertas`
+        : `${API_URL}/ofertas/empleador/${usuarioLogueado.id}`;
 
       const res = await fetch(API_URL);
       if (!res.ok) throw new Error(`Error al obtener ofertas: ${res.status}`);
@@ -217,7 +217,7 @@ function Acordion() {
 
     if (modoEdicion && ofertaEditando) {
       // EDITAR OFERTA
-      fetch(`http://localhost:3000/ofertas/${ofertaEditando.id}`, {
+      fetch(`${API_URL}/ofertas/${ofertaEditando.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ofertaData),
@@ -245,7 +245,7 @@ function Acordion() {
         });
     } else {
       // CREAR OFERTA NUEVA
-      fetch('http://localhost:3000/ofertas', {
+      fetch(`${API_URL}/ofertas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ofertaData),
@@ -297,7 +297,7 @@ function Acordion() {
 
   const eliminarConfirmado = () => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== idAEliminar));
-    fetch(`http://localhost:3000/ofertas/${idAEliminar}`, { method: 'DELETE' })
+    fetch(`${API_URL}/ofertas/${idAEliminar}`, { method: 'DELETE' })
       .then((res) => {
         if (!res.ok) throw new Error('Error al eliminar la oferta del backend');
         mostrarNotificacion('Eliminado', 'La oferta se eliminó correctamente', 'success');
@@ -338,7 +338,7 @@ function Acordion() {
   // Actualizamos badge después de postular
   if (usuarioLogueado?.rolPostulante) {
     try {
-      const res = await fetch(`http://localhost:3000/formularios/${usuarioLogueado.id}/${item.id}`);
+      const res = await fetch(`${API_URL}/formularios/${usuarioLogueado.id}/${item.id}`);
       if (!res.ok) throw new Error('Error al verificar postulacion');
       const data = await res.json();
       setPostulaciones(prev => ({ ...prev, [item.id]: data.existe }));

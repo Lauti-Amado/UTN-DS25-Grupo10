@@ -2,6 +2,7 @@ import React, { useState, useRef, useContext } from 'react';
 import imagenDefault from '../assets/perfilx.png';
 import styles from '../paginas/perfil.module.css';
 import { DatosContexto } from '../datosContext';
+import {API_URL } from '../config';
 
 function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, imagen }) {
   const [previewSrc, setPreviewSrc] = useState(imagen || imagenDefault);
@@ -45,7 +46,7 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
         formData.append('fotoPerfil', fileInputRef.current.files[0]);
       }
 
-      const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogueado.id}`, {
+      const response = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${usuarioLogueado.token}`,

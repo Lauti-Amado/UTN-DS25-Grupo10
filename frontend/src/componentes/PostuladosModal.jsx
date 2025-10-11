@@ -1,6 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, ListGroup, Spinner, Image } from 'react-bootstrap';
+import { API_URL } from '../config';
 
 function PostuladosModal({ show, handleClose, ofertaId }) {
   const [formularios, setFormularios] = useState([]);
@@ -11,7 +11,7 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
 
     setCargando(true);
 
-    fetch(`http://localhost:3000/ofertas/${ofertaId}/formularios`)
+    fetch(`${API_URL}/ofertas/${ofertaId}/formularios`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
