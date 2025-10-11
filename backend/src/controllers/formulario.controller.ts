@@ -13,6 +13,32 @@ export async function getFormulariosByOferta (req: Request, res: Response, next:
     }
 }
 
+// Trae true si ese usuario ya se postuló a esa oferta y false si es que no
+export async function getExistePostulacion(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const UsuarioId = parseInt(req.params.UsuarioId);
+    const OfertaId = parseInt(req.params.OfertaId);
+
+    // Validación rápida
+    if (isNaN(UsuarioId) || isNaN(OfertaId)) {
+      return res.status(400).json({ existe: false, mensaje: 'IDs inválidos' });
+    }
+
+    const existe = await formularioService.getExistePostulacion(UsuarioId, OfertaId);
+
+    // Siempre devolver un objeto con la propiedad "existe"
+    res.json({ existe });
+  } catch (error) {
+    console.error("Error backend getExistePostulacion:", error);
+    // Nunca enviar error 500 sin JSON, devolvemos false
+    res.status(200).json({ existe: false });
+  }
+}
+
 // Permite crear un formulario para una oferta especifica (esto solo puede realizarlo un postulante interesado)
 export async function createFormulario( req: Request, res: Response, next: NextFunction) {
   try {

@@ -35,6 +35,20 @@ export async function createFormulario(data: CreateFormularioRequest): Promise<F
   });
 }
 
+export async function getExistePostulacion( UsuarioId: number, OfertaId: number ): Promise<boolean> {
+  try {
+    const registro = await prisma.formulario.findFirst({
+      where: { 
+        ofertaId: OfertaId, 
+        postuladoId: UsuarioId 
+      }
+    });
+    return registro !== null;
+  } catch (error) {
+    console.error("Error service getExistePostulacion:", error);
+    return false; // nunca rompe
+  }
+}
 
 export async function getFormulariosByOferta (id:number) : Promise<Formulario[]> {
     return prisma.formulario.findMany({

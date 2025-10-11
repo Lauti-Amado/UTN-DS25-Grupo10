@@ -39,6 +39,8 @@ function Acordion() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [mostrarPostulados, setMostrarModalPostulados] = useState(false);
   const [idOfertaSeleccionada, setIdOfertaSeleccionada] = useState(null);
+  // Estado para trackear postulaciones del usuario
+  const [postulaciones, setPostulaciones] = useState({}); // Objeto { [ofertaId]: true/false }
 
   // Estados para edición
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -133,6 +135,129 @@ function Acordion() {
         });
       }
     };
+
+  // Muestra una notificación modal
+  const mostrarNotificacion = (titulo, mensaje, tipo = 'success') => {
+    setNotificacion({ show: true, titulo, mensaje, tipo });
+  };
+
+  //traigo las ofertas del backend 
+  // 🟢 Cargar ofertas desde la base de datos del usuario logueado
+  useEffect(() => {
+  if (!usuarioLogueado) return;
+
+  // 🔹 Función para chequear si el usuario ya se postuló a una oferta
+  const checkPostulacion = async (usuarioId, ofertaId) => {
+    try {
+      const res = await fetch(`http://localhost:3000/formularios/${usuarioId}/${ofertaId}`);
+      if (!res.ok) {
+        console.warn(`checkPostulacion fallo para oferta ${ofertaId} con status ${res.status}`);
+        return false; // devolvemos false si falla
+      }
+      const data = await res.json();
+      console.log(`checkPostulacion - ofertaId ${ofertaId}:`, data);
+      return data.existe ?? false; // si por algún motivo no hay existe, devolvemos false
+    } catch (err) {
+      console.error(`Error en checkPostulacion oferta ${ofertaId}:`, err);
+      return false;
+    }
+  };
+
+  // 🔹 Función principal para traer ofertas y sus postulaciones
+  const fetchOfertas = async () => {
+    try {
+      const API_URL = usuarioLogueado.rolPostulante
+        ? `http://localhost:3000/ofertas`
+        : `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
+
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error(`Error al obtener ofertas: ${res.status}`);
+      const data = await res.json();
+
+      let ofertasArray = [];
+      if (Array.isArray(data)) {
+        ofertasArray = data;
+      } else if (data.success && Array.isArray(data.data)) {
+        ofertasArray = data.data;
+      } else {
+        console.warn("Formato inesperado de ofertas:", data);
+        setItems([]);
+        return;
+      }
+
+      setItems(ofertasArray);
+
+      if (usuarioLogueado.rolPostulante) {
+        // 🔹 Verificar postulaciones del usuario con manejo de errores individuales
+        const resultados = await Promise.all(
+          ofertasArray.map(async (item) => {
+            try {
+              const existe = await checkPostulacion(usuarioLogueado.id, item.id);
+              return [item.id, existe];
+            } catch (err) {
+              console.error(`Error individual al checkear postulacion oferta ${item.id}:`, err);
+              return [item.id, false]; // si falla, asumimos no postuló
+            }
+          })
+        );
+
+        const nuevasPostulaciones = Object.fromEntries(resultados);
+        console.log("Postulaciones cargadas correctamente:", nuevasPostulaciones);
+        setPostulaciones(nuevasPostulaciones);
+      }
+    } catch (err) {
+      console.error("Error al cargar ofertas:", err);
+      setNotificacion({
+        show: true,
+        titulo: 'Error',
+        mensaje: 'No se pudieron cargar las ofertas.',
+        tipo: 'error'
+      });
+    }
+  };
+
+  fetchOfertas();
+}, [usuarioLogueado]);
+
+  // Validación del formulario
+ const validarFormularioYup = async () => {
+  const ofertaData = {
+    titulo: nuevoTitulo,
+    descripcion: nuevaDescripcion,
+    categoria: nuevaCategoria,
+    ubicacion: ubicacion,
+    sueldo: sueldo,
+    modalidad: modalidad,
+    horario: horario,
+    contacto: contacto,
+    logo: logo,
+  };
+
+  try {
+    await ofertaSchema.validate(ofertaData, { abortEarly: false });
+    return true; // todo ok
+  } catch (err) {
+    if (err.inner && err.inner.length > 0) {
+      // Mostrar todas las notificaciones de errores
+      err.inner.forEach(e => {
+        mostrarNotificacion('Error de validación', e.message, 'warning');
+      });
+    } else {
+      mostrarNotificacion('Error de validación', err.message, 'warning');
+    }
+    return false;
+  }
+};
+
+
+
+  // Maneja el envío del formulario para crear o editar una oferta
+  const manejarSubmit = async (e) => {
+    e.preventDefault();
+    
+     const esValido = await validarFormularioYup();
+     if (!esValido) return;
+>>>>>>> main
 
     fetchOfertas();
   }, [usuarioLogueado]);
@@ -247,10 +372,22 @@ function Acordion() {
     setMostrarFormulario(false);
   };
 
-  const handlePostular = (item) => {
-    setEmpresaSeleccionada(item);
-    setModalVisible(true);
-  };
+  const handlePostular = async (item) => {
+  setEmpresaSeleccionada(item);
+  setModalVisible(true);
+
+  // Actualizamos badge después de postular
+  if (usuarioLogueado?.rolPostulante) {
+    try {
+      const res = await fetch(`http://localhost:3000/formularios/${usuarioLogueado.id}/${item.id}`);
+      if (!res.ok) throw new Error('Error al verificar postulacion');
+      const data = await res.json();
+      setPostulaciones(prev => ({ ...prev, [item.id]: data.existe }));
+    } catch (err) {
+      console.error(err);
+    }
+  }
+};
 
   const mostrarNotificacion = (titulo, mensaje, tipo) => {
     setNotificacion({ show: true, titulo, mensaje, tipo });
@@ -396,6 +533,7 @@ function Acordion() {
       <Accordion defaultActiveKey={(s ?? 0).toString()}>
         {itemsFiltrados.map((item, index) => (
           <Accordion.Item eventKey={index.toString()} key={item.id}>
+<<<<<<< JulianFigueira
             <Accordion.Header>{item.titulo}</Accordion.Header>
             <Accordion.Body>
               {item.logo && (
@@ -439,6 +577,69 @@ function Acordion() {
               </div>
             </Accordion.Body>
           </Accordion.Item>
+=======
+          <Accordion.Header>
+            <div className="d-flex align-items-center justify-content-between w-100">
+              <span className="fw-semibold">{item.titulo}</span>
+              {usuarioLogueado?.rolPostulante === true && (
+               <span
+                 className={`badge ${postulaciones[item.id] ? 'bg-success' : 'bg-secondary'} text-light ms-2`}
+                 style={{ fontSize: '0.75rem' }}
+               >
+                 {postulaciones[String(item.id)] ? 'Ya te postulaste' : 'Aún no se ha postulado'}
+               </span>
+             )}
+            </div>
+          </Accordion.Header>
+
+          <Accordion.Body>
+            {item.logo && (
+              <img
+                src={item.logo}
+                alt="Logo empresa"
+                style={{ maxHeight: '60px' }}
+                className="mb-3"
+              />
+            )}
+            <p><strong>Categoría:</strong> {item.categoria || 'No especificada'}</p>
+            <p><strong>Ubicación:</strong> {item.ubicacion || 'No especificada'}</p>
+            <p><strong>Sueldo:</strong> {item.sueldo || 'A convenir'}</p>
+            <p><strong>Modalidad:</strong> {item.modalidad || 'No especificada'}</p>
+            <p><strong>Horario:</strong> {item.horario || 'No especificado'}</p>
+            <p><strong>Contacto:</strong> {item.contacto || 'No especificado'}</p>
+            <p className="mt-2">{item.descripcion}</p>
+
+            <div className="d-flex gap-2 mt-3">
+              {usuarioLogueado?.rolPostulante === false ? (
+                <>
+                  <button
+                    className="btn btn-sm btn-bordo-danger"
+                    onClick={() => iniciarEdicion(item)}
+                  >
+                    <i className="bi bi-pencil-square me-1"></i> Editar
+                  </button>
+                  <button
+                    className="btn btn-sm btn-bordo-danger"
+                    onClick={() => confirmarEliminar(item.id)}
+                  >
+                    <i className="bi bi-trash3-fill me-1"></i> Eliminar
+                  </button>
+                  <button
+                    className="btn btn-sm btn-bordo-danger"
+                    onClick={() => verPostulados(item.id)}
+                  >
+                  <i className="bi bi-eye"></i> Ver Postulados
+                  </button>
+            </>
+          ) : (
+            <Button variant="dark" onClick={() => handlePostular(item)}>
+              Postularse <IoIosPaper />
+            </Button>
+          )}
+        </div>
+      </Accordion.Body>
+      </Accordion.Item>
+>>>>>>> main
         ))}
       </Accordion>
 
