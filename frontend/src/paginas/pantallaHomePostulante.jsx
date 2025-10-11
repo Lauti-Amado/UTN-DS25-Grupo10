@@ -9,7 +9,7 @@ import PostulantesScrollBox from '../componentes/PostulantesScrollBox';
 import { Button } from 'react-bootstrap';
 
 // 🎨 Importamos los estilos personalizados
-import './PantallaHomePostulante.css';
+import './pantallaHomePostulante.css';
 
 export default function PantallaHomePostulante() {
   const { usuarioLogueado } = useContext(DatosContexto);
