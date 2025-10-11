@@ -20,6 +20,8 @@ model Usuario {
   fotoPerfil       String?
   fechaNacimiento  DateTime?
   descripcion      String?
+   resetToken     String? 
+  expiracionToken DateTime?
   formulario       Formulario[]
   ofertasCreadas   Oferta[]     @relation("UsuarioOfertas")
   proyectosCreados Proyecto[]   @relation("UsuarioProyectos")

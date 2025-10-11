@@ -193,3 +193,47 @@ export async function loginUsuarioController(req: Request, res: Response) {
     });
   }
 }
+
+export async function recuperarContrasenaController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { mail } = req.body;
+
+  try {
+    const result = await usuarioService.recuperarContrasena(mail);
+    return res.status(200).json({
+      success: true,
+      message: result.message,
+    });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Error al procesar la recuperación",
+    });
+  }
+}
+
+export async function resetContrasenaController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { token, nuevaContrasena } = req.body;
+
+  try {
+    const result = await usuarioService.resetContrasena(token, nuevaContrasena);
+    return res.status(200).json({
+      success: true,
+      message: result.message,
+    });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Error al restablecer la contraseña",
+    });
+  }
+}
+
+

@@ -10,6 +10,7 @@ import PantallaTrabajo from './paginas/pantallaTrabajos.jsx';
 import Perfil from './paginas/Perfil.jsx';
 import { DatosProvider, DatosContexto } from './datosContext.jsx';
 import EmpresasDestacadas from './paginas/empresasDestacadas.jsx';
+import ResetPassword from './componentes/recuperar.jsx';
 
 
 function AppContent() {
@@ -36,6 +37,7 @@ function AppContent() {
       ) : (
         <Routes>
           <Route path="/" element={<Login onLogin={() => {}} />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}

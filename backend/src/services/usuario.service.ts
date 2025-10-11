@@ -2,6 +2,8 @@ import prisma from "../config/prisma";
 import bcrypt from "bcrypt";
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import { CreateUsuarioRequest, UpdateUsuarioRequest } from "../types/usuarios.types";
+import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 // Obtener todos los usuarios (sin contraseña)
 export async function getAllUsuarios(limit: number = 10) {
@@ -270,3 +272,83 @@ export async function loginUsuario(email: string, contraseña: string) {
   const { contraseña: _, ...usuarioSinPass } = usuario;
   return { usuario: usuarioSinPass, token };
 }
+
+
+export async function recuperarContrasena(email: string) {
+  // 1️⃣ Buscar usuario
+  const usuario = await prisma.usuario.findUnique({ where: { mail: email } });
+  if (!usuario) {
+    const error = new Error("Correo no registrado") as any;
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // 2️⃣ Generar token temporal válido por 1 hora
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiracionToken = new Date(Date.now() + 3600000);
+
+  // 3️⃣ Guardar token y expiración en BD
+  await prisma.usuario.update({
+    where: { id: usuario.id },
+    data: { resetToken: token, expiracionToken },
+  });
+
+  // 4️⃣ Configurar transporte de correo
+  const transporter = nodemailer.createTransport({
+    service: "Gmail", // o tu servicio SMTP
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const resetLink = `http://localhost:3000/reset-password/${token}`;
+
+  await transporter.sendMail({
+    to: email,
+    subject: "Recuperación de contraseña",
+    html: `<p>Para restablecer tu contraseña haz click <a href="${resetLink}">aquí</a>.</p>`,
+  });
+
+  return { message: "Correo de recuperación enviado" };
+}
+
+export async function resetContrasena(token: string, nuevaContrasena: string) {
+  // 1️⃣ Buscar usuario por token y verificar expiración
+  const usuario = await prisma.usuario.findFirst({
+    where: {
+      resetToken: token,
+      expiracionToken: { gte: new Date() }, // token válido
+    },
+  });
+
+  if (!usuario) {
+    const error = new Error("Token inválido o expirado") as any;
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // 2️⃣ Hashear la nueva contraseña
+  const hashedPassword = await bcrypt.hash(nuevaContrasena, 10);
+
+  // 3️⃣ Actualizar usuario: nueva contraseña y limpiar token
+  await prisma.usuario.update({
+    where: { id: usuario.id },
+    data: {
+      contraseña: hashedPassword,
+      resetToken: null,
+      expiracionToken: null,
+    },
+  });
+
+  return { message: "Contraseña restablecida correctamente" };
+}
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: process.env.EMAIL_USER, // tu email completo
+    pass: process.env.EMAIL_PASS, // la contraseña de 16 dígitos que generaste
+  },
+});
+

@@ -11,6 +11,8 @@ import { setToken } from '../helpers/auth';
 import { loginSchema } from '../validations/loginSchema';
 import { registroSchema } from '../validations/registroSchema';
 
+
+
 export default function Login({ onLogin }) {
   const [nombreUsuario, setUsuario] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
@@ -269,29 +271,42 @@ export default function Login({ onLogin }) {
           )}
 
           {vista === 'recuperar' && (
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              const emailRecuperar = e.target.emailRecuperar.value;
-              const existe = usuarios.some(u => u.email === emailRecuperar);
-              if (existe) {
-                setMostrarModalRecuperacion(true);
-                setTimeout(() => {
-                  setVista('login');
-                }, 2000);
-              } else {
-                setMostrarModalRecuperacionError(true);
-              }
-            }}>
-              <div className={styles.datos}>
-                <label htmlFor="emailRecuperar">Email para recuperar contraseña</label>
-                <input type="email" id="emailRecuperar" name="emailRecuperar" placeholder="tu@email.com" required />
-                <button type="submit" className={styles.submit}>Recuperar contraseña</button>
-                <div className="text-center mt-3">
-                  <a href="#" onClick={(e) => { e.preventDefault(); setVista('login'); }}>Volver al inicio de sesión</a>
-                </div>
-              </div>
-            </form>
-          )}
+  <form
+    onSubmit={async (e) => {
+      e.preventDefault();
+      const emailRecuperar = e.target.emailRecuperar.value;
+
+      try {
+        const res = await fetch("http://localhost:3000/usuarios/recuperar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mail: emailRecuperar })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setMostrarModalRecuperacion(true); // Modal éxito
+          setTimeout(() => setVista('login'), 2000);
+        } else {
+          setMostrarModalRecuperacionError(true); // Modal error
+        }
+      } catch (err) {
+        console.error(err);
+        setMostrarModalRecuperacionError(true);
+      }
+    }}
+  >
+    <div className={styles.datos}>
+      <label htmlFor="emailRecuperar">Email para recuperar contraseña</label>
+      <input type="email" id="emailRecuperar" name="emailRecuperar" placeholder="tu@email.com" required />
+      <button type="submit" className={styles.submit}>Recuperar contraseña</button>
+      <div className="text-center mt-3">
+        <a href="#" onClick={(e) => { e.preventDefault(); setVista('login'); }}>Volver al inicio de sesión</a>
+      </div>
+    </div>
+  </form>
+)}
 
           {/* Modals */}
           {mostrarModalError && (
