@@ -13,7 +13,7 @@ import { MdOutlineWork } from "react-icons/md";
 import { IoMdPerson } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
 import { DatosContexto } from "../../datosContext.jsx";
-import { API_URL } from '../config';
+import { API_URL } from '../../config.js';
 
 function NavBar({ onLogout }) {
   const { busquedaGlobal, setBusquedaGlobal, usuarioLogueado } =
