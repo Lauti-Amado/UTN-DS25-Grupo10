@@ -10,8 +10,11 @@ import { IoIosPaper } from "react-icons/io";
 import FormularioPostulacionModal from './FormularioPostulacionModal';
 import PostuladosModal from './PostuladosModal';
 import NotificacionModal from './NotificacionModal';
-import { ofertaSchema } from '../validations/oferta.js'; 
+import { ofertaSchema } from '../validations/oferta.js';
 
+// 🔹 Nuevos imports para react-hook-form
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 function Acordion() {
   const location = useLocation();
@@ -27,15 +30,10 @@ function Acordion() {
     return datosEmpleosIniciales;
   });
 
-  const [nuevoTitulo, setNuevoTitulo] = useState('');
-  const [nuevaDescripcion, setNuevaDescripcion] = useState('');
-  const [nuevaCategoria, setNuevaCategoria] = useState('');
-  const [ubicacion, setUbicacion] = useState('');
-  const [sueldo, setSueldo] = useState('');
-  const [modalidad, setModalidad] = useState('');
-  const [horario, setHorario] = useState('');
-  const [contacto, setContacto] = useState('');
-  const [logo, setLogo] = useState('');
+  // 🔸 Estados que ya NO necesitamos (se reemplazan por react-hook-form)
+  // const [nuevoTitulo, setNuevoTitulo] = useState('');
+  // ... (todos los useState del formulario)
+
   const [mostrarModal, setMostrarModal] = useState(false);
   const [idAEliminar, setIdAEliminar] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -49,206 +47,153 @@ function Acordion() {
   // Estados para notificaciones
   const [notificacion, setNotificacion] = useState({ show: false, titulo: '', mensaje: '', tipo: 'success' });
 
+  // 🔹 Configuración de react-hook-form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(ofertaSchema),
+    mode: 'onChange', // ✅ validación en tiempo real
+    defaultValues: {
+      titulo: '',
+      descripcion: '',
+      categoria: '',
+      ubicacion: '',
+      sueldo: '',
+      modalidad: '',
+      horario: '',
+      contacto: '',
+      logo: ''
+    }
+  });
+
   useEffect(() => {
     localStorage.setItem('empleos', JSON.stringify(items));
   }, [items]);
 
-    // 🔎 Filtro por búsqueda global
-    const itemsFiltrados = items.filter((item) => {
+  // 🔎 Filtro por búsqueda global
+  const itemsFiltrados = items.filter((item) => {
     const titulo = (item.titulo || '').toLowerCase();
     const descripcion = (item.descripcion || '').toLowerCase();
     const busqueda = (busquedaGlobal || '').toLowerCase();
-
     return titulo.includes(busqueda) || descripcion.includes(busqueda);
   });
 
   // Limpia el formulario y resetea estados de edición
   const limpiarFormulario = () => {
-    setNuevoTitulo('');
-    setNuevaDescripcion('');
-    setNuevaCategoria('');
-    setUbicacion('');
-    setSueldo('');
-    setModalidad('');
-    setHorario('');
-    setContacto('');
-    setLogo('');
+    reset({
+      titulo: '',
+      descripcion: '',
+      categoria: '',
+      ubicacion: '',
+      sueldo: '',
+      modalidad: '',
+      horario: '',
+      contacto: '',
+      logo: ''
+    });
     setModoEdicion(false);
     setOfertaEditando(null);
   };
 
-  // Muestra una notificación modal
-  const mostrarNotificacion = (titulo, mensaje, tipo = 'success') => {
-    setNotificacion({ show: true, titulo, mensaje, tipo });
-  };
+  // 🟢 Cargar ofertas desde backend (sin cambios)
+  useEffect(() => {
+    if (!usuarioLogueado) return;
 
-  //traigo las ofertas del backend 
-  // 🟢 Cargar ofertas desde la base de datos del usuario logueado
-useEffect(() => {
-  if (!usuarioLogueado) return;
+    const fetchOfertas = async () => {
+      try {
+        let API_URL;
+        if (usuarioLogueado.rolPostulante) {
+          API_URL = `http://localhost:3000/ofertas`;
+        } else {
+          API_URL = `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
+        }
 
-  const fetchOfertas = async () => {
-    try {
-      let API_URL;
-      if (usuarioLogueado.rolPostulante) {
-        // Si es postulante, trae todas las ofertas
-        API_URL = `http://localhost:3000/ofertas`;
-      } else {
-        // Si es empleador, trae solo sus ofertas
-        API_URL = `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Error al obtener las ofertas");
+        const data = await res.json();
+
+        if (Array.isArray(data)) {
+          setItems(data);
+        } else if (data.success && Array.isArray(data.data)) {
+          setItems(data.data);
+        } else {
+          console.warn("Formato de datos inesperado:", data);
+          setItems([]);
+        }
+      } catch (err) {
+        console.error("Error al cargar las ofertas:", err);
+        setNotificacion({
+          show: true,
+          titulo: 'Error',
+          mensaje: 'No se pudieron cargar las ofertas.',
+          tipo: 'error'
+        });
       }
+    };
 
-      const res = await fetch(API_URL);
-      if (!res.ok) throw new Error("Error al obtener las ofertas");
-      const data = await res.json();
+    fetchOfertas();
+  }, [usuarioLogueado]);
 
-      console.log("Ofertas obtenidas del backend:", data);
-
-      if (Array.isArray(data)) {
-        setItems(data);
-      } else if (data.success && Array.isArray(data.data)) {
-        setItems(data.data);
-      } else {
-        console.warn("Formato de datos inesperado:", data);
-        setItems([]);
-      }
-    } catch (err) {
-      console.error("Error al cargar las ofertas:", err);
-      setNotificacion({
-        show: true,
-        titulo: 'Error',
-  mensaje: 'No se pudieron cargar las ofertas.',
-        tipo: 'error'
-      });
-    }
-  };
-
-  fetchOfertas();
-}, [usuarioLogueado]);
-
-  console.log("Usuario logueado:", usuarioLogueado);
-  console.log("Ofertas:", items);
-  console.log("Ofertas filtradas:", itemsFiltrados);
-
-  // Validación del formulario
- const validarFormularioYup = async () => {
-  const ofertaData = {
-    titulo: nuevoTitulo,
-    descripcion: nuevaDescripcion,
-    categoria: nuevaCategoria,
-    ubicacion: ubicacion,
-    sueldo: sueldo,
-    modalidad: modalidad,
-    horario: horario,
-    contacto: contacto,
-    logo: logo,
-  };
-
-  try {
-    await ofertaSchema.validate(ofertaData, { abortEarly: false });
-    return true; // todo ok
-  } catch (err) {
-    if (err.inner && err.inner.length > 0) {
-      // Mostrar todas las notificaciones de errores
-      err.inner.forEach(e => {
-        mostrarNotificacion('Error de validación', e.message, 'warning');
-      });
-    } else {
-      mostrarNotificacion('Error de validación', err.message, 'warning');
-    }
-    return false;
-  }
-};
-
-
-
-  // Maneja el envío del formulario para crear o editar una oferta
-  const manejarSubmit = async (e) => {
-    e.preventDefault();
-    
-     const esValido = await validarFormularioYup();
-     if (!esValido) return;
-
-
+  // 🔹 Maneja el envío del formulario (ahora recibe `data` validado)
+  const manejarSubmit = async (data) => {
     const ofertaData = {
-      titulo: nuevoTitulo,
-      descripcion: nuevaDescripcion,
-      categoria: nuevaCategoria,
-      ubicacion: ubicacion,
-      sueldo: sueldo || undefined,
-      modalidad: modalidad || undefined,
-      horario: horario,
-      contacto: contacto,
-      logo: logo || undefined,
+      titulo: data.titulo,
+      descripcion: data.descripcion,
+      categoria: data.categoria,
+      ubicacion: data.ubicacion,
+      sueldo: data.sueldo || undefined,
+      modalidad: data.modalidad || undefined,
+      horario: data.horario,
+      contacto: data.contacto,
+      logo: data.logo || undefined,
       creadorId: usuarioLogueado.id,
     };
 
-    if (modoEdicion && ofertaEditando) {
-      // EDITAR OFERTA
-      fetch(`http://localhost:3000/ofertas/${ofertaEditando.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ofertaData),
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then(err => {
-              console.error("Error del servidor:", err);
-              throw new Error(err.message || "Error al actualizar la oferta");
-            });
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setItems((prev) => prev.map(item => 
-            item.id === ofertaEditando.id ? data.data : item
-          ));
-          limpiarFormulario();
-          setMostrarFormulario(false);
-          mostrarNotificacion('Actualizado', 'La oferta se actualizó correctamente', 'success');
-        })
-        .catch((err) => {
-          console.error("Error:", err);
-          mostrarNotificacion('Error', `No se pudo actualizar: ${err.message}`, 'error');
+    try {
+      if (modoEdicion && ofertaEditando) {
+        // EDITAR
+        const res = await fetch(`http://localhost:3000/ofertas/${ofertaEditando.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(ofertaData),
         });
-    } else {
-      // CREAR OFERTA NUEVA
-      fetch('http://localhost:3000/ofertas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ofertaData),
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then(err => {
-              console.error("Error del servidor:", err);
-              throw new Error(err.message || "Error al guardar la oferta");
-            });
-          }
-          return res.json();
-        })
-        .then((data) => {
-          const nueva = {
-            id: data.data.id,
-            titulo: data.data.titulo,
-            descripcion: data.data.descripcion,
-            contacto: data.data.contacto,
-            logo: data.data.logo,
-            categoria: data.data.categoria,
-            ubicacion: data.data.ubicacion,
-            sueldo: data.data.sueldo,
-            modalidad: data.data.modalidad,
-            horario: data.data.horario,
-          };
-          setItems((prev) => [...prev, nueva]);
-          limpiarFormulario();
-          setMostrarFormulario(false);
-          mostrarNotificacion('Éxito', 'La oferta se creó correctamente', 'success');
-        })
-        .catch((err) => {
-          console.error("Error:", err);
-          mostrarNotificacion('Error', `No se pudo crear la oferta: ${err.message}`, 'error');
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.message || "Error al actualizar la oferta");
+        }
+
+        const updatedData = await res.json();
+        setItems((prev) =>
+          prev.map((item) => (item.id === ofertaEditando.id ? updatedData.data : item))
+        );
+        mostrarNotificacion('Éxito', 'La oferta se actualizó correctamente', 'success');
+      } else {
+        // CREAR
+        const res = await fetch('http://localhost:3000/ofertas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(ofertaData),
         });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.message || "Error al crear la oferta");
+        }
+
+        const nuevaOferta = await res.json();
+        setItems((prev) => [...prev, nuevaOferta.data]);
+        mostrarNotificacion('Éxito', 'La oferta se creó correctamente', 'success');
+      }
+
+      limpiarFormulario();
+      setMostrarFormulario(false);
+    } catch (err) {
+      console.error("Error:", err);
+      mostrarNotificacion('Error', `No se pudo guardar la oferta: ${err.message}`, 'error');
     }
   };
 
@@ -261,7 +206,6 @@ useEffect(() => {
     setIdOfertaSeleccionada(id);
     setMostrarModalPostulados(true);
   };
-
 
   const eliminarConfirmado = () => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== idAEliminar));
@@ -282,16 +226,20 @@ useEffect(() => {
   const iniciarEdicion = (item) => {
     setModoEdicion(true);
     setOfertaEditando(item);
-    setNuevoTitulo(item.titulo);
-    setNuevaDescripcion(item.descripcion);
-    setNuevaCategoria(item.categoria);
-    setUbicacion(item.ubicacion);
-    setSueldo(item.sueldo || '');
-    setModalidad(item.modalidad || '');
-    setHorario(item.horario);
-    setContacto(item.contacto);
-    setLogo(item.logo || '');
     setMostrarFormulario(true);
+
+    // 🔹 Carga los valores en el formulario de react-hook-form
+    reset({
+      titulo: item.titulo || '',
+      descripcion: item.descripcion || '',
+      categoria: item.categoria || '',
+      ubicacion: item.ubicacion || '',
+      sueldo: item.sueldo || '',
+      modalidad: item.modalidad || '',
+      horario: item.horario || '',
+      contacto: item.contacto || '',
+      logo: item.logo || ''
+    });
   };
 
   const cancelarFormulario = () => {
@@ -303,6 +251,14 @@ useEffect(() => {
     setEmpresaSeleccionada(item);
     setModalVisible(true);
   };
+
+  const mostrarNotificacion = (titulo, mensaje, tipo) => {
+    setNotificacion({ show: true, titulo, mensaje, tipo });
+  };
+
+  // ───────────────────────────────────────────────
+  // ✅ Resto del JSX: solo cambia el formulario
+  // ───────────────────────────────────────────────
 
   return (
     <div className="container mt-4">
@@ -316,12 +272,13 @@ useEffect(() => {
               } else {
                 setMostrarFormulario(true);
               }
-            }}>
+            }}
+          >
             <i className={`bi ${mostrarFormulario ? 'bi-dash-circle' : 'bi-plus-circle'}`}></i>
-            {mostrarFormulario 
-              ? ' Cancelar' 
-              : modoEdicion 
-                ? ' Editar Oferta' 
+            {mostrarFormulario
+              ? ' Cancelar'
+              : modoEdicion
+                ? ' Editar Oferta'
                 : ' Agregar Nueva Oferta'}
           </button>
 
@@ -340,78 +297,89 @@ useEffect(() => {
                   </>
                 )}
               </h5>
-              <form onSubmit={manejarSubmit} className="mb-4">
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
+
+              {/* 🔹 Formulario con react-hook-form */}
+              <form onSubmit={handleSubmit(manejarSubmit)} className="mb-4">
+                <input
+                  type="text"
+                  className={`form-control mb-2 ${errors.titulo ? 'is-invalid' : ''}`}
                   placeholder="Título del empleo *"
-                  value={nuevoTitulo} 
-                  onChange={(e) => setNuevoTitulo(e.target.value)} 
+                  {...register('titulo')}
                 />
-                <textarea 
-                  className="form-control mb-2" 
+                {errors.titulo && <div className="invalid-feedback">{errors.titulo.message}</div>}
+
+                <textarea
+                  className={`form-control mb-2 ${errors.descripcion ? 'is-invalid' : ''}`}
                   placeholder="Descripción del empleo *"
-                  value={nuevaDescripcion} 
-                  onChange={(e) => setNuevaDescripcion(e.target.value)} 
                   rows="3"
+                  {...register('descripcion')}
                 />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
+                {errors.descripcion && <div className="invalid-feedback">{errors.descripcion.message}</div>}
+
+                <input
+                  type="text"
+                  className={`form-control mb-2 ${errors.categoria ? 'is-invalid' : ''}`}
                   placeholder="Categoría *"
-                  value={nuevaCategoria} 
-                  onChange={(e) => setNuevaCategoria(e.target.value)} 
+                  {...register('categoria')}
                 />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
+                {errors.categoria && <div className="invalid-feedback">{errors.categoria.message}</div>}
+
+                <input
+                  type="text"
+                  className={`form-control mb-2 ${errors.ubicacion ? 'is-invalid' : ''}`}
                   placeholder="Ubicación *"
-                  value={ubicacion} 
-                  onChange={(e) => setUbicacion(e.target.value)} 
+                  {...register('ubicacion')}
                 />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
+                {errors.ubicacion && <div className="invalid-feedback">{errors.ubicacion.message}</div>}
+
+                <input
+                  type="text"
+                  className={`form-control mb-2 ${errors.sueldo && 'is-invalid'}`}
                   placeholder="Sueldo (opcional)"
-                  value={sueldo} 
-                  onChange={(e) => setSueldo(e.target.value)} 
+                  {...register('sueldo')}
                 />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
+                {errors.sueldo && <div className="invalid-feedback">{errors.sueldo.message}</div>}
+
+                <input
+                  type="text"
+                  className={`form-control mb-2 ${errors.modalidad && 'is-invalid'}`}
                   placeholder="Modalidad (opcional)"
-                  value={modalidad} 
-                  onChange={(e) => setModalidad(e.target.value)} 
+                  {...register('modalidad')}
                 />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
+                {errors.modalidad && <div className="invalid-feedback">{errors.modalidad.message}</div>}
+
+                <input
+                  type="text"
+                  className={`form-control mb-2 ${errors.horario ? 'is-invalid' : ''}`}
                   placeholder="Horario *"
-                  value={horario} 
-                  onChange={(e) => setHorario(e.target.value)} 
+                  {...register('horario')}
                 />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
+                {errors.horario && <div className="invalid-feedback">{errors.horario.message}</div>}
+
+                <input
+                  type="text"
+                  className={`form-control mb-2 ${errors.contacto ? 'is-invalid' : ''}`}
                   placeholder="Contacto *"
-                  value={contacto} 
-                  onChange={(e) => setContacto(e.target.value)} 
+                  {...register('contacto')}
                 />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
+                {errors.contacto && <div className="invalid-feedback">{errors.contacto.message}</div>}
+
+                <input
+                  type="text"
+                  className={`form-control mb-2 ${errors.logo && 'is-invalid'}`}
                   placeholder="Logo URL (opcional)"
-                  value={logo} 
-                  onChange={(e) => setLogo(e.target.value)} 
+                  {...register('logo')}
                 />
+                {errors.logo && <div className="invalid-feedback">{errors.logo.message}</div>}
+
                 <small className="text-muted d-block mb-3">* Campos obligatorios</small>
                 <div className="d-flex gap-2">
-                  <button type="submit" className="btn btn-bordo flex-grow-1">
+                  <button type="submit" className="btn btn-bordo flex-grow-1" disabled={Object.keys(errors).length > 0}>
                     <i className={`bi ${modoEdicion ? 'bi-check-lg' : 'bi-plus-lg'} me-1`}></i>
                     {modoEdicion ? 'Guardar Cambios' : 'Agregar Oferta'}
                   </button>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="btn btn-secondary"
                     onClick={cancelarFormulario}
                   >
@@ -424,7 +392,8 @@ useEffect(() => {
         </>
       )}
 
-       <Accordion defaultActiveKey={(s ?? 0).toString()}>
+      {/* 🔹 Resto del JSX (Accordion, modales, etc.) SIN CAMBIOS */}
+      <Accordion defaultActiveKey={(s ?? 0).toString()}>
         {itemsFiltrados.map((item, index) => (
           <Accordion.Item eventKey={index.toString()} key={item.id}>
             <Accordion.Header>{item.titulo}</Accordion.Header>
@@ -440,7 +409,6 @@ useEffect(() => {
               <p><strong>Contacto:</strong> {item.contacto || 'No especificado'}</p>
               <p className="mt-2">{item.descripcion}</p>
 
-              {/* Botones según el rol del usuario */}
               <div className="d-flex gap-2 mt-3">
                 {usuarioLogueado?.rolPostulante === false ? (
                   <>
@@ -456,14 +424,12 @@ useEffect(() => {
                     >
                       <i className="bi bi-trash3-fill me-1"></i> Eliminar
                     </button>
-
                     <button
                       className="btn btn-sm btn-bordo-danger"
                       onClick={() => verPostulados(item.id)}
                     >
                       <i className="bi bi-eye"></i> Ver Postulados
                     </button>
-
                   </>
                 ) : (
                   <Button variant="dark" onClick={() => handlePostular(item)}>
@@ -476,7 +442,7 @@ useEffect(() => {
         ))}
       </Accordion>
 
-      {/* Modal de confirmación de eliminación */}
+      {/* Modales (sin cambios) */}
       <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
         <Modal.Header closeButton className="bg-dark text-white">
           <Modal.Title>
@@ -498,14 +464,12 @@ useEffect(() => {
         </Modal.Footer>
       </Modal>
 
-      {/* Modal de postulación */}
       <FormularioPostulacionModal
         show={modalVisible}
         handleClose={() => setModalVisible(false)}
         empresa={empresaSeleccionada}
       />
 
-      {/* Modal de notificaciones */}
       <NotificacionModal
         show={notificacion.show}
         handleClose={() => setNotificacion({ ...notificacion, show: false })}
@@ -514,13 +478,11 @@ useEffect(() => {
         tipo={notificacion.tipo}
       />
 
-      {/* Modal para ver los postulados */}
       <PostuladosModal
         show={mostrarPostulados}
         handleClose={() => setMostrarModalPostulados(false)}
         ofertaId={idOfertaSeleccionada}
       />
-
     </div>
   );
 }
