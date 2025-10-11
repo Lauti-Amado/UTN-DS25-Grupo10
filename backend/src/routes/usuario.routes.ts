@@ -19,5 +19,8 @@ router.get("/", authenticate, authorize("ADMIN"), usuarioController.getAllUsuari
 router.get("/:id", authenticate, usuarioController.getUsuarioById);
 router.put("/:id", authenticate, upload.single('fotoPerfil'), validate(updateUsuarioSchema), usuarioController.updateUsuario);
 router.delete("/:id", authenticate, authorize("ADMIN"), usuarioController.deleteUsuario);
+router.post("/recuperar", usuarioController.recuperarContrasenaController);
+router.post("/reset-password", usuarioController.resetContrasenaController);
+
 
 export const usuarioRoutes = router;
