@@ -2,7 +2,9 @@ import { useEffect, useState, useContext } from "react";
 import Sugerencias from "./sugerencias";
 import styles from "../paginas/perfil.module.css";
 import { DatosContexto } from "../datosContext";
-import perfilDefault from "../assets/perfilx.png"; 
+import perfilDefault from "../assets/perfilx.png";
+import { API_URL } from '../config';
+
 
 function PerfilesSugeridos() {
   const [perfiles, setPerfiles] = useState([]);
@@ -22,7 +24,7 @@ function PerfilesSugeridos() {
         throw new Error("No hay token en localStorage");
       }
 
-      const res = await fetch("http://localhost:3000/usuarios/sugeridos", {
+      const res = await fetch(`${API_URL}/usuarios/sugeridos`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -170,7 +172,7 @@ function PerfilesSugeridos() {
                 rolPostulante={rolPostulante}
                 imagen={
                   fotoPerfil
-                    ? `http://localhost:3000${fotoPerfil}`
+                    ? `${API_URL}/${fotoPerfil}`
                     : perfilDefault 
                 }
               />
