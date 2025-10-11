@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import datosPostulantes from './datosPostulantes';
 import { DatosContexto } from '../datosContext';
+import { API_URL } from '../config';
 
 function OfertasCarousel() {
   const [ofertas, setOfertas] = useState([]);
@@ -26,7 +27,7 @@ function OfertasCarousel() {
       } else {
         // Si es postulante -> traer ofertas desde backend
         try {
-          const resp = await fetch("http://localhost:3000/ofertas");
+          const resp = await fetch(`${API_URL}/ofertas`);
           const data = await resp.json();
           if (data.success) {
             setOfertas(data.data);
