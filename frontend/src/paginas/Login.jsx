@@ -10,6 +10,8 @@ import { DatosContexto } from '../datosContext';
 import { setToken } from '../helpers/auth';
 import { loginSchema } from '../validations/loginSchema';
 import { registroSchema } from '../validations/registroSchema';
+import { API_URL } from '../config';
+
 
 export default function Login({ onLogin }) {
   const [nombreUsuario, setUsuario] = useState('');
@@ -51,7 +53,7 @@ export default function Login({ onLogin }) {
   // Iniciar sesion con Yup
   const onSubmitLogin = async (data) => {
     try {
-      const res = await fetch("http://localhost:3000/usuarios/login", {
+      const res = await fetch(`${API_URL}/usuarios/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
