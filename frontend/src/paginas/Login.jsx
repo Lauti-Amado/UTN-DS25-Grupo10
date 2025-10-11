@@ -12,7 +12,6 @@ import { loginSchema } from '../validations/loginSchema';
 import { registroSchema } from '../validations/registroSchema';
 import { API_URL } from '../config';
 
-
 export default function Login({ onLogin }) {
   const [nombreUsuario, setUsuario] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
