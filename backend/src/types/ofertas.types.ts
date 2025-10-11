@@ -1,4 +1,3 @@
-import { Formulario } from "../generated/prisma";
 import { Usuario } from "./usuarios.types";
 
 export interface Oferta {
