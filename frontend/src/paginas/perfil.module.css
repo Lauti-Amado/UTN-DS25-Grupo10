@@ -617,41 +617,19 @@ button[style*="marginLeft"] {
     }
 
     /* Input con borde rojo brillante si hay error */
-/* Estilo base del input */
-.co {
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 6px;
-  outline: none;
-  transition: all 0.2s ease-in-out;
-}
-
-/* 🔥 Borde rojo brillante cuando hay error */
 .inputError {
-  border-color: #ff0033;
-  box-shadow: 0 0 8px rgba(255, 0, 51, 0.6);
+  border: 2px solid #ff0000; /* rojo brillante */
+  outline: none;
+  box-shadow: 0 0 5px #ff0000; /* efecto brillante */
 }
 
-/* 🔴 Texto del error */
-
-}
-
+/* Mensaje de error en rojo brillante */
 .errorBrillante {
-  color: #ff0033;
-  font-weight: 600;
-  text-shadow: 0 0 6px rgba(255, 0, 51, 0.6);
-  font-size: 0.9rem;
+  color: #ff0000; /* rojo brillante */
+  font-weight: bold;
   margin-top: 4px;
   display: block;
+  text-shadow: 0 0 2px #ff0000; /* efecto brillante */
 }
 
-/* Hace los placeholders más chicos */
-.input-placeholder-chico::placeholder {
-  font-size: 0.875rem !important;
-  color: #6c757d !important;
 }
-
-.b {
-  margin: 20px; /* margen general en todos lados */
-}
-/* Si querés que el label también cambie al haber error */
