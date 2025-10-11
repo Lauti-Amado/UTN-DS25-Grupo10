@@ -50,51 +50,63 @@ function Proyecto({
         <button className={styles.cancelar} onClick={onCerrar}>X</button>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.b}>
-          <div className={styles.barra3}>
-            <input
-              className={`${styles.co} ${errors.nombre ? styles.inputError : ''}`}
-              type="text"
-              {...register("nombre")}
-            />
-            <label>Nombre</label>
-            {errors.nombre && (
-              <span className={styles.errorBrillante}>{errors.nombre.message}</span>
-            )}
-          </div>
+           <form onSubmit={handleSubmit(onSubmit)}>
+  <div className={styles.b}>
+    {/* Nombre */}
+    <div className="mb-4 text-start">
+      <label className="form-label fw-bold fs-5">Nombre del proyecto</label>
+      <input
+        type="text"
+        className={`form-control py-3 input-placeholder-chico ${errors.nombre ? 'is-invalid' : ''}`}
+        placeholder="Ej: App de gestión de tareas"
+        {...register("nombre")}
+      />
+      {errors.nombre && (
+        <div className="invalid-feedback d-block mt-1">{errors.nombre.message}</div>
+      )}
+    </div>
 
-          <div className={styles.barra3}>
-            <input
-              className={`${styles.co} ${errors.descripcion ? styles.inputError : ''}`}
-              type="text"
-              {...register("descripcion")}
-            />
-            <label>Descripción</label>
-            {errors.descripcion && (
-              <span className={styles.errorBrillante}>{errors.descripcion.message}</span>
-            )}
-          </div>
+    {/* Descripción */}
+    <div className="mb-4 text-start">
+      <label className="form-label fw-bold fs-5">Descripción</label>
+      <input
+        type="text"
+        className={`form-control py-3 input-placeholder-chico ${errors.descripcion ? 'is-invalid' : ''}`}
+        placeholder="Describe brevemente el proyecto"
+        {...register("descripcion")}
+      />
+      {errors.descripcion && (
+        <div className="invalid-feedback d-block mt-1">{errors.descripcion.message}</div>
+      )}
+    </div>
 
-          <div className={styles.barra3}>
-            <input
-              className={`${styles.co} ${errors.tecnologias ? styles.inputError : ''}`}
-              type="text"
-              {...register("tecnologias")}
-            />
-            <label>Tecnologías Usadas</label>
-            {errors.tecnologias && (
-              <span className={styles.errorBrillante}>{errors.tecnologias.message}</span>
-            )}
-          </div>
-        </div>
+    {/* Tecnologías */}
+    <div className="mb-4 text-start">
+      <label className="form-label fw-bold fs-5">Tecnologías usadas</label>
+      <input
+        type="text"
+        className={`form-control py-3 input-placeholder-chico ${errors.tecnologias ? 'is-invalid' : ''}`}
+        placeholder="Ej: React, Node.js, MongoDB"
+        {...register("tecnologias")}
+      />
+      {errors.tecnologias && (
+        <div className="invalid-feedback d-block mt-1">{errors.tecnologias.message}</div>
+      )}
+    </div>
+  </div>
 
-        <div>
-          <button type="submit" className="btn btn-bordo-danger" disabled={isSubmitting}>
-            Aceptar
-          </button>
-        </div>
-      </form>
+  <div className="text-center mt-3">
+  <button 
+    type="submit" 
+    className="btn btn-bordo-danger"
+    disabled={isSubmitting}
+  >
+    {isSubmitting ? 'Guardando...' : 'Aceptar'}
+  </button>
+</div>
+
+</form>
+
     </div>
   );
 }
