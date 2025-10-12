@@ -15,11 +15,11 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-const corsOptions={
-  origin:process.env.FRONTEND_URL || 'http://localhost:5173',
-  credentials:true,
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeader: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 // Middleware para JSON
