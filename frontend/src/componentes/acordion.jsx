@@ -1,3 +1,4 @@
+//src/componentes/acordion.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import { useLocation } from 'react-router-dom';
@@ -85,81 +86,82 @@ function Acordion() {
   };
 
   //traigo las ofertas del backend 
-  // 🟢 Cargar ofertas desde la base de datos del usuario logueado
+  // Cargar ofertas desde la base de datos del usuario logueado
   useEffect(() => {
   if (!usuarioLogueado) return;
 
-  // 🔹 Función para chequear si el usuario ya se postuló a una oferta
-  const checkPostulacion = async (usuarioId, ofertaId) => {
-    try {
-      const res = await fetch(`${API_URL}/formularios/${usuarioId}/${ofertaId}`);
-      if (!res.ok) {
-        console.warn(`checkPostulacion fallo para oferta ${ofertaId} con status ${res.status}`);
-        return false; // devolvemos false si falla
-      }
-      const data = await res.json();
-      console.log(`checkPostulacion - ofertaId ${ofertaId}:`, data);
-      return data.existe ?? false; // si por algún motivo no hay existe, devolvemos false
-    } catch (err) {
-      console.error(`Error en checkPostulacion oferta ${ofertaId}:`, err);
+  // Función para chequear si el usuario ya se postuló a una oferta
+// Función para chequear si el usuario ya se postuló a una oferta
+const checkPostulacion = async (usuarioId, ofertaId) => {
+  try {
+    const res = await fetch(`${API_URL}/formularios/${usuarioId}/${ofertaId}`);
+    if (!res.ok) {
+      console.warn(`checkPostulacion fallo para oferta ${ofertaId} con status ${res.status}`);
       return false;
     }
-  };
+    const data = await res.json();
+    console.log(`checkPostulacion - ofertaId ${ofertaId}:`, data);
+    return data.existe ?? false;
+  } catch (err) {
+    console.error(`Error en checkPostulacion oferta ${ofertaId}:`, err);
+    return false;
+  }
+};
 
-  // 🔹 Función principal para traer ofertas y sus postulaciones
-  const fetchOfertas = async () => {
-    try {
-      const API_URL = usuarioLogueado.rolPostulante
-        ? `${API_URL}/ofertas`
-        : `${API_URL}/ofertas/empleador/${usuarioLogueado.id}`;
+// Función principal para traer ofertas y sus postulaciones
+const fetchOfertas = async () => {
+  try {
+    const endpoint = usuarioLogueado.rolPostulante
+      ? `${API_URL}/ofertas`
+      : `${API_URL}/ofertas/empleador/${usuarioLogueado.id}`;
 
-      const res = await fetch(API_URL);
-      if (!res.ok) throw new Error(`Error al obtener ofertas: ${res.status}`);
-      const data = await res.json();
+    const res = await fetch(endpoint);
+    if (!res.ok) throw new Error(`Error al obtener ofertas: ${res.status}`);
+    const data = await res.json();
 
-      let ofertasArray = [];
-      if (Array.isArray(data)) {
-        ofertasArray = data;
-      } else if (data.success && Array.isArray(data.data)) {
-        ofertasArray = data.data;
-      } else {
-        console.warn("Formato inesperado de ofertas:", data);
-        setItems([]);
-        return;
-      }
-
-      setItems(ofertasArray);
-
-      if (usuarioLogueado.rolPostulante) {
-        // 🔹 Verificar postulaciones del usuario con manejo de errores individuales
-        const resultados = await Promise.all(
-          ofertasArray.map(async (item) => {
-            try {
-              const existe = await checkPostulacion(usuarioLogueado.id, item.id);
-              return [item.id, existe];
-            } catch (err) {
-              console.error(`Error individual al checkear postulacion oferta ${item.id}:`, err);
-              return [item.id, false]; // si falla, asumimos no postuló
-            }
-          })
-        );
-
-        const nuevasPostulaciones = Object.fromEntries(resultados);
-        console.log("Postulaciones cargadas correctamente:", nuevasPostulaciones);
-        setPostulaciones(nuevasPostulaciones);
-      }
-    } catch (err) {
-      console.error("Error al cargar ofertas:", err);
-      setNotificacion({
-        show: true,
-        titulo: 'Error',
-        mensaje: 'No se pudieron cargar las ofertas.',
-        tipo: 'error'
-      });
+    let ofertasArray = [];
+    if (Array.isArray(data)) {
+      ofertasArray = data;
+    } else if (data.success && Array.isArray(data.data)) {
+      ofertasArray = data.data;
+    } else {
+      console.warn("Formato inesperado de ofertas:", data);
+      setItems([]);
+      return;
     }
-  };
 
-  fetchOfertas();
+    setItems(ofertasArray);
+
+    if (usuarioLogueado.rolPostulante) {
+      // Verificar postulaciones del usuario con manejo de errores individuales
+      const resultados = await Promise.all(
+        ofertasArray.map(async (item) => {
+          try {
+            const existe = await checkPostulacion(usuarioLogueado.id, item.id);
+            return [item.id, existe];
+          } catch (err) {
+            console.error(`Error individual al checkear postulacion oferta ${item.id}:`, err);
+            return [item.id, false];
+          }
+        })
+      );
+
+      const nuevasPostulaciones = Object.fromEntries(resultados);
+      console.log("Postulaciones cargadas correctamente:", nuevasPostulaciones);
+      setPostulaciones(nuevasPostulaciones);
+    }
+  } catch (err) {
+    console.error("Error al cargar ofertas:", err);
+    setNotificacion({
+      show: true,
+      titulo: 'Error',
+      mensaje: 'No se pudieron cargar las ofertas.',
+      tipo: 'error'
+    });
+  }
+};
+
+fetchOfertas();
 }, [usuarioLogueado]);
 
   // Validación del formulario
