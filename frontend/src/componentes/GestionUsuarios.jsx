@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { DatosContexto } from "../datosContext";
+import { API_URL } from '../config';
 
 export default function GestionUsuarios() {
   const { usuarioLogueado } = useContext(DatosContexto);
@@ -10,7 +11,7 @@ export default function GestionUsuarios() {
       if (usuarioLogueado?.esAdmin) {
         const token = localStorage.getItem("token");
         try {
-          const res = await fetch("http://localhost:3000/usuarios", {
+          const res = await fetch(`${API_URL}/usuarios`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           const data = await res.json();
@@ -31,7 +32,7 @@ export default function GestionUsuarios() {
     if (confirmado) {
       const token = localStorage.getItem("token");
       try {
-        const res = await fetch(`http://localhost:3000/usuarios/${id}`, {
+        const res = await fetch(`${API_URL}/usuarios/${id}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });

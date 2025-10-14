@@ -13,6 +13,7 @@ import { MdOutlineWork } from "react-icons/md";
 import { IoMdPerson } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
 import { DatosContexto } from "../../datosContext.jsx";
+import { API_URL } from '../../config.js';
 
 function NavBar({ onLogout }) {
   const { busquedaGlobal, setBusquedaGlobal, usuarioLogueado } =
@@ -31,7 +32,7 @@ function NavBar({ onLogout }) {
       if (usuarioLogueado?.esAdmin) {
         const token = localStorage.getItem("token");
         try {
-          const res = await fetch("http://localhost:3000/usuarios", {
+          const res = await fetch(`${API_URL}/usuarios`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -62,7 +63,7 @@ function NavBar({ onLogout }) {
   const eliminarConfirmado = async () => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:3000/usuarios/${idAEliminar}`, {
+      const res = await fetch(`${API_URL}/usuarios/${idAEliminar}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

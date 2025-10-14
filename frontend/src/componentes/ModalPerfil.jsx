@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import perfilDefault from "../assets/perfilx.png"; // AGREGADO: import de la imagen
+import perfilDefault from "../assets/perfilx.png";
+import { API_URL } from '../config';
 
 function ModalPerfil({ usuarioId, onCerrar }) {
   const [usuario, setUsuario] = useState(null);
@@ -22,7 +23,7 @@ function ModalPerfil({ usuarioId, onCerrar }) {
         console.log("Token encontrado, haciendo request al backend...");
 
         // Obtener datos del usuario
-        const resUsuario = await fetch(`http://localhost:3000/usuarios/${usuarioId}`, {
+        const resUsuario = await fetch(`${API_URL}/usuarios/${usuarioId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -42,7 +43,7 @@ function ModalPerfil({ usuarioId, onCerrar }) {
 
         // Obtener proyectos del usuario
         try {
-          const resProyectos = await fetch(`http://localhost:3000/proyectos/postulado/${usuarioId}`, {
+          const resProyectos = await fetch(`${API_URL}/proyectos/postulado/${usuarioId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -150,8 +151,8 @@ function ModalPerfil({ usuarioId, onCerrar }) {
                   <img
                     src={
                       usuario.fotoPerfil
-                        ? `http://localhost:3000${usuario.fotoPerfil}`
-                        : perfilDefault // CORREGIDO: usar import en lugar de require
+                        ? `${API_URL}/${usuario.fotoPerfil}`
+                        : perfilDefault 
                     }
                     alt="Foto de perfil"
                     className="rounded-circle"

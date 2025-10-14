@@ -1,3 +1,4 @@
+//src/componentes/acordion.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import { useLocation } from 'react-router-dom';
@@ -11,7 +12,9 @@ import FormularioPostulacionModal from './FormularioPostulacionModal';
 import PostuladosModal from './PostuladosModal';
 import NotificacionModal from './NotificacionModal';
 import { ofertaSchema } from '../validations/oferta.js'; 
-
+import { API_URL } from '../config.js';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 function Acordion() {
   const location = useLocation();
@@ -27,15 +30,7 @@ function Acordion() {
     return datosEmpleosIniciales;
   });
 
-  const [nuevoTitulo, setNuevoTitulo] = useState('');
-  const [nuevaDescripcion, setNuevaDescripcion] = useState('');
-  const [nuevaCategoria, setNuevaCategoria] = useState('');
-  const [ubicacion, setUbicacion] = useState('');
-  const [sueldo, setSueldo] = useState('');
-  const [modalidad, setModalidad] = useState('');
-  const [horario, setHorario] = useState('');
-  const [contacto, setContacto] = useState('');
-  const [logo, setLogo] = useState('');
+  
   const [mostrarModal, setMostrarModal] = useState(false);
   const [idAEliminar, setIdAEliminar] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -64,225 +59,158 @@ function Acordion() {
     return titulo.includes(busqueda) || descripcion.includes(busqueda);
   });
 
+
+  
   // Limpia el formulario y resetea estados de edición
   const limpiarFormulario = () => {
-    setNuevoTitulo('');
-    setNuevaDescripcion('');
-    setNuevaCategoria('');
-    setUbicacion('');
-    setSueldo('');
-    setModalidad('');
-    setHorario('');
-    setContacto('');
-    setLogo('');
-    setModoEdicion(false);
-    setOfertaEditando(null);
-  };
+  setModoEdicion(false);
+  setOfertaEditando(null);
+  // El reset del formulario se hará desde useForm (abajo)
+};
 
   // Muestra una notificación modal
   const mostrarNotificacion = (titulo, mensaje, tipo = 'success') => {
     setNotificacion({ show: true, titulo, mensaje, tipo });
   };
 
+
+  
   //traigo las ofertas del backend 
-  // 🟢 Cargar ofertas desde la base de datos del usuario logueado
+  // Cargar ofertas desde la base de datos del usuario logueado
+
   useEffect(() => {
   if (!usuarioLogueado) return;
 
-  // 🔹 Función para chequear si el usuario ya se postuló a una oferta
-  const checkPostulacion = async (usuarioId, ofertaId) => {
-    try {
-      const res = await fetch(`http://localhost:3000/formularios/${usuarioId}/${ofertaId}`);
-      if (!res.ok) {
-        console.warn(`checkPostulacion fallo para oferta ${ofertaId} con status ${res.status}`);
-        return false; // devolvemos false si falla
-      }
-      const data = await res.json();
-      console.log(`checkPostulacion - ofertaId ${ofertaId}:`, data);
-      return data.existe ?? false; // si por algún motivo no hay existe, devolvemos false
-    } catch (err) {
-      console.error(`Error en checkPostulacion oferta ${ofertaId}:`, err);
+  // Función para chequear si el usuario ya se postuló a una oferta
+// Función para chequear si el usuario ya se postuló a una oferta
+const checkPostulacion = async (usuarioId, ofertaId) => {
+  try {
+    const res = await fetch(`${API_URL}/formularios/${usuarioId}/${ofertaId}`);
+    if (!res.ok) {
+      console.warn(`checkPostulacion fallo para oferta ${ofertaId} con status ${res.status}`);
       return false;
     }
-  };
-
-  // 🔹 Función principal para traer ofertas y sus postulaciones
-  const fetchOfertas = async () => {
-    try {
-      const API_URL = usuarioLogueado.rolPostulante
-        ? `http://localhost:3000/ofertas`
-        : `http://localhost:3000/ofertas/empleador/${usuarioLogueado.id}`;
-
-      const res = await fetch(API_URL);
-      if (!res.ok) throw new Error(`Error al obtener ofertas: ${res.status}`);
-      const data = await res.json();
-
-      let ofertasArray = [];
-      if (Array.isArray(data)) {
-        ofertasArray = data;
-      } else if (data.success && Array.isArray(data.data)) {
-        ofertasArray = data.data;
-      } else {
-        console.warn("Formato inesperado de ofertas:", data);
-        setItems([]);
-        return;
-      }
-
-      setItems(ofertasArray);
-
-      if (usuarioLogueado.rolPostulante) {
-        // 🔹 Verificar postulaciones del usuario con manejo de errores individuales
-        const resultados = await Promise.all(
-          ofertasArray.map(async (item) => {
-            try {
-              const existe = await checkPostulacion(usuarioLogueado.id, item.id);
-              return [item.id, existe];
-            } catch (err) {
-              console.error(`Error individual al checkear postulacion oferta ${item.id}:`, err);
-              return [item.id, false]; // si falla, asumimos no postuló
-            }
-          })
-        );
-
-        const nuevasPostulaciones = Object.fromEntries(resultados);
-        console.log("Postulaciones cargadas correctamente:", nuevasPostulaciones);
-        setPostulaciones(nuevasPostulaciones);
-      }
-    } catch (err) {
-      console.error("Error al cargar ofertas:", err);
-      setNotificacion({
-        show: true,
-        titulo: 'Error',
-        mensaje: 'No se pudieron cargar las ofertas.',
-        tipo: 'error'
-      });
-    }
-  };
-
-  fetchOfertas();
-}, [usuarioLogueado]);
-
-  // Validación del formulario
- const validarFormularioYup = async () => {
-  const ofertaData = {
-    titulo: nuevoTitulo,
-    descripcion: nuevaDescripcion,
-    categoria: nuevaCategoria,
-    ubicacion: ubicacion,
-    sueldo: sueldo,
-    modalidad: modalidad,
-    horario: horario,
-    contacto: contacto,
-    logo: logo,
-  };
-
-  try {
-    await ofertaSchema.validate(ofertaData, { abortEarly: false });
-    return true; // todo ok
+    const data = await res.json();
+    console.log(`checkPostulacion - ofertaId ${ofertaId}:`, data);
+    return data.existe ?? false;
   } catch (err) {
-    if (err.inner && err.inner.length > 0) {
-      // Mostrar todas las notificaciones de errores
-      err.inner.forEach(e => {
-        mostrarNotificacion('Error de validación', e.message, 'warning');
-      });
-    } else {
-      mostrarNotificacion('Error de validación', err.message, 'warning');
-    }
+    console.error(`Error en checkPostulacion oferta ${ofertaId}:`, err);
     return false;
   }
 };
 
+// Función principal para traer ofertas y sus postulaciones
+const fetchOfertas = async () => {
+  try {
+    const endpoint = usuarioLogueado.rolPostulante
+      ? `${API_URL}/ofertas`
+      : `${API_URL}/ofertas/empleador/${usuarioLogueado.id}`;
+
+    const res = await fetch(endpoint);
+    if (!res.ok) throw new Error(`Error al obtener ofertas: ${res.status}`);
+    const data = await res.json();
+
+    let ofertasArray = [];
+    if (Array.isArray(data)) {
+      ofertasArray = data;
+    } else if (data.success && Array.isArray(data.data)) {
+      ofertasArray = data.data;
+    } else {
+      console.warn("Formato inesperado de ofertas:", data);
+      setItems([]);
+      return;
+    }
+
+    setItems(ofertasArray);
+
+    if (usuarioLogueado.rolPostulante) {
+      // Verificar postulaciones del usuario con manejo de errores individuales
+      const resultados = await Promise.all(
+        ofertasArray.map(async (item) => {
+          try {
+            const existe = await checkPostulacion(usuarioLogueado.id, item.id);
+            return [item.id, existe];
+          } catch (err) {
+            console.error(`Error individual al checkear postulacion oferta ${item.id}:`, err);
+            return [item.id, false];
+          }
+        })
+      );
+
+      const nuevasPostulaciones = Object.fromEntries(resultados);
+      console.log("Postulaciones cargadas correctamente:", nuevasPostulaciones);
+      setPostulaciones(nuevasPostulaciones);
+    }
+  } catch (err) {
+    console.error("Error al cargar ofertas:", err);
+    setNotificacion({
+      show: true,
+      titulo: 'Error',
+      mensaje: 'No se pudieron cargar las ofertas.',
+      tipo: 'error'
+    });
+  }
+};
+
+fetchOfertas();
+}, [usuarioLogueado]);
+
 
 
   // Maneja el envío del formulario para crear o editar una oferta
-  const manejarSubmit = async (e) => {
-    e.preventDefault();
-    
-     const esValido = await validarFormularioYup();
-     if (!esValido) return;
+  const onSubmit = async (data) => {
+  const ofertaData = {
+    ...data,
+    creadorId: usuarioLogueado.id,
+    // Convertir campos vacíos a undefined si es necesario
+    sueldo: data.sueldo || undefined,
+    modalidad: data.modalidad || undefined,
+    logo: data.logo || undefined,
+  };
 
-
-    const ofertaData = {
-      titulo: nuevoTitulo,
-      descripcion: nuevaDescripcion,
-      categoria: nuevaCategoria,
-      ubicacion: ubicacion,
-      sueldo: sueldo || undefined,
-      modalidad: modalidad || undefined,
-      horario: horario,
-      contacto: contacto,
-      logo: logo || undefined,
-      creadorId: usuarioLogueado.id,
-    };
-
+  try {
+    let response;
     if (modoEdicion && ofertaEditando) {
-      // EDITAR OFERTA
-      fetch(`http://localhost:3000/ofertas/${ofertaEditando.id}`, {
+      // EDITAR
+      response = await fetch(`${API_URL}/ofertas/${ofertaEditando.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ofertaData),
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then(err => {
-              console.error("Error del servidor:", err);
-              throw new Error(err.message || "Error al actualizar la oferta");
-            });
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setItems((prev) => prev.map(item => 
-            item.id === ofertaEditando.id ? data.data : item
-          ));
-          limpiarFormulario();
-          setMostrarFormulario(false);
-          mostrarNotificacion('Actualizado', 'La oferta se actualizó correctamente', 'success');
-        })
-        .catch((err) => {
-          console.error("Error:", err);
-          mostrarNotificacion('Error', `No se pudo actualizar: ${err.message}`, 'error');
-        });
+      });
     } else {
-      // CREAR OFERTA NUEVA
-      fetch('http://localhost:3000/ofertas', {
+      // CREAR
+      response = await fetch(`${API_URL}/ofertas`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ofertaData),
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then(err => {
-              console.error("Error del servidor:", err);
-              throw new Error(err.message || "Error al guardar la oferta");
-            });
-          }
-          return res.json();
-        })
-        .then((data) => {
-          const nueva = {
-            id: data.data.id,
-            titulo: data.data.titulo,
-            descripcion: data.data.descripcion,
-            contacto: data.data.contacto,
-            logo: data.data.logo,
-            categoria: data.data.categoria,
-            ubicacion: data.data.ubicacion,
-            sueldo: data.data.sueldo,
-            modalidad: data.data.modalidad,
-            horario: data.data.horario,
-          };
-          setItems((prev) => [...prev, nueva]);
-          limpiarFormulario();
-          setMostrarFormulario(false);
-          mostrarNotificacion('Éxito', 'La oferta se creó correctamente', 'success');
-        })
-        .catch((err) => {
-          console.error("Error:", err);
-          mostrarNotificacion('Error', `No se pudo crear la oferta: ${err.message}`, 'error');
-        });
+      });
     }
-  };
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Error al guardar la oferta');
+    }
+
+    const result = await response.json();
+    const nuevaOferta = result.data;
+
+    if (modoEdicion) {
+      setItems((prev) => prev.map(item => item.id === ofertaEditando.id ? nuevaOferta : item));
+      mostrarNotificacion('Éxito', 'Oferta actualizada correctamente', 'success');
+    } else {
+      setItems((prev) => [...prev, nuevaOferta]);
+      mostrarNotificacion('Éxito', 'Oferta creada correctamente', 'success');
+    }
+
+    // Cerrar y limpiar
+    setMostrarFormulario(false);
+    limpiarFormulario();
+    reset(); // Limpiar el formulario de react-hook-form
+  } catch (err) {
+    console.error(err);
+    mostrarNotificacion('Error', err.message || 'No se pudo completar la operación', 'error');
+  }
+};
 
   const confirmarEliminar = (id) => {
     setIdAEliminar(id);
@@ -297,7 +225,7 @@ function Acordion() {
 
   const eliminarConfirmado = () => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== idAEliminar));
-    fetch(`http://localhost:3000/ofertas/${idAEliminar}`, { method: 'DELETE' })
+    fetch(`${API_URL}/ofertas/${idAEliminar}`, { method: 'DELETE' })
       .then((res) => {
         if (!res.ok) throw new Error('Error al eliminar la oferta del backend');
         mostrarNotificacion('Eliminado', 'La oferta se eliminó correctamente', 'success');
@@ -312,19 +240,11 @@ function Acordion() {
   };
 
   const iniciarEdicion = (item) => {
-    setModoEdicion(true);
-    setOfertaEditando(item);
-    setNuevoTitulo(item.titulo);
-    setNuevaDescripcion(item.descripcion);
-    setNuevaCategoria(item.categoria);
-    setUbicacion(item.ubicacion);
-    setSueldo(item.sueldo || '');
-    setModalidad(item.modalidad || '');
-    setHorario(item.horario);
-    setContacto(item.contacto);
-    setLogo(item.logo || '');
-    setMostrarFormulario(true);
-  };
+  setModoEdicion(true);
+  setOfertaEditando(item);
+  setMostrarFormulario(true);
+  // ✅ El formulario se llenará automáticamente gracias al useEffect + reset()
+};
 
   const cancelarFormulario = () => {
     limpiarFormulario();
@@ -338,7 +258,7 @@ function Acordion() {
   // Actualizamos badge después de postular
   if (usuarioLogueado?.rolPostulante) {
     try {
-      const res = await fetch(`http://localhost:3000/formularios/${usuarioLogueado.id}/${item.id}`);
+      const res = await fetch(`${API_URL}/formularios/${usuarioLogueado.id}/${item.id}`);
       if (!res.ok) throw new Error('Error al verificar postulacion');
       const data = await res.json();
       setPostulaciones(prev => ({ ...prev, [item.id]: data.existe }));
@@ -347,6 +267,28 @@ function Acordion() {
     }
   }
 };
+
+const {
+  register,
+  handleSubmit,
+  formState: { errors, isSubmitting },
+  reset,
+} = useForm({
+  resolver: yupResolver(ofertaSchema),
+  mode: 'onChange',
+  defaultValues: {
+    titulo: '',
+    descripcion: '',
+    categoria: '',
+    ubicacion: '',
+    sueldo: '',
+    modalidad: '',
+    horario: '',
+    contacto: '',
+    logo: ''
+  },
+});
+
 
   return (
     <div className="container mt-4">
@@ -384,85 +326,129 @@ function Acordion() {
                   </>
                 )}
               </h5>
-              <form onSubmit={manejarSubmit} className="mb-4">
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
-                  placeholder="Título del empleo *"
-                  value={nuevoTitulo} 
-                  onChange={(e) => setNuevoTitulo(e.target.value)} 
-                />
-                <textarea 
-                  className="form-control mb-2" 
-                  placeholder="Descripción del empleo *"
-                  value={nuevaDescripcion} 
-                  onChange={(e) => setNuevaDescripcion(e.target.value)} 
-                  rows="3"
-                />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
-                  placeholder="Categoría *"
-                  value={nuevaCategoria} 
-                  onChange={(e) => setNuevaCategoria(e.target.value)} 
-                />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
-                  placeholder="Ubicación *"
-                  value={ubicacion} 
-                  onChange={(e) => setUbicacion(e.target.value)} 
-                />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
-                  placeholder="Sueldo (opcional)"
-                  value={sueldo} 
-                  onChange={(e) => setSueldo(e.target.value)} 
-                />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
-                  placeholder="Modalidad (opcional)"
-                  value={modalidad} 
-                  onChange={(e) => setModalidad(e.target.value)} 
-                />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
-                  placeholder="Horario *"
-                  value={horario} 
-                  onChange={(e) => setHorario(e.target.value)} 
-                />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
-                  placeholder="Contacto *"
-                  value={contacto} 
-                  onChange={(e) => setContacto(e.target.value)} 
-                />
-                <input 
-                  type="text" 
-                  className="form-control mb-2" 
-                  placeholder="Logo URL (opcional)"
-                  value={logo} 
-                  onChange={(e) => setLogo(e.target.value)} 
-                />
-                <small className="text-muted d-block mb-3">* Campos obligatorios</small>
-                <div className="d-flex gap-2">
-                  <button type="submit" className="btn btn-bordo flex-grow-1">
-                    <i className={`bi ${modoEdicion ? 'bi-check-lg' : 'bi-plus-lg'} me-1`}></i>
-                    {modoEdicion ? 'Guardar Cambios' : 'Agregar Oferta'}
-                  </button>
-                  <button 
-                    type="button" 
-                    className="btn btn-secondary"
-                    onClick={cancelarFormulario}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </form>
+              <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
+  {/* Título */}
+  <div className="mb-2">
+    <input
+      type="text"
+      className={`form-control ${errors.titulo ? 'is-invalid' : ''}`}
+      placeholder="Título del empleo *"
+      {...register('titulo')}
+    />
+    {errors.titulo && <div className="invalid-feedback">{errors.titulo.message}</div>}
+  </div>
+
+  {/* Descripción */}
+  <div className="mb-2">
+    <textarea
+      className={`form-control ${errors.descripcion ? 'is-invalid' : ''}`}
+      placeholder="Descripción del empleo *"
+      rows="3"
+      {...register('descripcion')}
+    />
+    {errors.descripcion && <div className="invalid-feedback">{errors.descripcion.message}</div>}
+  </div>
+
+  {/* Categoría */}
+  <div className="mb-2">
+    <input
+      type="text"
+      className={`form-control ${errors.categoria ? 'is-invalid' : ''}`}
+      placeholder="Categoría *"
+      {...register('categoria')}
+    />
+    {errors.categoria && <div className="invalid-feedback">{errors.categoria.message}</div>}
+  </div>
+
+  {/* Ubicación */}
+  <div className="mb-2">
+    <input
+      type="text"
+      className={`form-control ${errors.ubicacion ? 'is-invalid' : ''}`}
+      placeholder="Ubicación *"
+      {...register('ubicacion')}
+    />
+    {errors.ubicacion && <div className="invalid-feedback">{errors.ubicacion.message}</div>}
+  </div>
+
+  {/* Sueldo */}
+  <div className="mb-2">
+    <input
+      type="text"
+      className={`form-control ${errors.sueldo ? 'is-invalid' : ''}`}
+      placeholder="Sueldo (opcional)"
+      {...register('sueldo')}
+    />
+    {errors.sueldo && <div className="invalid-feedback">{errors.sueldo.message}</div>}
+  </div>
+
+  {/* Modalidad */}
+  <div className="mb-2">
+    <input
+      type="text"
+      className={`form-control ${errors.modalidad ? 'is-invalid' : ''}`}
+      placeholder="Modalidad (opcional)"
+      {...register('modalidad')}
+    />
+    {errors.modalidad && <div className="invalid-feedback">{errors.modalidad.message}</div>}
+  </div>
+
+  {/* Horario */}
+  <div className="mb-2">
+    <input
+      type="text"
+      className={`form-control ${errors.horario ? 'is-invalid' : ''}`}
+      placeholder="Horario *"
+      {...register('horario')}
+    />
+    {errors.horario && <div className="invalid-feedback">{errors.horario.message}</div>}
+  </div>
+
+  {/* Contacto */}
+  <div className="mb-2">
+    <input
+      type="text"
+      className={`form-control ${errors.contacto ? 'is-invalid' : ''}`}
+      placeholder="Contacto *"
+      {...register('contacto')}
+    />
+    {errors.contacto && <div className="invalid-feedback">{errors.contacto.message}</div>}
+  </div>
+
+  {/* Logo */}
+  <div className="mb-2">
+    <input
+      type="text"
+      className={`form-control ${errors.logo ? 'is-invalid' : ''}`}
+      placeholder="Logo URL (opcional)"
+      {...register('logo')}
+    />
+    {errors.logo && <div className="invalid-feedback">{errors.logo.message}</div>}
+  </div>
+
+  <small className="text-muted d-block mb-3">* Campos obligatorios</small>
+  <div className="d-flex gap-2">
+    <button
+      type="submit"
+      className="btn btn-bordo flex-grow-1"
+      disabled={isSubmitting}
+    >
+      <i className={`bi ${modoEdicion ? 'bi-check-lg' : 'bi-plus-lg'} me-1`}></i>
+      {modoEdicion ? 'Guardar Cambios' : 'Agregar Oferta'}
+    </button>
+    <button
+      type="button"
+      className="btn btn-secondary"
+      onClick={() => {
+        setMostrarFormulario(false);
+        limpiarFormulario();
+        reset();
+      }}
+    >
+      Cancelar
+    </button>
+  </div>
+</form>
             </div>
           )}
         </>

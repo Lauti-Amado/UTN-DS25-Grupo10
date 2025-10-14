@@ -1,6 +1,5 @@
-
 import prisma from "../config/prisma";
-import { Formulario } from "../generated/prisma";
+import { Formulario } from "@prisma/client";
 import { CreateOfertaRequest, UpdateOfertaResquest, Oferta } from "../types/ofertas.types";
 
 // Obtener todas las ofertas

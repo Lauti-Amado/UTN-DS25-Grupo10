@@ -1,6 +1,7 @@
 // FormularioPostulacionModal.jsx
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { API_URL } from '../config';
 
 export default function FormularioPostulacionModal({ show, handleClose, empresa }) {
   const [formData, setFormData] = useState({
@@ -89,7 +90,7 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/formularios/${empresa.id}`, {
+        const response = await fetch(`${API_URL}/formularios/${empresa.id}`, {
           method: "POST",
           body: formDataToSend,
           headers: {

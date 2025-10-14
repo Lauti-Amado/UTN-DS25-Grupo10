@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './PostulantesScrollBox.css';
+import { API_URL } from '../config';
+
 
 const PostulantesScrollBox = ({ empleadorId }) => {
   const [filtroTexto, setFiltroTexto] = useState('');
@@ -25,7 +27,7 @@ const PostulantesScrollBox = ({ empleadorId }) => {
       try {
         // Paso 1: Obtener todas las ofertas del empleador
         console.log('📡 Fetching ofertas del empleador...');
-        const resOfertas = await fetch(`http://localhost:3000/ofertas/empleador/${empleadorId}`);
+        const resOfertas = await fetch(`${API_URL}/ofertas/empleador/${empleadorId}`);
         const dataOfertas = await resOfertas.json();
         console.log('📦 Ofertas recibidas:', dataOfertas);
 
@@ -41,7 +43,7 @@ const PostulantesScrollBox = ({ empleadorId }) => {
         // Paso 2: Para cada oferta, obtener sus formularios (postulantes)
         const promesasFormularios = dataOfertas.data.map(oferta => {
           console.log(`📡 Fetching formularios para oferta ${oferta.id}...`);
-          return fetch(`http://localhost:3000/ofertas/${oferta.id}/formularios`)
+          return fetch(`${API_URL}/ofertas/${oferta.id}/formularios`)
             .then(res => res.json())
             .then(data => {
               console.log(`📦 Formularios de oferta ${oferta.id}:`, data);
@@ -312,7 +314,7 @@ const PostulantesScrollBox = ({ empleadorId }) => {
                     <label className="text-muted small">CURRÍCULUM</label>
                     <div className="d-flex gap-2">
                       <a
-                        href={`http://localhost:3000/uploads/${postulanteSeleccionado.curriculum}`}
+                        href={`${API_URL}/uploads/${postulanteSeleccionado.curriculum}`}
                         download
                         className="btn btn-danger flex-grow-1"
                         target="_blank"
@@ -322,7 +324,7 @@ const PostulantesScrollBox = ({ empleadorId }) => {
                         Descargar Currículum
                       </a>
                       <a
-                        href={`http://localhost:3000/uploads/${postulanteSeleccionado.curriculum}`}
+                        href={`${API_URL}/uploads/${postulanteSeleccionado.curriculum}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-outline-danger"

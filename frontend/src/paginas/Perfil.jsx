@@ -11,6 +11,7 @@ import Confirmar from '../componentes/confirmar'
 import styles from '../paginas/perfil.module.css';
 import { DatosContexto } from '../datosContext';
 import { useContext, useEffect } from 'react';
+import { API_URL } from '../config';
 
 export default function Perfil() {
  
@@ -34,7 +35,7 @@ export default function Perfil() {
       if (!usuarioLogueado || !usuarioLogueado.rolPostulante) return; 
 
       try {
-        const res = await fetch(`http://localhost:3000/proyectos/postulado/${usuarioLogueado.id}`);
+        const res = await fetch(`${API_URL}/proyectos/postulado/${usuarioLogueado.id}`);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         const json = await res.json();
 
@@ -51,7 +52,7 @@ export default function Perfil() {
   //Funcion para ELIMINAR PROYECTO
   const eliminarProyecto = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/proyectos/${id}`, {
+      const res = await fetch(`${API_URL}/proyectos/${id}`, {
         method: 'DELETE',
       });
       if (!res.ok) throw new Error("Error al eliminar proyecto");
@@ -68,7 +69,7 @@ export default function Perfil() {
   //funcion para MODIFICAR PROYECTO
   const modificarProyectoBD = async (id,nuevoNombre,nuevaDescripcion,nuevasTecnologias) => {
     try {
-      const res = await fetch(`http://localhost:3000/proyectos/${id}`, {
+      const res = await fetch(`${API_URL}/proyectos/${id}`, {
         method: 'PUT',
         headers: { "Content-Type":"application/json"},
         body:JSON.stringify({
@@ -107,7 +108,7 @@ export default function Perfil() {
 
   const agregarProyecto = async (nuevoproy) => {
     try {
-      const res = await fetch('http://localhost:3000/proyectos', {
+      const res = await fetch(`${API_URL}/proyectos`, {
         method: 'POST',
         headers: { "Content-Type":"application/json"},
         body:JSON.stringify({
@@ -163,7 +164,7 @@ export default function Perfil() {
 
       // Si hay fotoPerfil, construir la URL completa
       if (usuarioLogueado.fotoPerfil) {
-        setImagenPerfil(`http://localhost:3000${usuarioLogueado.fotoPerfil}`);
+        setImagenPerfil(`${API_URL}/${usuarioLogueado.fotoPerfil}`);
       } else {
         setImagenPerfil(imagen); // la imagen por defecto
       }
