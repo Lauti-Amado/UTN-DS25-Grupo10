@@ -8,6 +8,8 @@ export interface Usuario {
     fotoPerfil?: string | null;
     fechaNacimiento?: Date | null;
     descripcion?: string | null;
+    resetToken?: string | null;
+    expiracionToken?: Date | null;
 }
 
 // Crear un usuario. Acepta tanto para crear un postulante como a un empleador

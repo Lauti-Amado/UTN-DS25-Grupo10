@@ -15,9 +15,12 @@ router.get("/sugeridos", authenticate, usuarioController.getUsuariosSugeridos);
 router.get("/particulares/p", authenticate, authorize("ADMIN"), usuarioController.getAllUsuariosPostulantes);
 router.get("/particulares/e", authenticate, authorize("ADMIN"), usuarioController.getAllUsuariosEmpleadores);
 
-router.get("/", authenticate, authorize("ADMIN"), usuarioController.getAllUsuarios);
+router.get("/", authenticate, usuarioController.getAllUsuarios);
 router.get("/:id", authenticate, usuarioController.getUsuarioById);
 router.put("/:id", authenticate, upload.single('fotoPerfil'), validate(updateUsuarioSchema), usuarioController.updateUsuario);
 router.delete("/:id", authenticate, authorize("ADMIN"), usuarioController.deleteUsuario);
+router.post("/recuperar", usuarioController.recuperarContrasenaController);
+router.post("/reset-password", usuarioController.resetContrasenaController);
+
 
 export const usuarioRoutes = router;
