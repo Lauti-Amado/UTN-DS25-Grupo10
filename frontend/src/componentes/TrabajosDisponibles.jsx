@@ -1,70 +1,66 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import TrabajoCard from './TrabajoCard';
 import './TrabajosDisponibles.css';
 import FormularioPostulacionModal from './FormularioPostulacionModal';
 
-const trabajos= [
-  {
-    titulo: 'Frontend Developer',
-    sueldo: '$350.000',
-    imagen: 'data:image/jpeg;base64,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',
-  },
-  {
-    titulo: 'Diseñador UI/UX',
-    sueldo: '$310.000',
-    imagen: 'data:image/png;base64,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',
-  },
-  {
-    titulo: 'QA Tester',
-    sueldo: '$280.000',
-    imagen: 'https://cdn-icons-png.flaticon.com/512/4201/4201973.png',
-  },
-    {
-        titulo: 'Backend Developer',
-        sueldo: '$400.000',
-        imagen: 'https://cdn-icons-png.flaticon.com/512/4201/4201974.png',
-    },
-    {
-        titulo: 'Data Scientist',
-        sueldo: '$450.000',
-        imagen: 'https://cdn-icons-png.flaticon.com/512/4201/4201975.png',
-    },
-    {
-        titulo: 'DevOps Engineer',
-        sueldo: '$500.000',
-        imagen: 'https://cdn-icons-png.flaticon.com/512/4201/4201976.png',
-    },
-    {
-        titulo: 'Full Stack Developer',
-        sueldo: '$550.000',
-        imagen: 'https://cdn-icons-png.flaticon.com/512/4201/4201977.png',
-    },
-];
 
 const TrabajosDisponibles = () => {
+  const [trabajos, setTrabajos] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [trabajoSeleccionado, setTrabajoSeleccionado] = useState(null);
+
+  useEffect(() => {
+    const obtenerTrabajos = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3000/ofertas', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token && { Authorization: `Bearer ${token}` }), 
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setTrabajos(data.data || []);
+      } catch (error) {
+        console.error('Error al obtener las ofertas:', error);
+      }
+    };
+
+    obtenerTrabajos();
+  }, []);
+
 
   const abrirFormulario = (trabajo) => {
     setTrabajoSeleccionado(trabajo);
     setModalVisible(true);
   };
+
   return (
     <div className="trabajos-container container">
       <h2 className="my-4">Trabajos Disponibles</h2>
       <div className="scroll-box">
         <div className="trabajos-grid">
-          {trabajos.map((trabajo, index) => (
-            <TrabajoCard
-              key={index}
-              EsTrabajo={true}
-              titulo={trabajo.titulo}
-              sueldo={trabajo.sueldo}
-              rol={""}
-              imagen={trabajo.imagen}
-              onPostular={() => abrirFormulario(trabajo)}
-            />
-          ))}
+          {trabajos.length > 0 ? (
+            trabajos.map((trabajo, index) => (
+              <TrabajoCard
+                key={index}
+                EsTrabajo={true}
+                titulo={trabajo.titulo}
+                sueldo={trabajo.sueldo ? `$${trabajo.sueldo}` : 'A convenir'}
+                rol={trabajo.rol || ''}
+                imagen={trabajo.imagen || 'https://cdn-icons-png.flaticon.com/512/4201/4201973.png'}
+                onPostular={() => abrirFormulario(trabajo)}
+              />
+            ))
+          ) : (
+            <p>No hay trabajos disponibles por el momento.</p>
+          )}
         </div>
       </div>
       <FormularioPostulacionModal
