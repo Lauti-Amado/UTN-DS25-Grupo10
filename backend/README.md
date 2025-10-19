@@ -92,4 +92,21 @@ El objetivo principal del backend es implementar las funcionalidades de la gesti
 - Se uso zod para la validación de los endpoints mas importantes.
 - El proyecto se encuentra escalable para futuras mejoras.
 
+  
+**TESTING:**
+
+Archivo "usuario.service.test.ts". Aca se definieron dos tests
+       Test 1: Debe retornar un usuario cuando existe. Prepara un usuario falso con el mockUser y llama a la función
+               getUsuariobyId() para verificar que el resultado sea el usuario existente y llame bien a Prisma.
+       Test 2: Simula que el findUnique usado en getUsuariobyId() no encontró a ningún usuario como el ingresado y si no lo encuentra, la función lanza el error con el                     mensaje "Usuario no encontrado"
+
+Archivo "usuario.routes.test.ts". Acá se definieron dos tests
+      Test 3: Se devuelve una lista de usuarios. En primera instancia, se define un usuario falso, el cual debe estar logueado
+              y ser administrador. Dado queel usuario esté logueado y sea administrador, se pone a prueba la Api Get /usuarios, la cual debe devolver una lista de 
+              usuarios (también falsos).
+      Test 4: Se llama a la Api GET /usuarios/9999, la cual simula que el usuario con id 9999 no existe y por lo tanto verifica que la Api responda adecuadamente 
+              con un error 404 y un mensaje de “Usuario no encontrado”.
+
+
+  Estos tests pueden probarse con el comando "npm test"
 
