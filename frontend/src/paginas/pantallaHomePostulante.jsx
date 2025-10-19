@@ -6,6 +6,8 @@ import { DatosContexto } from '../datosContext';
 import TrabajosDisponibles from '../componentes/TrabajosDisponibles';
 import PostulantesScrollBox from '../componentes/PostulantesScrollBox';
 import { Button } from 'react-bootstrap';
+import { IoNewspaper } from "react-icons/io5";
+
 
 // 🎨 Importamos los estilos personalizados
 import './pantallaHomePostulante.css';
@@ -38,6 +40,7 @@ export default function PantallaHomePostulante() {
           <div>
             <h2 className='section-title'>Empleador</h2>
 
+            <h4 className="animate__animated animate__fadeInUp mb-4">Tus Ofertas <IoNewspaper /></h4>
             <div className="animate__animated animate__fadeInUp mb-4">
               <OfertasCarousel />
             </div>

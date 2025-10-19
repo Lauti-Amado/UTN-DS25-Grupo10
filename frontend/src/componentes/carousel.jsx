@@ -15,33 +15,36 @@ function OfertasCarousel() {
   // Cargar ofertas o postulantes según el rol
   useEffect(() => {
     const cargarDatos = async () => {
-      if (usuarioLogueado && usuarioLogueado.rolPostulante === false) {
-        // Si es empleador -> mostrar postulantes mock
-        const postulantesConvertidos = datosPostulantes.map((p, index) => ({
-          id: index,
-          titulo: `${p.nombre} ${p.apellido}`,
-          categoria: p.puesto,
-          descripcion: `Postulante para el puesto de ${p.puesto}`,
-        }));
-        setOfertas(postulantesConvertidos);
+      if (!usuarioLogueado) return;
+      try {
+      if (usuarioLogueado.rolPostulante === false) {
+        // 🔹 Si es EMPLEADOR → mostrar SOLO sus ofertas
+        const resp = await fetch(`${API_URL}/ofertas/empleador/${usuarioLogueado.id}`);
+        const data = await resp.json();
+        if (data.success) {
+          setOfertas(data.data);
+        } else {
+          setOfertas([]);
+        }
       } else {
-        // Si es postulante -> traer ofertas desde backend
-        try {
-          const resp = await fetch(`${API_URL}/ofertas`);
-          const data = await resp.json();
-          if (data.success) {
-            setOfertas(data.data);
-          } else {
-            setOfertas([]);
-          }
-        } catch (err) {
-          console.error("Error al cargar ofertas:", err);
+        // 🔹 Si es POSTULANTE → mostrar TODAS las ofertas
+        const resp = await fetch(`${API_URL}/ofertas`);
+        const data = await resp.json();
+        if (data.success) {
+          setOfertas(data.data);
+        } else {
           setOfertas([]);
         }
       }
-    };
-
+    } catch (err) {
+      console.error("Error al cargar ofertas:", err);
+      setOfertas([]);
+    }
+  };
+    
     cargarDatos();
+
+ 
   }, [usuarioLogueado]);
 
   // Ajustar cantidad de items por slide según ancho
@@ -84,6 +87,7 @@ function OfertasCarousel() {
 
   return (
     <div className="carousel-wrapper position-relative">
+      
       <Carousel
         className="carrusel-empleos"
         interval={5000}
