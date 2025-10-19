@@ -19,7 +19,7 @@ export default function PantallaHomePostulante() {
         usuarioLogueado.rolPostulante ? (
           // 🧑‍💼 Vista del Postulante
           <div>
-            <h2>Postulante</h2>
+            <h2 className='section-title'>Postulante</h2>
 
             {/* 🎠 Carrusel animado de ofertas */}
             <div className="animate__animated animate__fadeInUp mb-4">
@@ -28,15 +28,15 @@ export default function PantallaHomePostulante() {
 
 
             {/* 💼 Sección de trabajos disponibles */}
-            <div className="trabajos-section">
+            <div className="trabajos-section animate__animated animate__fadeInUp">
               <TrabajosDisponibles />
             </div>
           </div>
-          
+
         ) : (
           // 🏭 Vista del Empleador
           <div>
-            <h2>Empleador</h2>
+            <h2 className='section-title'>Empleador</h2>
 
             <div className="animate__animated animate__fadeInUp mb-4">
               <OfertasCarousel />

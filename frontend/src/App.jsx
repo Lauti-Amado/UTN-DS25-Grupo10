@@ -9,7 +9,6 @@ import PantallaHomePostulante from './paginas/pantallaHomePostulante.jsx';
 import PantallaTrabajo from './paginas/pantallaTrabajos.jsx';
 import Perfil from './paginas/Perfil.jsx';
 import { DatosProvider, DatosContexto } from './datosContext.jsx';
-import EmpresasDestacadas from './paginas/empresasDestacadas.jsx';
 import ResetPassword from './componentes/recuperar.jsx';
 
 
@@ -30,7 +29,6 @@ function AppContent() {
             <Route path="/inicio" element={<PantallaHomePostulante />} />
             <Route path="/trabajos" element={<PantallaTrabajo />} />
             <Route path="/perfil" element={<Perfil />} />
-            <Route path="/empresas-destacadas" element={<EmpresasDestacadas />} />
             <Route path="*" element={<Navigate to="/inicio" />} />
           </Routes>
         </div>
