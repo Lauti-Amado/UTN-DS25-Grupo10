@@ -43,7 +43,7 @@ const TrabajosDisponibles = () => {
 
   return (
     <div className="trabajos-container container">
-      <h2 className="my-4">Trabajos Disponibles</h2>
+      <h2 className="section-title ">Trabajos Disponibles</h2>
       <div className="scroll-box">
         <div className="trabajos-grid">
           {trabajos.length > 0 ? (

@@ -123,8 +123,8 @@ function NavBar({ onLogout }) {
               value={busquedaGlobal}
               onChange={(e) => setBusquedaGlobal(e.target.value)}
             />
-            <Button variant="outline-danger" type="submit">
-              <i className="bi bi-search"></i>
+            <Button variant="outline-danger" type="submit" className="botonLupaResaltada">
+              <i className="bi bi-search" style={{ color: "white" }}></i>
             </Button>
           </Form>
 

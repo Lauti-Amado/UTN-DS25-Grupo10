@@ -99,24 +99,6 @@ body {
   text-align: center;
 }
 
-.rol img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  transition: transform 0.3s ease;
-}
-
-.rol:hover img {
-  transform: scale(1.05);
-  border-color: #d13a3a;
-}
-
-.rolSeleccionado img {
-  border: 2px solid #d13a3a !important;
-  transform: scale(1.05);
-}
 
 .datos {
   width: 90%;

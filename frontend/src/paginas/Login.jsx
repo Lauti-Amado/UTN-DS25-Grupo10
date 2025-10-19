@@ -3,8 +3,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './Login.module.css';
 import logo from '../assets/RoDi-LogoPeque3.jpg';
-import postulanteImg from '../assets/Empleado.png';
-import empleadorImg from '../assets/Empleador.png';
 import { BiCog } from "react-icons/bi";
 import { DatosContexto } from '../datosContext';
 import { setToken } from '../helpers/auth';
@@ -140,23 +138,6 @@ export default function Login({ onLogin }) {
           {/* --- LOGIN --- */}
           {vista === 'login' && (
             <>
-              <div className={styles.opcionesRol}>
-                <div
-                  className={`${styles.rol} ${rolSeleccionado === 'postulante' ? styles.rolSeleccionado : ''}`}
-                  onClick={() => setRolSeleccionado('postulante')}
-                >
-                  <img src={postulanteImg} alt="Postulante" />
-                  <p>Postulante</p>
-                </div>
-                <div
-                  className={`${styles.rol} ${rolSeleccionado === 'empleador' ? styles.rolSeleccionado : ''}`}
-                  onClick={() => setRolSeleccionado('empleador')}
-                >
-                  <img src={empleadorImg} alt="Empleador" />
-                  <p>Empleador</p>
-                </div>
-              </div>
-
               <form onSubmit={handleSubmitLogin(onSubmitLogin)}>
                 <div className={styles.datos}>
                   <label htmlFor="email">Email</label>
