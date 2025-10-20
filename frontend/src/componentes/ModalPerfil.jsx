@@ -187,11 +187,13 @@ function ModalPerfil({ usuarioId, onCerrar }) {
                   )}
                 </div>
               </div>
-
+              
               {/* Proyectos del usuario */}
+              {usuario.rolPostulante === true && (
+
               <div className="mt-4">
                 <h4 className="mb-3">Proyectos ({proyectos.length})</h4>
-                {proyectos.length === 0 ? (
+                {(proyectos.length === 0 ) ? (
                   <p className="text-muted">Este usuario no tiene proyectos públicos.</p>
                 ) : (
                   <div className="row">
@@ -224,6 +226,7 @@ function ModalPerfil({ usuarioId, onCerrar }) {
                   </div>
                 )}
               </div>
+              )}
             </div>
           )}
         </div>
