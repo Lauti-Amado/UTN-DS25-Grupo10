@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext , useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './Login.module.css';
@@ -16,7 +16,7 @@ export default function Login({ onLogin }) {
   const [nombreUsuario, setUsuario] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
   const [vista, setVista] = useState("login");
-
+  const inputsRef = useRef([]);
   const [mostrarModalError, setMostrarModalError] = useState(false);
   const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
   const [mostrarModalUsuarioExistente, setMostrarModalUsuarioExistente] = useState(false);
@@ -124,6 +124,33 @@ export default function Login({ onLogin }) {
       setErroresRegistro([{ field: "general", message: "Error al comunicarse con el servidor" }]);
     }
   };
+  
+  function handleInput(e, index) {
+    const value = e.target.value;
+    if (value && index < inputsRef.current.length - 1) {
+      inputsRef.current[index + 1].focus();
+    }
+  }
+  
+  function renderCodeInputs() {
+    return (
+      <div className={styles.codeInputs}>
+        {[...Array(6)].map((_, i) => (
+          <input
+            key={i}
+            type="text"
+            maxLength="1"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            className={styles.input}
+            ref={(el) => (inputsRef.current[i] = el)}
+            onChange={(e) => handleInput(e, i)}
+          />
+        ))}
+      </div>
+    );
+  }
+
 
   return (
     <div className={`${styles.loginPageWrapper} ${temaOscuro ? styles.temaOscuro : ''}`}>
@@ -360,7 +387,13 @@ export default function Login({ onLogin }) {
                     }}></button>
                   </div>
                   <div className="modal-body">
+                    
                     <p>Se ha enviado un correo con los pasos para recuperar tu contraseña.</p>
+                    <div className={styles.container}>
+                      <h2>Ingresá tu código de 6 dígitos</h2>
+                      {renderCodeInputs()}
+                    </div>
+
                   </div>
                   <div className="modal-footer">
                     <button className="btn btn-info" onClick={() => {

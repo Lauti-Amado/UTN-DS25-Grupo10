@@ -303,11 +303,11 @@ export async function recuperarContrasena(email: string) {
   });
 
   const resetLink = `http://localhost:3000/reset-password/${token}`;
-
+  const numeroValidador : number[] = Array.from({ length: 6 }, () => Math.floor(Math.random() * 10)) ;
   await transporter.sendMail({
     to: email,
     subject: "Recuperación de contraseña",
-    html: `<p>Para restablecer tu contraseña haz click <a href="${resetLink}">aquí</a>.</p>`,
+    html: `<p> Ingresá el número ${numeroValidador} para poder modificar tu contraseña </p>`,
   });
 
   return { message: "Correo de recuperación enviado" };

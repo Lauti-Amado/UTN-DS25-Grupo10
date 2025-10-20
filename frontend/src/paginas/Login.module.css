@@ -304,3 +304,30 @@ select option {
   box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
   outline: none;
 }
+
+.container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.codeInputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.input {
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: #007bff;
+  outline: none;
+}
