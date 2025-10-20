@@ -102,10 +102,13 @@ Archivo "usuario.service.test.ts". Aca se definieron dos tests
 
 Archivo "usuario.routes.test.ts". Acá se definieron dos tests
       Test 3: Se devuelve una lista de usuarios. En primera instancia, se define un usuario falso, el cual debe estar logueado
-              y ser administrador. Dado queel usuario esté logueado y sea administrador, se pone a prueba la Api Get /usuarios, la cual debe devolver una lista de 
+              y ser administrador. Dado que el usuario esté logueado y sea administrador, se pone a prueba la Api Get /usuarios, la cual debe devolver una lista de 
               usuarios (también falsos).
       Test 4: Se llama a la Api GET /usuarios/9999, la cual simula que el usuario con id 9999 no existe y por lo tanto verifica que la Api responda adecuadamente 
               con un error 404 y un mensaje de “Usuario no encontrado”.
+
+Archivo "proyecto.service.test.ts" Aca se definió un test
+      Test 1: En primer lugar se crea un mockUsuario (usuario de prueba) y un mockProyecto(proyecto de prueba cuyo creador es el mockUsuario). Luego se ejecuta la funcion getProyectoById pasando como parámetro un id de proyecto. Si existe el proyecto con el ID pasado se devuelve junto a la información del usuario creador, y de lo contrario se muestra que hubo un error.
 
 
   Estos tests pueden probarse con el comando "npm test"
