@@ -323,7 +323,7 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
       setEmailRecuperar(emailRecuperar); 
 
       try {
-        const res = await fetch("http://localhost:3000/usuarios/recuperar", {
+          const res = await fetch(`${API_URL}/usuarios/recuperar`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ mail: emailRecuperar })
