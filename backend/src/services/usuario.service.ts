@@ -275,7 +275,6 @@ export async function loginUsuario(email: string, contraseña: string) {
 
 
 export async function recuperarContrasena(email: string) {
-  // 1️⃣ Buscar usuario
   const usuario = await prisma.usuario.findUnique({ where: { mail: email } });
   if (!usuario) {
     const error = new Error("Correo no registrado") as any;
@@ -283,35 +282,74 @@ export async function recuperarContrasena(email: string) {
     throw error;
   }
 
-  // 2️⃣ Generar token temporal válido por 1 hora
-  const token = crypto.randomBytes(32).toString("hex");
-  const expiracionToken = new Date(Date.now() + 3600000);
+  // ✅ Generar código de 6 dígitos (el que se envía y se valida)
+  const codigoValidador = Array.from({ length: 6 }, () => Math.floor(Math.random() * 10)).join('');
 
-  // 3️⃣ Guardar token y expiración en BD
+  const expiracionToken = new Date(Date.now() + 3600000); // 1 hora
+
+  // ✅ Guardar ESE código en la BD (no un token criptográfico)
   await prisma.usuario.update({
     where: { id: usuario.id },
-    data: { resetToken: token, expiracionToken },
+    data: { 
+      resetToken: codigoValidador, // 👈 aquí va el código de 6 dígitos
+      expiracionToken 
+    },
   });
 
-  // 4️⃣ Configurar transporte de correo
+  // ✅ Enviar ese mismo código
   const transporter = nodemailer.createTransport({
-    service: "Gmail", // o tu servicio SMTP
+    service: "Gmail",
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
   });
 
-  const resetLink = `http://localhost:3000/reset-password/${token}`;
-  const numeroValidador : number[] = Array.from({ length: 6 }, () => Math.floor(Math.random() * 10)) ;
   await transporter.sendMail({
     to: email,
     subject: "Recuperación de contraseña",
-    html: `<p> Ingresá el número ${numeroValidador} para poder modificar tu contraseña </p>`,
+    html: `<p>Ingresá el número ${codigoValidador} para poder modificar tu contraseña</p>`,
   });
 
   return { message: "Correo de recuperación enviado" };
 }
+
+// Verificar código de recuperación
+export async function verificarCodigo(email: string, codigo: string) {
+  // Buscar usuario
+  const usuario = await prisma.usuario.findUnique({ where: { mail: email } });
+
+  if (!usuario) {
+    const error = new Error("Correo no registrado") as any;
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // Verificar si tiene un código y expiración
+  if (!usuario.resetToken || !usuario.expiracionToken) {
+    const error = new Error("No se ha solicitado recuperación de contraseña") as any;
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Verificar expiración del código
+  if (usuario.expiracionToken < new Date()) {
+    const error = new Error("Código expirado") as any;
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Comparar código ingresado con el guardado
+  if (usuario.resetToken !== codigo) {
+    const error = new Error("Código incorrecto") as any;
+    error.statusCode = 401;
+    throw error;
+  }
+
+  // Si todo está bien
+  return { message: "Código verificado correctamente" };
+}
+
 
 export async function resetContrasena(token: string, nuevaContrasena: string) {
   // 1️⃣ Buscar usuario por token y verificar expiración

@@ -215,6 +215,27 @@ export async function recuperarContrasenaController(
   }
 }
 
+export async function verificarCodigoController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { mail, codigo } = req.body;
+
+  try {
+    const result = await usuarioService.verificarCodigo(mail, codigo);
+    return res.status(200).json({
+      success: true,
+      message: result.message,
+    });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Error al verificar el código",
+    });
+  }
+}
+
 export async function resetContrasenaController(
   req: Request,
   res: Response,
