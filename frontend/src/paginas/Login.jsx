@@ -26,6 +26,11 @@ export default function Login({ onLogin }) {
   const [mostrarModalRecuperacionError, setMostrarModalRecuperacionError] = useState(false);
   const [mostrarModalRecuperacion, setMostrarModalRecuperacion] = useState(false);
   const [mostrarModalUsuarioDuplicado, setMostrarModalUsuarioDuplicado] = useState(false);
+  const [codigoVerificacion, setCodigoVerificacion] = useState("");
+const [codigoError, setCodigoError] = useState("");
+const [mostrarCambioContrasena, setMostrarCambioContrasena] = useState(false);
+const [emailRecuperar, setEmailRecuperar] = useState("");
+
 
   const [mostrarModalConfiguracion, setMostrarModalConfiguracion] = useState(false);
   const [temaOscuro, setTemaOscuro] = useState(false);
@@ -150,6 +155,37 @@ export default function Login({ onLogin }) {
       </div>
     );
   }
+
+  async function verificarCodigo() {
+  const codigo = inputsRef.current.map((input) => input.value).join("");
+  setCodigoVerificacion(codigo);
+  setCodigoError("");
+
+  if (codigo.length !== 6) {
+    setCodigoError("El código debe tener 6 dígitos");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/usuarios/verificar-codigo`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mail: emailRecuperar, codigo }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setMostrarCambioContrasena(true); // ✅ habilita la vista de cambio de contraseña
+    } else {
+      setCodigoError(data.message || "Código inválido o expirado");
+    }
+  } catch (err) {
+    console.error(err);
+    setCodigoError("Error al verificar el código");
+  }
+}
+
 
 
   return (
@@ -284,6 +320,7 @@ export default function Login({ onLogin }) {
     onSubmit={async (e) => {
       e.preventDefault();
       const emailRecuperar = e.target.emailRecuperar.value;
+      setEmailRecuperar(emailRecuperar); 
 
       try {
         const res = await fetch("http://localhost:3000/usuarios/recuperar", {
@@ -390,9 +427,18 @@ export default function Login({ onLogin }) {
                     
                     <p>Se ha enviado un correo con los pasos para recuperar tu contraseña.</p>
                     <div className={styles.container}>
-                      <h2>Ingresá tu código de 6 dígitos</h2>
-                      {renderCodeInputs()}
-                    </div>
+  <h2>Ingresá tu código de 6 dígitos</h2>
+  {renderCodeInputs()}
+  {codigoError && <p className={styles.error}>{codigoError}</p>}
+  <button
+    type="button"
+    className={styles.submit}
+    onClick={verificarCodigo}
+  >
+    Verificar código
+  </button>
+</div>
+
 
                   </div>
                   <div className="modal-footer">
@@ -405,6 +451,68 @@ export default function Login({ onLogin }) {
               </div>
             </div>
           )}
+
+         {mostrarCambioContrasena && (
+  <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-content">
+        <div className="modal-header bg-success text-white">
+          <h5 className="modal-title">Cambiar contraseña</h5>
+          <button type="button" className="btn-close" onClick={() => setMostrarCambioContrasena(false)}></button>
+        </div>
+        <div className="modal-body">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const nueva = e.target.nueva.value;
+              const confirmar = e.target.confirmar.value;
+
+              if (nueva !== confirmar) {
+                setCodigoError("Las contraseñas no coinciden");
+                return;
+              }
+
+              // ✅ Aquí usamos el código que el usuario ingresó (guardado en codigoVerificacion)
+              const token = codigoVerificacion; // este es el código de 6 dígitos
+
+              try {
+                const res = await fetch(`${API_URL}/usuarios/reset-password`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ 
+                    token, 
+                    nuevaContrasena: nueva 
+                  }),
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                  alert("Contraseña cambiada correctamente");
+                  setMostrarCambioContrasena(false);
+                  setVista("login");
+                } else {
+                  setCodigoError(data.message || "Error al cambiar la contraseña");
+                }
+              } catch (err) {
+                console.error(err);
+                setCodigoError("Error al comunicarse con el servidor");
+              }
+            }}
+          >
+            <label htmlFor="nueva">Nueva contraseña</label>
+            <input type="password" id="nueva" name="nueva" required />
+            <label htmlFor="confirmar">Confirmar contraseña</label>
+            <input type="password" id="confirmar" name="confirmar" required />
+            {codigoError && <p className={styles.error}>{codigoError}</p>}
+            <button type="submit" className={styles.submit}>Guardar nueva contraseña</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
           {mostrarModalRecuperacionError && (
             <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
