@@ -8,11 +8,13 @@ import { DatosContexto } from '../datosContext';
 import { setToken } from '../helpers/auth';
 import { loginSchema } from '../validations/loginSchema';
 import { registroSchema } from '../validations/registroSchema';
+import { cambioContrasenaSchema } from '../validations/cambioContraseña';
 import { API_URL } from '../config';
 
 
 
 export default function Login({ onLogin }) {
+  const [mostrarModalCambioExitoso, setMostrarModalCambioExitoso] = useState(false);
   const [nombreUsuario, setUsuario] = useState('');
   const [rolSeleccionado, setRolSeleccionado] = useState('');
   const [vista, setVista] = useState("login");
@@ -53,6 +55,18 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
   } = useForm({
     resolver: yupResolver(registroSchema)
   });
+
+ const {
+  register: registerCambio,
+  handleSubmit: handleSubmitCambio,
+  watch,
+  formState: { errors: errorsCambio }
+} = useForm({
+  resolver: yupResolver(cambioContrasenaSchema),
+  mode: "onChange" // <- esto permite validación en tiempo real
+});
+
+  
 
   // Iniciar sesion con Yup
   const onSubmitLogin = async (data) => {
@@ -427,53 +441,37 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
                     
                     <p>Se ha enviado un correo con los pasos para recuperar tu contraseña.</p>
                     <div className={styles.container}>
-  <h2>Ingresá tu código de 6 dígitos</h2>
-  {renderCodeInputs()}
-  {codigoError && <p className={styles.error}>{codigoError}</p>}
-  <button
-    type="button"
-    className={styles.submit}
-    onClick={verificarCodigo}
-  >
-    Verificar código
-  </button>
-</div>
-
-
-                  </div>
-                  <div className="modal-footer">
-                    <button className="btn btn-info" onClick={() => {
-                      setMostrarModalRecuperacion(false);
-                      setVista('login');
-                    }}>Aceptar</button>
-                  </div>
+                <h2>Ingresá tu código de 6 dígitos</h2>
+                {renderCodeInputs()}
+                {codigoError && <p className={styles.error}>{codigoError}</p>}
+                <button
+                type="button"
+                className={styles.submit}
+                onClick={verificarCodigo}
+                  >
+                Verificar código
+               </button>
+               </div>
+               </div>
+                  
                 </div>
               </div>
             </div>
           )}
 
-         {mostrarCambioContrasena && (
+          
+{mostrarCambioContrasena && (
   <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
     <div className="modal-dialog modal-dialog-centered" role="document">
       <div className="modal-content">
-        <div className="modal-header bg-success text-white">
+        <div className="modal-header bg-primary text-white">
           <h5 className="modal-title">Cambiar contraseña</h5>
           <button type="button" className="btn-close" onClick={() => setMostrarCambioContrasena(false)}></button>
         </div>
         <div className="modal-body">
           <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const nueva = e.target.nueva.value;
-              const confirmar = e.target.confirmar.value;
-
-              if (nueva !== confirmar) {
-                setCodigoError("Las contraseñas no coinciden");
-                return;
-              }
-
-              // ✅ Aquí usamos el código que el usuario ingresó (guardado en codigoVerificacion)
-              const token = codigoVerificacion; // este es el código de 6 dígitos
+            onSubmit={handleSubmitCambio(async (data) => {
+              const token = codigoVerificacion;
 
               try {
                 const res = await fetch(`${API_URL}/usuarios/reset-password`, {
@@ -481,39 +479,62 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ 
                     token, 
-                    nuevaContrasena: nueva 
+                    nuevaContrasena: data.nueva 
                   }),
                 });
 
-                const data = await res.json();
+                const responseData = await res.json();
 
                 if (res.ok) {
-                  alert("Contraseña cambiada correctamente");
+                  // ✅ Mostrar modal de éxito en lugar de alert
                   setMostrarCambioContrasena(false);
-                  setVista("login");
+                  setMostrarModalCambioExitoso(true);
                 } else {
-                  setCodigoError(data.message || "Error al cambiar la contraseña");
+                  setCodigoError(responseData.message || "Error al cambiar la contraseña");
                 }
               } catch (err) {
                 console.error(err);
                 setCodigoError("Error al comunicarse con el servidor");
               }
-            }}
+            })}
           >
-            <label htmlFor="nueva">Nueva contraseña</label>
-            <input type="password" id="nueva" name="nueva" required />
-            <label htmlFor="confirmar">Confirmar contraseña</label>
-            <input type="password" id="confirmar" name="confirmar" required />
-            {codigoError && <p className={styles.error}>{codigoError}</p>}
-            <button type="submit" className={styles.submit}>Guardar nueva contraseña</button>
+            <div className={styles.datos}>
+              <label htmlFor="nueva">Nueva contraseña</label>
+              <input
+                type="password"
+                id="nueva"
+                placeholder="********"
+                {...registerCambio("nueva")}
+                className={errorsCambio.nueva ? styles.inputError : ''}
+              />
+              {errorsCambio.nueva && (
+                <span className={styles.error}>{errorsCambio.nueva.message}</span>
+              )}
+
+              <label htmlFor="confirmar">Confirmar contraseña</label>
+              <input
+                type="password"
+                id="confirmar"
+                placeholder="********"
+                {...registerCambio("confirmar")}
+                className={errorsCambio.confirmar ? styles.inputError : ''}
+              />
+              {errorsCambio.confirmar && (
+                <span className={styles.error}>{errorsCambio.confirmar.message}</span>
+              )}
+
+              {codigoError && <span className={styles.error}>{codigoError}</span>}
+
+              <button type="submit" className={styles.submit}>
+                Guardar cambios
+              </button>
+            </div>
           </form>
         </div>
       </div>
     </div>
   </div>
 )}
-
-
           {mostrarModalRecuperacionError && (
             <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
               <div className="modal-dialog modal-dialog-centered" role="document">
@@ -621,6 +642,34 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
           <br />
         </div>
       </div>
+
+      {/* Modal: Contraseña cambiada con éxito */}
+{mostrarModalCambioExitoso && (
+  <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-content">
+        <div className="modal-header bg-primary text-white">
+          <h5 className="modal-title">¡Listo!</h5>
+          <button type="button" className="btn-close" onClick={() => setMostrarModalCambioExitoso(false)}></button>
+        </div>
+        <div className="modal-body">
+          <p>Tu contraseña ha sido actualizada con éxito.</p>
+        </div>
+        <div className="modal-footer">
+          <button 
+            className="btn btn-primary" 
+            onClick={() => {
+              setMostrarModalCambioExitoso(false);
+              setVista("login");
+            }}
+          >
+            Aceptar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }
