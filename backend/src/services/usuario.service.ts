@@ -2,8 +2,8 @@ import prisma from "../config/prisma";
 import bcrypt from "bcrypt";
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import { CreateUsuarioRequest, UpdateUsuarioRequest } from "../types/usuarios.types";
-import nodemailer from "nodemailer";
 import crypto from "crypto";
+import { Resend } from "resend";
 
 // Obtener todos los usuarios (sin contraseña)
 export async function getAllUsuarios(limit: number = 10) {
@@ -273,6 +273,7 @@ export async function loginUsuario(email: string, contraseña: string) {
   return { usuario: usuarioSinPass, token };
 }
 
+const resend = new Resend(process.env.RESEND_API_KEY); 
 
 export async function recuperarContrasena(email: string) {
   const usuario = await prisma.usuario.findUnique({ where: { mail: email } });
@@ -296,20 +297,15 @@ export async function recuperarContrasena(email: string) {
     },
   });
 
-  // ✅ Enviar ese mismo código
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
-  await transporter.sendMail({
-    to: email,
-    subject: "Recuperación de contraseña",
-    html: `<p>Ingresá el número ${codigoValidador} para poder modificar tu contraseña</p>`,
-  });
+  // ✅ Enviar ese mismo código con RESEND
+await resend.emails.send({
+  from: "noreply@resend.dev", // remitente automático
+  to: email,
+  subject: "Recuperación de contraseña",
+  html: `<p>Ingresá el número <b>${codigoValidador}</b> para poder modificar tu contraseña</p>`,
+});
+
 
   return { message: "Correo de recuperación enviado" };
 }
@@ -382,11 +378,5 @@ export async function resetContrasena(token: string, nuevaContrasena: string) {
   return { message: "Contraseña restablecida correctamente" };
 }
 
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  auth: {
-    user: process.env.EMAIL_USER, // tu email completo
-    pass: process.env.EMAIL_PASS, // la contraseña de 16 dígitos que generaste
-  },
-});
+
 
