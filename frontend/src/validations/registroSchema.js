@@ -32,5 +32,5 @@ export const registroSchema = yup.object().shape({
   rol: yup
     .string()
     .required('Debe seleccionar un rol')
-    .oneOf(['postulante', 'empleador'], 'Debe seleccionar un rol válido')
+    .oneOf(['postulante', 'empleador'], 'Debe seleccionar un rol válido'),
 });
