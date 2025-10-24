@@ -328,12 +328,12 @@ export default function Perfil() {
                     }}
                   >
                     <div className="card-body d-flex flex-column">
-                      <h5 className="card-title">{proyecto.nombre}</h5>
+                      <h5 className="card-title fs-2">{proyecto.nombre}</h5>
                       <p className="card-text">{proyecto.descripcion}</p>
                       
                       {/* Tecnologías */}
                       <div className="mt-2">
-                        <strong>Tecnologías:</strong>
+                        <p className={styles.tecnologias}> Tecnologías: </p>
                         <div className="mt-1 d-flex flex-wrap gap-2">
                           {proyecto.tecnologiasUsadas.split(",").map((tec, i) => (
                             <span
