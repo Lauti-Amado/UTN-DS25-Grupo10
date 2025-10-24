@@ -165,8 +165,8 @@ function ModalPerfil({ usuarioId, onCerrar }) {
                   />
                 </div>
                 <div className="col-md-9">
-                  <h3>{usuario.nombre}</h3>
-                  <p className="text-muted mb-2">@{usuario.nombreUsuario}</p>
+                  <h3 className="text-muted text-dark mb-2">{usuario.nombre}</h3>
+                  <p className="text-muted text-dark mb-2">@{usuario.nombreUsuario}</p>
                   <p className="text-muted mb-2">{usuario.mail}</p>
                   
                   {usuario.fechaNacimiento && (
@@ -181,7 +181,7 @@ function ModalPerfil({ usuarioId, onCerrar }) {
                   
                   {usuario.descripcion && (
                     <div className="mt-3">
-                      <h6>Descripción:</h6>
+                      <strong className="text-muted text-dark">Descripción:</strong>
                       <p className="text-muted">{usuario.descripcion}</p>
                     </div>
                   )}
@@ -192,7 +192,7 @@ function ModalPerfil({ usuarioId, onCerrar }) {
               {usuario.rolPostulante === true && (
 
               <div className="mt-4">
-                <h4 className="mb-3">Proyectos ({proyectos.length})</h4>
+                <h4 className="mb-3 text-dark">Proyectos ({proyectos.length})</h4>
                 {(proyectos.length === 0 ) ? (
                   <p className="text-muted">Este usuario no tiene proyectos públicos.</p>
                 ) : (
