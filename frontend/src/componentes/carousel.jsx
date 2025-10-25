@@ -14,37 +14,42 @@ function OfertasCarousel() {
 
   // Cargar ofertas o postulantes según el rol
   useEffect(() => {
-    const cargarDatos = async () => {
+  const cargarDatos = async () => {
       if (!usuarioLogueado) return;
       try {
-      if (usuarioLogueado.rolPostulante === false) {
-        // 🔹 Si es EMPLEADOR → mostrar SOLO sus ofertas
-        const resp = await fetch(`${API_URL}/ofertas/empleador/${usuarioLogueado.id}`);
-        const data = await resp.json();
-        if (data.success) {
-          setOfertas(data.data);
+        if (usuarioLogueado.rolPostulante) {
+          // Obtener todas las ofertas primero
+          const resp = await fetch(`${API_URL}/ofertas`);
+          const data = await resp.json();
+          
+          if (data.success) {
+            // Para cada oferta, verificar si el usuario está postulado
+            const ofertasConPostulacion = await Promise.all(
+              data.data.map(async (oferta) => {
+                const res = await fetch(`${API_URL}/formularios/${usuarioLogueado.id}/${oferta.id}`);
+                const postulacionData = await res.json();
+                return postulacionData.existe ? oferta : null;
+              })
+            );
+            
+            // Filtrar solo las ofertas donde está postulado
+            setOfertas(ofertasConPostulacion.filter(oferta => oferta !== null));
+          }
         } else {
-          setOfertas([]);
+          // Lógica existente para empleadores
+          const resp = await fetch(`${API_URL}/ofertas/empleador/${usuarioLogueado.id}`);
+          const data = await resp.json();
+          if (data.success) {
+            setOfertas(data.data);
+          }
         }
-      } else {
-        // 🔹 Si es POSTULANTE → mostrar TODAS las ofertas
-        const resp = await fetch(`${API_URL}/ofertas`);
-        const data = await resp.json();
-        if (data.success) {
-          setOfertas(data.data);
-        } else {
-          setOfertas([]);
-        }
+      } catch (err) {
+        console.error("Error al cargar ofertas:", err);
+        setOfertas([]);
       }
-    } catch (err) {
-      console.error("Error al cargar ofertas:", err);
-      setOfertas([]);
-    }
-  };
+    };
     
     cargarDatos();
-
- 
   }, [usuarioLogueado]);
 
   // Ajustar cantidad de items por slide según ancho
