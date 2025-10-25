@@ -1,32 +1,44 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TrabajoCard from './TrabajoCard';
 import './TrabajosDisponibles.css';
-import FormularioPostulacionModal from './FormularioPostulacionModal';
+import { API_URL } from '../config';
+import { Spinner, Alert } from 'react-bootstrap';
+
 
 
 const TrabajosDisponibles = () => {
   const [trabajos, setTrabajos] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [trabajoSeleccionado, setTrabajoSeleccionado] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const obtenerTrabajos = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/ofertas', {
-          method: 'GET',
+        const usuarioId = localStorage.getItem('usuarioID');
+        const response = await fetch (`${API_URL}/ofertas`, {
           headers: {
             'Content-Type': 'application/json',
             ...(token && { Authorization: `Bearer ${token}` }), 
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`Error HTTP: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
         const data = await response.json();
-        setTrabajos(data.data || []);
+
+        //Filtrar las ofertas donde NO está postulado
+        const trabajosFiltrados = await Promise.all(
+           data.data.map(async (trabajo) => {
+            const res = await fetch(`${API_URL}/formularios/${usuarioId}/${trabajo.id}`);
+            const postulacionData = await res.json();
+            return !postulacionData.existe ? trabajo : null;
+          })
+        );
+
+        setTrabajos(trabajosFiltrados.filter((trabajo) => trabajo !== null));
       } catch (error) {
         console.error('Error al obtener las ofertas:', error);
       }
@@ -35,10 +47,14 @@ const TrabajosDisponibles = () => {
     obtenerTrabajos();
   }, []);
 
-
+//Modificar para redireccionar en vez de abrir modal
   const abrirFormulario = (trabajo) => {
-    setTrabajoSeleccionado(trabajo);
-    setModalVisible(true);
+    navigate('/trabajos', { 
+      state: { 
+        mensaje: trabajo.id, // ID de la oferta para abrir el acordeón
+        scrollToOferta: true // Flag para indicar que debe scrollear
+      } 
+    });
   };
 
   return (
@@ -63,11 +79,6 @@ const TrabajosDisponibles = () => {
           )}
         </div>
       </div>
-      <FormularioPostulacionModal
-        show={modalVisible}
-        handleClose={() => setModalVisible(false)}
-        trabajo={trabajoSeleccionado}
-      />
     </div>
   );
 };

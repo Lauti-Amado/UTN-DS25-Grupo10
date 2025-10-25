@@ -23,6 +23,8 @@ export default function PantallaHomePostulante() {
           <div>
             <h2 className='section-title'>Postulante</h2>
 
+            <h4 className="animate__animated animate__fadeInUp mb-4">Tus Postulaciones <IoNewspaper /></h4>
+            
             {/* 🎠 Carrusel animado de ofertas */}
             <div className="animate__animated animate__fadeInUp mb-4">
               <OfertasCarousel />
