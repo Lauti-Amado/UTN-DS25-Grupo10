@@ -86,8 +86,8 @@ function OfertasCarousel() {
   }
 
   // Redirigir al detalle de la oferta (o trabajos)
-  const irAOferta = (index) => {
-    navigate('/trabajos', { state: { mensaje: index % ofertas.length } });
+  const irAOferta = (oferta) => {
+    navigate('/trabajos', { state: { mensaje: oferta.id, scrollToOferta: true } });
   };
 
   return (
@@ -108,13 +108,14 @@ function OfertasCarousel() {
               {grupo.map((oferta, index) => (
                 <div
                   key={`${oferta.id}-${i}-${index}`}
-                  onClick={() => irAOferta(i * itemsPorSlide + index)}
+                  onClick={() => irAOferta(oferta)}
+                  style={{ cursor: 'pointer'}}
                 >
                   <OfertaCard
                     titulo={oferta.titulo}
                     categoria={oferta.categoria}
                     texto={oferta.descripcion}
-                    n={(i * itemsPorSlide + index) % ofertas.length}
+                    n={oferta.id}
                   />
                 </div>
               ))}

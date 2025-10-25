@@ -454,10 +454,10 @@ const {
         </>
       )}
 
-       <Accordion defaultActiveKey={(s ?? 0).toString()}>
-        {itemsFiltrados.map((item, index) => (
+       <Accordion defaultActiveKey={(s ? s.toString() : '0')}>
+        {itemsFiltrados.map((item) => (
           <Accordion.Item 
-          eventKey={index.toString()}
+          eventKey={item.id.toString()}
           key={item.id}
           id={`oferta-${item.id}`} // Agregar ID para scroll
           >

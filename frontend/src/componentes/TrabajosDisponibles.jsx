@@ -1,13 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TrabajoCard from './TrabajoCard';
 import './TrabajosDisponibles.css';
-import FormularioPostulacionModal from './FormularioPostulacionModal';
+import { API_URL } from '../config';
+import { Spinner, Alert } from 'react-bootstrap';
+
 
 
 const TrabajosDisponibles = () => {
   const [trabajos, setTrabajos] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [trabajoSeleccionado, setTrabajoSeleccionado] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const obtenerTrabajos = async () => {
@@ -75,11 +79,6 @@ const TrabajosDisponibles = () => {
           )}
         </div>
       </div>
-      <FormularioPostulacionModal
-        show={modalVisible}
-        handleClose={() => setModalVisible(false)}
-        trabajo={trabajoSeleccionado}
-      />
     </div>
   );
 };
