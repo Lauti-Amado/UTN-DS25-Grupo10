@@ -164,7 +164,7 @@ export default function Perfil() {
 
       // Si hay fotoPerfil, construir la URL completa
       if (usuarioLogueado.fotoPerfil) {
-        setImagenPerfil(`${API_URL}/${usuarioLogueado.fotoPerfil}`);
+        setImagenPerfil(`${API_URL.replace(/\/$/, '')}/${usuarioLogueado.fotoPerfil.replace(/^\/+/, '')}`);
       } else {
         setImagenPerfil(imagen); // la imagen por defecto
       }

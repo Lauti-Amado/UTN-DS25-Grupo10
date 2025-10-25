@@ -172,7 +172,7 @@ function PerfilesSugeridos() {
                 rolPostulante={rolPostulante}
                 imagen={
                   fotoPerfil
-                    ? `${API_URL}/${fotoPerfil}`
+                    ? `${API_URL.replace(/\/$/, '')}/${fotoPerfil.replace(/^\/+/, '')}`
                     : perfilDefault 
                 }
               />
