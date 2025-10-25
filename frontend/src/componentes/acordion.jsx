@@ -456,7 +456,11 @@ const {
 
        <Accordion defaultActiveKey={(s ?? 0).toString()}>
         {itemsFiltrados.map((item, index) => (
-          <Accordion.Item eventKey={index.toString()} key={item.id}>
+          <Accordion.Item 
+          eventKey={index.toString()}
+          key={item.id}
+          id={`oferta-${item.id}`} // Agregar ID para scroll
+          >
           <Accordion.Header>
             <div className="d-flex align-items-center justify-content-between w-100">
               <span className="fw-semibold">{item.titulo}</span>
