@@ -151,7 +151,7 @@ function ModalPerfil({ usuarioId, onCerrar }) {
                   <img
                     src={
                       usuario.fotoPerfil
-                        ? `${API_URL}/${usuario.fotoPerfil}`
+                        ? `${API_URL.replace(/\/$/, '')}/${usuario.fotoPerfil.replace(/^\/+/, '')}`
                         : perfilDefault 
                     }
                     alt="Foto de perfil"
