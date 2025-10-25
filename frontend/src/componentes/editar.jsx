@@ -46,10 +46,12 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
         formData.append('fotoPerfil', fileInputRef.current.files[0]);
       }
 
+      const token =localStorage.getItem('token');
+      console.log('Token de autorización:', token);
       const response = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}`, {
         method: 'PUT',
         headers: {
-          Authorization: `Bearer ${usuarioLogueado.token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       });

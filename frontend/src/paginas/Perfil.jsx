@@ -164,7 +164,7 @@ export default function Perfil() {
 
       // Si hay fotoPerfil, construir la URL completa
       if (usuarioLogueado.fotoPerfil) {
-        setImagenPerfil(`${API_URL}/${usuarioLogueado.fotoPerfil}`);
+        setImagenPerfil(`${API_URL.replace(/\/$/, '')}/${usuarioLogueado.fotoPerfil.replace(/^\/+/, '')}`);
       } else {
         setImagenPerfil(imagen); // la imagen por defecto
       }
@@ -186,69 +186,41 @@ export default function Perfil() {
 
       {modoEditar && (
         <>
-          <div
-            onClick={() => setModoEditar(null)}
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              backdropFilter: 'blur(5px)',
-              WebkitBackdropFilter: 'blur(5px)',
-              zIndex: 1000,
-            }}
-          />
-          <div
-            style={{
-              position: 'fixed',
-              top: '58%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 1001,
-              backgroundColor: 'white',
-              borderRadius: '8px',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-              maxWidth: '80%',
-              maxHeight: '80%',
-              overflowY: 'auto',
-            }}
-          > 
-            {modoEditar === 'perfil' && (
-              <Editar
-                onCerrar={() => setModoEditar(null)}
-                onActualizarPerfil={manejarActualizarPerfil}
-                nombre={nombrePerfil}
-                descripcion={descripcionPerfil}
-                FechaNac={FechaNac}
-                imagen={imagenPerfil}
-              />
-            )}
+          {modoEditar === 'perfil' && (
+            <Editar
+              onCerrar={() => setModoEditar(null)}
+              onActualizarPerfil={manejarActualizarPerfil}
+              nombre={nombrePerfil}
+              descripcion={descripcionPerfil}
+              FechaNac={FechaNac}
+              imagen={imagenPerfil}
+            />
+          )}
            
-            {modoEditar === 'proyecto' && (
+          {modoEditar === 'proyecto' && (
               <Proyecto
                 onCerrar={() => setModoEditar(null)}
                 onAgregarProyecto={agregarProyecto}
                 onActualizarPerfil={manejarActualizarProyecto}
               />
-            )}
-            {modoEditar === 'compartir' && (
+          )}
+
+          {modoEditar === 'compartir' && (
               <Compartir
                 onCerrar={()=> setModoEditar(null)}
                 usuarioId={usuarioLogueado?.id}
               />
-            )}
+          )}
 
-            {modoEditar === 'modificarProyecto' && modificarProyecto && 
-              ( <Proyecto 
-                  nombre={modificarProyecto.nombre} 
-                  descripcion={modificarProyecto.descripcion} 
-                  tecnologias={modificarProyecto.tecnologias} 
-                  onCerrar={() => { 
-                    setModoEditar(null); 
-                    setModificarProyecto(null);
-                  }} 
+          {modoEditar === 'modificarProyecto' && modificarProyecto && 
+            ( <Proyecto 
+                nombre={modificarProyecto.nombre} 
+                descripcion={modificarProyecto.descripcion} 
+                tecnologias={modificarProyecto.tecnologias} 
+                onCerrar={() => { 
+                  setModoEditar(null); 
+                  setModificarProyecto(null);
+                }} 
                   onModificarProyecto= {(nuevoNombre, nuevaDescripcion, nuevasTecnologias) => {
                     modificarProyectoBD (
                       modificarProyecto.id, 
@@ -258,10 +230,14 @@ export default function Perfil() {
                     );
                   }}
                 />
-            )}
-          </div>
+              )
+            }
         </>
       )}
+          
+          
+    
+  
         
       {mostrarConfirmacion && (
         <>
