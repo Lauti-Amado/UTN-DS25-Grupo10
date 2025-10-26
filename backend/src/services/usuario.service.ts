@@ -375,7 +375,7 @@ export async function resetContrasena(token: string, nuevaContrasena: string) {
     },
   });
 
-  return { message: "Contraseña restablecida correctamente" };
+  return { message: "Contraseña restablecida exitosamente" };
 }
 
 
