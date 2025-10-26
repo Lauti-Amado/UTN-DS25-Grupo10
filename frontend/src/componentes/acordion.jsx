@@ -4,7 +4,6 @@ import Accordion from 'react-bootstrap/Accordion';
 import { useLocation } from 'react-router-dom';
 import './acordion.css';
 import { DatosContexto } from '../datosContext.jsx';
-import datosEmpleosIniciales from './datosIniciales';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Button, Modal } from 'react-bootstrap';
 import { IoIosPaper } from "react-icons/io";

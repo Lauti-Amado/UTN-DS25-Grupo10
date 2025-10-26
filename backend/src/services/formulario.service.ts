@@ -1,7 +1,8 @@
+import { parse } from 'path';
 import prisma from '../config/prisma';
-import { Formulario, CreateFormularioRequest, } from '../types/formularios.types';
+import { Formulario, CreateFormularioRequest, UpdateFormularioRequest } from '../types/formularios.types';
 
-export async function createFormulario(data: CreateFormularioRequest): Promise<Formulario> {
+export async function createFormulario(data: CreateFormularioRequest) {
   const createData: any = {
     nombre: data.nombre,
     apellido: data.apellido,
@@ -29,7 +30,7 @@ export async function createFormulario(data: CreateFormularioRequest): Promise<F
       pais: true,
       genero: true,
       descripcion: true,
-      curriculum: true
+      curriculum: true,
     }
   });
 }
@@ -49,7 +50,7 @@ export async function getExistePostulacion( UsuarioId: number, OfertaId: number 
   }
 }
 
-export async function getFormulariosByOferta (id:number) : Promise<Formulario[]> {
+export async function getFormulariosByOferta (id:number) {
     return prisma.formulario.findMany({
         where: { ofertaId: id },
         select: {
@@ -64,4 +65,15 @@ export async function getFormulariosByOferta (id:number) : Promise<Formulario[]>
             oferta: true
         }
     });
+}
+
+export async function contratarPostulante (id1: number, id2:number) {
+   return prisma.formulario.update({
+      where: { postuladoId_ofertaId: {
+                 postuladoId: id1, ofertaId: id2}
+             },
+      data: {
+        contratado: true
+      }
+   })
 }
