@@ -85,6 +85,17 @@ export async function createFormulario( req: Request, res: Response, next: NextF
   }
 }
 
+export async function contratarPostulante (req: Request, res: Response, next: NextFunction) {
+  try {
+      const UsuarioId = parseInt(req.params.usuarioId);
+      const OfertaId = parseInt(req.params.ofertaId);
+      const updated = await formularioService.contratarPostulante(UsuarioId, OfertaId);
+      res.json({ success:true, data:updated, message: "Felicitaciones por encontrar al postulante adecuado!" });
+    } catch (error) {
+      next(error);
+    }
+}
+
 // Estas son las unicas funcionalidades respecto a los formularios ya que no tiene sentido eliminar un formulario, 
 // tampoco actualizarlo (una vez mandado asi lo recibirá el empleador creador) ni tampoco traerlos todos (se obtendria
 // informacion de formularios de ofertas de otro usuario y no es algo lógico)

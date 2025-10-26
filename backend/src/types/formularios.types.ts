@@ -6,6 +6,9 @@ export interface Formulario {
     genero: string,
     descripcion: string,
     curriculum: string,
+    contratado: boolean,
+    postuladoId: number,
+    ofertaId: number,
 }
 
 export interface CreateFormularioRequest {
@@ -18,6 +21,10 @@ export interface CreateFormularioRequest {
     curriculum: string,
     ofertaId: number,
     postuladoId: number,
+}
+
+export interface UpdateFormularioRequest {
+    id: number,
 }
 
 export interface FormularioResponse {
