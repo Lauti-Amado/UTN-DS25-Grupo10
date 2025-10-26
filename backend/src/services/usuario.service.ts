@@ -255,16 +255,7 @@ export async function loginUsuario(email: string, contraseña: string) {
     throw error;
   }
 
-  await resend.emails.send({
-    from: "noreply@resend.dev",
-    to: usuario.mail,
-    subject: "Inicio de sesión en RoDi",
-    html: `<p>Hola <strong>${usuario.nombre}</strong>,</p>
-           <p>Se ha iniciado sesión en tu cuenta de RoDi.</p>
-           <p>Si no fuiste tú, por favor cambia tu contraseña inmediatamente.</p>
-           <p>— Equipo de RoDi</p>`
-  });
-
+ 
   const secret: Secret = process.env.JWT_SECRET || "default_secret";
 
   // Generar token
