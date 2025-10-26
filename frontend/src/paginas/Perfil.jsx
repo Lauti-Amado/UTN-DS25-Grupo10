@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ContenidoInfoPerfil from '../componentes/ContenidoInfoPerfil';
 import PerfilesSugeridos from '../componentes/sugerenciasperfiles';
@@ -10,7 +10,6 @@ import Compartir from '../componentes/compartir';
 import Confirmar from '../componentes/confirmar'
 import styles from '../paginas/perfil.module.css';
 import { DatosContexto } from '../datosContext';
-import { useContext, useEffect } from 'react';
 import { API_URL } from '../config';
 
 export default function Perfil() {
@@ -27,6 +26,31 @@ export default function Perfil() {
   const [FechaNac, setNuevafecha] = useState('');
   const [proyectosagregados, setProyectosAgregados] = useState([]);
   const { usuarioLogueado } = useContext(DatosContexto);
+
+  // 🧭 Referencias a las secciones
+  const editarRef = useRef(null);
+  const compartirRef = useRef(null);
+  const proyectoRef = useRef(null);
+
+  // 📜 Función para activar sección y hacer scroll suave
+const handleScroll = (seccion) => {
+  setModoEditar(seccion); //  activamos el modo
+
+  // Esperamos un pequeño tiempo para que se monte el componente antes de hacer scroll
+  setTimeout(() => {
+    const refs = {
+      perfil: editarRef,
+      compartir: compartirRef,
+      proyecto: proyectoRef,
+    };
+
+    const ref = refs[seccion];
+    if (ref?.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 200); 
+};
+
 
   //este useEffect TRAER los Proyectos desde el backend (SOLO POSTULANTES)
   useEffect(() => {
@@ -175,7 +199,7 @@ export default function Perfil() {
     <div className="vistaEstirada" style={{ position: 'relative' }}>
       <div className={styles.article}>
         <ContenidoInfoPerfil
-          onEditarClick={(tipo) => setModoEditar(tipo)} 
+          onEditarClick={handleScroll} 
           imagen={imagenPerfil}
           nombre={nombrePerfil}
           descripcion={descripcionPerfil}
@@ -187,29 +211,35 @@ export default function Perfil() {
       {modoEditar && (
         <>
           {modoEditar === 'perfil' && (
-            <Editar
-              onCerrar={() => setModoEditar(null)}
-              onActualizarPerfil={manejarActualizarPerfil}
-              nombre={nombrePerfil}
-              descripcion={descripcionPerfil}
-              FechaNac={FechaNac}
-              imagen={imagenPerfil}
-            />
+            <div ref={editarRef} style={{marginTop:'100px'}}>
+              <Editar
+                onCerrar={() => setModoEditar(null)}
+                onActualizarPerfil={manejarActualizarPerfil}
+                nombre={nombrePerfil}
+                descripcion={descripcionPerfil}
+                FechaNac={FechaNac}
+                imagen={imagenPerfil}
+              />
+            </div>
           )}
            
           {modoEditar === 'proyecto' && (
+            <div ref={proyectoRef} style={{marginTop:'100px'}}>
               <Proyecto
                 onCerrar={() => setModoEditar(null)}
                 onAgregarProyecto={agregarProyecto}
                 onActualizarPerfil={manejarActualizarProyecto}
               />
+            </div>
           )}
 
           {modoEditar === 'compartir' && (
-              <Compartir
-                onCerrar={()=> setModoEditar(null)}
-                usuarioId={usuarioLogueado?.id}
-              />
+            <div ref={compartirRef} style={{marginTop:'100px'}}>
+                <Compartir
+                  onCerrar={()=> setModoEditar(null)}
+                  usuarioId={usuarioLogueado?.id}
+                />
+            </div>
           )}
 
           {modoEditar === 'modificarProyecto' && modificarProyecto && 
