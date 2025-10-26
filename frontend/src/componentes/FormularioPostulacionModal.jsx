@@ -14,6 +14,9 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
     archivo: null,
   });
 
+  const localidades = ["Buenos Aires", "Córdoba", "Rosario", "Mendoza", "Salta", "La Plata", "Mar del Plata"];
+  const paises = ["Argentina","Brasil","Chile","Uruguay","Paraguay","Bolivia","Perú","Colombia","Ecuador","Venezuela","México","Estados Unidos","Canadá","España","Francia","Italia","Alemania","Reino Unido","Japón","Australia"];
+
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -106,7 +109,6 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
 
         if (result.success) {
           alert("Formulario enviado con éxito");
-          handleClose();
         } else {
           alert("Error al enviar el formulario:" + (result.message || ''));
         }
@@ -117,6 +119,8 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
   };
 
   return (
+    <>
+
     <Modal show={show} onHide={handleClose} size='lg' scrollable={true}>
       <Modal.Header closeButton>
         <Modal.Title>Postularse a {empresa?.nombre || empresa?.titulo || "una empresa"}</Modal.Title>
@@ -139,9 +143,9 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
             <Form.Label>Localidad</Form.Label>
             <Form.Select name="localidad" value={formData.localidad} onChange={handleChange} required>
               <option value="">Seleccionar</option>
-              <option value="Buenos Aires">Buenos Aires</option>
-              <option value="Córdoba">Córdoba</option>
-              <option value="Rosario">Rosario</option>
+              {localidades.map((loc,index) => (
+                <option key={index} value={loc}>{loc}</option>
+              ))}
             </Form.Select>
           </Form.Group>
 
@@ -149,9 +153,9 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
             <Form.Label>País</Form.Label>
             <Form.Select name="pais" value={formData.pais} onChange={handleChange} required>
               <option value="">Seleccionar</option>
-              <option value="Argentina">Argentina</option>
-              <option value="Chile">Chile</option>
-              <option value="Uruguay">Uruguay</option>
+              {paises.map((p,index) => (
+                <option key={index} value={p}>{p}</option>
+              ))}
             </Form.Select>
           </Form.Group>
 
@@ -209,5 +213,7 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
         </Form>
       </Modal.Body>
     </Modal>
+
+  </>
   );
 }

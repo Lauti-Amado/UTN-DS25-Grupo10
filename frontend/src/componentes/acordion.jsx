@@ -58,6 +58,8 @@ function Acordion() {
     return titulo.includes(busqueda) || descripcion.includes(busqueda);
   });
 
+  
+
 
   
   // Limpia el formulario y resetea estados de edición
@@ -66,6 +68,8 @@ function Acordion() {
   setOfertaEditando(null);
   // El reset del formulario se hará desde useForm (abajo)
 };
+
+  
 
   // Muestra una notificación modal
   const mostrarNotificacion = (titulo, mensaje, tipo = 'success') => {
@@ -176,6 +180,10 @@ fetchOfertas();
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ofertaData),
       });
+      
+
+
+
     } else {
       // CREAR
       response = await fetch(`${API_URL}/ofertas`, {
@@ -242,8 +250,11 @@ fetchOfertas();
   setModoEdicion(true);
   setOfertaEditando(item);
   setMostrarFormulario(true);
-  // ✅ El formulario se llenará automáticamente gracias al useEffect + reset()
-};
+                              // ✅ El formulario se llenará automáticamente gracias al useEffect + reset()
+
+  };
+
+  
 
   const cancelarFormulario = () => {
     limpiarFormulario();
@@ -267,12 +278,7 @@ fetchOfertas();
   }
 };
 
-const {
-  register,
-  handleSubmit,
-  formState: { errors, isSubmitting },
-  reset,
-} = useForm({
+const {register,handleSubmit,formState: { errors, isSubmitting },reset,} = useForm({
   resolver: yupResolver(ofertaSchema),
   mode: 'onChange',
   defaultValues: {
@@ -287,6 +293,23 @@ const {
     logo: ''
   },
 });
+
+// 🧠 Cargar datos al editar
+useEffect(() => {
+  if (modoEdicion && ofertaEditando) {
+    reset({
+      titulo: ofertaEditando.titulo || '',
+      descripcion: ofertaEditando.descripcion || '',
+      categoria: ofertaEditando.categoria || '',
+      ubicacion: ofertaEditando.ubicacion || '',
+      sueldo: ofertaEditando.sueldo || '',
+      modalidad: ofertaEditando.modalidad || '',
+      horario: ofertaEditando.horario || '',
+      contacto: ofertaEditando.contacto || '',
+      logo: ofertaEditando.logo || '',
+    });
+  }
+}, [modoEdicion, ofertaEditando, reset]);
 
 
   return (
@@ -326,6 +349,7 @@ const {
                 )}
               </h5>
               <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
+                
   {/* Título */}
   <div className="mb-2">
     <input
