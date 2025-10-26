@@ -103,7 +103,7 @@ export async function createUsuario(data: CreateUsuarioRequest) {
       }
     });
 
-     await resend.emails.send({
+   await resend.emails.send({
       from: "noreply@resend.dev",
       to: usuario.mail,
       subject: "¡Bienvenido a RoDi!",
