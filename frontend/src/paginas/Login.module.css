@@ -170,36 +170,22 @@ body {
 }
 
 .footer {
-  position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  padding: 5px 5px;
+  padding: 20px 2px;
   background-color: rgb(222, 219, 219);
   color: #444;
   width: 100%;
 }
 
 .footerCentro {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   font-size: 14px;
   text-align: center;
-  margin: 0;
+  margin: auto;
 }
 
-.footerLogo {
-  width: 70px;
-  height: auto;
-  position: relative;
-  top: -7px;
-  z-index: 2;
-  border-radius: 50%;
-  padding: 5px;
-  transition: transform 0.3s ease;
-}
+
 
 select.form-select:focus {
   border-color: #800000;
