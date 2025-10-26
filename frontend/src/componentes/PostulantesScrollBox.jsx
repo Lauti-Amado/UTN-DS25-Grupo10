@@ -225,7 +225,23 @@ const PostulantesScrollBox = ({ empleadorId }) => {
                       </p>
                       
                       <div className="mt-auto">
-                        <button className="btn btn-outline-danger btn-sm w-100">
+                        <button className="btn btn-outline-danger btn-sm w-100"
+                          style={{
+                            transition: 'all 0.3s ease',
+                            borderColor: '#dc3545'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#dc3545';
+                            e.currentTarget.style.borderColor = '#dc3545';
+                            e.currentTarget.style.color = 'white';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'transparent';
+                            e.currentTarget.style.borderColor = '#dc3545';
+                            e.currentTarget.style.color = 'white';
+                          }}
+                          >
+                            
                           <i className="bi bi-eye-fill me-2"></i>
                           Ver detalles
                         </button>
