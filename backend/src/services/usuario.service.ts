@@ -303,7 +303,7 @@ await resend.emails.send({
   from: "noreply@resend.dev", // remitente automático
   to: email,
   subject: "Recuperación de contraseña",
-  html: `<p>Ingresá el número <b>${codigoValidador}</b> para poder modificar tu contraseña</p>`,
+  html: `<p>Por favor, ingresá el número <b>${codigoValidador}</b> para poder modificar tu contraseña</p>`,
 });
 
 
