@@ -13,11 +13,13 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
       <div id={styles['chau']}>
         <img className={styles.imagenperfil} src={imagen} alt="foto de perfil" />
         <h3 className={styles.text}>{nombre}</h3>
-        <p className={styles.text}>
-          Descripción:{descripcion}
-        </p>
-        <p className={styles.text}>Fecha de Nacimiento: {FechaNac}</p>
 
+        <div style={{backgroundColor: '#cfcfcfff', borderRadius: '10px', padding: '10px', marginTop: '10px', textAlign: 'left'}}>
+          <p>
+            <b>Descripción: </b>{descripcion}
+          </p>
+          <p><b>Fecha de Nacimiento:</b> {FechaNac}</p>
+        </div>
         <div id={styles['botones']}>
           <BotonesPerfil texto="Editar perfil" onClick={() => onEditarClick('perfil')} />
           <BotonesPerfil texto="Compartir perfil" onClick={() =>onEditarClick('compartir')}/>
