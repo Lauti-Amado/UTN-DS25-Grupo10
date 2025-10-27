@@ -90,7 +90,7 @@ export async function contratarPostulante (req: Request, res: Response, next: Ne
       const UsuarioId = parseInt(req.params.usuarioId);
       const OfertaId = parseInt(req.params.ofertaId);
       const updated = await formularioService.contratarPostulante(UsuarioId, OfertaId);
-      res.json({ success:true, data:updated, message: "Felicitaciones por encontrar al postulante adecuado!" });
+      res.json({ success: true, data: updated });
     } catch (error) {
       next(error);
     }
