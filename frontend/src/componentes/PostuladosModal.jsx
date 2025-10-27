@@ -61,22 +61,27 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
               <ListGroup.Item key={index} className="mb-3">
                 <div className="d-flex flex-column flex-md-row gap-3 align-items-start">
                   
-                  {/* Imagen del currículum */}
-                  {form.curriculum && (
-                    <Image
-                      src={form.curriculum}
-                      alt="Currículum"
-                      thumbnail
-                      style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                    />
-                  )}
+                  {/* Foto de perfil del postulante */}
+                  <img src={``} alt="foto de perfil" />
 
                   <div className="flex-grow-1">
                     <h6>{form.nombre} {form.apellido}</h6>
                     <p className="mb-1"><strong>Localidad:</strong> {form.localidad || 'No especificada'}</p>
                     <p className="mb-1"><strong>Descripción:</strong> {form.descripcion || 'Sin descripción'}</p>
+                    <p className="mb-1"> <strong> Descargar Curriculum: </strong>
+                      {/* Boton par descargar CV */}
+                       <a
+                         href={`${API_URL}/uploads/${form.curriculum}`}
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="btn btn-outline-danger"
+                       >
+                           <i className="bi bi-arrow-down-circle-fill"></i>
+                       </a>
+                    </p>
                   </div>
-
+                  <button className='bi bi-person-fill'></button>
+                  {/* Botón para contratar*/}
                   <div>
                     <Button 
                       variant="success" 
