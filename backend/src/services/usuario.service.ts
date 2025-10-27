@@ -102,6 +102,16 @@ export async function createUsuario(data: CreateUsuarioRequest) {
         rolPostulante: true
       }
     });
+
+   await resend.emails.send({
+      from: "noreply@resend.dev",
+      to: usuario.mail,
+      subject: "¡Bienvenido a RoDi!",
+      html: `<p>Hola <strong>${usuario.nombre}</strong>,</p>
+             <p>Gracias por registrarte en RoDi. ¡Tu cuenta ya está activa!</p>
+             <p>Ya puedes iniciar sesión y comenzar a usar la plataforma.</p>
+             <p>El equipo de RoDi</p>`
+    });
   } catch (error: any) {
     if (error.code === "P2002") {
       if (error.meta?.target?.includes("mail")) {
@@ -255,7 +265,10 @@ export async function loginUsuario(email: string, contraseña: string) {
     throw error;
   }
 
+
+
    await resend.emails.send({
+
     from: "noreply@resend.dev",
     to: usuario.mail,
     subject: "Inicio de sesión en RoDi",
@@ -265,8 +278,6 @@ export async function loginUsuario(email: string, contraseña: string) {
            <p>— Equipo de RoDi</p>`
   });
 
-
- 
   const secret: Secret = process.env.JWT_SECRET || "default_secret";
 
   // Generar token
