@@ -4,7 +4,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import { useLocation } from 'react-router-dom';
 import './acordion.css';
 import { DatosContexto } from '../datosContext.jsx';
-import datosEmpleosIniciales from './datosIniciales';
+//import datosEmpleosIniciales from './datosIniciales';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Button, Modal } from 'react-bootstrap';
 import { IoIosPaper } from "react-icons/io";
@@ -20,7 +20,7 @@ function Acordion() {
   const location = useLocation();
   const s = location.state?.mensaje;
   const { busquedaGlobal, usuarioLogueado } = useContext(DatosContexto);
-
+  const [mostrarModalCancelar, setMostrarModalCancelar] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState(null);
   const [items, setItems] = useState(() => {
@@ -296,19 +296,10 @@ const {
         <>
           <button
             className="btn-toggle-formulario mb-3"
-            onClick={() => {
-              if (mostrarFormulario) {
-                cancelarFormulario();
-              } else {
-                setMostrarFormulario(true);
-              }
-            }}>
+             onClick={() => setMostrarFormulario(!mostrarFormulario)}
+            >
             <i className={`bi ${mostrarFormulario ? 'bi-dash-circle' : 'bi-plus-circle'}`}></i>
-            {mostrarFormulario 
-              ? ' Cancelar' 
-              : modoEdicion 
-                ? ' Editar Oferta' 
-                : ' Agregar Nueva Oferta'}
+             {modoEdicion ? ' Editar Oferta' : 'Nueva Oferta'}
           </button>
 
           {mostrarFormulario && (
@@ -439,11 +430,7 @@ const {
     <button
       type="button"
       className="btn btn-secondary"
-      onClick={() => {
-        setMostrarFormulario(false);
-        limpiarFormulario();
-        reset();
-      }}
+      onClick={() => setMostrarModalCancelar(true)}
     >
       Cancelar
     </button>
@@ -546,6 +533,36 @@ const {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <Modal 
+  show={mostrarModalCancelar} 
+  onHide={() => setMostrarModalCancelar(false)} 
+  centered
+>
+  <Modal.Header closeButton className="bg-dark text-white">
+    <Modal.Title>
+      <i className="bi bi-exclamation-triangle-fill me-2"></i>
+      Confirmar cancelación
+    </Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <p className="mb-0">¿Estás seguro que querés cancelar? Los cambios se perderán.</p>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={() => setMostrarModalCancelar(false)}>
+      Volver
+    </Button>
+    <Button variant="danger" onClick={() => {
+      setMostrarFormulario(false);
+      limpiarFormulario();
+      reset();
+      setMostrarModalCancelar(false);
+    }}>
+      Sí, descartar cambios
+    </Button>
+  </Modal.Footer>
+</Modal>
+
 
       {/* Modal de postulación */}
       <FormularioPostulacionModal
