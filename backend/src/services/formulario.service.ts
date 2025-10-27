@@ -67,13 +67,33 @@ export async function getFormulariosByOferta (id:number) {
     });
 }
 
-export async function contratarPostulante (id1: number, id2:number) {
-   return prisma.formulario.update({
-      where: { postuladoId_ofertaId: {
+export async function contratarPostulante (id1: number, id2:number): Promise<string> {
+  const formularioContratadoExiste = await prisma.formulario.findFirst({
+    where: { ofertaId: id2, contratado: true }
+  });
+
+  if (formularioContratadoExiste) {
+    const usuarioMismo = formularioContratadoExiste.postuladoId
+    if (usuarioMismo == id1) {
+      console.log(`Ya contrataste anteriormente a este usuario!: ${id1}`);
+      return `Ya contrataste anteriormente a este usuario!: ${id1}`;
+    }
+    console.log(`Ya haz contratado a otro postulante para este puesto!: ${usuarioMismo}`)
+    return `Ya haz contratado a otro postulante para este puesto!: ${usuarioMismo}`;
+  }
+  try {
+    await prisma.formulario.update({
+        where: { postuladoId_ofertaId: {
                  postuladoId: id1, ofertaId: id2}
              },
-      data: {
-        contratado: true
-      }
-   })
+        data: {
+          contratado: true
+        }
+    })
+    console.log(`Haz contratado al postulante ${id1} para la oferta ${id2} satisfactoriamente`);
+    return `Haz contratado al postulante ${id1} para la oferta ${id2} satisfactoriamente`
+  } catch (error) {
+    console.log('Error al actualizar el registro:', error);
+    return `Error al actualizar el registro:${error}`
+  }
 }

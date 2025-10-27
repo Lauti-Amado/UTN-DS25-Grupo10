@@ -36,10 +36,11 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
                  Authorization: `Bearer ${token}`,
                },
          });
+         const result = await response.json()
+         alert(result.data)
     } catch (error) {
          console.error(error)
     }
-    alert(`Haz contratado el postulante ${nombre} ${apellido}`)
   };
 
   return (
