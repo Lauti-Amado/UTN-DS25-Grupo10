@@ -25,9 +25,13 @@ export const createFormularioSchema = z.object({
     if (typeof val === 'string') return Number(val);
     return val;
   }, z.number().int().positive()),
-  
+    contratado: z.boolean()
+    .default(false)
+    .optional(),
     ofertaId: z.preprocess((val) => {
     if (typeof val === 'string') return Number(val);
     return val;
   }, z.number().int().positive()),
     });
+
+export const updateFormularioSchema = createFormularioSchema.partial()

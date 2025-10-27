@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, ListGroup, Spinner, Image } from 'react-bootstrap';
+import { DatosContexto } from '../datosContext';
 import { API_URL } from '../config';
 
 function PostuladosModal({ show, handleClose, ofertaId }) {
@@ -26,8 +27,20 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
       .finally(() => setCargando(false));
   }, [ofertaId, show]);
 
-  const manejarContratacion = (nombre, apellido) => {
-    alert(`✅ Has contratado a ${nombre} ${apellido}`);
+  const manejarContratacion = async (usuarioId, ofertaId, nombre, apellido) => {
+    try {
+         const token =localStorage.getItem('token');
+         const response = await fetch(`${API_URL}/formularios/${usuarioId}/${ofertaId}`, {
+               method: 'PUT',
+               headers: {
+                 Authorization: `Bearer ${token}`,
+               },
+         });
+         const result = await response.json()
+         alert(result.data)
+    } catch (error) {
+         console.error(error)
+    }
   };
 
   return (
@@ -68,7 +81,7 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
                     <Button 
                       variant="success" 
                       size="sm"
-                      onClick={() => manejarContratacion(form.nombre, form.apellido)}
+                      onClick={() => manejarContratacion(form.postuladoId, form.ofertaId, form.nombre, form.apellido)}
                     >
                       Contratar
                     </Button>

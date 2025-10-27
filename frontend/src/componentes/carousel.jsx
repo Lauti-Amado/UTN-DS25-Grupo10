@@ -2,7 +2,6 @@ import Carousel from 'react-bootstrap/Carousel';
 import OfertaCard from './ofertaCard';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
-import datosPostulantes from './datosPostulantes';
 import { DatosContexto } from '../datosContext';
 import { API_URL } from '../config';
 

@@ -265,7 +265,10 @@ export async function loginUsuario(email: string, contraseña: string) {
     throw error;
   }
 
-  await resend.emails.send({
+
+
+   await resend.emails.send({
+
     from: "noreply@resend.dev",
     to: usuario.mail,
     subject: "Inicio de sesión en RoDi",
@@ -323,7 +326,7 @@ await resend.emails.send({
   from: "noreply@resend.dev", // remitente automático
   to: email,
   subject: "Recuperación de contraseña",
-  html: `<p>Ingresá el número <b>${codigoValidador}</b> para poder modificar tu contraseña</p>`,
+  html: `<p>Por favor, ingresá el número <b>${codigoValidador}</b> para poder modificar tu contraseña</p>`,
 });
 
 
@@ -395,7 +398,7 @@ export async function resetContrasena(token: string, nuevaContrasena: string) {
     },
   });
 
-  return { message: "Contraseña restablecida correctamente" };
+  return { message: "Contraseña restablecida exitosamente" };
 }
 
 
