@@ -1,0 +1,138 @@
+.form-check-custom .form-check-input {
+  width: 1.25em;
+  height: 1.25em;
+  border-color: #8b0000;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-check-custom .form-check-input:checked {
+  background-color: #8b0000;
+  border-color: #8b0000;
+}
+
+.form-check-custom .form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+  border-color: #8b0000;
+}
+
+.form-check-custom .form-check-label {
+  cursor: pointer;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  user-select: none;
+}
+
+.modal-header .btn-close {
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+}
+
+.modal-header .btn-close:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+  border-radius: 0.25rem;
+}
+
+.modal-header .btn-close:focus,
+.modal-header .btn-close:active {
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.3);
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.15);
+  opacity: 1;
+}
+
+.modal.fade .modal-dialog {
+  transform: scale(0.9) translateY(-30px);
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.modal-backdrop.show {
+  opacity: 0.75;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8b0000 0%, #6d0000 100%);
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #6d0000 0%, #5a0000 100%);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #8b0000;
+  box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.15);
+}
+
+.form-control,
+.form-select {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.border-dashed {
+  border-style: dashed !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.border-dashed input[type="file"] {
+  cursor: pointer;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal.show .modal-dialog {
+  animation: slideInDown 0.3s ease-out;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  color: #495057;
+}
+
+.form-control::placeholder,
+.form-select::placeholder {
+  color: #adb5bd;
+  font-style: italic;
+}
