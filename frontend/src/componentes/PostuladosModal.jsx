@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, ListGroup, Spinner, Image } from 'react-bootstrap';
 import { DatosContexto } from '../datosContext';
+import ModalPerfil from './ModalPerfil';
 import { API_URL } from '../config';
+import NotificacionContratación from './NotificacionContratación';
 
 function PostuladosModal({ show, handleClose, ofertaId }) {
   const [formularios, setFormularios] = useState([]);
   const [cargando, setCargando] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [postuladoSeleccionado, setPostuladoSeleccionado] = useState(null);
+  const [mensajeContratacion, setMensajeContratacion] = useState('');
+  const [mostrarNotificacion, setMostrarNotificacion] = useState(false);
+
+
+  const abrirPerfil = (postuladoId) => {
+    console.log("Abriendo perfil del usuario postulante");
+    setPostuladoSeleccionado(postuladoId);
+    setMostrarModal(true);
+  };
+  
+  const cerrarModal = () => {
+    console.log("Cerrando modal");
+    setMostrarModal(false);
+    setPostuladoSeleccionado(null);
+  };
 
   useEffect(() => {
     if (!ofertaId || !show) return;
@@ -27,7 +46,7 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
       .finally(() => setCargando(false));
   }, [ofertaId, show]);
 
-  const manejarContratacion = async (usuarioId, ofertaId, nombre, apellido) => {
+  const manejarContratacion = async (usuarioId, ofertaId) => {
     try {
          const token =localStorage.getItem('token');
          const response = await fetch(`${API_URL}/formularios/${usuarioId}/${ofertaId}`, {
@@ -36,14 +55,20 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
                  Authorization: `Bearer ${token}`,
                },
          });
-         const result = await response.json()
-         alert(result.data)
+         const result = await response.json();
+         setPostuladoSeleccionado(usuarioId);
+         setMensajeContratacion(result.data);
+         setMostrarNotificacion(true);
     } catch (error) {
-         console.error(error)
+            console.error(error);
+            setMensajeContratacion('Ocurrió un error al contratar al postulante.');
+            setMostrarNotificacion(true);
     }
   };
 
+
   return (
+    <>
     <Modal show={show} onHide={handleClose} centered size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Lista de Postulados</Modal.Title>
@@ -60,12 +85,9 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
             {formularios.map((form, index) => (
               <ListGroup.Item key={index} className="mb-3">
                 <div className="d-flex flex-column flex-md-row gap-3 align-items-start">
-                  
-                  {/* Foto de perfil del postulante */}
-                  <img src={``} alt="foto de perfil" />
-
+ 
                   <div className="flex-grow-1">
-                    <h6>{form.nombre} {form.apellido}</h6>
+                    <h6 className="mb-1"> <strong> Nombre y Apellido:</strong> {form.nombre} {form.apellido}</h6>
                     <p className="mb-1"><strong>Localidad:</strong> {form.localidad || 'No especificada'}</p>
                     <p className="mb-1"><strong>Descripción:</strong> {form.descripcion || 'Sin descripción'}</p>
                     <p className="mb-1"> <strong> Descargar Curriculum: </strong>
@@ -80,13 +102,20 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
                        </a>
                     </p>
                   </div>
-                  <button className='bi bi-person-fill'></button>
+                  <button onClick={() => abrirPerfil(form.postuladoId)} className="bi bi-person-fill"> Ver Perfil </button>
+                  {mostrarModal && postuladoSeleccionado === form.postuladoId && (
+                    <ModalPerfil
+                      usuarioId={postuladoSeleccionado}
+                     onCerrar={cerrarModal}
+                   />
+                  )}
+
                   {/* Botón para contratar*/}
                   <div>
                     <Button 
                       variant="success" 
                       size="sm"
-                      onClick={() => manejarContratacion(form.postuladoId, form.ofertaId, form.nombre, form.apellido)}
+                      onClick={() => manejarContratacion(form.postuladoId, form.ofertaId)}
                     >
                       Contratar
                     </Button>
@@ -103,6 +132,17 @@ function PostuladosModal({ show, handleClose, ofertaId }) {
         </Button>
       </Modal.Footer>
     </Modal>
+
+    {/* Modal de notificación de contratación */}
+    {mostrarNotificacion && (
+      <NotificacionContratación
+        data={mensajeContratacion}
+        usuarioId={postuladoSeleccionado}
+      />
+    )}
+
+
+    </>
   );
 }
 
