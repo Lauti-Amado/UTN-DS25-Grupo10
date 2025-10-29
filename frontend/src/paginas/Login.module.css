@@ -1,13 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Carter+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playball&family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
 
 .loginPageWrapper {
   min-height: 100vh;
-  background-color: rgb(222, 219, 219);
+  background-color: #f5f5f5;
 }
 
 .loginPageWrapper input {
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: white;
   color: black;
 }
@@ -15,76 +15,53 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: rgb(222, 219, 219);
+  background-color: #f5f5f5;
   height: 100%;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 25px 20px;
-  height: auto;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 120, 120, 0.9) 0%,
-    rgba(255, 120, 120, 0.6) 30%,
-    rgba(255, 120, 120, 0.2) 70%,
-    rgb(222, 219, 219) 100%
-  );
+  gap: 20px;
+  padding: 30px 20px;
+  background-color: #f55858;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  z-index: 1;
 }
 
 .logo {
-  width: 100px;
-  height: auto;
-  border-radius: 50px;
-  object-fit: contain;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-
 .title {
-  position:absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 500px;
-  text-align: center;
-  font-size: 60px;
+  font-size: 74px;
   font-weight: 400;
-  font-family: "Carter One", system-ui;
-  color: #111;
-  letter-spacing: 3px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: "Playball", cursive;
+  font-style: normal;
+  color: white;
+  letter-spacing: 2px;
   margin: 0;
-  pointer-events: none;
-  z-index: 2;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .tuercaLogo {
-  width: 60px;
-  height: auto;
-  border-radius: 50%;
-  border: 3px solid rgb(241, 82, 82);
-  padding: 5px;
-  transition: transform 0.3s ease;
-}
-
-.tuercaLogo:hover, .footerLogo:hover {
-  transform: scale(1.1);
+  display: none;
 }
 
 .contenedor {
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: white;
-  border-radius: 15px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.666);
-  max-width: 500px;
-  padding: 5px;
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  max-width: 480px;
+  padding: 40px 30px;
+  margin: 40px auto;
 }
 
 .opcionesRol {
@@ -99,9 +76,8 @@ body {
   text-align: center;
 }
 
-
 .datos {
-  width: 90%;
+  width: 100%;
   text-align: left;
   margin: 15px auto;
   display: flex;
@@ -109,19 +85,27 @@ body {
 }
 
 .datos label {
-  font-size: 13px;
-  font-weight: bold;
-  margin-left: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
 }
 
 .datos input {
-  width: 90%;
-  height: 50px;
-  padding: 12px;
-  margin: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  width: 100%;
+  height: 48px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
   font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.datos input:focus {
+  outline: none;
+  border-color: #f55858;
+  box-shadow: 0 0 0 3px rgba(245, 88, 88, 0.1);
 }
 
 .datos input:-webkit-autofill {
@@ -132,41 +116,72 @@ body {
 }
 
 .submit {
-  width: 60%;
-  height: 30px;
-  padding: 5px;
-  margin-top: 30px;
-  margin-bottom: 1px;
+  width: 100%;
+  height: 48px;
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border-radius: 10px;
-  background-color: #d13a3a;
+  background-color: #f55858;
   color: white;
-  font-size: 15px;
-  align-self: center;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
   border: none;
+  transition: all 0.3s ease;
 }
 
-.submit:hover,
+.submit:hover {
+  background-color: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 88, 88, 0.3);
+}
+
 .submit:active {
-  background-color: #a32828;
-  transform: translateY(-5%) scale(1.05);
-  filter: none;
+  transform: translateY(0);
+}
+
+.submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .error {
-  font-size: 12px;
-  color: red;
-  margin-left: 10px;
+  font-size: 13px;
+  color: #ff5252;
+  margin-top: -15px;
+  margin-bottom: 10px;
+  display: block;
+  font-weight: 500;
 }
 
 .loginPageWrapper a {
-  color: #1a0dab;
-  text-decoration: underline;
+  color: #f55858;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.loginPageWrapper a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #c73030;
+  transition: width 0.3s ease;
 }
 
 .loginPageWrapper a:hover {
-  color: #d13a3a;
+  color: #c73030;
+}
+
+.loginPageWrapper a:hover::after {
+  width: 100%;
 }
 
 .footer {
@@ -174,8 +189,8 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px 2px;
-  background-color: rgb(222, 219, 219);
-  color: #444;
+  background-color: #f5f5f5;
+  color: #666;
   width: 100%;
 }
 
@@ -185,45 +200,42 @@ body {
   margin: auto;
 }
 
-
-
 select.form-select:focus {
-  border-color: #800000;
-  box-shadow: 0 0 0 0.2rem rgba(128, 0, 0, 0.25);
+  border-color: #f55858;
+  box-shadow: 0 0 0 0.2rem rgba(245, 88, 88, 0.25);
 }
 
 .datos select {
-  width: 90%;
-  height: 40px;
-  padding: 8px 12px;
-  margin: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  width: 100%;
+  height: 48px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
   font-size: 15px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: white;
   color: black;
   cursor: pointer;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .datos select:hover {
-  border-color: #ff4d4d;
-  box-shadow: 0 0 0 2px rgba(255, 77, 77, 0.2);
+  border-color: #f55858;
 }
 
 .datos select:focus {
   outline: none;
-  border-color: #d13a3a;
-  box-shadow: 0 0 0 2px rgba(209, 58, 58, 0.2);
+  border-color: #f55858;
+  box-shadow: 0 0 0 3px rgba(245, 88, 88, 0.1);
 }
 
 .selectRol {
   background-color: white;
   color: black;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px 16px;
 }
 
 select option {
@@ -240,7 +252,7 @@ select option {
 .temaOscuro select {
   background-color: #333;
   color: white;
-  border: 1px solid #666;
+  border: 2px solid #555;
 }
 
 .temaOscuro .contenedor {
@@ -248,26 +260,17 @@ select option {
 }
 
 .errorBox {
-  background-color: #f8d7da;
-  color: #842029;
-  border: 1px solid #f5c2c7;
-  border-radius: 5px;
-  padding: 10px;
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef5350;
+  border-radius: 8px;
+  padding: 12px;
   margin-top: 10px;
 }
 
 .inputError {
-  border: 2px solid #d32f2f !important;
+  border: 2px solid #ff5252 !important;
   background-color: #fff5f5 !important;
-  outline: none;
-}
-
-.error {
-  color: #d32f2f;
-  font-size: 0.875rem;
-  margin-top: 4px;
-  display: block;
-  font-weight: 500;
 }
 
 @keyframes fadeIn {
@@ -286,34 +289,51 @@ select option {
 }
 
 .datos input:focus:not(.inputError) {
-  border-color: #4CAF50;
-  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+  border-color: #f55858;
+  box-shadow: 0 0 0 3px rgba(245, 88, 88, 0.1);
   outline: none;
 }
 
 .container {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .codeInputs {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .input {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 50px;
   font-size: 24px;
   text-align: center;
-  border: 2px solid #ccc;
-  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
   transition: border-color 0.2s ease;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
 }
 
 .input:focus {
-  border-color: #007bff;
+  border-color: #f55858;
   outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 88, 88, 0.1);
+}
+
+.contenedor p {
+  font-size: 15px;
+  color: #666;
+  margin: 15px 0;
+}
+
+.contenedor h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
 }
