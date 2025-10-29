@@ -75,11 +75,11 @@ export async function contratarPostulante (id1: number, id2:number): Promise<str
   if (formularioContratadoExiste) {
     const usuarioMismo = formularioContratadoExiste.postuladoId
     if (usuarioMismo == id1) {
-      console.log(`Ya contrataste anteriormente a este usuario!: ${id1}`);
-      return `Ya contrataste anteriormente a este usuario!: ${id1}`;
+      console.log(`Ya contrataste anteriormente a este usuario!`);
+      return `Ya contrataste anteriormente a este usuario!`;
     }
-    console.log(`Ya haz contratado a otro postulante para este puesto!: ${usuarioMismo}`)
-    return `Ya haz contratado a otro postulante para este puesto!: ${usuarioMismo}`;
+    console.log(`Ya haz contratado a otro postulante para este puesto!`)
+    return `Ya haz contratado a otro postulante para este puesto!`;
   }
   try {
     await prisma.formulario.update({
@@ -91,7 +91,7 @@ export async function contratarPostulante (id1: number, id2:number): Promise<str
         }
     })
     console.log(`Haz contratado al postulante ${id1} para la oferta ${id2} satisfactoriamente`);
-    return `Haz contratado al postulante ${id1} para la oferta ${id2} satisfactoriamente`
+    return `Haz contratado satisfactoriamente a este postulante!`
   } catch (error) {
     console.log('Error al actualizar el registro:', error);
     return `Error al actualizar el registro:${error}`
