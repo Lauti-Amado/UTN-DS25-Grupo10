@@ -532,9 +532,17 @@ function Acordion() {
                     </button>
                   </>
                 ) : (
-                  <Button variant="dark" onClick={() => handlePostular(item)}>
-                    Postularse <IoIosPaper />
-                  </Button>
+                    <>
+                    {postulaciones[String(item.id)] ? (
+                      <Button variant="success" onClick={() => verResultado(item.id)}>
+                        Ver resultado <HiCursorArrowRays />
+                      </Button>
+                    ) : (
+                      <Button variant="dark" onClick={() => handlePostular(item)}>
+                        Postularse <IoIosPaper />
+                      </Button>
+                    )}
+                    </>
                 )}
               </div>
             </Accordion.Body>
