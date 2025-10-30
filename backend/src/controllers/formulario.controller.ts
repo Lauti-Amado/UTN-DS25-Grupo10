@@ -89,8 +89,19 @@ export async function contratarPostulante (req: Request, res: Response, next: Ne
   try {
       const UsuarioId = parseInt(req.params.usuarioId);
       const OfertaId = parseInt(req.params.ofertaId);
-      const updated = await formularioService.contratarPostulante(UsuarioId, OfertaId);
-      res.json({ success: true, data: updated });
+      const info= await formularioService.contratarPostulante(UsuarioId, OfertaId);
+      res.json({ success: true, data: info });
+    } catch (error) {
+      next(error);
+    }
+}
+
+export async function getRespuesta (req: Request, res: Response, next: NextFunction) {
+  try {
+      const ofertaId = parseInt(req.params.ofertaId);
+      const usuarioId = parseInt(req.params.usuarioId);
+      const respuesta = await formularioService.getRespuesta(ofertaId, usuarioId);
+      res.json({ success: true, data: respuesta});
     } catch (error) {
       next(error);
     }

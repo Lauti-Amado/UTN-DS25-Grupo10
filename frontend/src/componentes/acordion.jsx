@@ -6,6 +6,7 @@ import { DatosContexto } from '../datosContext.jsx';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Button, Modal } from 'react-bootstrap';
 import { IoIosPaper } from "react-icons/io";
+import { HiCursorArrowRays } from "react-icons/hi2";
 import FormularioPostulacionModal from './FormularioPostulacionModal';
 import PostuladosModal from './PostuladosModal';
 import NotificacionModal from './NotificacionModal';
@@ -13,6 +14,7 @@ import { ofertaSchema } from '../validations/oferta.js';
 import { API_URL } from '../config.js';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import VerResultadoContratacion from './VerResultadoContratacion.jsx';
 
 function Acordion() {
   const location = useLocation();
@@ -28,7 +30,10 @@ function Acordion() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [mostrarPostulados, setMostrarModalPostulados] = useState(false);
   const [idOfertaSeleccionada, setIdOfertaSeleccionada] = useState(null);
-  const [postulaciones, setPostulaciones] = useState({});
+  const [dataResultado, setDataResultado] = useState(null);
+
+  // Estado para trackear postulaciones del usuario
+  const [postulaciones, setPostulaciones] = useState({}); // Objeto { [ofertaId]: true/false }
 
   // Estados para edición
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -184,6 +189,17 @@ function Acordion() {
     setIdAEliminar(id);
     setMostrarModal(true);
   };
+
+  const verResultado = async (ofertaId) => {
+    try {
+      const response = await fetch(`${API_URL}/formularios/respuesta/${usuarioLogueado.id}/${ofertaId}}`);
+      const res = await response.json();
+      setDataResultado(res.data);
+    } catch (error) {
+      console.error('Error al obtener resultado:', error);
+    }
+  };
+
 
   const verPostulados = (id) => {
     setIdOfertaSeleccionada(id);
@@ -525,7 +541,7 @@ function Acordion() {
           </Accordion.Item>
         ))}
       </Accordion>
-
+/
       {/* Modal de confirmación de eliminación */}
       <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
         <Modal.Header closeButton className="bg-dark text-white">
@@ -598,6 +614,12 @@ function Acordion() {
         handleClose={() => setMostrarModalPostulados(false)}
         ofertaId={idOfertaSeleccionada}
       />
+
+      {dataResultado && (
+      <VerResultadoContratacion data={dataResultado} />
+    )}
+
+
     </div>
   );
 }
