@@ -1,4 +1,3 @@
-//ESTE COMPONENTE ESTA USADO PARA EL ACORDEON
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
@@ -10,20 +9,49 @@ function NotificacionModal({ show, handleClose, titulo, mensaje, tipo = 'success
     info: 'bi-info-circle-fill text-info'
   };
 
+  const variantes = {
+    success: 'success',
+    error: 'danger',
+    warning: 'warning',
+    info: 'primary'
+  };
+
   return (
-    <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton className="border-0">
-        <Modal.Title className="d-flex align-items-center gap-2">
+    <Modal 
+      show={show} 
+      onHide={handleClose} 
+      centered 
+      backdrop="static"
+      contentClassName="shadow-lg"
+    >
+      <Modal.Header className="border-0 pb-0">
+        <Modal.Title className="d-flex align-items-center gap-2 w-100">
           <i className={`bi ${iconos[tipo]} fs-4`}></i>
-          {titulo}
+          <span className="flex-grow-1">{titulo}</span>
+          <button 
+            type="button" 
+            className="btn-close" 
+            aria-label="Close"
+            onClick={handleClose}
+            style={{ 
+              fontSize: '0.75rem',
+              opacity: 0.8
+            }}
+          />
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      
+      <Modal.Body className="py-4">
         <p className="mb-0">{mensaje}</p>
       </Modal.Body>
-      <Modal.Footer className="border-0">
-        <Button variant="secondary" onClick={handleClose}>
-          Cerrar
+      
+      <Modal.Footer className="border-0" style={{ justifyContent: 'center' }}>
+        <Button 
+          variant={variantes[tipo]} 
+          onClick={handleClose}
+          className="px-4"
+        >
+          Aceptar
         </Button>
       </Modal.Footer>
     </Modal>
