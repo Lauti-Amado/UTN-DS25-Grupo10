@@ -97,3 +97,31 @@ export async function contratarPostulante (id1: number, id2:number): Promise<str
     return `Error al actualizar el registro:${error}`
   }
 }
+
+export async function getRespuesta (ofertaId: number, usuarioId:number): Promise<string> {
+  const formularioExiste = await prisma.formulario.findFirst({
+    where: { ofertaId: ofertaId, postuladoId: usuarioId}
+  });
+
+  if (formularioExiste?.contratado == true) {
+      console.log(`Haz sido contratado para esta oferta. Pronto tu empleador se comunicará contigo. Felicitaciones!`);
+      return `Haz sido contratado para esta oferta. Pronto tu empleador se comunicará contigo. Felicitaciones!`;
+    }
+  
+  try {
+    const noFueContratado = await prisma.formulario.findFirst({
+        where: { ofertaId: ofertaId, contratado: true }
+    })
+
+    if(noFueContratado) {
+        console.log(`Lamentamos comunicarte que otro usuario ha sido seleccionado para esta oferta.`);
+        return `Lamentamos comunicarte que otro usuario ha sido seleccionado para esta oferta.`
+    } else {
+        console.log(`El empleador aún no ha elegido a ningun postulante. Ten paciencia!`)
+        return `El empleador aún no ha elegido a ningun postulante. Ten paciencia!`
+    }
+  } catch (error) {
+    console.log('Error al actualizar el registro:', error);
+    return `Error al actualizar el registro:${error}`
+  }
+}

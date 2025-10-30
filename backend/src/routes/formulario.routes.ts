@@ -19,6 +19,9 @@ router.get('/:UsuarioId/:OfertaId', formularioController.getExistePostulacion);
 // Ruta para contratar un postulante (modifica el atributo "contratado" del formulario en cuestion)
 router.put('/:usuarioId/:ofertaId', formularioController.contratarPostulante)
 
+// Ruta para ver si un formulario fue aceptado o no
+router.get('/respuesta/:usuarioId/:ofertaId', formularioController.getRespuesta)
+
 // con "/:id" me refiero al id de la oferta 
 export const formularioRoutes = router;
 
