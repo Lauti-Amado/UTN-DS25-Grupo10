@@ -191,9 +191,22 @@ export default function Perfil() {
 
         <aside className={styles.asideSugerencias}>
           <h2>Perfiles Recomendados</h2>
-          {perfiles.map((p) => (
-            <TarjetaSugerida key={p.id} {...p} />
-          ))}
+          <div className={styles.contenedorSugerencias}>
+            {perfiles.length === 0 ? (
+              <div style={{ 
+                textAlign: 'center', 
+                padding: '3rem 1rem',
+                color: '#999'
+              }}>
+                <p style={{ fontSize: '3rem', margin: '0' }}>👥</p>
+                <p style={{ marginTop: '1rem' }}>No hay perfiles sugeridos</p>
+              </div>
+            ) : (
+              perfiles.map((p) => (
+                <TarjetaSugerida key={p.id} {...p} />
+              ))
+            )}
+          </div>
         </aside>
       </div>
 

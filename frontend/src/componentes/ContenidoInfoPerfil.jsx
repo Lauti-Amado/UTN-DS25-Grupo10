@@ -18,15 +18,15 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
           <div className={styles.infoTexto}>
             <p><strong>Descripción:</strong> {descripcion}</p>
             <br />
-            <p><strong>Fecha de Nacimiento:</strong> {FechaNac}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {FechaNac || 'No especificada'}</p>
             <br />
           </div>
 
           <div className={styles.botonesPerfil}>
-            <button onClick={() => onEditarClick('perfil')}>Editar perfil</button>
-            <button onClick={() => onEditarClick('compartir')}>Compartir</button>
+            <button onClick={() => onEditarClick('perfil')}>✏️ Editar perfil</button>
+            <button onClick={() => onEditarClick('compartir')}>🔗 Compartir</button>
             {usuarioLogueado.rolPostulante && (
-              <button onClick={() => onEditarClick('proyecto')}>Agregar proyecto</button>
+              <button onClick={() => onEditarClick('proyecto')}>➕ Agregar proyecto</button>
             )}
           </div>
         </div>

@@ -57,13 +57,15 @@
 
 /* PERFIL */
 .seccionPerfil {
-background: #fff;
+  background: #fff;
   border-radius: 20px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   padding: 3rem 2rem;
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
   transition: transform 0.3s ease;
+  position: relative;
+  overflow: visible;
 }
 
 .seccionPerfil:hover {
@@ -107,13 +109,15 @@ background-clip: border-box !important;
 -webkit-background-clip: border-box !important;
   margin-bottom: 1rem;
   text-align: center;
-  margin-right: 160px; 
+  width: 100%;
 }
 
 /* Contenedor para descripción y fecha alineadas */
 .infoTexto {
   text-align: left;
   margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 600px;
 }
 
 .infoTexto p {
@@ -121,6 +125,12 @@ background-clip: border-box !important;
   margin: 0.5rem 0;
   font-size: 1.05rem;
   line-height: 1.6;
+}
+
+.infoTexto p:first-child {
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 0.8rem !important;
 }
 
 .seccionPerfil p {
@@ -188,23 +198,32 @@ button:hover {
 .botonesPerfil {
   display: flex;
   justify-content: center;
+  align-items: stretch;
   gap: 1rem;
   flex-wrap: wrap;
-  margin-top: 50px;
-  margin-left: 0px
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 650px;
 }
 
 .botonesPerfil button {
   background: linear-gradient(135deg, #e02424, #b91c1c);
   color: white;
   border: none;
-  padding: 0.75rem 1.6rem;
+  padding: 0.75rem 0;
   border-radius: 10px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.3s ease;
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .botonesPerfil button:hover {
@@ -215,8 +234,9 @@ button:hover {
 /* IMAGEN DE PERFIL */
 .imagenPerfil {
   border-radius: 50%;
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
+  margin-top: 1rem;
   object-fit: cover;
   border: 4px solid #dc2626;
   box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
@@ -253,58 +273,32 @@ button:hover {
 
 
 /* SUGERENCIAS */
-.scrollsection {
-    width: 100%;
-    max-width: 400px; 
-    flex-shrink: 0;
-    height: fit-content;
-    max-height: 600px;
-    border-radius: 20px;
-    overflow: hidden;
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-    border: 1px solid rgba(220, 38, 38, 0.3);
-    box-shadow: 
-        0 20px 25px -5px rgba(0, 0, 0, 0.4),
-        0 10px 10px -5px rgba(0, 0, 0, 0.3);
+.contenedorSugerencias {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+  flex: 1; /* Ocupa el espacio restante */
 }
 
-.scrollsection h2 {
-    background: linear-gradient(135deg, #dc2626, #ea580c);
-    color: #ffffff;
-    padding: 1.5rem;
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+/* Estilos del scrollbar */
+.contenedorSugerencias::-webkit-scrollbar {
+  width: 8px;
 }
 
-.scrollcontent {
-    max-height: 500px; 
-    overflow-y: auto;  
-    padding: 1rem;
-    line-height: 1.6;
-    color: #e5e7eb;
+.contenedorSugerencias::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
 }
 
-.scrollcontent::-webkit-scrollbar {
-    width: 8px;
+.contenedorSugerencias::-webkit-scrollbar-thumb {
+  background: #dc2626;
+  border-radius: 10px;
 }
 
-.scrollcontent::-webkit-scrollbar-track {
-    background: #1a1a1a;
-    border-radius: 4px;
+.contenedorSugerencias::-webkit-scrollbar-thumb:hover {
+  background: #b91c1c;
 }
 
-.scrollcontent::-webkit-scrollbar-thumb {
-    background: #dc2626;
-    border-radius: 4px;
-}
-
-.scrollcontent::-webkit-scrollbar-thumb:hover {
-    background: #ef4444;
-}
 
 /* PERFILES */
 .unperfil {
@@ -694,19 +688,26 @@ button[style*="marginLeft"] {
     margin:20px
 }
 
-.tecnologias {
-    color: #ffffff;
+.tecnologiasProyecto {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
 }
 
 .perfilLayout {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: 2rem;
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .infoPerfil {
-  flex: 1;
+  width: 100%;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .botonesPerfil {
@@ -715,6 +716,23 @@ button[style*="marginLeft"] {
   gap: 1rem;
   flex-wrap: wrap;
   margin-top: 1rem;
+}
+
+.botonesProyecto {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.botonesProyecto button {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .layoutPrincipal {
@@ -735,6 +753,12 @@ button[style*="marginLeft"] {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
   color: #111;
+  position: sticky;
+  top: 2rem;
+  max-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .asideSugerencias h2 {
@@ -743,21 +767,26 @@ button[style*="marginLeft"] {
   color: #111;
   font-weight: 700;
   margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .tarjetaSugerida {
   display: flex;
   gap: 1rem;
-  background: #1a1a1a;
-  padding: 1rem;
+  background: #fdfdfd;
+  padding: 1.2rem;
   border-radius: 12px;
   margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
   transition: transform 0.2s ease;
+  align-items: center;
+  border: 1px solid #f0f0f0;
 }
 
 .tarjetaSugerida:hover {
   transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+  border-color: #dc2626;
 }
 
 .avatarSugerido {
@@ -765,22 +794,22 @@ button[style*="marginLeft"] {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #dc2626;
+  flex-shrink: 0;
 }
 
-.tarjetaSugerida {
-  display: flex;
-  gap: 1rem;
-  background: #1a1a1a;
-  padding: 1rem;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: transform 0.2s ease;
-  align-items: center;
+.tarjetaSugerida h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 0.3rem 0;
 }
 
-.tarjetaSugerida:hover {
-  transform: translateY(-3px);
+.tarjetaSugerida p {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* Sección de proyectos y título */
@@ -806,9 +835,12 @@ button[style*="marginLeft"] {
   background: #fdfdfd;
   border-radius: 14px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  padding: 1.2rem;
+  padding: 1.5rem;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
   text-align: left;
+  gap: 1rem
 }
 
 .tarjetaProyecto:hover {
@@ -820,22 +852,23 @@ button[style*="marginLeft"] {
   font-size: 1.2rem;
   font-weight: 700;
   color: #111;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0;
 }
 
 .descripcionProyecto {
   color: #444;
   font-size: 0.95rem;
-  margin-bottom: 0.7rem;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .tecnologiaChip {
   background-color: #dc2626;
   color: #fff;
-  padding: 0.3rem 0.8rem;
+  padding: 0.4rem 0.9rem;
   border-radius: 20px;
   font-size: 0.8rem;
-  margin-right: 0.5rem;
+  display: inline-block;
 }
 
 
