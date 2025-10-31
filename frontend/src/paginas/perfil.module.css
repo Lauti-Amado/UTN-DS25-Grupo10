@@ -96,6 +96,27 @@ background: #fff;
     background-clip: text;
 }
 
+/* Nombre del perfil en NEGRO */
+.nombrePerfil {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #000000 !important; /* Negro sólido */
+  margin-bottom: 1rem;
+}
+
+/* Contenedor para descripción y fecha alineadas */
+.infoTexto {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.infoTexto p {
+  color: #333;
+  margin: 0.5rem 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
 .seccionPerfil p {
     font-size: 1.2em;
     color: #e5e7eb;
@@ -683,10 +704,10 @@ button[style*="marginLeft"] {
 
 .botonesPerfil {
   display: flex;
+  justify-content: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
   margin-top: 1rem;
-  justify-content: flex-start;
 }
 
 .layoutPrincipal {
