@@ -13,6 +13,7 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
         <div className={styles.infoPerfil}>
           <h3 className={styles.nombrePerfil}>{nombre}</h3>
           <br />
+          <br />
           
           <div className={styles.infoTexto}>
             <p><strong>Descripción:</strong> {descripcion}</p>
