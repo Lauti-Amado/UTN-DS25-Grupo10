@@ -11,13 +11,13 @@ import Perfil from './paginas/Perfil.jsx';
 import { DatosProvider, DatosContexto } from './datosContext.jsx';
 import ResetPassword from './componentes/recuperar.jsx';
 
-
 function AppContent() {
   const { usuarioLogueado, setUsuarioLogueado } = useContext(DatosContexto);
 
   const handleLogout = () => {
     setUsuarioLogueado(null);
-    localStorage.removeItem("token"); // limpiar JWT
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuarioID");
   };
 
   return (

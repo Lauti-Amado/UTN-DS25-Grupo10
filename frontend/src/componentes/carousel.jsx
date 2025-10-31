@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import { DatosContexto } from '../datosContext';
 import { API_URL } from '../config';
+import Card from 'react-bootstrap/Card';
 
 function OfertasCarousel() {
   const [ofertas, setOfertas] = useState([]);
@@ -11,18 +12,30 @@ function OfertasCarousel() {
   const navigate = useNavigate();
   const { usuarioLogueado } = useContext(DatosContexto);
 
-  // Cargar ofertas o postulantes según el rol
+  // Cargar ofertas, postulantes o usuarios desactivados según el rol
   useEffect(() => {
-  const cargarDatos = async () => {
+    const cargarDatos = async () => {
       if (!usuarioLogueado) return;
+      
       try {
-        if (usuarioLogueado.rolPostulante) {
-          // Obtener todas las ofertas primero
+        if (usuarioLogueado.esAdmin) {
+          // Cargar usuarios desactivados para ADMIN
+          const token = localStorage.getItem("token");
+          const resp = await fetch(`${API_URL}/usuarios`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await resp.json();
+          
+          if (data.success) {
+            const usuariosDesactivados = data.data.filter(u => !u.activo);
+            setOfertas(usuariosDesactivados);
+          }
+        } else if (usuarioLogueado.rolPostulante) {
+          // POSTULANTE: Cargar ofertas donde está postulado
           const resp = await fetch(`${API_URL}/ofertas`);
           const data = await resp.json();
           
           if (data.success) {
-            // Para cada oferta, verificar si el usuario está postulado
             const ofertasConPostulacion = await Promise.all(
               data.data.map(async (oferta) => {
                 const res = await fetch(`${API_URL}/formularios/${usuarioLogueado.id}/${oferta.id}`);
@@ -31,11 +44,10 @@ function OfertasCarousel() {
               })
             );
             
-            // Filtrar solo las ofertas donde está postulado
             setOfertas(ofertasConPostulacion.filter(oferta => oferta !== null));
           }
         } else {
-          // Lógica existente para empleadores
+          // EMPLEADOR: Cargar sus ofertas
           const resp = await fetch(`${API_URL}/ofertas/empleador/${usuarioLogueado.id}`);
           const data = await resp.json();
           if (data.success) {
@@ -43,7 +55,7 @@ function OfertasCarousel() {
           }
         }
       } catch (err) {
-        console.error("Error al cargar ofertas:", err);
+        console.error("Error al cargar datos:", err);
         setOfertas([]);
       }
     };
@@ -65,7 +77,29 @@ function OfertasCarousel() {
     return () => window.removeEventListener('resize', actualizarCantidad);
   }, []);
 
-  // Repetir elementos para completar slides y no dejar espacios vacíos
+  // Si es admin y no hay usuarios desactivados
+  if (usuarioLogueado?.esAdmin && ofertas.length === 0) {
+    return (
+      <div className="alert alert-info text-center" role="alert">
+        <i className="bi bi-info-circle me-2"></i>
+        No hay usuarios desactivados en este momento.
+      </div>
+    );
+  }
+
+  // Si no es admin y no hay ofertas
+  if (!usuarioLogueado?.esAdmin && ofertas.length === 0) {
+    return (
+      <div className="alert alert-warning text-center" role="alert">
+        <i className="bi bi-exclamation-triangle me-2"></i>
+        {usuarioLogueado?.rolPostulante 
+          ? "No tienes postulaciones activas." 
+          : "No has creado ofertas todavía."}
+      </div>
+    );
+  }
+
+  // Repetir elementos para completar slides
   const completarOfertas = () => {
     const total = ofertas.length;
     const resto = total % itemsPorSlide;
@@ -78,20 +112,18 @@ function OfertasCarousel() {
 
   const ofertasCompletas = completarOfertas();
 
-  // Agrupar ofertas en slides
+  // Agrupar en slides
   const ofertasEnSlides = [];
   for (let i = 0; i < ofertasCompletas.length; i += itemsPorSlide) {
     ofertasEnSlides.push(ofertasCompletas.slice(i, i + itemsPorSlide));
   }
 
-  // Redirigir al detalle de la oferta (o trabajos)
   const irAOferta = (oferta) => {
     navigate('/trabajos', { state: { mensaje: oferta.id, scrollToOferta: true } });
   };
 
   return (
     <div className="carousel-wrapper position-relative">
-      
       <Carousel
         className="carrusel-empleos"
         interval={5000}
@@ -104,18 +136,35 @@ function OfertasCarousel() {
         {ofertasEnSlides.map((grupo, i) => (
           <Carousel.Item key={i}>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              {grupo.map((oferta, index) => (
-                <div
-                  key={`${oferta.id}-${i}-${index}`}
-                  onClick={() => irAOferta(oferta)}
-                  style={{ cursor: 'pointer'}}
-                >
-                  <OfertaCard
-                    titulo={oferta.titulo}
-                    categoria={oferta.categoria}
-                    texto={oferta.descripcion}
-                    n={oferta.id}
-                  />
+              {grupo.map((item, index) => (
+                <div key={`${item.id}-${i}-${index}`}>
+                  {usuarioLogueado?.esAdmin ? (
+                    // Card de usuario desactivado
+                    <Card
+                      bg={'danger'}
+                      style={{ width: '18rem', height: '140px' }}
+                      text={'white'}
+                      className="mb-2 me-2 card"
+                    >
+                      <Card.Header className='card-header'>Usuario Desactivado</Card.Header>
+                      <Card.Body>
+                        <Card.Title className="card-title">{item.nombre}</Card.Title>
+                        <Card.Text>
+                          {item.mail}
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>
+                  ) : (
+                    // Card de oferta normal
+                    <div onClick={() => irAOferta(item)} style={{ cursor: 'pointer'}}>
+                      <OfertaCard
+                        titulo={item.titulo}
+                        categoria={item.categoria}
+                        texto={item.descripcion}
+                        n={item.id}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

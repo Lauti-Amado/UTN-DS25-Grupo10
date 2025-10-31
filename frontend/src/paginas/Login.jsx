@@ -11,8 +11,6 @@ import { registroSchema } from '../validations/registroSchema';
 import { cambioContrasenaSchema } from '../validations/cambioContraseña';
 import { API_URL } from '../config';
 
-
-
 export default function Login({ onLogin }) {
   const [mostrarModalCambioExitoso, setMostrarModalCambioExitoso] = useState(false);
   const [nombreUsuario, setUsuario] = useState('');
@@ -38,6 +36,7 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
   const [temaOscuro, setTemaOscuro] = useState(false);
 
   const [erroresRegistro, setErroresRegistro] = useState([]);
+  const [mostrarModalUsuarioDesactivado, setMostrarModalUsuarioDesactivado] = useState(false);
 
   const {
     register: registerLogin,
@@ -79,10 +78,20 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
       });
 
       const responseData = await res.json();
-      setToken(responseData.token);
-      console.log("Respuesta login:", responseData);
+      
+      // VERIFICAR SI EL USUARIO ESTÁ DESACTIVADO
+      if (!res.ok) {
+        if (responseData.message === "USUARIO_DESACTIVADO") {
+          setMostrarModalUsuarioDesactivado(true);
+          return;
+        }
+        setMostrarModalError(true);
+        return;
+      }
 
+      // Login exitoso
       if (res.ok) {
+        setToken(responseData.token);
         setUsuarioLogueado({
           ...responseData.data.usuario,
           token: responseData.data.token,
@@ -90,8 +99,6 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
         localStorage.setItem("token", responseData.data.token);
         localStorage.setItem("usuarioID", responseData.data.usuario.id);
         onLogin();
-      } else {
-        setMostrarModalError(true);
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
@@ -200,8 +207,6 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
   }
 }
 
-
-
   return (
     <div className={`${styles.loginPageWrapper} ${temaOscuro ? styles.temaOscuro : ''}`}>
       <div className={styles.bodyLogin}>
@@ -249,7 +254,7 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
             </>
           )}
 
-          {/* --- REGISTRO --- */}
+          {/* REGISTRO */}
           {vista === 'registro' && (
             <form onSubmit={handleSubmitRegistro(onSubmitRegistro)}>
               <div className={styles.datos}>
@@ -330,43 +335,43 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
           )}
 
           {vista === 'recuperar' && (
-  <form
-    onSubmit={async (e) => {
-      e.preventDefault();
-      const emailRecuperar = e.target.emailRecuperar.value;
-      setEmailRecuperar(emailRecuperar); 
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const emailRecuperar = e.target.emailRecuperar.value;
+                setEmailRecuperar(emailRecuperar); 
 
-      try {
-          const res = await fetch(`${API_URL}/usuarios/recuperar`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mail: emailRecuperar })
-        });
+                try {
+                    const res = await fetch(`${API_URL}/usuarios/recuperar`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ mail: emailRecuperar })
+                  });
 
-        const data = await res.json();
+                  const data = await res.json();
 
-        if (res.ok) {
-          setMostrarModalRecuperacion(true); // Modal éxito
-          setTimeout(() => setVista('login'), 2000);
-        } else {
-          setMostrarModalRecuperacionError(true); // Modal error
-        }
-      } catch (err) {
-        console.error(err);
-        setMostrarModalRecuperacionError(true);
-      }
-    }}
-  >
-    <div className={styles.datos}>
-      <label htmlFor="emailRecuperar">Email para recuperar contraseña</label>
-      <input type="email" id="emailRecuperar" name="emailRecuperar" placeholder="tu@email.com" required />
-      <button type="submit" className={styles.submit}>Recuperar contraseña</button>
-      <div className="text-center mt-3">
-        <a href="#" onClick={(e) => { e.preventDefault(); setVista('login'); }}>Volver al inicio de sesión</a>
-      </div>
-    </div>
-  </form>
-)}
+                  if (res.ok) {
+                    setMostrarModalRecuperacion(true); // Modal éxito
+                    setTimeout(() => setVista('login'), 2000);
+                  } else {
+                    setMostrarModalRecuperacionError(true); // Modal error
+                  }
+                } catch (err) {
+                  console.error(err);
+                  setMostrarModalRecuperacionError(true);
+                }
+              }}
+            >
+              <div className={styles.datos}>
+                <label htmlFor="emailRecuperar">Email para recuperar contraseña</label>
+                <input type="email" id="emailRecuperar" name="emailRecuperar" placeholder="tu@email.com" required />
+                <button type="submit" className={styles.submit}>Recuperar contraseña</button>
+                <div className="text-center mt-3">
+                  <a href="#" onClick={(e) => { e.preventDefault(); setVista('login'); }}>Volver al inicio de sesión</a>
+                </div>
+              </div>
+            </form>
+          )}
 
           {/* Modals */}
           {mostrarModalError && (
@@ -382,6 +387,25 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
                   </div>
                   <div className="modal-footer">
                     <button className="btn btn-secondary" onClick={() => setMostrarModalError(false)}>Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {mostrarModalUsuarioDesactivado && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+              <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-content">
+                  <div className="modal-header bg-danger text-white">
+                    <h5 className="modal-title">Cuenta Desactivada</h5>
+                    <button type="button" className="btn-close" onClick={() => setMostrarModalUsuarioDesactivado(false)}></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>Tu cuenta ha sido desactivada por un administrador. Por favor, contacta al soporte para más información.</p>
+                  </div>
+                  <div className="modal-footer">
+                    <button className="btn btn-danger" onClick={() => setMostrarModalUsuarioDesactivado(false)}>Cerrar</button>
                   </div>
                 </div>
               </div>
@@ -460,81 +484,80 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
           )}
 
           
-{mostrarCambioContrasena && (
-  <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-    <div className="modal-dialog modal-dialog-centered" role="document">
-      <div className="modal-content">
-        <div className="modal-header bg-primary text-white">
-          <h5 className="modal-title">Cambiar contraseña</h5>
-          <button type="button" className="btn-close" onClick={() => setMostrarCambioContrasena(false)}></button>
-        </div>
-        <div className="modal-body">
-          <form
-            onSubmit={handleSubmitCambio(async (data) => {
-              const token = codigoVerificacion;
+        {mostrarCambioContrasena && (
+          <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <div className="modal-dialog modal-dialog-centered" role="document">
+              <div className="modal-content">
+                <div className="modal-header bg-primary text-white">
+                  <h5 className="modal-title">Cambiar contraseña</h5>
+                  <button type="button" className="btn-close" onClick={() => setMostrarCambioContrasena(false)}></button>
+                </div>
+                <div className="modal-body">
+                  <form
+                    onSubmit={handleSubmitCambio(async (data) => {
+                      const token = codigoVerificacion;
 
-              try {
-                const res = await fetch(`${API_URL}/usuarios/reset-password`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ 
-                    token, 
-                    nuevaContrasena: data.nueva 
-                  }),
-                });
+                      try {
+                        const res = await fetch(`${API_URL}/usuarios/reset-password`, {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ 
+                            token, 
+                            nuevaContrasena: data.nueva 
+                          }),
+                        });
 
-                const responseData = await res.json();
+                        const responseData = await res.json();
 
-                if (res.ok) {
-                  // ✅ Mostrar modal de éxito en lugar de alert
-                  setMostrarCambioContrasena(false);
-                  setMostrarModalCambioExitoso(true);
-                } else {
-                  setCodigoError(responseData.message || "Error al cambiar la contraseña");
-                }
-              } catch (err) {
-                console.error(err);
-                setCodigoError("Error al comunicarse con el servidor");
-              }
-            })}
-          >
-            <div className={styles.datos}>
-              <label htmlFor="nueva">Nueva contraseña</label>
-              <input
-                type="password"
-                id="nueva"
-                placeholder="********"
-                {...registerCambio("nueva")}
-                className={errorsCambio.nueva ? styles.inputError : ''}
-              />
-              {errorsCambio.nueva && (
-                <span className={styles.error}>{errorsCambio.nueva.message}</span>
-              )}
+                        if (res.ok) {
+                          setMostrarCambioContrasena(false);
+                          setMostrarModalCambioExitoso(true);
+                        } else {
+                          setCodigoError(responseData.message || "Error al cambiar la contraseña");
+                        }
+                      } catch (err) {
+                        console.error(err);
+                        setCodigoError("Error al comunicarse con el servidor");
+                      }
+                    })}
+                  >
+                    <div className={styles.datos}>
+                      <label htmlFor="nueva">Nueva contraseña</label>
+                      <input
+                        type="password"
+                        id="nueva"
+                        placeholder="********"
+                        {...registerCambio("nueva")}
+                        className={errorsCambio.nueva ? styles.inputError : ''}
+                      />
+                      {errorsCambio.nueva && (
+                        <span className={styles.error}>{errorsCambio.nueva.message}</span>
+                      )}
 
-              <label htmlFor="confirmar">Confirmar contraseña</label>
-              <input
-                type="password"
-                id="confirmar"
-                placeholder="********"
-                {...registerCambio("confirmar")}
-                className={errorsCambio.confirmar ? styles.inputError : ''}
-              />
-              {errorsCambio.confirmar && (
-                <span className={styles.error}>{errorsCambio.confirmar.message}</span>
-              )}
+                      <label htmlFor="confirmar">Confirmar contraseña</label>
+                      <input
+                        type="password"
+                        id="confirmar"
+                        placeholder="********"
+                        {...registerCambio("confirmar")}
+                        className={errorsCambio.confirmar ? styles.inputError : ''}
+                      />
+                      {errorsCambio.confirmar && (
+                        <span className={styles.error}>{errorsCambio.confirmar.message}</span>
+                      )}
 
-              {codigoError && <span className={styles.error}>{codigoError}</span>}
+                      {codigoError && <span className={styles.error}>{codigoError}</span>}
 
-              <button type="submit" className={styles.submit}>
-                Guardar cambios
-              </button>
+                      <button type="submit" className={styles.submit}>
+                        Guardar cambios
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+          </div>
+        )}
           {mostrarModalRecuperacionError && (
             <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
               <div className="modal-dialog modal-dialog-centered" role="document">
@@ -644,32 +667,32 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
       </div>
 
       {/* Modal: Contraseña cambiada con éxito */}
-{mostrarModalCambioExitoso && (
-  <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-    <div className="modal-dialog modal-dialog-centered" role="document">
-      <div className="modal-content">
-        <div className="modal-header bg-primary text-white">
-          <h5 className="modal-title">¡Listo!</h5>
-          <button type="button" className="btn-close" onClick={() => setMostrarModalCambioExitoso(false)}></button>
+      {mostrarModalCambioExitoso && (
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header bg-primary text-white">
+                <h5 className="modal-title">¡Listo!</h5>
+                <button type="button" className="btn-close" onClick={() => setMostrarModalCambioExitoso(false)}></button>
+              </div>
+              <div className="modal-body">
+                <p>Tu contraseña ha sido actualizada con éxito.</p>
+              </div>
+              <div className="modal-footer">
+                <button 
+                  className="btn btn-primary" 
+                  onClick={() => {
+                    setMostrarModalCambioExitoso(false);
+                    setVista("login");
+                  }}
+                >
+                  Aceptar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="modal-body">
-          <p>Tu contraseña ha sido actualizada con éxito.</p>
-        </div>
-        <div className="modal-footer">
-          <button 
-            className="btn btn-primary" 
-            onClick={() => {
-              setMostrarModalCambioExitoso(false);
-              setVista("login");
-            }}
-          >
-            Aceptar
-          </button>
-        </div>
-      </div>
-    </div>
+      )}
   </div>
-)}
-    </div>
   );
 }

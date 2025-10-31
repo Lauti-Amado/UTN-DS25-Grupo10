@@ -6,7 +6,6 @@ import { DatosContexto } from '../datosContext.jsx';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Button, Modal } from 'react-bootstrap';
 import { IoIosPaper } from "react-icons/io";
-import { HiCursorArrowRays } from "react-icons/hi2";
 import FormularioPostulacionModal from './FormularioPostulacionModal';
 import PostuladosModal from './PostuladosModal';
 import NotificacionModal from './NotificacionModal';
@@ -32,17 +31,13 @@ function Acordion() {
   const [idOfertaSeleccionada, setIdOfertaSeleccionada] = useState(null);
   const [dataResultado, setDataResultado] = useState(null);
 
-  // Estado para trackear postulaciones del usuario
-  const [postulaciones, setPostulaciones] = useState({}); // Objeto { [ofertaId]: true/false }
+  const [postulaciones, setPostulaciones] = useState({});
 
-  // Estados para edición
   const [modoEdicion, setModoEdicion] = useState(false);
   const [ofertaEditando, setOfertaEditando] = useState(null);
 
-  // Estados para notificaciones
   const [notificacion, setNotificacion] = useState({ show: false, titulo: '', mensaje: '', tipo: 'success' });
 
-  // Filtro por búsqueda global
   const itemsFiltrados = items.filter((item) => {
     const titulo = (item.titulo || '').toLowerCase();
     const descripcion = (item.descripcion || '').toLowerCase();
@@ -51,13 +46,11 @@ function Acordion() {
     return titulo.includes(busqueda) || descripcion.includes(busqueda);
   });
 
-  // Limpia el formulario y resetea estados de edición
   const limpiarFormulario = () => {
     setModoEdicion(false);
     setOfertaEditando(null);
   };
 
-  // Muestra una notificación modal
   const mostrarNotificacion = (titulo, mensaje, tipo = 'success') => {
     setNotificacion({ show: true, titulo, mensaje, tipo });
   };
@@ -83,7 +76,10 @@ function Acordion() {
 
     const fetchOfertas = async () => {
       try {
-        const endpoint = usuarioLogueado.rolPostulante
+        // Admin ve TODAS las ofertas
+        const endpoint = usuarioLogueado.esAdmin 
+          ? `${API_URL}/ofertas`
+          : usuarioLogueado.rolPostulante
           ? `${API_URL}/ofertas`
           : `${API_URL}/ofertas/empleador/${usuarioLogueado.id}`;
 
@@ -134,7 +130,6 @@ function Acordion() {
     fetchOfertas();
   }, [usuarioLogueado]);
 
-  // Maneja el envío del formulario
   const onSubmit = async (data) => {
     const ofertaData = {
       ...data,
@@ -200,7 +195,6 @@ function Acordion() {
     }
   };
 
-
   const verPostulados = (id) => {
     setIdOfertaSeleccionada(id);
     setMostrarModalPostulados(true);
@@ -250,6 +244,11 @@ function Acordion() {
     }
   };
 
+  // Verificar si el usuario puede eliminar la oferta
+  const puedeEliminar = (oferta) => {
+    return usuarioLogueado?.esAdmin || oferta.creadorId === usuarioLogueado?.id;
+  };
+
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({
     resolver: yupResolver(ofertaSchema),
     mode: 'onChange',
@@ -266,7 +265,6 @@ function Acordion() {
     },
   });
 
-  // Cargar datos al editar
   useEffect(() => {
     if (modoEdicion && ofertaEditando) {
       reset({
@@ -285,7 +283,7 @@ function Acordion() {
 
   return (
     <div className="container mt-4">
-      {usuarioLogueado?.rolPostulante === false && (
+      {usuarioLogueado?.rolPostulante === false && !usuarioLogueado?.esAdmin && (
         <>
           <button
             className="btn-toggle-formulario mb-3"
@@ -318,7 +316,6 @@ function Acordion() {
               </h5>
               <form onSubmit={handleSubmit(onSubmit)} className="mb-4">
                 
-                {/* Título */}
                 <div className="mb-2">
                   <input
                     type="text"
@@ -329,7 +326,6 @@ function Acordion() {
                   {errors.titulo && <div className="invalid-feedback">{errors.titulo.message}</div>}
                 </div>
 
-                {/* Descripción */}
                 <div className="mb-2">
                   <textarea
                     className={`form-control ${errors.descripcion ? 'is-invalid' : ''}`}
@@ -340,7 +336,6 @@ function Acordion() {
                   {errors.descripcion && <div className="invalid-feedback">{errors.descripcion.message}</div>}
                 </div>
 
-                {/* Categoría */}
                 <div className="mb-2">
                   <input
                     type="text"
@@ -351,7 +346,6 @@ function Acordion() {
                   {errors.categoria && <div className="invalid-feedback">{errors.categoria.message}</div>}
                 </div>
 
-                {/* Ubicación */}
                 <div className="mb-2">
                   <input
                     type="text"
@@ -362,7 +356,6 @@ function Acordion() {
                   {errors.ubicacion && <div className="invalid-feedback">{errors.ubicacion.message}</div>}
                 </div>
 
-                {/* Sueldo */}
                 <div className="mb-2">
                   <input
                     type="text"
@@ -373,7 +366,6 @@ function Acordion() {
                   {errors.sueldo && <div className="invalid-feedback">{errors.sueldo.message}</div>}
                 </div>
 
-                {/* Modalidad */}
                 <div className="mb-2">
                   <select
                     className={`form-select ${errors.modalidad ? 'is-invalid' : ''}`}
@@ -387,7 +379,6 @@ function Acordion() {
                   {errors.modalidad && <div className="invalid-feedback">{errors.modalidad.message}</div>}
                 </div>
 
-                {/* Horario */}
                 <div className="mb-3">
                   <div 
                     className={`border rounded p-3 ${errors.horario ? 'border-danger' : 'border-secondary'}`}
@@ -429,7 +420,6 @@ function Acordion() {
                   {errors.horario && <div className="text-danger small mt-1">{errors.horario.message}</div>}
                 </div>
 
-                {/* Contacto */}
                 <div className="mb-2">
                   <input
                     type="text"
@@ -443,7 +433,6 @@ function Acordion() {
                   </small>
                 </div>
 
-                {/* Logo */}
                 <div className="mb-2">
                   <input
                     type="text"
@@ -456,7 +445,6 @@ function Acordion() {
 
                 <small className="text-muted d-block mb-3">* Campos obligatorios</small>
                 
-                {/* Solo botón de submit - SIN botón cancelar */}
                 <button
                   type="submit"
                   className="btn btn-bordo w-100"
@@ -510,28 +498,46 @@ function Acordion() {
               <p className="mt-2">{item.descripcion}</p>
 
               <div className="d-flex gap-2 mt-3">
-                {usuarioLogueado?.rolPostulante === false ? (
-                  <>
-                    <button
-                      className="btn btn-sm btn-bordo-danger"
-                      onClick={() => iniciarEdicion(item)}
-                    >
-                      <i className="bi bi-pencil-square me-1"></i> Editar
-                    </button>
+                {usuarioLogueado?.esAdmin ? (
+                  // Vista Admin: solo eliminar
+                  puedeEliminar(item) && (
                     <button
                       className="btn btn-sm btn-bordo-danger"
                       onClick={() => confirmarEliminar(item.id)}
                     >
                       <i className="bi bi-trash3-fill me-1"></i> Eliminar
                     </button>
-                    <button
-                      className="btn btn-sm btn-bordo-danger"
-                      onClick={() => verPostulados(item.id)}
-                    >
-                      <i className="bi bi-eye"></i> Ver Postulados
-                    </button>
+                  )
+                ) : usuarioLogueado?.rolPostulante === false ? (
+                  // Vista Empleador: editar, eliminar, ver postulados
+                  <>
+                    {item.creadorId === usuarioLogueado?.id && (
+                      <button
+                        className="btn btn-sm btn-bordo-danger"
+                        onClick={() => iniciarEdicion(item)}
+                      >
+                        <i className="bi bi-pencil-square me-1"></i> Editar
+                      </button>
+                    )}
+                    {puedeEliminar(item) && (
+                      <button
+                        className="btn btn-sm btn-bordo-danger"
+                        onClick={() => confirmarEliminar(item.id)}
+                      >
+                        <i className="bi bi-trash3-fill me-1"></i> Eliminar
+                      </button>
+                    )}
+                    {item.creadorId === usuarioLogueado?.id && (
+                      <button
+                        className="btn btn-sm btn-bordo-danger"
+                        onClick={() => verPostulados(item.id)}
+                      >
+                        <i className="bi bi-eye"></i> Ver Postulados
+                      </button>
+                    )}
                   </>
                 ) : (
+                  // Vista Postulante: postularse
                   <Button variant="dark" onClick={() => handlePostular(item)}>
                     Postularse <IoIosPaper />
                   </Button>
@@ -541,8 +547,8 @@ function Acordion() {
           </Accordion.Item>
         ))}
       </Accordion>
-/
-      {/* Modal de confirmación de eliminación */}
+
+      {/* Modals */}
       <Modal show={mostrarModal} onHide={() => setMostrarModal(false)} centered>
         <Modal.Header closeButton className="bg-dark text-white">
           <Modal.Title>
@@ -564,7 +570,6 @@ function Acordion() {
         </Modal.Footer>
       </Modal>
 
-      {/* Modal de cancelación del formulario */}
       <Modal 
         show={mostrarModalCancelar} 
         onHide={() => setMostrarModalCancelar(false)} 
@@ -592,14 +597,12 @@ function Acordion() {
         </Modal.Footer>
       </Modal>
 
-      {/* Modal de postulación */}
       <FormularioPostulacionModal
         show={modalVisible}
         handleClose={() => setModalVisible(false)}
         empresa={empresaSeleccionada}
       />
 
-      {/* Modal de notificaciones */}
       <NotificacionModal
         show={notificacion.show}
         handleClose={() => setNotificacion({ ...notificacion, show: false })}
@@ -608,7 +611,6 @@ function Acordion() {
         tipo={notificacion.tipo}
       />
 
-      {/* Modal para ver los postulados */}
       <PostuladosModal
         show={mostrarPostulados}
         handleClose={() => setMostrarModalPostulados(false)}
@@ -616,10 +618,8 @@ function Acordion() {
       />
 
       {dataResultado && (
-      <VerResultadoContratacion data={dataResultado} />
-    )}
-
-
+        <VerResultadoContratacion data={dataResultado} />
+      )}
     </div>
   );
 }

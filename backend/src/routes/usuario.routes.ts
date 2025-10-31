@@ -23,6 +23,6 @@ router.post("/recuperar", usuarioController.recuperarContrasenaController);
 router.post("/reset-password", usuarioController.resetContrasenaController);
 router.post("/verificar-codigo", usuarioController.verificarCodigoController);
 
-
+router.patch("/:id/toggle-activo", authenticate, authorize("ADMIN"), usuarioController.toggleUsuarioActivo);
 
 export const usuarioRoutes = router;
