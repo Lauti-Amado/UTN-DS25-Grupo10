@@ -30,7 +30,6 @@ export default function GestionUsuarios() {
   const [accionConfirmar, setAccionConfirmar] = useState(null);
 
   useEffect(() => {
-    console.log("GestionUsuarios montado, usuarioLogueado:", usuarioLogueado);
     if (usuarioLogueado?.esAdmin) {
       fetchUsuarios();
     }
@@ -39,7 +38,6 @@ export default function GestionUsuarios() {
   const fetchUsuarios = async () => {
     setCargando(true);
     const token = localStorage.getItem("token");
-    console.log("Fetching usuarios con token:", token);
     
     try {
       const res = await fetch(`${API_URL}/usuarios`, {
@@ -49,12 +47,9 @@ export default function GestionUsuarios() {
         },
       });
       
-      console.log("Respuesta fetch usuarios:", res.status);
       const data = await res.json();
-      console.log("Data recibida:", data);
       
       if (res.ok && data.success) {
-        console.log("Usuarios cargados:", data.data.length);
         setUsuarios(data.data || data || []);
       } else {
         console.error("Error en la respuesta:", data);
@@ -203,8 +198,6 @@ export default function GestionUsuarios() {
     return matchBusqueda && matchRol && matchEstado;
   });
 
-  console.log("Renderizando GestionUsuarios. Usuarios:", usuarios.length, "Filtrados:", usuariosFiltrados.length);
-
   if (!usuarioLogueado?.esAdmin) {
     return (
       <div className="alert alert-danger">
@@ -306,7 +299,7 @@ export default function GestionUsuarios() {
             </div>
           ) : (
             <div className="table-responsive">
-              <table className="table table-hover">
+              <table className="table table-hover usuarios-table">
                 <thead className="table-dark">
                   <tr>
                     <th>ID</th>
@@ -394,13 +387,13 @@ export default function GestionUsuarios() {
 
       {/* Modal de edición */}
       {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header bg-dark text-white">
+        <div className="gestion-usuarios-modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="gestion-usuarios-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="gestion-usuarios-modal-header">
               <h4>Editar Usuario</h4>
-              <button className="close-button" onClick={() => setShowModal(false)}>&times;</button>
+              <button className="gestion-usuarios-close-button" onClick={() => setShowModal(false)}>&times;</button>
             </div>
-            <div className="modal-body">
+            <div className="gestion-usuarios-modal-body">
               <div className="form-group">
                 <label>Nombre completo</label>
                 <input
@@ -480,7 +473,7 @@ export default function GestionUsuarios() {
                 </label>
               </div>
             </div>
-            <div className="modal-footer">
+            <div className="gestion-usuarios-modal-footer">
               <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
                 Cancelar
               </button>
@@ -494,13 +487,13 @@ export default function GestionUsuarios() {
 
       {/* Modal de confirmación */}
       {showConfirmModal && (
-        <div className="modal-overlay" onClick={() => setShowConfirmModal(false)}>
-          <div className="modal-content modal-confirm" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header bg-dark text-white">
+        <div className="gestion-usuarios-modal-overlay" onClick={() => setShowConfirmModal(false)}>
+          <div className="gestion-usuarios-modal-content gestion-usuarios-modal-confirm" onClick={(e) => e.stopPropagation()}>
+            <div className="gestion-usuarios-modal-header">
               <h4>Confirmar acción</h4>
-              <button className="close-button" onClick={() => setShowConfirmModal(false)}>&times;</button>
+              <button className="gestion-usuarios-close-button" onClick={() => setShowConfirmModal(false)}>&times;</button>
             </div>
-            <div className="modal-body">
+            <div className="gestion-usuarios-modal-body">
               {accionConfirmar?.tipo === 'eliminar' && (
                 <p>¿Estás seguro de que deseas <strong>eliminar permanentemente</strong> al usuario <strong>{accionConfirmar.usuario.nombre}</strong>?</p>
               )}
@@ -508,7 +501,7 @@ export default function GestionUsuarios() {
                 <p>¿Estás seguro de que deseas <strong>{accionConfirmar.usuario.activo ? 'desactivar' : 'activar'}</strong> al usuario <strong>{accionConfirmar.usuario.nombre}</strong>?</p>
               )}
             </div>
-            <div className="modal-footer">
+            <div className="gestion-usuarios-modal-footer">
               <button className="btn btn-secondary" onClick={() => setShowConfirmModal(false)}>
                 Cancelar
               </button>
