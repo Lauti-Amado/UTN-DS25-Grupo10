@@ -68,6 +68,11 @@ export async function getOfertasByEmpleadorId(empleadorId: number): Promise<Ofer
 // Eliminar oferta
 export async function deleteOferta(id: number): Promise<void> {
   try {
+    
+    await prisma.formulario.deleteMany({
+      where: { ofertaId: id }
+    });
+
     await prisma.oferta.delete({ where: { id } });
   } catch (e: any) {
     if (e.code === 'P2025') {
