@@ -9,23 +9,22 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
   const { busquedaGlobal, usuarioLogueado } = useContext(DatosContexto);
 
   return (
-    <section className="seccionPerfil">
-      <div id={styles['chau']}>
-        <img className={styles.imagenperfil} src={imagen} alt="foto de perfil" />
-        <h3 className={styles.text}>{nombre}</h3>
+    <section className={styles.seccionPerfil}>
+      <div className={styles.perfilLayout}>
+        <img src={imagen} alt="foto de perfil" className={styles.imagenPerfil} />
 
-        <div style={{backgroundColor: '#cfcfcfff', borderRadius: '10px', padding: '10px', marginTop: '10px', textAlign: 'left'}}>
-          <p>
-            <b>Descripción: </b>{descripcion}
-          </p>
-          <p><b>Fecha de Nacimiento:</b> {FechaNac}</p>
-        </div>
-        <div id={styles['botones']}>
-          <BotonesPerfil texto="Editar perfil" onClick={() => onEditarClick('perfil')} />
-          <BotonesPerfil texto="Compartir perfil" onClick={() =>onEditarClick('compartir')}/>
-          {usuarioLogueado.rolPostulante && ( // 👈 solo se muestra si es true
-            <BotonesPerfil texto="Agregar proyecto" onClick={() => onEditarClick('proyecto')} />
+        <div className={styles.infoPerfil}>
+          <h3>{nombre}</h3>
+          <p><strong>Descripción:</strong> {descripcion}</p>
+          <p><strong>Fecha de Nacimiento:</strong> {FechaNac}</p>
+
+        <div className={styles.botonesPerfil}>
+          <button onClick={() => onEditarClick('perfil')}>Editar perfil</button>
+          <button onClick={() => onEditarClick('compartir')}>Compartir</button>
+          {usuarioLogueado.rolPostulante && (
+            <button onClick={() => onEditarClick('proyecto')}>Agregar proyecto</button>
           )}
+        </div>
 
         </div>
       </div>

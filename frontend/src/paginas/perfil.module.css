@@ -1,11 +1,10 @@
 /* ESTILOS PRINCIPALES */
 .vistaEstirada {
-    margin-top: 0.1em;
-    padding: 0;
-    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2a2a2a 100%);
-    color: #e5e7eb;
-    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
+  background: #f9f9f9;
+  color: #111;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 3rem;
 }
 
 .fondoBorroso {
@@ -58,17 +57,17 @@
 
 /* PERFIL */
 .seccionPerfil {
-    width: 100%;
-    max-width: 450px;
-    flex-shrink: 0; 
-    padding: 2.5rem;
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-    border-radius: 20px;
-    box-shadow: 
-        0 20px 25px -5px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(220, 38, 38, 0.3);
-    position: relative;
-    height: fit-content; 
+background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+.seccionPerfil:hover {
+  transform: translateY(-3px);
 }
 
 .seccionPerfil::before {
@@ -105,7 +104,21 @@
     opacity: 0.9;
 }
 
+.infoPerfil h3 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 0.5rem;
+}
+
+.infoPerfil p {
+  color: #333;
+  margin: 0.2rem 0;
+  font-size: 1.05rem;
+}
+
 /* CONTENIDO DEL PERFIL */
+
 #chau {
     display: flex;
     flex-direction: column;
@@ -145,18 +158,41 @@ button:hover {
     width: 100%;
 }
 
+.botonesPerfil {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.botonesPerfil button {
+  background: linear-gradient(135deg, #e02424, #b91c1c);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.6rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.botonesPerfil button:hover {
+  background: linear-gradient(135deg, #f43f3f, #dc2626);
+  transform: translateY(-2px);
+}
+
 /* IMAGEN DE PERFIL */
 .imagenPerfil {
-    border-radius: 50%;
-    width: 80px; 
-    height: 80px;
-    object-fit: cover;
-    border: 3px solid #dc2626;
-    box-shadow: 
-        0 0 0 2px rgba(220, 38, 38, 0.2),
-        0 4px 15px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-    flex-shrink: 0; 
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border: 4px solid #dc2626;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
+  margin-bottom: 1rem;
 }
 
 .imagenPerfil:hover {
@@ -176,17 +212,7 @@ button:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-.imagenperfil {
-    border-radius: 50%;  
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-    border: 4px solid #dc2626;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    margin: 0 auto 2rem; 
-    transition: all 0.3s ease;
-}
+
 
 .imagenperfil:hover {
     transform: scale(1.05);
@@ -195,6 +221,8 @@ button:hover {
         0 0 0 4px rgba(234, 88, 12, 0.3),
         0 15px 40px rgba(0, 0, 0, 0.6);
 }
+
+
 
 /* SUGERENCIAS */
 .scrollsection {
@@ -640,4 +668,168 @@ button[style*="marginLeft"] {
 
 .tecnologias {
     color: #ffffff;
+}
+
+.perfilLayout {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.infoPerfil {
+  flex: 1;
+}
+
+.botonesPerfil {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  justify-content: flex-start;
+}
+
+.layoutPrincipal {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  padding: 2rem;
+}
+
+.seccionProyectos {
+  flex: 3;
+}
+
+/* === ASIDE === */
+.asideSugerencias {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  color: #111;
+}
+
+.asideSugerencias h2 {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #111;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.tarjetaSugerida {
+  display: flex;
+  gap: 1rem;
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+
+.tarjetaSugerida:hover {
+  transform: translateY(-3px);
+}
+
+.avatarSugerido {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tarjetaSugerida {
+  display: flex;
+  gap: 1rem;
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+  align-items: center;
+}
+
+.tarjetaSugerida:hover {
+  transform: translateY(-3px);
+}
+
+/* Sección de proyectos y título */
+.misProyectos {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+
+.tituloSeccion {
+  font-size: 1.6rem;
+  text-align: center;
+  color: #111;
+  font-weight: 700;
+  border-bottom: 2px solid #dc2626;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  margin: 0 auto 1.5rem;
+}
+
+/* === TARJETAS DE PROYECTOS === */
+.tarjetaProyecto {
+  background: #fdfdfd;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  padding: 1.2rem;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.tarjetaProyecto:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+.tituloProyecto {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 0.3rem;
+}
+
+.descripcionProyecto {
+  color: #444;
+  font-size: 0.95rem;
+  margin-bottom: 0.7rem;
+}
+
+.tecnologiaChip {
+  background-color: #dc2626;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+
+/* Overlay y modal de confirmación */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+}
+
+.confirmModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  z-index: 1001;
+  color: #fff;
 }
