@@ -14,6 +14,7 @@ import { API_URL } from '../config.js';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import VerResultadoContratacion from './VerResultadoContratacion.jsx';
+import { HiCursorArrowRays } from "react-icons/hi2";
 
 function Acordion() {
   const location = useLocation();
@@ -187,7 +188,7 @@ function Acordion() {
 
   const verResultado = async (ofertaId) => {
     try {
-      const response = await fetch(`${API_URL}/formularios/respuesta/${usuarioLogueado.id}/${ofertaId}}`);
+      const response = await fetch(`${API_URL}/formularios/respuesta/${usuarioLogueado.id}/${ofertaId}`);
       const res = await response.json();
       setDataResultado(res.data);
     } catch (error) {
@@ -500,15 +501,13 @@ function Acordion() {
               <div className="d-flex gap-2 mt-3">
                 {usuarioLogueado?.esAdmin ? (
                   // Vista Admin: solo eliminar
-                  puedeEliminar(item) && (
                     <button
                       className="btn btn-sm btn-bordo-danger"
                       onClick={() => confirmarEliminar(item.id)}
                     >
                       <i className="bi bi-trash3-fill me-1"></i> Eliminar
                     </button>
-                  )
-                ) : usuarioLogueado?.rolPostulante === false ? (
+                  ) : usuarioLogueado?.rolPostulante === false ? (
                   // Vista Empleador: editar, eliminar, ver postulados
                   <>
                     {item.creadorId === usuarioLogueado?.id && (
