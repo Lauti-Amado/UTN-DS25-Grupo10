@@ -9,11 +9,12 @@ import { handleError } from './middlewares/error.middleware';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import prisma from './config/prisma';
 
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // CORS
 const corsOptions = {
@@ -50,9 +51,39 @@ app.use((req, res, next) => {
 // Middleware de errores
 app.use(handleError);
 
-// Levantar servidor
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+// ===== MANEJO DE CIERRE GRACEFUL =====
+const gracefulShutdown = async (signal: string) => {
+  console.log(`\n${signal} recibido, cerrando servidor...`);
+  
+  try {
+    await prisma.$disconnect();
+    console.log('✅ Conexión a base de datos cerrada');
+    process.exit(0);
+  } catch (error) {
+    console.error('❌ Error cerrando conexiones:', error);
+    process.exit(1);
+  }
+};
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+process.on('uncaughtException', async (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  await prisma.$disconnect();
+  process.exit(1);
 });
 
-export { app };
+process.on('unhandledRejection', async (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+  await prisma.$disconnect();
+  process.exit(1);
+});
+
+// Levantar servidor
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+
+export { app, server };
