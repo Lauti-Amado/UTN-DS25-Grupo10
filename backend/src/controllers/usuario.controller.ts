@@ -92,6 +92,33 @@ export async function updateUsuario(
   }
 }
 
+// Activar/desactivar usuario
+export async function toggleUsuarioActivo(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const id = parseInt(req.params.id);
+    const { activo } = req.body;
+
+    if (typeof activo !== 'boolean') {
+      return res.status(400).json({
+        success: false,
+        message: "El campo 'activo' debe ser un booleano"
+      });
+    }
+
+    await usuarioService.toggleUsuarioActivo(id, activo);
+    res.json({ 
+      success: true,
+      message: `Usuario ${activo ? 'activado' : 'desactivado'} exitosamente`
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 // Eliminar usuario
 export async function deleteUsuario(
   req: Request,
@@ -186,7 +213,16 @@ export async function loginUsuarioController(req: Request, res: Response) {
     });
 
   } catch (err: any) {
-    console.error(err);
+    console.error("Error en login:", err);
+    
+    if (err.message === "USUARIO_DESACTIVADO") {
+      return res.status(403).json({
+        success: false,
+        message: "USUARIO_DESACTIVADO"
+      });
+    }
+
+    // Otros errores
     return res.status(err?.statusCode || 500).json({
       success: false,
       message: err?.message || "Error del servidor"
@@ -256,5 +292,3 @@ export async function resetContrasenaController(
     });
   }
 }
-
-
