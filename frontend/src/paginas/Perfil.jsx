@@ -13,6 +13,7 @@ import { DatosContexto } from '../datosContext';
 import { API_URL } from '../config';
 
 export default function Perfil() {
+const [proyectosPerfilSeleccionado, setProyectosPerfilSeleccionado] = useState([]);
   const [mostrarExitoAgregar, setMostrarExitoAgregar] = useState(false);
 const [mostrarExitoModificar, setMostrarExitoModificar] = useState(false);
 const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
@@ -38,6 +39,8 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
   const editarRef = useRef(null);
   const compartirRef = useRef(null);
   const proyectoRef = useRef(null);
+
+  
 
     useEffect(() => {
     if (usuarioLogueado) {
@@ -66,6 +69,32 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
       if (ref?.current) ref.current.scrollIntoView({ behavior: 'smooth' });
     }, 200);
   };
+
+  // Cargar proyectos del perfil seleccionado (usuario sugerido)
+useEffect(() => {
+  if (!perfilSeleccionado) {
+    setProyectosPerfilSeleccionado([]);
+    return;
+  }
+
+  const cargarProyectosDelUsuario = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/proyectos/postulado/${perfilSeleccionado.id}`, {
+        headers: { 
+          Authorization: `Bearer ${token}` 
+        },
+      });
+      const json = await res.json();
+      setProyectosPerfilSeleccionado(Array.isArray(json.data) ? json.data : []);
+    } catch (error) {
+      console.error('Error al cargar proyectos del perfil sugerido:', error);
+      setProyectosPerfilSeleccionado([]);
+    }
+  };
+
+  cargarProyectosDelUsuario();
+}, [perfilSeleccionado]);
 
   useEffect(() => {
     const fetchProyectos = async () => {
@@ -181,7 +210,6 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
     alert('No se pudo crear el proyecto. Revisa tu conexión o intenta más tarde.');
   }
 };
-
 
 
   return (
@@ -328,7 +356,6 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
   </div>
 )}
 
-
       {modoEditar === 'compartir' && (
         <div ref={compartirRef}>
           <Compartir onCerrar={() => setModoEditar(null)} usuarioId={usuarioLogueado?.id} />
@@ -350,6 +377,7 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
       {perfilSeleccionado && (
         <ModalPerfilUsuario
           usuario={perfilSeleccionado}
+          proyectos={proyectosPerfilSeleccionado}
           onCerrar={() => setPerfilSeleccionado(null)}
         />
       )}
