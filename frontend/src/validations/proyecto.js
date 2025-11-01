@@ -8,7 +8,6 @@ export const proyectoSchema = yup.object().shape({
   descripcion: yup
     .string()
     .required('La descripción es obligatoria')
-    .min(50, 'La descripción debe tener al menos 50 caracteres')
     .max(400, 'La descripción no puede superar los 400 caracteres'),
   tecnologias: yup
     .string()

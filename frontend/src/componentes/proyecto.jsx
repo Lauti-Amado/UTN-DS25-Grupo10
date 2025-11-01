@@ -10,7 +10,8 @@ function Proyecto({
   nombre,
   descripcion,
   tecnologias,
-  onModificarProyecto
+  onModificarProyecto,
+  esEdicion,
 }) {
   const {
     register,
@@ -27,7 +28,6 @@ function Proyecto({
     },
   });
 
-  // Actualizar valores si cambian las props
   useEffect(() => {
     reset({
       nombre: nombre || '',
@@ -37,110 +37,87 @@ function Proyecto({
   }, [nombre, descripcion, tecnologias, reset]);
 
   const onSubmit = async (data) => {
-    try {
-      if (onModificarProyecto) {
-        await onModificarProyecto(data);
-      } else if (onAgregarProyecto) {
-        await onAgregarProyecto(data);
-      }
-      if (onCerrar) onCerrar();
-    } catch (error) {
-      console.error("Error al guardar el proyecto:", error);
+  try {
+    if (esEdicion && onModificarProyecto) {
+      await onModificarProyecto(data); // se llama PUT
+    } else if (onAgregarProyecto) {
+      await onAgregarProyecto(data);  // se llama POST
     }
-  };
+    if (onCerrar) onCerrar();
+  } catch (error) {
+    console.error("Error al guardar el proyecto:", error);
+  }
+};
+
 
   return (
-    <div className="modal fade show d-block" tabIndex="-1" role="dialog">
-      <div className="modal-dialog modal-dialog-centered" role="document">    
-        <div className="modal-content bg-dark text-light shadow-lg border-0">
-          
-          {/* Header del modal */}
-          <div className="modal-header bg-light text-dark d-flex justify-content-between align-items-center">
-            <h5 className="modal-title fw-bold mb-0">
-              {onModificarProyecto ? "Editar Proyecto" : "Agregar Proyecto"}
-            </h5>
-            <button type="button" onClick={onCerrar} class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">x</span>
-            </button>
-          </div>
-
-          {/* Body del modal */}
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="modal-body">
-              
-              {/* Nombre */}
-              <div className="mb-4 text-start">
-                <label className="form-label fw-bold fs-5">Nombre del proyecto</label>
-                <input
-                  type="text"
-                  className={`form-control py-3 ${errors.nombre ? 'is-invalid' : ''}`}
-                  placeholder="Ej: App de gestión de tareas"
-                  {...register("nombre")}
-                />
-                {errors.nombre && (
-                  <div className="invalid-feedback d-block">
-                    {errors.nombre.message}
-                  </div>
-                )}
-              </div>
-
-              {/* Descripción */}
-              <div className="mb-4 text-start">
-                <label className="form-label fw-bold fs-5">Descripción</label>
-                <input
-                  type="text"
-                  className={`form-control py-3 ${errors.descripcion ? 'is-invalid' : ''}`}
-                  placeholder="Describe brevemente el proyecto"
-                  {...register("descripcion")}
-                />
-                {errors.descripcion && (
-                  <div className="invalid-feedback d-block">
-                    {errors.descripcion.message}
-                  </div>
-                )}
-              </div>
-
-              {/* Tecnologías */}
-              <div className="mb-4 text-start">
-                <label className="form-label fw-bold fs-5">Tecnologías usadas</label>
-                <input
-                  type="text"
-                  className={`form-control py-3 ${errors.tecnologias ? 'is-invalid' : ''}`}
-                  placeholder="Ej: React, Node.js, MongoDB"
-                  {...register("tecnologias")}
-                />
-                {errors.tecnologias && (
-                  <div className="invalid-feedback d-block">
-                    {errors.tecnologias.message}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Footer del modal */}
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={onCerrar}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="btn btn-secondary"
-                disabled={isSubmitting}
-              >
-                {isSubmitting
-                  ? 'Guardando...'
-                  : onModificarProyecto
-                  ? 'Guardar cambios'
-                  : 'Aceptar'}
-              </button>
-            </div>
-          </form>
-        </div>
+    <div>
+      {/* Barra superior con título y botón de cerrar */}
+      <div className={styles.barra1} style={{ marginBottom: '1.5rem' }}>
+        <h1 >{onModificarProyecto ? "Editar Proyecto" : "Agregar Proyecto"}</h1>
+        <button className={styles.cancelar} onClick={onCerrar}>X</button>
       </div>
+
+      {/* Formulario */}
+      <form onSubmit={handleSubmit(onSubmit)} style={{ padding: '0 2rem 2rem' }}>
+        
+        {/* Nombre */}
+        <div className={styles.barra3}>
+          <input
+            className={`${styles.co} ${errors.nombre ? styles.inputError : ''}`}
+            placeholder="Nombre del proyecto"
+            type="text"
+            {...register("nombre")}
+          />
+          <label>Nombre del proyecto</label>
+          {errors.nombre && (
+            <span className={styles.errorBrillante}>{errors.nombre.message}</span>
+          )}
+        </div>
+
+        {/* Descripción */}
+        <div className={styles.barra3}>
+          <input
+            className={`${styles.co} ${errors.descripcion ? styles.inputError : ''}`}
+            placeholder="Describe brevemente el proyecto"
+            type="text"
+            {...register("descripcion")}
+          />
+          <label>Descripción</label>
+          {errors.descripcion && (
+            <span className={styles.errorBrillante}>{errors.descripcion.message}</span>
+          )}
+        </div>
+
+        {/* Tecnologías */}
+        <div className={styles.barra3}>
+          <input
+            className={`${styles.co} ${errors.tecnologias ? styles.inputError : ''}`}
+            placeholder="Ej: React, Node.js, MongoDB"
+            type="text"
+            {...register("tecnologias")}
+          />
+          <label>Tecnologías usadas</label>
+          {errors.tecnologias && (
+            <span className={styles.errorBrillante}>{errors.tecnologias.message}</span>
+          )}
+        </div>
+
+        {/* Botón de aceptar */}
+        <div className={styles.boton}>
+          <button
+            type="submit"
+            className="btn btn-bordo-danger"
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? 'Guardando...'
+              : onModificarProyecto
+              ? 'Guardar cambios'
+              : 'Aceptar'}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
