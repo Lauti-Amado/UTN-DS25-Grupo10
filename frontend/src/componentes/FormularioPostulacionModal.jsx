@@ -1,29 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { formularioPostulacionSchema } from '../validations/formulario.js';
 import { API_URL } from '../config';
 import './FormularioPostulacionModal.css';
 
 export default function FormularioPostulacionModal({ show, handleClose, empresa, onPostulacionExitosa }) {
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    localidad: '',
-    pais: '',
-    genero: '',
-    descripcion: '',
-    archivo: null,
-  });
-
   // Estados para el autocompletado
   const [paises, setPaises] = useState([]);
   const [ciudadesSugeridas, setCiudadesSugeridas] = useState([]);
   const [busquedaCiudad, setBusquedaCiudad] = useState('');
   const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
   const [cargandoCiudades, setCargandoCiudades] = useState(false);
+  const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    setValue,
+    reset,
+    formState: { errors, isSubmitting }
+  } = useForm({
+    resolver: yupResolver(formularioPostulacionSchema),
+    mode: 'onChange',
+    defaultValues: {
+      nombre: '',
+      apellido: '',
+      localidad: '',
+      pais: '',
+      genero: '',
+      descripcion: '',
+      archivo: null,
+    },
+  });
+
+  const paisSeleccionado = watch('pais');
 
   useEffect(() => {
     cargarPaises();
   }, []);
+
+  // Limpiar localidad cuando cambia el país
+  useEffect(() => {
+    if (paisSeleccionado) {
+      setValue('localidad', '');
+      setBusquedaCiudad('');
+      setCiudadesSugeridas([]);
+    }
+  }, [paisSeleccionado, setValue]);
 
   const getPaisesFallback = () => [
     { codigo: 'AF', nombre: 'Afganistán' },
@@ -184,55 +211,32 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
   };
 
   useEffect(() => {
-    if (busquedaCiudad && formData.pais) {
-      const paisSeleccionado = paises.find(p => p.nombre === formData.pais);
+    if (busquedaCiudad && paisSeleccionado) {
+      const paisObj = paises.find(p => p.nombre === paisSeleccionado);
       const timer = setTimeout(() => {
-        buscarCiudades(busquedaCiudad, paisSeleccionado?.codigo);
+        buscarCiudades(busquedaCiudad, paisObj?.codigo);
       }, 300);
       return () => clearTimeout(timer);
     } else {
       setCiudadesSugeridas([]);
     }
-  }, [busquedaCiudad, formData.pais]);
-
-  const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-
-    if (type === 'file') {
-      setFormData({
-        ...formData,
-        archivo: files[0],
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-
-    if (name === 'pais') {
-      setBusquedaCiudad('');
-      setFormData(prev => ({ ...prev, localidad: '' }));
-    }
-  };
+  }, [busquedaCiudad, paisSeleccionado]);
 
   const handleCiudadChange = (e) => {
     const valor = e.target.value;
     setBusquedaCiudad(valor);
-    setFormData({ ...formData, localidad: valor });
+    setValue('localidad', valor, { shouldValidate: true });
     setMostrarSugerencias(true);
   };
 
   const seleccionarCiudad = (ciudad) => {
-    setFormData({ ...formData, localidad: ciudad.nombre });
+    setValue('localidad', ciudad.nombre, { shouldValidate: true });
     setBusquedaCiudad(ciudad.nombre);
     setMostrarSugerencias(false);
     setCiudadesSugeridas([]);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     if (!empresa || !empresa.id) {
       alert("No se encontró la información de la empresa. Intenta de nuevo.");
       return;
@@ -246,27 +250,14 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
     
     const token = localStorage.getItem('token');
 
-    if (
-      !formData.nombre ||
-      !formData.apellido ||
-      !formData.localidad ||
-      !formData.pais ||
-      !formData.genero ||
-      !formData.descripcion ||
-      !formData.archivo
-    ) {
-      alert("Por favor, completá todos los campos y subí tu curriculum.");
-      return;
-    }
-
     const formDataToSend = new FormData();
-    formDataToSend.append('nombre', formData.nombre);
-    formDataToSend.append('apellido', formData.apellido);
-    formDataToSend.append('localidad', formData.localidad);
-    formDataToSend.append('pais', formData.pais);
-    formDataToSend.append('genero', formData.genero);
-    formDataToSend.append('descripcion', formData.descripcion);
-    formDataToSend.append('curriculum', formData.archivo);
+    formDataToSend.append('nombre', data.nombre);
+    formDataToSend.append('apellido', data.apellido);
+    formDataToSend.append('localidad', data.localidad);
+    formDataToSend.append('pais', data.pais);
+    formDataToSend.append('genero', data.genero);
+    formDataToSend.append('descripcion', data.descripcion);
+    formDataToSend.append('curriculum', data.archivo);
     formDataToSend.append('postuladoId', usuarioId);
     formDataToSend.append("ofertaId", empresa.id);
 
@@ -282,16 +273,9 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
       const result = await response.json();
 
       if (result.success) {
-        setFormData({
-          nombre: '',
-          apellido: '',
-          localidad: '',
-          pais: '',
-          genero: '',
-          descripcion: '',
-          archivo: null,
-        });
+        reset();
         setBusquedaCiudad('');
+        setArchivoSeleccionado(null);
         
         if (onPostulacionExitosa) {
           onPostulacionExitosa(empresa.id);
@@ -330,7 +314,7 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
         </Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ backgroundColor: '#f8f9fa', padding: '2rem' }}>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           {/* Información Personal */}
           <div className="mb-4 pb-3" style={{ borderBottom: '2px solid #e9ecef' }}>
             <h6 className="fw-bold mb-3 d-flex align-items-center" style={{ color: '#721c24', fontSize: '1.1rem' }}>
@@ -343,13 +327,14 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
                 <Form.Group controlId="formNombre">
                   <Form.Label className="fw-semibold">Nombre *</Form.Label>
                   <Form.Control 
-                    name="nombre" 
-                    value={formData.nombre} 
-                    onChange={handleChange} 
+                    {...register('nombre')}
                     placeholder="Ingresá tu nombre"
-                    required
+                    isInvalid={!!errors.nombre}
                     style={{ padding: '0.6rem' }}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.nombre?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </div>
 
@@ -357,13 +342,14 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
                 <Form.Group controlId="formApellido">
                   <Form.Label className="fw-semibold">Apellido *</Form.Label>
                   <Form.Control 
-                    name="apellido" 
-                    value={formData.apellido} 
-                    onChange={handleChange} 
+                    {...register('apellido')}
                     placeholder="Ingresá tu apellido"
-                    required
+                    isInvalid={!!errors.apellido}
                     style={{ padding: '0.6rem' }}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.apellido?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </div>
             </div>
@@ -381,10 +367,8 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
                 <Form.Group controlId="formPais">
                   <Form.Label className="fw-semibold">País *</Form.Label>
                   <Form.Select 
-                    name="pais" 
-                    value={formData.pais} 
-                    onChange={handleChange} 
-                    required
+                    {...register('pais')}
+                    isInvalid={!!errors.pais}
                     style={{ padding: '0.6rem' }}
                   >
                     <option value="">Seleccionar país</option>
@@ -392,6 +376,9 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
                       <option key={p.codigo} value={p.nombre}>{p.nombre}</option>
                     ))}
                   </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    {errors.pais?.message}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </div>
 
@@ -404,11 +391,14 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
                     onChange={handleCiudadChange}
                     onFocus={() => setMostrarSugerencias(true)}
                     onBlur={() => setTimeout(() => setMostrarSugerencias(false), 200)}
-                    placeholder={formData.pais ? "Escribe tu ciudad..." : "Primero selecciona un país"}
-                    disabled={!formData.pais}
-                    required
+                    placeholder={paisSeleccionado ? "Escribe tu ciudad..." : "Primero selecciona un país"}
+                    disabled={!paisSeleccionado}
+                    isInvalid={!!errors.localidad}
                     style={{ padding: '0.6rem' }}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.localidad?.message}
+                  </Form.Control.Feedback>
                   {cargandoCiudades && (
                     <small className="text-muted">
                       <i className="bi bi-arrow-clockwise me-1"></i>
@@ -467,37 +457,48 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
               Género *
             </h6>
             <div className="d-flex gap-4 flex-wrap">
-              <Form.Check
-                type="radio"
-                id="genero-masculino"
+              <Controller
                 name="genero"
-                value="masculino"
-                label="Masculino"
-                checked={formData.genero === 'masculino'}
-                onChange={handleChange}
-                className="form-check-custom"
-              />
-              <Form.Check
-                type="radio"
-                id="genero-femenino"
-                name="genero"
-                value="femenino"
-                label="Femenino"
-                checked={formData.genero === 'femenino'}
-                onChange={handleChange}
-                className="form-check-custom"
-              />
-              <Form.Check
-                type="radio"
-                id="genero-otro"
-                name="genero"
-                value="otro"
-                label="Otro"
-                checked={formData.genero === 'otro'}
-                onChange={handleChange}
-                className="form-check-custom"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <Form.Check
+                      type="radio"
+                      id="genero-masculino"
+                      label="Masculino"
+                      value="masculino"
+                      checked={field.value === 'masculino'}
+                      onChange={() => field.onChange('masculino')}
+                      isInvalid={!!errors.genero}
+                      className="form-check-custom"
+                    />
+                    <Form.Check
+                      type="radio"
+                      id="genero-femenino"
+                      label="Femenino"
+                      value="femenino"
+                      checked={field.value === 'femenino'}
+                      onChange={() => field.onChange('femenino')}
+                      isInvalid={!!errors.genero}
+                      className="form-check-custom"
+                    />
+                    <Form.Check
+                      type="radio"
+                      id="genero-otro"
+                      label="Otro"
+                      value="otro"
+                      checked={field.value === 'otro'}
+                      onChange={() => field.onChange('otro')}
+                      isInvalid={!!errors.genero}
+                      className="form-check-custom"
+                    />
+                  </>
+                )}
               />
             </div>
+            {errors.genero && (
+              <small className="text-danger">{errors.genero.message}</small>
+            )}
           </div>
 
           {/* Descripción */}
@@ -510,13 +511,14 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
               <Form.Control
                 as="textarea"
                 rows={4}
-                name="descripcion"
-                value={formData.descripcion}
-                onChange={handleChange}
+                {...register('descripcion')}
                 placeholder="Contanos sobre tu experiencia, habilidades y por qué te interesa esta posición..."
-                required
+                isInvalid={!!errors.descripcion}
                 style={{ padding: '0.75rem', resize: 'none' }}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.descripcion?.message}
+              </Form.Control.Feedback>
               <Form.Text className="text-muted">
                 <i className="bi bi-lightbulb me-1"></i>
                 Aprovechá este espacio para destacar tu perfil profesional
@@ -532,40 +534,60 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
             </h6>
             <Form.Group controlId="formArchivo">
               <div 
-                className="p-4 text-center border-dashed"
+                className={`p-4 text-center border-dashed ${errors.archivo ? 'border-danger' : ''}`}
                 style={{ 
-                  border: '2px dashed #8b0000',
+                  border: `2px dashed ${errors.archivo ? '#dc3545' : '#8b0000'}`,
                   borderRadius: '0.75rem',
                   backgroundColor: 'white',
                   transition: 'all 0.3s'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#fff5f5';
-                  e.currentTarget.style.borderColor = '#6d0000';
+                  if (!errors.archivo) {
+                    e.currentTarget.style.backgroundColor = '#fff5f5';
+                    e.currentTarget.style.borderColor = '#6d0000';
+                  }
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = 'white';
-                  e.currentTarget.style.borderColor = '#8b0000';
+                  if (!errors.archivo) {
+                    e.currentTarget.style.borderColor = '#8b0000';
+                  }
                 }}
               >
-                <i className="bi bi-cloud-upload fs-1 mb-2 d-block" style={{ color: '#8b0000' }}></i>
+                <i className="bi bi-cloud-upload fs-1 mb-2 d-block" style={{ color: errors.archivo ? '#dc3545' : '#8b0000' }}></i>
                 <p className="mb-2 fw-semibold">Arrastrá tu CV aquí o hacé click para seleccionar</p>
-                <Form.Control 
-                  type="file" 
-                  onChange={handleChange}
-                  accept=".pdf,.doc,.docx"
-                  required
-                  className="mt-2"
-                  style={{ cursor: 'pointer' }}
+                <Controller
+                  name="archivo"
+                  control={control}
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <Form.Control 
+                      type="file"
+                      {...field}
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        onChange(file);
+                        setArchivoSeleccionado(file);
+                      }}
+                      accept=".pdf,.doc,.docx"
+                      isInvalid={!!errors.archivo}
+                      className="mt-2"
+                      style={{ cursor: 'pointer' }}
+                    />
+                  )}
                 />
+                {errors.archivo && (
+                  <div className="text-danger small mt-2">
+                    {errors.archivo.message}
+                  </div>
+                )}
                 <Form.Text className="text-muted d-block mt-2">
                   <i className="bi bi-info-circle me-1"></i>
                   Formatos: PDF, DOC, DOCX • Tamaño máximo: 5MB
                 </Form.Text>
-                {formData.archivo && (
+                {archivoSeleccionado && (
                   <div className="mt-3 alert alert-success py-2 mb-0">
                     <i className="bi bi-check-circle-fill me-2"></i>
-                    <strong>Archivo seleccionado:</strong> {formData.archivo.name}
+                    <strong>Archivo seleccionado:</strong> {archivoSeleccionado.name}
                   </div>
                 )}
               </div>
@@ -597,7 +619,8 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
               Cancelar
             </Button>
             <Button 
-              type="submit" 
+              type="submit"
+              disabled={isSubmitting}
               style={{ 
                 backgroundColor: '#8b0000', 
                 borderColor: '#8b0000',
@@ -606,9 +629,11 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
                 boxShadow: '0 2px 4px rgba(139,0,0,0.2)'
               }}
               onMouseEnter={(e) => {
-                e.target.style.backgroundColor = '#6d0000';
-                e.target.style.transform = 'translateY(-1px)';
-                e.target.style.boxShadow = '0 4px 8px rgba(139,0,0,0.3)';
+                if (!isSubmitting) {
+                  e.target.style.backgroundColor = '#6d0000';
+                  e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = '0 4px 8px rgba(139,0,0,0.3)';
+                }
               }}
               onMouseLeave={(e) => {
                 e.target.style.backgroundColor = '#8b0000';
@@ -617,7 +642,7 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa,
               }}
             >
               <i className="bi bi-send-fill me-2"></i>
-              Enviar Postulación
+              {isSubmitting ? 'Enviando...' : 'Enviar Postulación'}
             </Button>
           </div>
         </Form>
