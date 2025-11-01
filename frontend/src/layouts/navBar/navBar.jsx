@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import logo from "../../assets/RoDi-LogoPeque3.jpg";
+import logo from "../../assets/Logo-RoDi.png";
 import "./navBar.css";
 import { FaHouse } from "react-icons/fa6";
 import { MdOutlineWork } from "react-icons/md";

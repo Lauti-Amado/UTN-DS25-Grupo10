@@ -7,22 +7,61 @@ export default function PantallaTrabajos() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (location.state?.scrollToOferta) {
-      console.log("Intentando scrollear a oferta:", location.state.mensaje); // Debug
+    if (location.state?.ofertaId && location.state?.scrollToOferta) {
+      console.log("Navegando a oferta:", location.state.ofertaId, "Postulante:", location.state.postulanteId);
       
-      // Función para intentar scrollear
+      const scrollAndExpandToOferta = () => {
+        const element = document.getElementById(`oferta-${location.state.ofertaId}`);
+        
+        if (element) {
+          console.log("✅ Elemento de oferta encontrado");
+          
+          // Expandir  acordeon
+          const accordionButton = element.querySelector('.accordion-button');
+          if (accordionButton && accordionButton.classList.contains('collapsed')) {
+            console.log("📂 Expandiendo acordeón...");
+            accordionButton.click();
+          }
+          
+          // Dar tiempo para que se expanda y hacer scroll
+          setTimeout(() => {
+            element.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
+            
+            // Si hay un postulanteId, abrir el modal de postulados después del scroll
+            if (location.state.postulanteId) {
+              setTimeout(() => {
+                const botonVerPostulados = element.querySelector('[data-action="ver-postulados"]');
+                if (botonVerPostulados) {
+                  console.log("👥 Abriendo modal de postulados...");
+                  botonVerPostulados.click();
+                }
+              }, 500);
+            }
+          }, 200);
+        } else {
+          console.log("⏳ Elemento no encontrado, reintentando...");
+          setTimeout(scrollAndExpandToOferta, 100);
+        }
+      };
+
+      setTimeout(scrollAndExpandToOferta, 500);
+    }
+    else if (location.state?.scrollToOferta && location.state?.mensaje) {
+      console.log("Intentando scrollear a oferta (método antiguo):", location.state.mensaje);
+      
       const scrollToElement = () => {
         const element = document.getElementById(`oferta-${location.state.mensaje}`);
         if (element) {
-          console.log("Elemento encontrado, scrolleando..."); // Debug
+          console.log("Elemento encontrado, scrolleando...");
           
-          // Expandir el acordeón
           const accordionButton = element.querySelector('.accordion-button');
           if (accordionButton && accordionButton.classList.contains('collapsed')) {
             accordionButton.click();
           }
           
-          // Scroll suave
           setTimeout(() => {
             element.scrollIntoView({ 
               behavior: 'smooth',
@@ -30,19 +69,25 @@ export default function PantallaTrabajos() {
             });
           }, 100);
         } else {
-          console.log("Elemento no encontrado, reintentando..."); // Debug
+          console.log("Elemento no encontrado, reintentando...");
           setTimeout(scrollToElement, 100);
         }
       };
 
-      // Dar tiempo para que el componente se monte
       setTimeout(scrollToElement, 500);
     }
+    
     setIsLoading(false);
-  }, [location.state?.mensaje]);
+  }, [location.state]);
 
   if (isLoading) {
-    return <div className="text-center p-5">Cargando...</div>;
+    return (
+      <div className="text-center p-5">
+        <div className="spinner-border text-danger" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -59,7 +104,10 @@ export default function PantallaTrabajos() {
       }}>
         Ofertas de trabajos
       </h1>
-      <Acordion />
+      <Acordion 
+        ofertaIdInicial={location.state?.ofertaId}
+        postulanteDestacadoId={location.state?.postulanteId}
+      />
     </div>
   );
 }

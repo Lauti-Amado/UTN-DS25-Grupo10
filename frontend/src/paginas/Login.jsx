@@ -2,7 +2,7 @@ import React, { useState, useContext , useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './Login.module.css';
-import logo from '../assets/RoDi-LogoPeque3.jpg';
+import logo from '../assets/Logo-RoDi.png';
 import { BiCog } from "react-icons/bi";
 import { DatosContexto } from '../datosContext';
 import { setToken } from '../helpers/auth';
