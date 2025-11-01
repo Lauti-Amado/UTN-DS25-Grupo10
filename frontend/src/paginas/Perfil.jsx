@@ -13,6 +13,7 @@ import { DatosContexto } from '../datosContext';
 import { API_URL } from '../config';
 
 export default function Perfil() {
+const [proyectosPerfilSeleccionado, setProyectosPerfilSeleccionado] = useState([]);
   const [mostrarExitoAgregar, setMostrarExitoAgregar] = useState(false);
 const [mostrarExitoModificar, setMostrarExitoModificar] = useState(false);
 const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
@@ -30,12 +31,26 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
   const [perfiles, setPerfiles] = useState([]); // PRIMERO declarar perfiles
   const [busquedaPerfil, setBusquedaPerfil] = useState('');
   const [perfilSeleccionado, setPerfilSeleccionado] = useState(null);
+  const [mostrarExitoPerfil, setMostrarExitoPerfil] = useState(false);
+
   
   const { usuarioLogueado } = useContext(DatosContexto);
 
   const editarRef = useRef(null);
   const compartirRef = useRef(null);
   const proyectoRef = useRef(null);
+
+  
+
+    useEffect(() => {
+    if (usuarioLogueado) {
+      setNombrePerfil(usuarioLogueado.nombreUsuario || 'Nombre Perfil');
+      setDescripcionPerfil(usuarioLogueado.descripcion || '');
+      setImagenPerfil(usuarioLogueado.fotoPerfil || imagen);
+      setNuevafecha(usuarioLogueado.fechaNacimiento || '');
+    }
+  }, [usuarioLogueado]);
+
 
   // DESPUÉS calcular perfilesFiltrados
   const perfilesFiltrados = perfiles.filter(p => 
@@ -54,6 +69,32 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
       if (ref?.current) ref.current.scrollIntoView({ behavior: 'smooth' });
     }, 200);
   };
+
+  // Cargar proyectos del perfil seleccionado (usuario sugerido)
+useEffect(() => {
+  if (!perfilSeleccionado) {
+    setProyectosPerfilSeleccionado([]);
+    return;
+  }
+
+  const cargarProyectosDelUsuario = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/proyectos/postulado/${perfilSeleccionado.id}`, {
+        headers: { 
+          Authorization: `Bearer ${token}` 
+        },
+      });
+      const json = await res.json();
+      setProyectosPerfilSeleccionado(Array.isArray(json.data) ? json.data : []);
+    } catch (error) {
+      console.error('Error al cargar proyectos del perfil sugerido:', error);
+      setProyectosPerfilSeleccionado([]);
+    }
+  };
+
+  cargarProyectosDelUsuario();
+}, [perfilSeleccionado]);
 
   useEffect(() => {
     const fetchProyectos = async () => {
@@ -123,6 +164,7 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
     if (nuevoNombre) setNombrePerfil(nuevoNombre);
     if (nuevaDescripcion) setDescripcionPerfil(nuevaDescripcion);
     if (nuevaFechaNac) setNuevafecha(nuevaFechaNac);
+    setMostrarExitoPerfil(true);
     setModoEditar(null);
   };
 
@@ -170,7 +212,6 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
 };
 
 
-
   return (
     <div className={styles.vistaEstirada}>
       <div className={styles.layoutPrincipal}>
@@ -180,7 +221,7 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
             imagen={imagenPerfil}
             nombre={nombrePerfil}
             descripcion={descripcionPerfil}
-            FechaNac={FechaNac}
+            FechaNac={FechaNac ? FechaNac.split('T')[0] : ''}
           />
 
           {usuarioLogueado?.rolPostulante && (
@@ -315,7 +356,6 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
   </div>
 )}
 
-
       {modoEditar === 'compartir' && (
         <div ref={compartirRef}>
           <Compartir onCerrar={() => setModoEditar(null)} usuarioId={usuarioLogueado?.id} />
@@ -337,6 +377,7 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
       {perfilSeleccionado && (
         <ModalPerfilUsuario
           usuario={perfilSeleccionado}
+          proyectos={proyectosPerfilSeleccionado}
           onCerrar={() => setPerfilSeleccionado(null)}
         />
       )}
@@ -400,6 +441,40 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
     </div>
   </div>
 )}
+{/* Modal éxito perfil actualizado */}
+{mostrarExitoPerfil && (
+  <div
+    className="modal fade show d-block"
+    tabIndex="-1"
+    role="dialog"
+    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+  >
+    <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-content">
+        <div className="modal-header bg-primary text-white">
+          <h5 className="modal-title">¡Perfil actualizado!</h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setMostrarExitoPerfil(false)}
+          ></button>
+        </div>
+        <div className="modal-body">
+          <p>Los cambios en tu perfil se han guardado con éxito.</p>
+        </div>
+        <div className="modal-footer">
+          <button
+            className="btn btn-primary"
+            onClick={() => setMostrarExitoPerfil(false)}
+          >
+            Aceptar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
     </div>
   );
