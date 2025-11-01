@@ -7,6 +7,7 @@ import imagen from '../assets/perfilx.png';
 import Compartir from '../componentes/compartir';
 import Confirmar from '../componentes/confirmar';
 import TarjetaSugerida from '../componentes/TarjetaSugerida';
+import ModalPerfilUsuario from '../componentes/ModalPerfilUsuario';
 import styles from '../paginas/perfil.module.css';
 import { DatosContexto } from '../datosContext';
 import { API_URL } from '../config';
@@ -23,11 +24,20 @@ export default function Perfil() {
   );
   const [FechaNac, setNuevafecha] = useState('');
   const [proyectosagregados, setProyectosAgregados] = useState([]);
+  const [perfiles, setPerfiles] = useState([]); // PRIMERO declarar perfiles
+  const [busquedaPerfil, setBusquedaPerfil] = useState('');
+  const [perfilSeleccionado, setPerfilSeleccionado] = useState(null);
+  
   const { usuarioLogueado } = useContext(DatosContexto);
 
   const editarRef = useRef(null);
   const compartirRef = useRef(null);
   const proyectoRef = useRef(null);
+
+  // DESPUÉS calcular perfilesFiltrados
+  const perfilesFiltrados = perfiles.filter(p => 
+    p.nombreUsuario?.toLowerCase().includes(busquedaPerfil.toLowerCase())
+  );
 
   const handleScroll = (seccion) => {
     setModoEditar(seccion);
@@ -55,6 +65,22 @@ export default function Perfil() {
     };
     fetchProyectos();
   }, [usuarioLogueado]);
+
+  useEffect(() => {
+    const fetchPerfiles = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${API_URL}/usuarios/sugeridos`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const json = await res.json();
+        if (json.success) setPerfiles(json.data);
+      } catch (error) {
+        console.error('Error al obtener perfiles sugeridos:', error);
+      }
+    };
+    fetchPerfiles();
+  }, []);
 
   const eliminarProyecto = async (id) => {
     try {
@@ -115,23 +141,6 @@ export default function Perfil() {
     }
   };
 
-  const [perfiles, setPerfiles] = useState([]);
-  useEffect(() => {
-    const fetchPerfiles = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await fetch(`${API_URL}/usuarios/sugeridos`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const json = await res.json();
-        if (json.success) setPerfiles(json.data);
-      } catch (error) {
-        console.error('Error al obtener perfiles sugeridos:', error);
-      }
-    };
-    fetchPerfiles();
-  }, []);
-
   return (
     <div className={styles.vistaEstirada}>
       <div className={styles.layoutPrincipal}>
@@ -146,16 +155,27 @@ export default function Perfil() {
 
           {usuarioLogueado?.rolPostulante && (
             <div className={`${styles.misProyectos} container mt-5`}>
-              <h3 className={styles.tituloSeccion}>Mis Proyectos</h3>
-              <div className="row mt-4">
+              <div className="text-center mb-4">
+                <h3 className={styles.tituloSeccion}>Mis Proyectos</h3>
+              </div>
+
+              <div className="row ">
                 {proyectosagregados.length === 0 ? (
-                  <p className="text-muted">Aún no has agregado proyectos.</p>
+                  <div className="col-12">
+                    <div className={styles.mensajeVacio}>
+                      <div className={styles.icono}>📂</div>
+                      <p>Aún no has agregado proyectos</p>
+                      <p> Haz clic en "Agregar proyecto" para comenzar</p>
+                    </div>
+                  </div>
                 ) : (
                   proyectosagregados.map((proyecto) => (
-                    <div className="col-md-4 mb-4" key={proyecto.id}>
+                    <div className="col-12 col-md-6 col-lg-4 mb-4" key={proyecto.id}>
                       <div className={styles.tarjetaProyecto}>
                         <h5 className={styles.tituloProyecto}>{proyecto.nombre}</h5>
+
                         <p className={styles.descripcionProyecto}>{proyecto.descripcion}</p>
+
                         <div className={styles.tecnologiasProyecto}>
                           {proyecto.tecnologiasUsadas.split(',').map((tec, i) => (
                             <span key={i} className={styles.tecnologiaChip}>
@@ -163,10 +183,14 @@ export default function Perfil() {
                             </span>
                           ))}
                         </div>
+
                         <div className={styles.botonesProyecto}>
                           <button
-                            className="btn btn-sm btn-outline-light"
-                            onClick={() => modificarProyectoBD(proyecto.id)}
+                            className="btn btn-sm btn-danger"
+                            onClick={() => {
+                              setModificarProyecto(proyecto);
+                              setModoEditar('proyecto');
+                            }}
                           >
                             ✏️ Editar
                           </button>
@@ -191,19 +215,29 @@ export default function Perfil() {
 
         <aside className={styles.asideSugerencias}>
           <h2>Perfiles Recomendados</h2>
+          
+          <div className={styles.buscadorAside}>
+            <input
+              type="text"
+              placeholder="Buscar usuarios..."
+              value={busquedaPerfil}
+              onChange={(e) => setBusquedaPerfil(e.target.value)}
+            />
+          </div>
+
           <div className={styles.contenedorSugerencias}>
-            {perfiles.length === 0 ? (
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '3rem 1rem',
-                color: '#999'
-              }}>
-                <p style={{ fontSize: '3rem', margin: '0' }}>👥</p>
-                <p style={{ marginTop: '1rem' }}>No hay perfiles sugeridos</p>
+            {perfilesFiltrados.length === 0 ? (
+              <div className={styles.mensajeVacio}>
+                <div className={styles.icono}>👥</div>
+                <p>{busquedaPerfil ? 'No se encontraron usuarios' : 'No hay perfiles sugeridos'}</p>
               </div>
             ) : (
-              perfiles.map((p) => (
-                <TarjetaSugerida key={p.id} {...p} />
+              perfilesFiltrados.map((p) => (
+                <TarjetaSugerida 
+                  key={p.id} 
+                  {...p} 
+                  onVerPerfil={() => setPerfilSeleccionado(p)}
+                />
               ))
             )}
           </div>
@@ -225,7 +259,20 @@ export default function Perfil() {
 
       {modoEditar === 'proyecto' && (
         <div ref={proyectoRef}>
-          <Proyecto onCerrar={() => setModoEditar(null)} onAgregarProyecto={agregarProyecto} />
+          <Proyecto onCerrar={() => {
+            setModoEditar(null);
+            setModificarProyecto(null);
+            }}
+            onAgregarProyecto={agregarProyecto} 
+            // Si hay proyecto a modificar, pasamos props y handler
+            nombre={modificarProyecto?.nombre}
+            descripcion={modificarProyecto?.descripcion}
+            tecnologias={modificarProyecto?.tecnologiasUsadas}
+            onModificarProyecto={async (data) => {
+              // data esperado: { nombre, descripcion, tecnologias }
+              await modificarProyectoBD(modificarProyecto.id, data.nombre, data.descripcion, data.tecnologias);
+            }}
+            />
         </div>
       )}
 
@@ -245,6 +292,13 @@ export default function Perfil() {
             />
           </div>
         </>
+      )}
+
+      {perfilSeleccionado && (
+        <ModalPerfilUsuario
+          usuario={perfilSeleccionado}
+          onCerrar={() => setPerfilSeleccionado(null)}
+        />
       )}
     </div>
   );

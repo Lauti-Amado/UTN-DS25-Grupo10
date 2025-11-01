@@ -79,7 +79,6 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #dc2626, #ea580c);
     border-radius: 20px 20px 0 0;
 }
 
@@ -153,6 +152,7 @@ background-clip: border-box !important;
   margin: 0.2rem 0;
   font-size: 1.05rem;
 }
+
 
 /* CONTENIDO DEL PERFIL */
 
@@ -291,12 +291,12 @@ button:hover {
 }
 
 .contenedorSugerencias::-webkit-scrollbar-thumb {
-  background: #dc2626;
+  background: #b1b1b1;
   border-radius: 10px;
 }
 
 .contenedorSugerencias::-webkit-scrollbar-thumb:hover {
-  background: #b91c1c;
+  background: #9c9c9c;
 }
 
 
@@ -692,7 +692,9 @@ button[style*="marginLeft"] {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin: 0.5rem 0;
+    margin-bottom: 1rem;
+    min-height: 40px;
+    align-content: flex-start;
 }
 
 .perfilLayout {
@@ -721,18 +723,22 @@ button[style*="marginLeft"] {
 .botonesProyecto {
   display: flex;
   gap: 0.8rem;
-  margin-top: 0.5rem;
-  padding-top: 0.8rem;
+  margin-top: auto;
+  padding-top: 1rem;
   border-top: 1px solid #e5e5e5;
 }
 
 .botonesProyecto button {
   flex: 1;
-  padding: 0.6rem 1rem;
+  padding: 0.65rem 1rem;
   font-size: 0.85rem;
   border-radius: 8px;
   font-weight: 600;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
 }
 
 .layoutPrincipal {
@@ -772,14 +778,14 @@ button[style*="marginLeft"] {
 
 .tarjetaSugerida {
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.8rem;
   background: #fdfdfd;
   padding: 1.2rem;
   border-radius: 12px;
   margin-bottom: 1rem;
   box-shadow: 0 3px 10px rgba(0,0,0,0.08);
   transition: transform 0.2s ease;
-  align-items: center;
   border: 1px solid #f0f0f0;
 }
 
@@ -787,6 +793,12 @@ button[style*="marginLeft"] {
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0,0,0,0.12);
   border-color: #dc2626;
+}
+
+.tarjetaSugeridaHeader {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .avatarSugerido {
@@ -813,6 +825,43 @@ button[style*="marginLeft"] {
 }
 
 /* Sección de proyectos y título */
+.misProyectos .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.misProyectos .row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mensaje vacío de proyectos */
+.misProyectos .mensajeVacio {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  border: 2px dashed #ddd;
+}
+
+.misProyectos .mensajeVacio .icono {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.4;
+}
+
+.misProyectos .mensajeVacio p:first-of-type {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.misProyectos .mensajeVacio p:last-of-type {
+  font-size: 0.9rem;
+  color: #999;
+}
+
 .misProyectos {
   background: #fff;
   border-radius: 20px;
@@ -837,29 +886,46 @@ button[style*="marginLeft"] {
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   padding: 1.5rem;
   transition: all 0.3s ease;
+  text-align: left;
+  height: 100%; 
   display: flex;
   flex-direction: column;
-  text-align: left;
-  gap: 1rem
+  border: 1px solid #f0f0f0;
+  min-height: 320px;
 }
 
 .tarjetaProyecto:hover {
   transform: translateY(-4px);
   box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+  border-color: #dc2626;
 }
 
 .tituloProyecto {
   font-size: 1.2rem;
   font-weight: 700;
   color: #111;
-  margin-bottom: 0;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
+   min-height: 2.6rem; /* Para títulos de 1-2 líneas */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .descripcionProyecto {
   color: #444;
   font-size: 0.95rem;
-  margin: 0;
+  margin-bottom: 1rem;
   line-height: 1.5;
+  flex-grow: 1;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 3; /* Máximo 3 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 4.5rem;
 }
 
 .tecnologiaChip {
@@ -869,6 +935,8 @@ button[style*="marginLeft"] {
   border-radius: 20px;
   font-size: 0.8rem;
   display: inline-block;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 
@@ -892,4 +960,171 @@ button[style*="marginLeft"] {
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   z-index: 1001;
   color: #fff;
+}
+
+/* estilos de la descripción */
+.infoBasica {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1.5rem;
+  background: #f0f0f0;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+}
+
+.infoBasica p {
+  color: #414141;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Descripción destacada - SECCIÓN SEPARADA */
+.descripcionDestacada {
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  width: 100%;
+  max-width: 650px;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
+}
+
+.descripcionDestacada h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #414141;
+  margin: 0 0 0.8rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.descripcionDestacada h4::before {
+  content: '📝';
+  font-size: 1.2rem;
+}
+
+.descripcionDestacada p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  text-align: left;
+}
+
+/* Buscador en el aside */
+.buscadorAside {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.buscadorAside input {
+  width: 100%;
+  padding: 0.7rem 1rem 0.7rem 2.5rem;
+  border: 2px solid #e5e5e5;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.buscadorAside input:focus {
+  outline: none;
+  border-color: #dc2626;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.buscadorAside::before {
+  content: '🔍';
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+}
+
+/* Botón "Ver perfil" en tarjetas sugeridas */
+.btnVerPerfil {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-top: 0.5rem;
+}
+
+.btnVerPerfil:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  transform: translateY(-2px);
+}
+
+.modalPerfilUsuario {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  z-index: 1001;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modalPerfilUsuario .cerrarModal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #707070;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.modalPerfilUsuario .cerrarModal:hover {
+  background: #dc2626;
+  color: white;
+  transform: rotate(90deg);
+}
+
+.mensajeVacio {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #999;
+}
+
+.mensajeVacio .icono {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.mensajeVacio p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.tarjetaProyecto .botonesProyecto button, .tarjetaProyecto .botonesProyecto .btn {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  min-width: 0;
+  text-transform: none;
+  box-shadow: none;
+  align-items: center;
 }
