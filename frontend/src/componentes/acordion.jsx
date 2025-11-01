@@ -221,6 +221,13 @@ function Acordion() {
     setModoEdicion(true);
     setOfertaEditando(item);
     setMostrarFormulario(true);
+
+    setTimeout(() => {
+      const formulario = document.querySelector('.formulario-oferta');
+      if (formulario) {
+        formulario.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100)
   };
 
   const cancelarFormulario = () => {
