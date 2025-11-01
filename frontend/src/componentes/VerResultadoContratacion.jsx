@@ -1,32 +1,33 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useState, useEffect } from "react";
 import { Modal, Button } from 'react-bootstrap';
-import { API_URL } from '../config';
 
-function VerResultadoContratacion({ data }) {
+function VerResultadoContratacion({ data, onClose }) {
   const [mostrarModal, setMostrarModal] = useState(false);
-  const [tipo, setTipo] = useState("info"); // "contratado", "espera", "rechazado"
-  const [usuario, setUsuario] = useState(null);
-  const [errorUsuario, setErrorUsuario] = useState(null);
-
-
+  const [tipo, setTipo] = useState("info");
 
   useEffect(() => {
     console.log("Notificación recibida:", { data });
 
-       setMostrarModal(true);
+    if (data) {
+      setMostrarModal(true);
 
-    if (data === "Haz sido contratado para esta oferta. Pronto tu empleador se comunicará contigo. Felicitaciones!") {
-      setTipo("contratado");
-    } else if (data === "Lamentamos comunicarte que otro usuario ha sido seleccionado para esta oferta.") {
-      setTipo("rechazado");
-    } else {
-      setTipo("espera");
+      if (data === "Haz sido contratado para esta oferta. Pronto tu empleador se comunicará contigo. Felicitaciones!") {
+        setTipo("contratado");
+      } else if (data === "Lamentamos comunicarte que otro usuario ha sido seleccionado para esta oferta.") {
+        setTipo("rechazado");
+      } else {
+        setTipo("espera");
+      }
     }
   }, [data]);
 
   const cerrarModal = () => {
     setMostrarModal(false);
+    if (onClose) {
+      onClose();
+    }
   };
 
   const icono = {

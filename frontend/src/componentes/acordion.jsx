@@ -639,7 +639,10 @@ function Acordion({ ofertaIdInicial, postulanteDestacadoId }) {
       />
 
       {dataResultado && (
-        <VerResultadoContratacion data={dataResultado} />
+        <VerResultadoContratacion 
+          data={dataResultado} 
+          onClose={() => setDataResultado(null)} 
+        />
       )}
 
       {mostrarToast && (
