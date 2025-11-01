@@ -13,6 +13,9 @@ import { DatosContexto } from '../datosContext';
 import { API_URL } from '../config';
 
 export default function Perfil() {
+  const [mostrarExitoAgregar, setMostrarExitoAgregar] = useState(false);
+const [mostrarExitoModificar, setMostrarExitoModificar] = useState(false);
+const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
   const [modoEditar, setModoEditar] = useState(null);
   const [proyectoaEliminar, setProyectoaEliminar] = useState(null);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
@@ -87,6 +90,7 @@ export default function Perfil() {
       await fetch(`${API_URL}/proyectos/${id}`, { method: 'DELETE' });
       setProyectosAgregados((prev) => prev.filter((p) => p.id !== id));
       setMostrarConfirmacion(false);
+      setMostrarExitoEliminar(true);
       setProyectoaEliminar(null);
     } catch (error) {
       console.error('Error al eliminar proyecto:', error);
@@ -107,6 +111,7 @@ export default function Perfil() {
       const json = await res.json();
       setProyectosAgregados((prev) => prev.map((p) => (p.id === id ? json.data : p)));
       setModificarProyecto(null);
+      setMostrarExitoModificar(true); 
       setModoEditar(null);
     } catch (error) {
       console.error('Error al modificar proyecto:', error);
@@ -122,24 +127,49 @@ export default function Perfil() {
   };
 
   const agregarProyecto = async (nuevoproy) => {
-    try {
-      const res = await fetch(`${API_URL}/proyectos`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre: nuevoproy.nombre,
-          descripcion: nuevoproy.descripcion,
-          tecnologiasUsadas: nuevoproy.tecnologias,
-          creadorId: usuarioLogueado.id,
-        }),
-      });
-      const json = await res.json();
-      setProyectosAgregados((prev) => [...(prev || []), json.data]);
-      setModoEditar(null);
-    } catch (error) {
-      console.error('Error al agregar proyecto:', error);
+  const token = localStorage.getItem('token');
+  if (!usuarioLogueado?.id || !token) {
+    alert('Debes iniciar sesión para agregar un proyecto');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/proyectos`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        nombre: nuevoproy.nombre,
+        descripcion: nuevoproy.descripcion,
+        tecnologiasUsadas: nuevoproy.tecnologias,
+        creadorId: usuarioLogueado.id,
+      }),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('Error HTTP:', res.status, errorText);
+      alert('Error al crear el proyecto. La API rechazó la solicitud.');
+      return;
     }
-  };
+
+    const json = await res.json();
+    if (!json.data) {
+      throw new Error('Respuesta inválida: no hay datos');
+    }
+
+    setProyectosAgregados(prev => [...(prev || []), json.data]);
+    setMostrarExitoAgregar(true); 
+    setModoEditar(null);
+  } catch (error) {
+    console.error('Error crítico al agregar proyecto:', error);
+    alert('No se pudo crear el proyecto. Revisa tu conexión o intenta más tarde.');
+  }
+};
+
+
 
   return (
     <div className={styles.vistaEstirada}>
@@ -157,6 +187,8 @@ export default function Perfil() {
             <div className={`${styles.misProyectos} container mt-5`}>
               <div className="text-center mb-4">
                 <h3 className={styles.tituloSeccion}>Mis Proyectos</h3>
+
+                
               </div>
 
               <div className="row ">
@@ -190,6 +222,7 @@ export default function Perfil() {
                             onClick={() => {
                               setModificarProyecto(proyecto);
                               setModoEditar('proyecto');
+                               handleScroll('proyecto'); 
                             }}
                           >
                             ✏️ Editar
@@ -256,25 +289,32 @@ export default function Perfil() {
           />
         </div>
       )}
+{modoEditar === 'proyecto' && (
+  <div ref={proyectoRef}>
+    <Proyecto
+  onCerrar={() => {
+    setModoEditar(null);
+    setModificarProyecto(null);
+  }}
+  onAgregarProyecto={agregarProyecto} // siempre se pasa
+  onModificarProyecto={async (data) => {
+    if (!modificarProyecto) return; // evita null
+    await modificarProyectoBD(
+      modificarProyecto.id,
+      data.nombre,
+      data.descripcion,
+      data.tecnologias
+    );
+  }}
+  nombre={modificarProyecto?.nombre || ''}
+  descripcion={modificarProyecto?.descripcion || ''}
+  tecnologias={modificarProyecto?.tecnologiasUsadas || ''}
+  esEdicion={!!modificarProyecto} // <-- esto es clave
+/>
 
-      {modoEditar === 'proyecto' && (
-        <div ref={proyectoRef}>
-          <Proyecto onCerrar={() => {
-            setModoEditar(null);
-            setModificarProyecto(null);
-            }}
-            onAgregarProyecto={agregarProyecto} 
-            // Si hay proyecto a modificar, pasamos props y handler
-            nombre={modificarProyecto?.nombre}
-            descripcion={modificarProyecto?.descripcion}
-            tecnologias={modificarProyecto?.tecnologiasUsadas}
-            onModificarProyecto={async (data) => {
-              // data esperado: { nombre, descripcion, tecnologias }
-              await modificarProyectoBD(modificarProyecto.id, data.nombre, data.descripcion, data.tecnologias);
-            }}
-            />
-        </div>
-      )}
+  </div>
+)}
+
 
       {modoEditar === 'compartir' && (
         <div ref={compartirRef}>
@@ -300,6 +340,67 @@ export default function Perfil() {
           onCerrar={() => setPerfilSeleccionado(null)}
         />
       )}
+
+     {/* Modal éxito agregar */}
+{mostrarExitoAgregar && (
+  <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-content">
+        <div className="modal-header bg-primary text-white">
+          <h5 className="modal-title">¡Listo!</h5>
+          <button type="button" className="btn-close" onClick={() => setMostrarExitoAgregar(false)}></button>
+        </div>
+        <div className="modal-body">
+          <p>Proyecto agregado con éxito.</p>
+        </div>
+        <div className="modal-footer">
+          <button className="btn btn-primary" onClick={() => setMostrarExitoAgregar(false)}>Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Modal éxito modificar */}
+{mostrarExitoModificar && (
+  <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-content">
+        <div className="modal-header bg-primary text-white">
+          <h5 className="modal-title">¡Listo!</h5>
+          <button type="button" className="btn-close" onClick={() => setMostrarExitoModificar(false)}></button>
+        </div>
+        <div className="modal-body">
+          <p>Proyecto modificado con éxito.</p>
+        </div>
+        <div className="modal-footer">
+          <button className="btn btn-primary" onClick={() => setMostrarExitoModificar(false)}>Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Modal éxito eliminar */}
+{mostrarExitoEliminar && (
+  <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+    <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-content">
+        <div className="modal-header bg-primary text-white">
+          <h5 className="modal-title">¡Listo!</h5>
+          <button type="button" className="btn-close" onClick={() => setMostrarExitoEliminar(false)}></button>
+        </div>
+        <div className="modal-body">
+          <p>Proyecto eliminado con éxito.</p>
+        </div>
+        <div className="modal-footer">
+          <button className="btn btn-primary" onClick={() => setMostrarExitoEliminar(false)}>Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

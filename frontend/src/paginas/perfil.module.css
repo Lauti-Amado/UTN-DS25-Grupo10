@@ -45,6 +45,159 @@
     margin-bottom: 3rem;
 }
 
+/* === MODALES (Proyecto, Perfil, etc.) === */
+.modal.show.d-block {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex !important;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 2000;
+  overflow-y: auto; /* scroll general si modal es alto */
+  padding: 2rem 1rem; /* espacio superior e inferior */
+}
+
+/* Botones dentro del modal */
+.modal-footer .btn {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-footer .btn:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  transform: translateY(-2px);
+}
+
+/* Botón de cerrar */
+.btn-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+
+/* Asegura que el modal tenga altura limitada y scroll solo en el body */
+.modal-dialog {
+  max-width: 600px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; /* límite altura total */
+  overflow: hidden;  /* ocultamos overflow en el container principal */
+  border-radius: 16px;
+}
+
+.modal-body {
+  flex: 1 1 auto;               /* ocupa el espacio disponible */
+  overflow-y: auto;             /* scroll solo en body */
+  padding: 1.5rem;
+  max-height: calc(90vh - 120px); /* restar altura header + footer */
+}
+
+.barra1 {
+  margin-bottom: 5.5rem; /* Ajusta el valor según lo necesites */
+}
+
+
+.modal-footer {
+  flex-shrink: 0;                /* nunca se encoge */
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e5e5;
+  background: #fff; /* opcional: fondo sólido */
+}
+
+/* Opcional: scroll suave en body */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #dc2626;
+  border-radius: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+
+.errorBrillante {
+  color: red;       /* Mensaje en rojo */
+  font-size: 0.875rem; /* Tamaño opcional */
+  margin-top: 0.25rem; /* Pequeño espacio sobre el input */
+  display: block;   /* Asegura que aparezca en línea separada */
+}
+
+
+/* === MODALES UNIFICADOS === */
+.modal-fijo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.modal-contenido {
+  background: white;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
+.modal-footer .btn {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.modal-footer .btn:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  transform: translateY(-2px);
+}
+
+
 @media (max-width: 1024px) {
     .article {
         flex-direction: column;
