@@ -37,19 +37,24 @@ app.use('/ofertas', ofertaRoutes);
 app.use('/proyectos', proyectoRouters);
 app.use('/formularios', formularioRoutes);
 
-// ---- SERVIR FRONTEND ----
-app.use(express.static(path.join(process.cwd(), 'dist')));
-
 app.use((req, res, next) => {
   const apiPaths = ['/auth', '/usuarios', '/ofertas', '/proyectos', '/formularios'];
   if (apiPaths.some(path => req.path.startsWith(path))) {
     return next();
   }
-  res.sendFile(path.join(process.cwd(), 'frontend', 'index.html'));
 });
 
 // Middleware de errores
 app.use(handleError);
+
+// Ruta health check
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'API funcionando correctamente',
+    version: '1.0.0'
+  });
+});
 
 // ===== MANEJO DE CIERRE GRACEFUL =====
 const gracefulShutdown = async (signal: string) => {
