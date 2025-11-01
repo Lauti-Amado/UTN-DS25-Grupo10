@@ -1,11 +1,10 @@
 /* ESTILOS PRINCIPALES */
 .vistaEstirada {
-    margin-top: 0.1em;
-    padding: 0;
-    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2a2a2a 100%);
-    color: #e5e7eb;
-    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
+  background: #f9f9f9;
+  color: #111;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 3rem;
 }
 
 .fondoBorroso {
@@ -58,17 +57,19 @@
 
 /* PERFIL */
 .seccionPerfil {
-    width: 100%;
-    max-width: 450px;
-    flex-shrink: 0; 
-    padding: 2.5rem;
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-    border-radius: 20px;
-    box-shadow: 
-        0 20px 25px -5px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(220, 38, 38, 0.3);
-    position: relative;
-    height: fit-content; 
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: visible;
+}
+
+.seccionPerfil:hover {
+  transform: translateY(-3px);
 }
 
 .seccionPerfil::before {
@@ -78,7 +79,6 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #dc2626, #ea580c);
     border-radius: 20px 20px 0 0;
 }
 
@@ -97,6 +97,41 @@
     background-clip: text;
 }
 
+/* Nombre del perfil en NEGRO */
+.nombrePerfil {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #000000 !important; /* Negro sólido */
+  -webkit-text-fill-color: #000000 !important; /* Sobrescribe el text-fill transparente */
+  background: none !important; /* evita gradiente heredado */
+background-clip: border-box !important;
+-webkit-background-clip: border-box !important;
+  margin-bottom: 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* Contenedor para descripción y fecha alineadas */
+.infoTexto {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.infoTexto p {
+  color: #333;
+  margin: 0.5rem 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.infoTexto p:first-child {
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 0.8rem !important;
+}
+
 .seccionPerfil p {
     font-size: 1.2em;
     color: #e5e7eb;
@@ -105,7 +140,22 @@
     opacity: 0.9;
 }
 
+.infoPerfil h3 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 0.5rem;
+}
+
+.infoPerfil p {
+  color: #333;
+  margin: 0.2rem 0;
+  font-size: 1.05rem;
+}
+
+
 /* CONTENIDO DEL PERFIL */
+
 #chau {
     display: flex;
     flex-direction: column;
@@ -145,18 +195,52 @@ button:hover {
     width: 100%;
 }
 
+.botonesPerfil {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 650px;
+}
+
+.botonesPerfil button {
+  background: linear-gradient(135deg, #e02424, #b91c1c);
+  color: white;
+  border: none;
+  padding: 0.75rem 0;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botonesPerfil button:hover {
+  background: linear-gradient(135deg, #f43f3f, #dc2626);
+  transform: translateY(-2px);
+}
+
 /* IMAGEN DE PERFIL */
 .imagenPerfil {
-    border-radius: 50%;
-    width: 80px; 
-    height: 80px;
-    object-fit: cover;
-    border: 3px solid #dc2626;
-    box-shadow: 
-        0 0 0 2px rgba(220, 38, 38, 0.2),
-        0 4px 15px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-    flex-shrink: 0; 
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  margin-top: 1rem;
+  object-fit: cover;
+  border: 4px solid #dc2626;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
+  margin-bottom: 1rem;
 }
 
 .imagenPerfil:hover {
@@ -176,17 +260,7 @@ button:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-.imagenperfil {
-    border-radius: 50%;  
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-    border: 4px solid #dc2626;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    margin: 0 auto 2rem; 
-    transition: all 0.3s ease;
-}
+
 
 .imagenperfil:hover {
     transform: scale(1.05);
@@ -196,59 +270,35 @@ button:hover {
         0 15px 40px rgba(0, 0, 0, 0.6);
 }
 
+
+
 /* SUGERENCIAS */
-.scrollsection {
-    width: 100%;
-    max-width: 400px; 
-    flex-shrink: 0;
-    height: fit-content;
-    max-height: 600px;
-    border-radius: 20px;
-    overflow: hidden;
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-    border: 1px solid rgba(220, 38, 38, 0.3);
-    box-shadow: 
-        0 20px 25px -5px rgba(0, 0, 0, 0.4),
-        0 10px 10px -5px rgba(0, 0, 0, 0.3);
+.contenedorSugerencias {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+  flex: 1; /* Ocupa el espacio restante */
 }
 
-.scrollsection h2 {
-    background: linear-gradient(135deg, #dc2626, #ea580c);
-    color: #ffffff;
-    padding: 1.5rem;
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+/* Estilos del scrollbar */
+.contenedorSugerencias::-webkit-scrollbar {
+  width: 8px;
 }
 
-.scrollcontent {
-    max-height: 500px; 
-    overflow-y: auto;  
-    padding: 1rem;
-    line-height: 1.6;
-    color: #e5e7eb;
+.contenedorSugerencias::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
 }
 
-.scrollcontent::-webkit-scrollbar {
-    width: 8px;
+.contenedorSugerencias::-webkit-scrollbar-thumb {
+  background: #b1b1b1;
+  border-radius: 10px;
 }
 
-.scrollcontent::-webkit-scrollbar-track {
-    background: #1a1a1a;
-    border-radius: 4px;
+.contenedorSugerencias::-webkit-scrollbar-thumb:hover {
+  background: #9c9c9c;
 }
 
-.scrollcontent::-webkit-scrollbar-thumb {
-    background: #dc2626;
-    border-radius: 4px;
-}
-
-.scrollcontent::-webkit-scrollbar-thumb:hover {
-    background: #ef4444;
-}
 
 /* PERFILES */
 .unperfil {
@@ -638,6 +688,443 @@ button[style*="marginLeft"] {
     margin:20px
 }
 
-.tecnologias {
-    color: #ffffff;
+.tecnologiasProyecto {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    min-height: 40px;
+    align-content: flex-start;
+}
+
+.perfilLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.infoPerfil {
+  width: 100%;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.botonesPerfil {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.botonesProyecto {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.botonesProyecto button {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.layoutPrincipal {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  padding: 2rem;
+}
+
+.seccionProyectos {
+  flex: 3;
+}
+
+/* === ASIDE === */
+.asideSugerencias {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  color: #111;
+  position: sticky;
+  top: 2rem;
+  max-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.asideSugerencias h2 {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #111;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.tarjetaSugerida {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  background: #fdfdfd;
+  padding: 1.2rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.tarjetaSugerida:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+  border-color: #dc2626;
+}
+
+.tarjetaSugeridaHeader {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.avatarSugerido {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dc2626;
+  flex-shrink: 0;
+}
+
+.tarjetaSugerida h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 0.3rem 0;
+}
+
+.tarjetaSugerida p {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Sección de proyectos y título */
+.misProyectos .row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.misProyectos .row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mensaje vacío de proyectos */
+.misProyectos .mensajeVacio {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  border: 2px dashed #ddd;
+}
+
+.misProyectos .mensajeVacio .icono {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.4;
+}
+
+.misProyectos .mensajeVacio p:first-of-type {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.misProyectos .mensajeVacio p:last-of-type {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.misProyectos {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+
+.tituloSeccion {
+  font-size: 1.6rem;
+  text-align: center;
+  color: #111;
+  font-weight: 700;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+  margin: 0 auto 1.5rem;
+}
+
+/* === TARJETAS DE PROYECTOS === */
+.tarjetaProyecto {
+  background: #fdfdfd;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  text-align: left;
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f0f0f0;
+  min-height: 320px;
+}
+
+.tarjetaProyecto:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+  border-color: #dc2626;
+}
+
+.tituloProyecto {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
+   min-height: 2.6rem; /* Para títulos de 1-2 líneas */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.descripcionProyecto {
+  color: #444;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  flex-grow: 1;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 3; /* Máximo 3 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 4.5rem;
+}
+
+.tecnologiaChip {
+  background-color: #dc2626;
+  color: #fff;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+
+/* Overlay y modal de confirmación */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+}
+
+.confirmModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  z-index: 1001;
+  color: #fff;
+}
+
+/* estilos de la descripción */
+.infoBasica {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1.5rem;
+  background: #f0f0f0;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+}
+
+.infoBasica p {
+  color: #414141;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Descripción destacada - SECCIÓN SEPARADA */
+.descripcionDestacada {
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  width: 100%;
+  max-width: 650px;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
+}
+
+.descripcionDestacada h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #414141;
+  margin: 0 0 0.8rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.descripcionDestacada h4::before {
+  content: '📝';
+  font-size: 1.2rem;
+}
+
+.descripcionDestacada p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  text-align: left;
+}
+
+/* Buscador en el aside */
+.buscadorAside {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.buscadorAside input {
+  width: 100%;
+  padding: 0.7rem 1rem 0.7rem 2.5rem;
+  border: 2px solid #e5e5e5;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.buscadorAside input:focus {
+  outline: none;
+  border-color: #dc2626;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.buscadorAside::before {
+  content: '🔍';
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+}
+
+/* Botón "Ver perfil" en tarjetas sugeridas */
+.btnVerPerfil {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-top: 0.5rem;
+}
+
+.btnVerPerfil:hover {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  transform: translateY(-2px);
+}
+
+.modalPerfilUsuario {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  z-index: 1001;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modalPerfilUsuario .cerrarModal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #707070;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+}
+
+.modalPerfilUsuario .cerrarModal:hover {
+  background: #dc2626;
+  color: white;
+  transform: rotate(90deg);
+}
+
+.mensajeVacio {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #999;
+}
+
+.mensajeVacio .icono {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.mensajeVacio p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.tarjetaProyecto .botonesProyecto button, .tarjetaProyecto .botonesProyecto .btn {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  min-width: 0;
+  text-transform: none;
+  box-shadow: none;
+  align-items: center;
 }

@@ -1,32 +1,46 @@
-import BotonesPerfil from './BotonesPerfil';
 import styles from '../paginas/perfil.module.css';
-import React, {Component, useContext} from 'react';
+import React, { useContext } from 'react';
 import { DatosContexto } from '../datosContext.jsx';
 
 function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, FechaNac }) {
-
-  
-  const { busquedaGlobal, usuarioLogueado } = useContext(DatosContexto);
+  const { usuarioLogueado } = useContext(DatosContexto);
 
   return (
-    <section className="seccionPerfil">
-      <div id={styles['chau']}>
-        <img className={styles.imagenperfil} src={imagen} alt="foto de perfil" />
-        <h3 className={styles.text}>{nombre}</h3>
+    <section className={styles.seccionPerfil}>
+      <div className={styles.perfilLayout}>
+        <img src={imagen} alt="foto de perfil" className={styles.imagenPerfil} />
 
-        <div style={{backgroundColor: '#cfcfcfff', borderRadius: '10px', padding: '10px', marginTop: '10px', textAlign: 'left'}}>
-          <p>
-            <b>Descripción: </b>{descripcion}
-          </p>
-          <p><b>Fecha de Nacimiento:</b> {FechaNac}</p>
-        </div>
-        <div id={styles['botones']}>
-          <BotonesPerfil texto="Editar perfil" onClick={() => onEditarClick('perfil')} />
-          <BotonesPerfil texto="Compartir perfil" onClick={() =>onEditarClick('compartir')}/>
-          {usuarioLogueado.rolPostulante && ( // 👈 solo se muestra si es true
-            <BotonesPerfil texto="Agregar proyecto" onClick={() => onEditarClick('proyecto')} />
-          )}
+        <div className={styles.infoPerfil}>
+          <h3 className={styles.nombrePerfil}>{nombre}</h3>
+          <br />
+          <br />
+          
+          <div className={styles.infoBasica}>
+            <p>
+              <strong>📅 Fecha de Nacimiento:</strong>{' '}
+              {FechaNac || <span style={{ color: '#999', fontStyle: 'italic' }}>No especificada</span>}
+            </p>
+          </div>
 
+          {/* Descripción como sección destacada */}
+          <div className={styles.descripcionDestacada}>
+            <h4>Sobre mí</h4>
+            <p>{descripcion}</p>
+          </div>
+
+          <div className={styles.botonesPerfil}>
+            <button onClick={() => onEditarClick('perfil')}>
+              ✏️ Editar perfil
+            </button>
+            <button onClick={() => onEditarClick('compartir')}>
+              🔗 Compartir
+            </button>
+            {usuarioLogueado.rolPostulante && (
+              <button onClick={() => onEditarClick('proyecto')}>
+                ➕ Agregar proyecto
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </section>
