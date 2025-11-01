@@ -221,13 +221,13 @@
   z-index: 10;
 }
 
-.gestion-usuarios-container .usuarios-table th:nth-child(1) { width: 50px; } /* ID */
-.gestion-usuarios-container .usuarios-table th:nth-child(2) { width: 180px; } /* Nombre */
-.gestion-usuarios-container .usuarios-table th:nth-child(3) { width: 200px; } /* Email */
-.gestion-usuarios-container .usuarios-table th:nth-child(4) { width: 150px; } /* Usuario */
-.gestion-usuarios-container .usuarios-table th:nth-child(5) { width: 120px; } /* Rol */
-.gestion-usuarios-container .usuarios-table th:nth-child(6) { width: 100px; } /* Estado */
-.gestion-usuarios-container .usuarios-table th:nth-child(7) { width: 150px; padding-right: 15px; } /* Acciones */
+.gestion-usuarios-container .usuarios-table th:nth-child(1) { width: 50px; }
+.gestion-usuarios-container .usuarios-table th:nth-child(2) { width: 180px; }
+.gestion-usuarios-container .usuarios-table th:nth-child(3) { width: 200px; }
+.gestion-usuarios-container .usuarios-table th:nth-child(4) { width: 150px; }
+.gestion-usuarios-container .usuarios-table th:nth-child(5) { width: 120px; }
+.gestion-usuarios-container .usuarios-table th:nth-child(6) { width: 100px; }
+.gestion-usuarios-container .usuarios-table th:nth-child(7) { width: 150px; padding-right: 15px; }
 
 .gestion-usuarios-container .usuarios-table td {
   padding: 12px 8px;
@@ -435,46 +435,61 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1050;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
 }
 
 .gestion-usuarios-modal-content {
   background: white;
   border-radius: 12px;
-  width: 90%;
+  width: 100%;
   max-width: 600px;
   max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .gestion-usuarios-modal-confirm {
-  max-width: 450px;
+  max-width: 500px;
 }
 
 .gestion-usuarios-modal-header {
-  background: #212529;
-  color: white;
   padding: 20px;
+  border-bottom: 1px solid #dee2e6;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 12px 12px 0 0;
+  flex-shrink: 0;
 }
 
 .gestion-usuarios-modal-header h4 {
   margin: 0;
   font-size: 1.25rem;
+  color: #212529;
 }
 
 .gestion-usuarios-close-button {
   background: transparent;
   border: none;
-  color: white;
+  color: #6c757d;
   font-size: 28px;
   cursor: pointer;
   padding: 0;
@@ -484,14 +499,36 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
+  transition: all 0.2s;
 }
 
 .gestion-usuarios-close-button:hover {
-  color: #ccc;
+  color: #212529;
+  transform: rotate(90deg);
 }
 
 .gestion-usuarios-modal-body {
   padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.gestion-usuarios-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.gestion-usuarios-modal-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.gestion-usuarios-modal-body::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.gestion-usuarios-modal-body::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .gestion-usuarios-modal-footer {
@@ -500,6 +537,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 /* Formulario */
@@ -548,7 +586,6 @@
   cursor: pointer;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .gestion-usuarios-container {
     padding: 10px;

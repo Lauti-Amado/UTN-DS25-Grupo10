@@ -9,6 +9,11 @@ export function DatosProvider({ children }) {
   });
 
   const [busquedaGlobal, setBusquedaGlobal] = useState("");
+  const [refrescarDatos, setRefrescarDatos] = useState(0); 
+
+  const triggerRefresh = () => {
+    setRefrescarDatos(prev => prev + 1);
+  };
 
   useEffect(() => {
     if (usuarioLogueado) {
@@ -25,6 +30,8 @@ export function DatosProvider({ children }) {
         setUsuarioLogueado,
         busquedaGlobal,
         setBusquedaGlobal,
+        refrescarDatos,    
+        triggerRefresh,    
       }}
     >
       {children}

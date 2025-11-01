@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import { DatosContexto } from "../datosContext";
 import { API_URL } from '../config';
 import { FaEdit, FaTrash, FaUserCheck, FaUserSlash, FaSearch } from "react-icons/fa";
 import './GestionUsuarios.css';
 
 export default function GestionUsuarios() {
-  const { usuarioLogueado } = useContext(DatosContexto);
+  const { usuarioLogueado, triggerRefresh } = useContext(DatosContexto);
   const [usuarios, setUsuarios] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
@@ -28,6 +29,25 @@ export default function GestionUsuarios() {
   // Estado para modal de confirmación
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [accionConfirmar, setAccionConfirmar] = useState(null);
+  const [showNotificacionModal, setShowNotificacionModal] = useState(false);
+  const [mensajeNotificacion, setMensajeNotificacion] = useState("");
+  const [tipoNotificacion, setTipoNotificacion] = useState("success");
+
+  const Modal = ({ children, onClose }) => {
+    useEffect(() => {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }, []);
+
+    return ReactDOM.createPortal(
+      <div className="gestion-usuarios-modal-overlay" onClick={onClose}>
+        {children}
+      </div>,
+      document.body
+    );
+  };
 
   useEffect(() => {
     if (usuarioLogueado?.esAdmin) {
@@ -79,6 +99,12 @@ export default function GestionUsuarios() {
     setShowModal(true);
   };
 
+  const mostrarNotificacion = (mensaje, tipo = "success") => {
+    setMensajeNotificacion(mensaje);
+    setTipoNotificacion(tipo);
+    setShowNotificacionModal(true);
+  };
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -107,14 +133,14 @@ export default function GestionUsuarios() {
       if (res.ok) {
         await fetchUsuarios();
         setShowModal(false);
-        alert("Usuario actualizado exitosamente");
+        mostrarNotificacion("Usuario actualizado exitosamente", "success");
       } else {
         const error = await res.json();
-        alert(`Error: ${error.message || "No se pudo actualizar el usuario"}`);
+        mostrarNotificacion(`Error: ${error.message || "No se pudo actualizar el usuario"}`, "error");
       }
     } catch (err) {
       console.error("Error actualizando usuario:", err);
-      alert("Error al actualizar el usuario");
+      mostrarNotificacion("Error al actualizar el usuario", "error");
     }
   };
 
@@ -135,11 +161,12 @@ export default function GestionUsuarios() {
       if (res.ok) {
         await fetchUsuarios();
         setShowConfirmModal(false);
-        alert(`Usuario ${nuevoEstado ? 'activado' : 'desactivado'} exitosamente`);
+        triggerRefresh();
+        mostrarNotificacion(`Usuario ${nuevoEstado ? 'activado' : 'desactivado'} exitosamente`, "success");
       }
     } catch (err) {
       console.error("Error cambiando estado:", err);
-      alert("Error al cambiar el estado del usuario");
+      mostrarNotificacion("Error al cambiar el estado del usuario", "error");
     }
   };
 
@@ -154,11 +181,12 @@ export default function GestionUsuarios() {
       if (res.ok) {
         await fetchUsuarios();
         setShowConfirmModal(false);
-        alert("Usuario eliminado exitosamente");
+        triggerRefresh();
+        mostrarNotificacion("Usuario eliminado exitosamente", "success");
       }
     } catch (err) {
       console.error("Error eliminando usuario:", err);
-      alert("Error al eliminar el usuario");
+      mostrarNotificacion("Error al eliminar el usuario", "error");
     }
   };
 
@@ -387,7 +415,7 @@ export default function GestionUsuarios() {
 
       {/* Modal de edición */}
       {showModal && (
-        <div className="gestion-usuarios-modal-overlay" onClick={() => setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="gestion-usuarios-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="gestion-usuarios-modal-header">
               <h4>Editar Usuario</h4>
@@ -482,12 +510,12 @@ export default function GestionUsuarios() {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* Modal de confirmación */}
       {showConfirmModal && (
-        <div className="gestion-usuarios-modal-overlay" onClick={() => setShowConfirmModal(false)}>
+        <Modal onClose={() => setShowConfirmModal(false)}>
           <div className="gestion-usuarios-modal-content gestion-usuarios-modal-confirm" onClick={(e) => e.stopPropagation()}>
             <div className="gestion-usuarios-modal-header">
               <h4>Confirmar acción</h4>
@@ -513,7 +541,35 @@ export default function GestionUsuarios() {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
+      )}
+
+      {/* Modal de notificación */}
+      {showNotificacionModal && (
+        <Modal onClose={() => setShowNotificacionModal(false)}>
+          <div className="gestion-usuarios-modal-content gestion-usuarios-modal-confirm" onClick={(e) => e.stopPropagation()}>
+            <div className="gestion-usuarios-modal-header">
+              <h4>{tipoNotificacion === "success" ? "✅ Operación exitosa" : "❌ Error"}</h4>
+              <button className="gestion-usuarios-close-button" onClick={() => setShowNotificacionModal(false)}>&times;</button>
+            </div>
+            <div className="gestion-usuarios-modal-body">
+              <p style={{ 
+                color: tipoNotificacion === "success" ? "#28a745" : "#dc3545",
+                fontWeight: "500"
+              }}>
+                {mensajeNotificacion}
+              </p>
+            </div>
+            <div className="gestion-usuarios-modal-footer">
+              <button 
+                className={`btn ${tipoNotificacion === "success" ? "btn-success" : "btn-danger"}`}
+                onClick={() => setShowNotificacionModal(false)}
+              >
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );
