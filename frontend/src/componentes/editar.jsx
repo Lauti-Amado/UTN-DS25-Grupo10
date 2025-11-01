@@ -31,60 +31,66 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
 
   // Cuando se cambia el nombre, se hace la llamada a la API con un PUT para actualizar y guardar cambios
   const aceptarCambios = async () => {
-    try {
-      if (!usuarioLogueado?.id || !usuarioLogueado?.token) {
-        throw new Error('Usuario no logueado');
-      }
+  try {
+    const token = localStorage.getItem('token');
+    if (!usuarioLogueado?.id || !token) {
+      throw new Error('Usuario no logueado o token no disponible');
+    }
 
-      const formData = new FormData();
-      formData.append('nombreUsuario', nuevoNombre);
-      formData.append('descripcion', nuevaDescripcion);
-      if (nuevaFechaNac) formData.append('fechaNacimiento', nuevaFechaNac);
-    
-      // Solo si el usuario selecciona un archivo real
-      if (fileInputRef.current?.files[0]) {
-        formData.append('fotoPerfil', fileInputRef.current.files[0]);
-      }
+    const formData = new FormData();
+    formData.append('nombreUsuario', nuevoNombre);
+    formData.append('descripcion', nuevaDescripcion);
+    if (nuevaFechaNac) formData.append('fechaNacimiento', nuevaFechaNac);
 
-      const token =localStorage.getItem('token');
-      console.log('Token de autorización:', token);
-      const response = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+    // ✅ Solo si el usuario subió una imagen nueva
+    if (fileInputRef.current?.files[0]) {
+      formData.append('fotoPerfil', fileInputRef.current.files[0]);
+    }
 
-      if (!response.ok) throw new Error('Error al actualizar el perfil');
+    const response = await fetch(`${API_URL}/usuarios/${usuarioLogueado.id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
-      const datosActualizados = await response.json();
+    if (!response.ok) {
+      const text = await response.text();
+      console.error('Error al actualizar el perfil:', text);
+      throw new Error('Error al actualizar el perfil');
+    }
 
-    // Actualizamos el contexto global
-    setUsuarioLogueado((prev) => ({
+    const json = await response.json();
+    const datos = json.data || json; // según cómo responde tu backend
+
+    // ✅ Actualiza el contexto global
+    setUsuarioLogueado(prev => ({
       ...prev,
-      nombreUsuario: datosActualizados.data.nombreUsuario,
-      descripcion: datosActualizados.data.descripcion,
-      fechaNacimiento: datosActualizados.data.fechaNacimiento,
-      fotoPerfil: datosActualizados.data.fotoPerfil || prev.fotoPerfil,
+      nombreUsuario: datos.nombreUsuario,
+      descripcion: datos.descripcion,
+      fechaNacimiento: datos.fechaNacimiento,
+      fotoPerfil: datos.fotoPerfil || prev.fotoPerfil,
     }));
 
-    // Actualizamos el estado local del perfil
+    // ✅ Llama al manejador del componente padre (Perfil.jsx)
     if (onActualizarPerfil) {
       onActualizarPerfil(
-        datosActualizados.data.fotoPerfil || previewSrc,
-        datosActualizados.data.nombreUsuario,
-        datosActualizados.data.descripcion,
-        datosActualizados.data.fechaNacimiento
+        datos.fotoPerfil || previewSrc,
+        datos.nombreUsuario,
+        datos.descripcion,
+        datos.fechaNacimiento
       );
     }
 
+  
     if (onCerrar) onCerrar();
   } catch (error) {
-    console.error(error);
+    console.error('Error:', error);
     alert('No se pudo actualizar el perfil. Intenta nuevamente.');
   }
 };
+
 
   // Botones y funcionalidades
   return (

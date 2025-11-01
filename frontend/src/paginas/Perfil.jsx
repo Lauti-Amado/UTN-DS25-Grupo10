@@ -30,12 +30,24 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
   const [perfiles, setPerfiles] = useState([]); // PRIMERO declarar perfiles
   const [busquedaPerfil, setBusquedaPerfil] = useState('');
   const [perfilSeleccionado, setPerfilSeleccionado] = useState(null);
+  const [mostrarExitoPerfil, setMostrarExitoPerfil] = useState(false);
+
   
   const { usuarioLogueado } = useContext(DatosContexto);
 
   const editarRef = useRef(null);
   const compartirRef = useRef(null);
   const proyectoRef = useRef(null);
+
+    useEffect(() => {
+    if (usuarioLogueado) {
+      setNombrePerfil(usuarioLogueado.nombreUsuario || 'Nombre Perfil');
+      setDescripcionPerfil(usuarioLogueado.descripcion || '');
+      setImagenPerfil(usuarioLogueado.fotoPerfil || imagen);
+      setNuevafecha(usuarioLogueado.fechaNacimiento || '');
+    }
+  }, [usuarioLogueado]);
+
 
   // DESPUÉS calcular perfilesFiltrados
   const perfilesFiltrados = perfiles.filter(p => 
@@ -123,6 +135,7 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
     if (nuevoNombre) setNombrePerfil(nuevoNombre);
     if (nuevaDescripcion) setDescripcionPerfil(nuevaDescripcion);
     if (nuevaFechaNac) setNuevafecha(nuevaFechaNac);
+    setMostrarExitoPerfil(true);
     setModoEditar(null);
   };
 
@@ -180,7 +193,7 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
             imagen={imagenPerfil}
             nombre={nombrePerfil}
             descripcion={descripcionPerfil}
-            FechaNac={FechaNac}
+            FechaNac={FechaNac ? FechaNac.split('T')[0] : ''}
           />
 
           {usuarioLogueado?.rolPostulante && (
@@ -400,6 +413,40 @@ const [mostrarExitoEliminar, setMostrarExitoEliminar] = useState(false);
     </div>
   </div>
 )}
+{/* Modal éxito perfil actualizado */}
+{mostrarExitoPerfil && (
+  <div
+    className="modal fade show d-block"
+    tabIndex="-1"
+    role="dialog"
+    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+  >
+    <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-content">
+        <div className="modal-header bg-primary text-white">
+          <h5 className="modal-title">¡Perfil actualizado!</h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setMostrarExitoPerfil(false)}
+          ></button>
+        </div>
+        <div className="modal-body">
+          <p>Los cambios en tu perfil se han guardado con éxito.</p>
+        </div>
+        <div className="modal-footer">
+          <button
+            className="btn btn-primary"
+            onClick={() => setMostrarExitoPerfil(false)}
+          >
+            Aceptar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
 
     </div>
   );
