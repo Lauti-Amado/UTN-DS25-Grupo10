@@ -39,6 +39,9 @@ function Acordion() {
 
   const [notificacion, setNotificacion] = useState({ show: false, titulo: '', mensaje: '', tipo: 'success' });
 
+  const [mostrarToast, setMostrarToast] = useState(false);
+  const [mensajeToast, setMensajeToast] = useState('');
+
   const itemsFiltrados = items.filter((item) => {
     const titulo = (item.titulo || '').toLowerCase();
     const descripcion = (item.descripcion || '').toLowerCase();
@@ -239,17 +242,18 @@ function Acordion() {
   const handlePostular = async (item) => {
     setEmpresaSeleccionada(item);
     setModalVisible(true);
+  };
 
-    if (usuarioLogueado?.rolPostulante) {
-      try {
-        const res = await fetch(`${API_URL}/formularios/${usuarioLogueado.id}/${item.id}`);
-        if (!res.ok) throw new Error('Error al verificar postulacion');
-        const data = await res.json();
-        setPostulaciones(prev => ({ ...prev, [item.id]: data.existe }));
-      } catch (err) {
-        console.error(err);
-      }
-    }
+  const handlePostulacionExitosa = (ofertaId) => {
+    setPostulaciones(prev => ({ ...prev, [ofertaId]: true }));
+    
+    setMensajeToast('¡Postulación enviada exitosamente! 🎉');
+    setMostrarToast(true);
+    
+    setTimeout(() => {
+      setMostrarToast(false);
+    }, 3000);  
+    setModalVisible(false);
   };
 
   // Verificar si el usuario puede eliminar la oferta
@@ -614,6 +618,7 @@ function Acordion() {
         show={modalVisible}
         handleClose={() => setModalVisible(false)}
         empresa={empresaSeleccionada}
+        onPostulacionExitosa={handlePostulacionExitosa}
       />
 
       <NotificacionModal
@@ -632,6 +637,22 @@ function Acordion() {
 
       {dataResultado && (
         <VerResultadoContratacion data={dataResultado} />
+      )}
+
+      {mostrarToast && (
+        <div 
+          className="position-fixed top-0 start-50 translate-middle-x mt-3" 
+          style={{ zIndex: 9999 }}
+        >
+          <div className="toast show bg-success text-white" role="alert">
+            <div className="d-flex align-items-center p-3">
+              <i className="bi bi-check-circle-fill fs-4 me-3"></i>
+              <div className="toast-body fw-semibold">
+                {mensajeToast}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

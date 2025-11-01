@@ -3,7 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { API_URL } from '../config';
 import './FormularioPostulacionModal.css';
 
-export default function FormularioPostulacionModal({ show, handleClose, empresa }) {
+export default function FormularioPostulacionModal({ show, handleClose, empresa, onPostulacionExitosa }) {
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -282,7 +282,6 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
       const result = await response.json();
 
       if (result.success) {
-        alert("¡Postulación enviada con éxito! 🎉");
         setFormData({
           nombre: '',
           apellido: '',
@@ -293,7 +292,12 @@ export default function FormularioPostulacionModal({ show, handleClose, empresa 
           archivo: null,
         });
         setBusquedaCiudad('');
-        handleClose();
+        
+        if (onPostulacionExitosa) {
+          onPostulacionExitosa(empresa.id);
+        } else {
+          handleClose();
+        }
       } else {
         alert("Error al enviar el formulario: " + (result.message || ''));
       }
