@@ -959,12 +959,24 @@ button[style*="marginLeft"] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #1a1a1a;
+  background: #ffffff;
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   z-index: 1001;
-  color: #fff;
+  color: black;
+  min-width: 300px;
+  text-align: center;
+}
+
+.confirmModal p {
+  color: #000000;
+  margin-bottom: 1.5rem;
+}
+
+
+.confirmModal button {
+  margin: 0 0.5rem;
 }
 
 /* estilos de la descripción */
@@ -1033,6 +1045,11 @@ button[style*="marginLeft"] {
   font-size: 0.9rem;
   transition: all 0.3s ease;
   background: #f8f9fa;
+  color: black;
+}
+
+.buscadorAside input::placeholder {
+  color: #666; /* Color gris oscuro para el placeholder */
 }
 
 .buscadorAside input:focus {
