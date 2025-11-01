@@ -8,6 +8,7 @@ declare global {
         id: number;
         email: string;
         rolPostulante: boolean;
+        esAdmin: boolean; 
       };
     }
   }
@@ -26,7 +27,8 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     req.user = {
       id: decoded.id,
       email: decoded.email,
-      rolPostulante: decoded.rolPostulante
+      rolPostulante: decoded.rolPostulante,
+      esAdmin: decoded.esAdmin || false 
     };
     
     next();
@@ -46,7 +48,7 @@ export function authorize(...roles: ("ADMIN" | "POSTULANTE" | "EMPLEADOR")[]) {
 
     let roleFromUser: "ADMIN" | "POSTULANTE" | "EMPLEADOR";
 
-    if ((req.user as any).esAdmin) {
+    if (req.user.esAdmin) {
       roleFromUser = "ADMIN";
     } else {
       roleFromUser = req.user.rolPostulante ? "POSTULANTE" : "EMPLEADOR";

@@ -10,7 +10,7 @@ function OfertasCarousel() {
   const [ofertas, setOfertas] = useState([]);
   const [itemsPorSlide, setItemsPorSlide] = useState(3);
   const navigate = useNavigate();
-  const { usuarioLogueado } = useContext(DatosContexto);
+  const { usuarioLogueado, refrescarDatos } = useContext(DatosContexto);
 
   // Cargar ofertas, postulantes o usuarios desactivados según el rol
   useEffect(() => {
@@ -61,7 +61,7 @@ function OfertasCarousel() {
     };
     
     cargarDatos();
-  }, [usuarioLogueado]);
+  }, [usuarioLogueado, refrescarDatos]);
 
   // Ajustar cantidad de items por slide según ancho
   useEffect(() => {

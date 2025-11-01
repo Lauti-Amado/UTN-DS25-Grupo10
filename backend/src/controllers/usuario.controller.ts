@@ -102,6 +102,13 @@ export async function toggleUsuarioActivo(
     const id = parseInt(req.params.id);
     const { activo } = req.body;
 
+    if (isNaN(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "ID de usuario inválido"
+      });
+    }
+
     if (typeof activo !== 'boolean') {
       return res.status(400).json({
         success: false,
@@ -114,7 +121,8 @@ export async function toggleUsuarioActivo(
       success: true,
       message: `Usuario ${activo ? 'activado' : 'desactivado'} exitosamente`
     });
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Error en toggleUsuarioActivo:", error);
     next(error);
   }
 }
