@@ -16,7 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import VerResultadoContratacion from './VerResultadoContratacion.jsx';
 import { HiCursorArrowRays } from "react-icons/hi2";
 
-function Acordion() {
+function Acordion({ ofertaIdInicial, postulanteDestacadoId }) {
   const location = useLocation();
   const s = location.state?.mensaje;
   const { busquedaGlobal, usuarioLogueado } = useContext(DatosContexto);
@@ -512,13 +512,13 @@ function Acordion() {
               <div className="d-flex gap-2 mt-3">
                 {usuarioLogueado?.esAdmin ? (
                   // Vista Admin: solo eliminar
-                    <button
-                      className="btn btn-sm btn-bordo-danger"
-                      onClick={() => confirmarEliminar(item.id)}
-                    >
-                      <i className="bi bi-trash3-fill me-1"></i> Eliminar
-                    </button>
-                  ) : usuarioLogueado?.rolPostulante === false ? (
+                  <button
+                    className="btn btn-sm btn-bordo-danger"
+                    onClick={() => confirmarEliminar(item.id)}
+                  >
+                    <i className="bi bi-trash3-fill me-1"></i> Eliminar
+                  </button>
+                ) : usuarioLogueado?.rolPostulante === false ? (
                   // Vista Empleador: editar, eliminar, ver postulados
                   <>
                     {item.creadorId === usuarioLogueado?.id && (
@@ -541,13 +541,15 @@ function Acordion() {
                       <button
                         className="btn btn-sm btn-bordo-danger"
                         onClick={() => verPostulados(item.id)}
+                        data-action="ver-postulados"
                       >
-                        <i className="bi bi-eye"></i> Ver Postulados
+                        <i className="bi bi-eye me-1"></i> Ver Postulados
                       </button>
                     )}
                   </>
                 ) : (
-                    <>
+                  // Vista Postulante
+                  <>
                     {postulaciones[String(item.id)] ? (
                       <Button variant="success" onClick={() => verResultado(item.id)}>
                         Ver resultado <HiCursorArrowRays />
@@ -557,7 +559,7 @@ function Acordion() {
                         Postularse <IoIosPaper />
                       </Button>
                     )}
-                    </>
+                  </>
                 )}
               </div>
             </Accordion.Body>
@@ -633,6 +635,7 @@ function Acordion() {
         show={mostrarPostulados}
         handleClose={() => setMostrarModalPostulados(false)}
         ofertaId={idOfertaSeleccionada}
+        postulanteDestacadoId={postulanteDestacadoId}
       />
 
       {dataResultado && (
