@@ -307,3 +307,34 @@ export async function resetContrasenaController(
     });
   }
 }
+
+export async function buscarUsuarios(req: Request, res: Response, next: NextFunction) {
+  try {
+    const usuarioId = req.user?.id ?? 0;
+    const { query } = req.query;
+    
+    if (!usuarioId) {
+      return res.status(401).json({
+        success: false,
+        message: "Usuario no autenticado"
+      });
+    }
+
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: "Se requiere un término de búsqueda"
+      });
+    }
+
+    const usuarios = await usuarioService.buscarUsuarios(usuarioId, query);
+    
+    res.json({
+      success: true,
+      data: usuarios
+    });
+  } catch (error) {
+    console.error("Error en buscarUsuarios:", error);
+    next(error);
+  }
+}
