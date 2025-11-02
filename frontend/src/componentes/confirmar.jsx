@@ -11,7 +11,7 @@ function Confirmar({onCancelar, onAceptar}){
 
 return (
     <div className={styles.cuadro}>
-      <div className={styles.Confirmo}>Confirmacion de eliminacion</div>
+      <div className={styles.Confirmo}>Confirmar eliminación</div>
     <div className={styles.texto}><p>¿Estás seguro que querés eliminar esta oferta?</p></div>
     <div className={styles.opciones}>
     <button className="btn btn-secondary" onClick={onCancelar}>Cancelar</button>

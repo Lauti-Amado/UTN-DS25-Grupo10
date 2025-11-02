@@ -407,6 +407,7 @@ function Acordion({ ofertaIdInicial, postulanteDestacadoId }) {
                           type="radio"
                           id="partTime"
                           value="Part-time"
+                      
                           {...register('horario')}
                         />
                         <label className="form-check-label" htmlFor="partTime">
