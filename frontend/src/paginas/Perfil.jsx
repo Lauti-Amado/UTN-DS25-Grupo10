@@ -497,7 +497,7 @@ export default function Perfil() {
         <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
-              <div className="modal-header bg-primary text-white">
+              <div className="modal-header bg-danger text-white">
                 <h5 className="modal-title">¡Listo!</h5>
                 <button type="button" className="btn-close" onClick={() => setMostrarExitoAgregar(false)}></button>
               </div>
@@ -505,7 +505,7 @@ export default function Perfil() {
                 <p>Proyecto agregado con éxito.</p>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-primary" onClick={() => setMostrarExitoAgregar(false)}>Aceptar</button>
+                <button className="btn btn-danger" onClick={() => setMostrarExitoAgregar(false)}>Aceptar</button>
               </div>
             </div>
           </div>
@@ -516,7 +516,7 @@ export default function Perfil() {
         <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
-              <div className="modal-header bg-primary text-white">
+              <div className="modal-header bg-danger text-white">
                 <h5 className="modal-title">¡Listo!</h5>
                 <button type="button" className="btn-close" onClick={() => setMostrarExitoModificar(false)}></button>
               </div>
@@ -524,7 +524,7 @@ export default function Perfil() {
                 <p>Proyecto modificado con éxito.</p>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-primary" onClick={() => setMostrarExitoModificar(false)}>Aceptar</button>
+                <button className="btn btn-danger" onClick={() => setMostrarExitoModificar(false)}>Aceptar</button>
               </div>
             </div>
           </div>
@@ -535,7 +535,7 @@ export default function Perfil() {
         <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
-              <div className="modal-header bg-primary text-white">
+              <div className="modal-header bg-danger text-white">
                 <h5 className="modal-title">¡Listo!</h5>
                 <button type="button" className="btn-close" onClick={() => setMostrarExitoEliminar(false)}></button>
               </div>
@@ -543,7 +543,7 @@ export default function Perfil() {
                 <p>Proyecto eliminado con éxito.</p>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-primary" onClick={() => setMostrarExitoEliminar(false)}>Aceptar</button>
+                <button className="btn btn-danger" onClick={() => setMostrarExitoEliminar(false)}>Aceptar</button>
               </div>
             </div>
           </div>
@@ -554,7 +554,7 @@ export default function Perfil() {
         <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
-              <div className="modal-header bg-primary text-white">
+              <div className="modal-header bg-danger text-white">
                 <h5 className="modal-title">¡Perfil actualizado!</h5>
                 <button type="button" className="btn-close" onClick={() => setMostrarExitoPerfil(false)}></button>
               </div>
@@ -562,7 +562,7 @@ export default function Perfil() {
                 <p>Los cambios en tu perfil se han guardado con éxito.</p>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-primary" onClick={() => setMostrarExitoPerfil(false)}>Aceptar</button>
+                <button className="btn btn-danger" onClick={() => setMostrarExitoPerfil(false)}>Aceptar</button>
               </div>
             </div>
           </div>
