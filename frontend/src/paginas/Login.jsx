@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './Login.module.css';
 import logo from '../assets/Logo-RoDi.png';
 import { BiCog } from "react-icons/bi";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { DatosContexto } from '../datosContext';
 import { setToken } from '../helpers/auth';
 import { loginSchema } from '../validations/loginSchema';
@@ -21,16 +22,18 @@ export default function Login({ onLogin }) {
   const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
   const [mostrarModalUsuarioExistente, setMostrarModalUsuarioExistente] = useState(false);
   const [mostrarModalErroresRegistro, setMostrarModalErroresRegistro] = useState(false);
-
+  const [mostrarPasswordLogin, setMostrarPasswordLogin] = useState(false);
+  const [mostrarPasswordRegistro, setMostrarPasswordRegistro] = useState(false);
+  const [mostrarPasswordNueva, setMostrarPasswordNueva] = useState(false);
+  const [mostrarPasswordConfirmar, setMostrarPasswordConfirmar] = useState(false);
   const { usuarios, setUsuarios, setUsuarioLogueado } = useContext(DatosContexto);
   const [mostrarModalRecuperacionError, setMostrarModalRecuperacionError] = useState(false);
   const [mostrarModalRecuperacion, setMostrarModalRecuperacion] = useState(false);
   const [mostrarModalUsuarioDuplicado, setMostrarModalUsuarioDuplicado] = useState(false);
   const [codigoVerificacion, setCodigoVerificacion] = useState("");
-const [codigoError, setCodigoError] = useState("");
-const [mostrarCambioContrasena, setMostrarCambioContrasena] = useState(false);
-const [emailRecuperar, setEmailRecuperar] = useState("");
-
+  const [codigoError, setCodigoError] = useState("");
+  const [mostrarCambioContrasena, setMostrarCambioContrasena] = useState(false);
+  const [emailRecuperar, setEmailRecuperar] = useState("");
 
   const [mostrarModalConfiguracion, setMostrarModalConfiguracion] = useState(false);
   const [temaOscuro, setTemaOscuro] = useState(false);
@@ -55,17 +58,15 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
     resolver: yupResolver(registroSchema)
   });
 
- const {
-  register: registerCambio,
-  handleSubmit: handleSubmitCambio,
-  watch,
-  formState: { errors: errorsCambio }
-} = useForm({
-  resolver: yupResolver(cambioContrasenaSchema),
-  mode: "onChange" // <- esto permite validación en tiempo real
-});
-
-  
+  const {
+    register: registerCambio,
+    handleSubmit: handleSubmitCambio,
+    watch,
+    formState: { errors: errorsCambio }
+  } = useForm({
+    resolver: yupResolver(cambioContrasenaSchema),
+    mode: "onChange"
+  });
 
   // Iniciar sesion con Yup
   const onSubmitLogin = async (data) => {
@@ -79,7 +80,6 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
 
       const responseData = await res.json();
       
-      // VERIFICAR SI EL USUARIO ESTÁ DESACTIVADO
       if (!res.ok) {
         if (responseData.message === "USUARIO_DESACTIVADO") {
           setMostrarModalUsuarioDesactivado(true);
@@ -89,7 +89,6 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
         return;
       }
 
-      // Login exitoso
       if (res.ok) {
         setToken(responseData.token);
         setUsuarioLogueado({
@@ -178,34 +177,34 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
   }
 
   async function verificarCodigo() {
-  const codigo = inputsRef.current.map((input) => input.value).join("");
-  setCodigoVerificacion(codigo);
-  setCodigoError("");
+    const codigo = inputsRef.current.map((input) => input.value).join("");
+    setCodigoVerificacion(codigo);
+    setCodigoError("");
 
-  if (codigo.length !== 6) {
-    setCodigoError("El código debe tener 6 dígitos");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API_URL}/usuarios/verificar-codigo`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mail: emailRecuperar, codigo }),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      setMostrarCambioContrasena(true); // ✅ habilita la vista de cambio de contraseña
-    } else {
-      setCodigoError(data.message || "Código inválido o expirado");
+    if (codigo.length !== 6) {
+      setCodigoError("El código debe tener 6 dígitos");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    setCodigoError("Error al verificar el código");
+
+    try {
+      const res = await fetch(`${API_URL}/usuarios/verificar-codigo`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mail: emailRecuperar, codigo }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMostrarCambioContrasena(true);
+      } else {
+        setCodigoError(data.message || "Código inválido o expirado");
+      }
+    } catch (err) {
+      console.error(err);
+      setCodigoError("Error al verificar el código");
+    }
   }
-}
 
   return (
     <div className={`${styles.loginPageWrapper} ${temaOscuro ? styles.temaOscuro : ''}`}>
@@ -235,13 +234,22 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
                   )}
 
                   <label htmlFor="contraseña">Contraseña</label>
-                  <input
-                    type="password"
-                    id="contraseña"
-                    placeholder="********"
-                    {...registerLogin("password")}
-                    className={errorsLogin.password ? styles.inputError : ''}
-                  />
+                  <div className={styles.passwordWrapper}>
+                    <input
+                      type={mostrarPasswordLogin ? "text" : "password"}
+                      id="contraseña"
+                      placeholder="********"
+                      {...registerLogin("password")}
+                      className={errorsLogin.password ? styles.inputError : ''}
+                    />
+                    <button
+                      type="button"
+                      className={styles.eyeButton}
+                      onClick={() => setMostrarPasswordLogin(!mostrarPasswordLogin)}
+                    >
+                      {mostrarPasswordLogin ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                    </button>
+                  </div>
                   {errorsLogin.password && (
                     <span className={styles.error}>{errorsLogin.password.message}</span>
                   )}
@@ -295,13 +303,22 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
                 )}
 
                 <label htmlFor="contraseña">Contraseña</label>
-                <input
-                  type="password"
-                  id="contraseña"
-                  placeholder="********"
-                  {...registerRegistro("contraseña")}
-                  className={errorsRegistro.contraseña ? styles.inputError : ''}
-                />
+                <div className={styles.passwordWrapper}>
+                  <input
+                    type={mostrarPasswordRegistro ? "text" : "password"}
+                    id="contraseña"
+                    placeholder="********"
+                    {...registerRegistro("contraseña")}
+                    className={errorsRegistro.contraseña ? styles.inputError : ''}
+                  />
+                  <button
+                    type="button"
+                    className={styles.eyeButton}
+                    onClick={() => setMostrarPasswordRegistro(!mostrarPasswordRegistro)}
+                  >
+                    {mostrarPasswordRegistro ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                  </button>
+                </div>
                 {errorsRegistro.contraseña && (
                   <span className={styles.error}>{errorsRegistro.contraseña.message}</span>
                 )}
@@ -342,7 +359,7 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
                 setEmailRecuperar(emailRecuperar); 
 
                 try {
-                    const res = await fetch(`${API_URL}/usuarios/recuperar`, {
+                  const res = await fetch(`${API_URL}/usuarios/recuperar`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ mail: emailRecuperar })
@@ -351,10 +368,10 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
                   const data = await res.json();
 
                   if (res.ok) {
-                    setMostrarModalRecuperacion(true); // Modal éxito
+                    setMostrarModalRecuperacion(true);
                     setTimeout(() => setVista('login'), 2000);
                   } else {
-                    setMostrarModalRecuperacionError(true); // Modal error
+                    setMostrarModalRecuperacionError(true);
                   }
                 } catch (err) {
                   console.error(err);
@@ -462,102 +479,118 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
                     }}></button>
                   </div>
                   <div className="modal-body">
-                    
                     <p>Se ha enviado un correo con los pasos para recuperar tu contraseña.</p>
                     <div className={styles.container}>
-                <h2>Ingresá tu código de 6 dígitos</h2>
-                {renderCodeInputs()}
-                {codigoError && <p className={styles.error}>{codigoError}</p>}
-                <button
-                type="button"
-                className={styles.submit}
-                onClick={verificarCodigo}
-                  >
-                Verificar código
-               </button>
-               </div>
-               </div>
-                  
+                      <h2>Ingresá tu código de 6 dígitos</h2>
+                      {renderCodeInputs()}
+                      {codigoError && <p className={styles.error}>{codigoError}</p>}
+                      <button
+                        type="button"
+                        className={styles.submit}
+                        onClick={verificarCodigo}
+                      >
+                        Verificar código
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          
-        {mostrarCambioContrasena && (
-          <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-            <div className="modal-dialog modal-dialog-centered" role="document">
-              <div className="modal-content">
-                <div className="modal-header bg-primary text-white">
-                  <h5 className="modal-title">Cambiar contraseña</h5>
-                  <button type="button" className="btn-close" onClick={() => setMostrarCambioContrasena(false)}></button>
-                </div>
-                <div className="modal-body">
-                  <form
-                    onSubmit={handleSubmitCambio(async (data) => {
-                      const token = codigoVerificacion;
+          {mostrarCambioContrasena && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+              <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-content">
+                  <div className="modal-header bg-primary text-white">
+                    <h5 className="modal-title">Cambiar contraseña</h5>
+                    <button type="button" className="btn-close" onClick={() => setMostrarCambioContrasena(false)}></button>
+                  </div>
+                  <div className="modal-body">
+                    <form
+                      onSubmit={handleSubmitCambio(async (data) => {
+                        const token = codigoVerificacion;
 
-                      try {
-                        const res = await fetch(`${API_URL}/usuarios/reset-password`, {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ 
-                            token, 
-                            nuevaContrasena: data.nueva 
-                          }),
-                        });
+                        try {
+                          const res = await fetch(`${API_URL}/usuarios/reset-password`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ 
+                              token, 
+                              nuevaContrasena: data.nueva 
+                            }),
+                          });
 
-                        const responseData = await res.json();
+                          const responseData = await res.json();
 
-                        if (res.ok) {
-                          setMostrarCambioContrasena(false);
-                          setMostrarModalCambioExitoso(true);
-                        } else {
-                          setCodigoError(responseData.message || "Error al cambiar la contraseña");
+                          if (res.ok) {
+                            setMostrarCambioContrasena(false);
+                            setMostrarModalCambioExitoso(true);
+                          } else {
+                            setCodigoError(responseData.message || "Error al cambiar la contraseña");
+                          }
+                        } catch (err) {
+                          console.error(err);
+                          setCodigoError("Error al comunicarse con el servidor");
                         }
-                      } catch (err) {
-                        console.error(err);
-                        setCodigoError("Error al comunicarse con el servidor");
-                      }
-                    })}
-                  >
-                    <div className={styles.datos}>
-                      <label htmlFor="nueva">Nueva contraseña</label>
-                      <input
-                        type="password"
-                        id="nueva"
-                        placeholder="********"
-                        {...registerCambio("nueva")}
-                        className={errorsCambio.nueva ? styles.inputError : ''}
-                      />
-                      {errorsCambio.nueva && (
-                        <span className={styles.error}>{errorsCambio.nueva.message}</span>
-                      )}
+                      })}
+                    >
+                      <div className={styles.datos}>
+                        <label htmlFor="nueva">Nueva contraseña</label>
+                        <div className={styles.passwordWrapper}>
+                          <input
+                            type={mostrarPasswordNueva ? "text" : "password"}
+                            id="nueva"
+                            placeholder="********"
+                            {...registerCambio("nueva")}
+                            className={errorsCambio.nueva ? styles.inputError : ''}
+                          />
+                          <button
+                            type="button"
+                            className={styles.eyeButton}
+                            onClick={() => setMostrarPasswordNueva(!mostrarPasswordNueva)}
+                          >
+                            {mostrarPasswordNueva ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                          </button>
+                        </div>
+                        {errorsCambio.nueva && (
+                          <span className={styles.error}>{errorsCambio.nueva.message}</span>
+                        )}
 
-                      <label htmlFor="confirmar">Confirmar contraseña</label>
-                      <input
-                        type="password"
-                        id="confirmar"
-                        placeholder="********"
-                        {...registerCambio("confirmar")}
-                        className={errorsCambio.confirmar ? styles.inputError : ''}
-                      />
-                      {errorsCambio.confirmar && (
-                        <span className={styles.error}>{errorsCambio.confirmar.message}</span>
-                      )}
+                        <label htmlFor="confirmar">Confirmar contraseña</label>
+                        <div className={styles.passwordWrapper}>
+                          <input
+                            type={mostrarPasswordConfirmar ? "text" : "password"}
+                            id="confirmar"
+                            placeholder="********"
+                            {...registerCambio("confirmar")}
+                            className={errorsCambio.confirmar ? styles.inputError : ''}
+                          />
+                          <button
+                            type="button"
+                            className={styles.eyeButton}
+                            onClick={() => setMostrarPasswordConfirmar(!mostrarPasswordConfirmar)}
+                          >
+                            {mostrarPasswordConfirmar ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                          </button>
+                        </div>
+                        {errorsCambio.confirmar && (
+                          <span className={styles.error}>{errorsCambio.confirmar.message}</span>
+                        )}
 
-                      {codigoError && <span className={styles.error}>{codigoError}</span>}
+                        {codigoError && <span className={styles.error}>{codigoError}</span>}
 
-                      <button type="submit" className={styles.submit}>
-                        Guardar cambios
-                      </button>
-                    </div>
-                  </form>
+                        <button type="submit" className={styles.submit}>
+                          Guardar cambios
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
           {mostrarModalRecuperacionError && (
             <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
               <div className="modal-dialog modal-dialog-centered" role="document">
@@ -693,6 +726,6 @@ const [emailRecuperar, setEmailRecuperar] = useState("");
           </div>
         </div>
       )}
-  </div>
+    </div>
   );
 }
