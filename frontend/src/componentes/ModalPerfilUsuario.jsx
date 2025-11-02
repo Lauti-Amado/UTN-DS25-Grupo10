@@ -1,4 +1,3 @@
-// componentes/ModalPerfilUsuario.jsx
 import React from 'react';
 import styles from '../paginas/perfil.module.css';
 import perfilDefault from '../assets/perfilx.png';

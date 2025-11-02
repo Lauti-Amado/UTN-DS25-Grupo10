@@ -42,7 +42,6 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
     formData.append('descripcion', nuevaDescripcion);
     if (nuevaFechaNac) formData.append('fechaNacimiento', nuevaFechaNac);
 
-    // ✅ Solo si el usuario subió una imagen nueva
     if (fileInputRef.current?.files[0]) {
       formData.append('fotoPerfil', fileInputRef.current.files[0]);
     }
@@ -56,41 +55,41 @@ function Editar({ onCerrar, onActualizarPerfil, nombre, descripcion, FechaNac, i
     });
 
     if (!response.ok) {
-      const text = await response.text();
-      console.error('Error al actualizar el perfil:', text);
-      throw new Error('Error al actualizar el perfil');
+      const errorData = await response.json();
+      console.error('Error al actualizar el perfil:', errorData);
+      throw new Error(errorData.message || 'Error al actualizar el perfil');
     }
 
     const json = await response.json();
-    const datos = json.data || json; // según cómo responde tu backend
+    const datos = json.data;
 
-    // ✅ Actualiza el contexto global
+    const rutaImagenCompleta = datos.fotoPerfil 
+      ? `${API_URL}${datos.fotoPerfil}` 
+      : usuarioLogueado.fotoPerfil;
+
     setUsuarioLogueado(prev => ({
       ...prev,
       nombreUsuario: datos.nombreUsuario,
       descripcion: datos.descripcion,
       fechaNacimiento: datos.fechaNacimiento,
-      fotoPerfil: datos.fotoPerfil || prev.fotoPerfil,
+      fotoPerfil: rutaImagenCompleta,
     }));
 
-    // ✅ Llama al manejador del componente padre (Perfil.jsx)
     if (onActualizarPerfil) {
       onActualizarPerfil(
-        datos.fotoPerfil || previewSrc,
+        rutaImagenCompleta,
         datos.nombreUsuario,
         datos.descripcion,
         datos.fechaNacimiento
       );
     }
 
-  
     if (onCerrar) onCerrar();
   } catch (error) {
     console.error('Error:', error);
-    alert('No se pudo actualizar el perfil. Intenta nuevamente.');
+    alert(`No se pudo actualizar el perfil: ${error.message}`);
   }
 };
-
 
   // Botones y funcionalidades
   return (

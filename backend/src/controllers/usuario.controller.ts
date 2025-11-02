@@ -77,21 +77,28 @@ export async function updateUsuario(
   try {
     const id = parseInt(req.params.id);
 
-    if (req.file){
-      req.body.fotoPerfil = `/uploads/${req.file.filename}`;
+    if (req.file) {
+      req.body.fotoPerfil = req.file.filename;
     }
 
     const updatedUsuario = await usuarioService.updateUsuario(id, req.body);
+    
+    const usuarioConRutaCompleta = {
+      ...updatedUsuario,
+      fotoPerfil: updatedUsuario.fotoPerfil 
+        ? `/uploads/${updatedUsuario.fotoPerfil}` 
+        : null
+    };
+
     res.json({ 
-      success:true,
+      success: true,
       message: 'Usuario actualizado exitosamente',
-      data: updatedUsuario
+      data: usuarioConRutaCompleta
     });
   } catch (error) {
     next(error);
   }
 }
-
 // Activar/desactivar usuario
 export async function toggleUsuarioActivo(
   req: Request,

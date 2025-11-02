@@ -76,7 +76,10 @@ export async function getUsuarioById(id: number) {
     throw error;
   }
 
-  return usuario;
+  return {
+    ...usuario,
+    fotoPerfil: usuario.fotoPerfil ? `/uploads/${usuario.fotoPerfil}` : null
+  };
 }
 
 export async function createUsuario(data: CreateUsuarioRequest) {
