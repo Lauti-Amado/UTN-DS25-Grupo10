@@ -3,12 +3,16 @@ import styles from "../paginas/perfil.module.css";
 import ModalPerfil from './ModalPerfil';
 import perfilDefault from "../assets/perfilx.png";
 
-function Sugerencias({ id, nombre, imagen, descripcion, rolPostulante }) {
+function Sugerencias({ id, nombre, imagen, descripcion, rolPostulante, onVerPerfil }) {
   const [mostrarModal, setMostrarModal] = useState(false);
 
   const abrirPerfil = () => {
     console.log("Abriendo perfil para usuario:", id, nombre);
-    setMostrarModal(true);
+    if (onVerPerfil) {
+      onVerPerfil();
+    } else {
+      setMostrarModal(true);
+    }
   };
 
   const cerrarModal = () => {
@@ -69,7 +73,7 @@ function Sugerencias({ id, nombre, imagen, descripcion, rolPostulante }) {
         </div>
       </div>
 
-      {mostrarModal && (
+      {!onVerPerfil && mostrarModal && (
         <ModalPerfil
           usuarioId={id}
           onCerrar={cerrarModal}

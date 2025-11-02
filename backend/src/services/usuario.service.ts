@@ -76,7 +76,10 @@ export async function getUsuarioById(id: number) {
     throw error;
   }
 
-  return usuario;
+  return {
+    ...usuario,
+    fotoPerfil: usuario.fotoPerfil ? `/uploads/${usuario.fotoPerfil}` : null
+  };
 }
 
 export async function createUsuario(data: CreateUsuarioRequest) {
@@ -370,6 +373,55 @@ export async function verificarCodigo(email: string, codigo: string) {
   }
 
   return { message: "Código verificado correctamente" };
+}
+
+export async function buscarUsuarios(usuarioId: number, query: string) {
+  try {
+    const searchTerm = query.toLowerCase().trim();
+    
+    if (searchTerm.length < 2) {
+      return [];
+    }
+
+    const usuarios = await prisma.usuario.findMany({
+      where: {
+        id: { not: usuarioId },
+        activo: true,
+        OR: [
+          {
+            nombreUsuario: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          },
+          {
+            nombre: {
+              contains: searchTerm,
+              mode: 'insensitive'
+            }
+          }
+        ]
+      },
+      select: {
+        id: true,
+        nombre: true,
+        nombreUsuario: true,
+        mail: true,
+        rolPostulante: true,
+        fotoPerfil: true,
+        descripcion: true,
+      },
+      orderBy: {
+        nombreUsuario: 'asc'
+      },
+      take: 6 
+    });
+
+    return usuarios;
+  } catch (error) {
+    console.error("Error en buscarUsuarios:", error);
+    throw error;
+  }
 }
 
 export async function resetContrasena(token: string, nuevaContrasena: string) {

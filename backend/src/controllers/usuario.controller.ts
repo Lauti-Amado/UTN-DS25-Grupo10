@@ -77,21 +77,28 @@ export async function updateUsuario(
   try {
     const id = parseInt(req.params.id);
 
-    if (req.file){
-      req.body.fotoPerfil = `/uploads/${req.file.filename}`;
+    if (req.file) {
+      req.body.fotoPerfil = req.file.filename;
     }
 
     const updatedUsuario = await usuarioService.updateUsuario(id, req.body);
+    
+    const usuarioConRutaCompleta = {
+      ...updatedUsuario,
+      fotoPerfil: updatedUsuario.fotoPerfil 
+        ? `/uploads/${updatedUsuario.fotoPerfil}` 
+        : null
+    };
+
     res.json({ 
-      success:true,
+      success: true,
       message: 'Usuario actualizado exitosamente',
-      data: updatedUsuario
+      data: usuarioConRutaCompleta
     });
   } catch (error) {
     next(error);
   }
 }
-
 // Activar/desactivar usuario
 export async function toggleUsuarioActivo(
   req: Request,
@@ -298,5 +305,36 @@ export async function resetContrasenaController(
       success: false,
       message: error.message || "Error al restablecer la contraseña",
     });
+  }
+}
+
+export async function buscarUsuarios(req: Request, res: Response, next: NextFunction) {
+  try {
+    const usuarioId = req.user?.id ?? 0;
+    const { query } = req.query;
+    
+    if (!usuarioId) {
+      return res.status(401).json({
+        success: false,
+        message: "Usuario no autenticado"
+      });
+    }
+
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: "Se requiere un término de búsqueda"
+      });
+    }
+
+    const usuarios = await usuarioService.buscarUsuarios(usuarioId, query);
+    
+    res.json({
+      success: true,
+      data: usuarios
+    });
+  } catch (error) {
+    console.error("Error en buscarUsuarios:", error);
+    next(error);
   }
 }

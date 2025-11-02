@@ -11,6 +11,8 @@ const router = Router();
 router.post("/login", usuarioController.loginUsuarioController);
 router.post("/", validate(createUsuarioSchema), usuarioController.createUsuario);
 
+router.get("/buscar", authenticate, usuarioController.buscarUsuarios);
+
 router.get("/sugeridos", authenticate, usuarioController.getUsuariosSugeridos);
 router.get("/particulares/p", authenticate, authorize("ADMIN"), usuarioController.getAllUsuariosPostulantes);
 router.get("/particulares/e", authenticate, authorize("ADMIN"), usuarioController.getAllUsuariosEmpleadores);

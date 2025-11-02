@@ -5,10 +5,18 @@ import { DatosContexto } from '../datosContext.jsx';
 function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, FechaNac }) {
   const { usuarioLogueado } = useContext(DatosContexto);
 
+  const rutaImagen = imagen?.startsWith('http') 
+    ? imagen 
+    : `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}${imagen}`;
+
   return (
     <section className={styles.seccionPerfil}>
       <div className={styles.perfilLayout}>
-        <img src={imagen} alt="foto de perfil" className={styles.imagenPerfil} />
+        <img src={rutaImagen} alt="foto de perfil" className={styles.imagenPerfil}
+        onError={(e) => {
+          e.target.src = imagenDefault;
+        }} 
+      />
 
         <div className={styles.infoPerfil}>
           <h3 className={styles.nombrePerfil}>{nombre}</h3>
