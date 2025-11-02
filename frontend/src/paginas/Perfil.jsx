@@ -273,6 +273,7 @@ export default function Perfil() {
             nombre={nombrePerfil}
             descripcion={descripcionPerfil}
             FechaNac={FechaNac ? FechaNac.split('T')[0] : ''}
+            mail={usuarioLogueado?.mail || 'No registrado'}
           />
 
           {usuarioLogueado?.rolPostulante && (

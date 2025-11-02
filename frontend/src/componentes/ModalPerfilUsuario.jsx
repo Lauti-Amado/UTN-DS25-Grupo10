@@ -28,11 +28,6 @@ function ModalPerfilUsuario({ usuario, proyectos = [], onCerrar }) {
           </h2>
         </div>
 
-        {/* Descripción */}
-        <div className={styles.descripcionDestacada}>
-          <h4>Sobre mí</h4>
-          <p>{usuario.descripcion || 'Sin descripción disponible'}</p>
-        </div>
 
         {/* Fecha de nacimiento */}
         {usuario.fechaNacimiento && (
@@ -41,36 +36,50 @@ function ModalPerfilUsuario({ usuario, proyectos = [], onCerrar }) {
           </div>
         )}
 
+
+       <div className={styles.descripcionDestacada}>
+           <p><strong>📅 Contacto:</strong> {usuario.mail}</p>
+        </div>
+
+        {/* Descripción */}
+        <div className={styles.descripcionDestacada}>
+          <h4>Sobre mí</h4>
+          <p>{usuario.descripcion || 'Sin descripción disponible'}</p>
+        </div>
+
         {/* Sección de Proyectos - Estilo igual al perfil principal */}
-        <div className="mt-4">
-          <h4 className={styles.tituloSeccion}>Proyectos</h4>
-          {proyectos.length === 0 ? (
-            <div className={styles.mensajeVacio} style={{ padding: '1rem 0' }}>
-              <div className={styles.icono}>📂</div>
-              <p>Este usuario aún no ha publicado proyectos.</p>
-            </div>
-          ) : (
-            <div className="row">
-              {proyectos.map((proyecto) => (
-                <div className="col-12 mb-3" key={proyecto.id}>
-                  <div className={styles.tarjetaProyecto}>
-                    <h5 className={styles.tituloProyecto}>{proyecto.nombre}</h5>
-                    <p className={styles.descripcionProyecto}>{proyecto.descripcion}</p>
-                    <div className={styles.tecnologiasProyecto}>
-                      {proyecto.tecnologiasUsadas
-                        .split(',')
-                        .map((tec, i) => (
-                          <span key={i} className={styles.tecnologiaChip}>
-                            {tec.trim()}
-                          </span>
-                        ))}
+       {usuario.rolPostulante && (
+          <div className="mt-4">
+            <h4 className={styles.tituloSeccion}>Proyectos</h4>
+
+            {proyectos.length === 0 ? (
+              <div className={styles.mensajeVacio} style={{ padding: '1rem 0' }}>
+                <div className={styles.icono}>📂</div>
+                <p>Este usuario aún no ha publicado proyectos.</p>
+              </div>
+            ) : (
+              <div className="row">
+                {proyectos.map((proyecto) => (
+                  <div className="col-12 mb-3" key={proyecto.id}>
+                    <div className={styles.tarjetaProyecto}>
+                      <h5 className={styles.tituloProyecto}>{proyecto.nombre}</h5>
+                      <p className={styles.descripcionProyecto}>{proyecto.descripcion}</p>
+                      <div className={styles.tecnologiasProyecto}>
+                        {proyecto.tecnologiasUsadas
+                          .split(',')
+                          .map((tec, i) => (
+                            <span key={i} className={styles.tecnologiaChip}>
+                              {tec.trim()}
+                            </span>
+                          ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </>
   );
