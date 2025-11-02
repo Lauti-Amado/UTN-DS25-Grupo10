@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { DatosContexto } from '../datosContext.jsx';
 
 
-function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, FechaNac }) {
+function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, FechaNac, mail }) {
   const { usuarioLogueado } = useContext(DatosContexto);
 
   const rutaImagen = imagen?.startsWith('http') 
@@ -28,6 +28,14 @@ function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, Fecha
             <p>
               <strong>📅 Fecha de Nacimiento:</strong>{' '}
               {FechaNac || <span style={{ color: '#999', fontStyle: 'italic' }}>No especificada</span>}
+            </p>
+
+           
+          </div>
+
+             <div className={styles.infoBasica}>
+             <p>
+            <strong>✉️ Contacto:</strong> {mail}
             </p>
           </div>
 
