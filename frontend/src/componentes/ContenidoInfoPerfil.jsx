@@ -2,6 +2,7 @@ import styles from '../paginas/perfil.module.css';
 import React, { useContext } from 'react';
 import { DatosContexto } from '../datosContext.jsx';
 
+
 function ContenidoInfoPerfil({ onEditarClick, imagen, nombre, descripcion, FechaNac }) {
   const { usuarioLogueado } = useContext(DatosContexto);
 
