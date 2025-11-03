@@ -343,6 +343,7 @@ export default function Perfil() {
           }}>
             <h2>Perfiles Recomendados</h2>
             <button
+              type="button"
               onClick={refrescarSugeridos}
               disabled={cargandoSugeridos}
               style={{
