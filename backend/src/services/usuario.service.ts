@@ -3,10 +3,34 @@ import bcrypt from "bcrypt";
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
 import { CreateUsuarioRequest, UpdateUsuarioRequest } from "../types/usuarios.types";
 import crypto from "crypto";
-import { Resend } from "resend";
+import * as brevo from '@getbrevo/brevo';
 
-const resend = new Resend(process.env.RESEND_API_KEY); 
+const apiInstance = new brevo.TransactionalEmailsApi();
+apiInstance.setApiKey(
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY || ''
+);
 
+// Función auxiliar para enviar emails con Brevo
+async function enviarEmailBrevo(to: string, subject: string, htmlContent: string) {
+  const sendSmtpEmail = new brevo.SendSmtpEmail();
+  
+  sendSmtpEmail.subject = subject;
+  sendSmtpEmail.htmlContent = htmlContent;
+  sendSmtpEmail.sender = {
+    name: process.env.BREVO_SENDER_NAME || "RoDi",
+    email: process.env.BREVO_SENDER_EMAIL || "noreply@tudominio.com"
+  };
+  sendSmtpEmail.to = [{ email: to }];
+
+  try {
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log(`✅ Email enviado a ${to}`);
+  } catch (error) {
+    console.error('❌ Error enviando email:', error);
+    throw error;
+  }
+}
 export async function getAllUsuarios() {
   return await prisma.usuario.findMany({
     orderBy: { id: "asc" },
@@ -108,15 +132,14 @@ export async function createUsuario(data: CreateUsuarioRequest) {
       }
     });
 
-    await resend.emails.send({
-      from: "noreply@resend.dev",
-      to: usuario.mail,
-      subject: "¡Bienvenido a RoDi!",
-      html: `<p>Hola <strong>${usuario.nombre}</strong>,</p>
-             <p>Gracias por registrarte en RoDi. ¡Tu cuenta ya está activa!</p>
-             <p>Ya puedes iniciar sesión y comenzar a usar la plataforma.</p>
-             <p>El equipo de RoDi</p>`
-    });
+    await enviarEmailBrevo(
+      usuario.mail,
+      "¡Bienvenido a RoDi!",
+      `<p>Hola <strong>${usuario.nombre}</strong>,</p>
+       <p>Gracias por registrarte en RoDi. ¡Tu cuenta ya está activa!</p>
+       <p>Ya puedes iniciar sesión y comenzar a usar la plataforma.</p>
+       <p>El equipo de RoDi</p>`
+    );
 
     return usuario;
   } catch (error: any) {
@@ -274,7 +297,6 @@ export async function loginUsuario(email: string, contraseña: string) {
     throw error;
   }
 
-  // VERIFICAR SI EL USUARIO ESTÁ DESACTIVADO ANTES DE VALIDAR CONTRASEÑA
   if (!usuario.activo) {
     const error = new Error("USUARIO_DESACTIVADO") as any;
     error.statusCode = 403;
@@ -288,16 +310,14 @@ export async function loginUsuario(email: string, contraseña: string) {
     throw error;
   }
 
-  // Enviar email de notificación de login
-  await resend.emails.send({
-    from: "noreply@resend.dev",
-    to: usuario.mail,
-    subject: "Inicio de sesión en RoDi",
-    html: `<p>Hola <strong>${usuario.nombre}</strong>,</p>
-           <p>Se ha iniciado sesión en tu cuenta de RoDi.</p>
-           <p>Si no fuiste tú, por favor cambia tu contraseña inmediatamente.</p>
-           <p>— Equipo de RoDi</p>`
-  });
+  await enviarEmailBrevo(
+    usuario.mail,
+    "Inicio de sesión en RoDi",
+    `<p>Hola <strong>${usuario.nombre}</strong>,</p>
+     <p>Se ha iniciado sesión en tu cuenta de RoDi.</p>
+     <p>Si no fuiste tú, por favor cambia tu contraseña inmediatamente.</p>
+     <p>— Equipo de RoDi</p>`
+  );
 
   const secret: Secret = process.env.JWT_SECRET || "default_secret";
 
@@ -335,12 +355,21 @@ export async function recuperarContrasena(email: string) {
     },
   });
 
-  await resend.emails.send({
-    from: "noreply@resend.dev",
-    to: email,
-    subject: "Recuperación de contraseña",
-    html: `<p>Por favor, ingresá el número <b>${codigoValidador}</b> para poder modificar tu contraseña</p>`,
-  });
+  await enviarEmailBrevo(
+    email,
+    "Recuperación de contraseña - RoDi",
+    `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #333;">Recuperación de contraseña</h2>
+      <p>Hola <strong>${usuario.nombre}</strong>,</p>
+      <p>Por favor, ingresá el siguiente código de 6 dígitos para poder modificar tu contraseña:</p>
+      <div style="background-color: #f4f4f4; padding: 20px; text-align: center; border-radius: 5px; margin: 20px 0;">
+        <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #007bff;">${codigoValidador}</span>
+      </div>
+      <p style="color: #666;">Este código expirará en 1 hora.</p>
+      <p>Si no solicitaste este cambio, por favor ignora este correo.</p>
+      <p>— Equipo de RoDi</p>
+    </div>`
+  );
 
   return { message: "Correo de recuperación enviado" };
 }
