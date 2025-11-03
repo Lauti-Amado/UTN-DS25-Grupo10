@@ -62,7 +62,7 @@ function Sugerencias({ id, nombre, imagen, descripcion, rolPostulante, onVerPerf
             Ver perfil
           </button>
           <img 
-            className={styles.imagenPerfil} 
+            className={styles.imagenPerfilSugerido} 
             src={imagenSrc} 
             alt="imgperfil"
             onError={(e) => {

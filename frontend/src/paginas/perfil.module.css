@@ -78,6 +78,10 @@
   transform: translateY(-2px);
 }
 
+.modal-header .bg-primary {
+  background: linear-gradient(135deg, #dc2626, #b91c1c)!important;
+}
+
 /* Botón de cerrar */
 .btn-close {
   opacity: 0.8;
@@ -395,8 +399,8 @@ button:hover {
 /* IMAGEN DE PERFIL */
 .imagenPerfil {
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   margin-top: 1rem;
   object-fit: cover;
   border: 4px solid #dc2626;
@@ -423,14 +427,25 @@ button:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
+.imagenPerfilSugerido {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-top: 1rem;
+  object-fit: cover;
+  border: 4px solid #dc2626;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
+  margin-bottom: 1rem;
+  display: block;
+  margin: 0 auto;
+}
 
-
-.imagenperfil:hover {
+.imagenPerfilSugerido:hover {
     transform: scale(1.05);
     border-color: #ea580c;
     box-shadow: 
-        0 0 0 4px rgba(234, 88, 12, 0.3),
-        0 15px 40px rgba(0, 0, 0, 0.6);
+        0 0 0 2px rgba(234, 88, 12, 0.3),
+        0 6px 20px rgba(0, 0, 0, 0.6);
 }
 
 
@@ -469,8 +484,8 @@ button:hover {
     padding: 1.5rem;
     width: 100%;
     border-radius: 16px;
-    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
-    border: 1px solid rgba(220, 38, 38, 0.2);
+    background: #fff;
+    border: 1px solid rgba(81, 81, 81, 0.2);
     margin-bottom: 1rem;
     position: relative;
     color: #ffffff;
@@ -483,7 +498,6 @@ button:hover {
     border-color: #dc2626;
     transform: translateY(-2px); 
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
 }
 
 .unperfil h2 {
@@ -502,7 +516,7 @@ button:hover {
 }
 
 .btnVerForm {
-    background: linear-gradient(135deg, #ea580c, #dc2626);
+    background: linear-gradient(135deg, #f01b08, #dc2626);
     color: #ffffff;
     border: none;
     padding: 0.6rem 1rem;
@@ -932,6 +946,10 @@ button[style*="marginLeft"] {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  flex: 0 0 320px;
+  width: 320px;
+  max-width: 36%;
+  box-sizing: border-box;
 }
 
 .asideSugerencias h2 {
