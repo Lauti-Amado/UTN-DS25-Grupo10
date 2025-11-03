@@ -214,8 +214,51 @@ export async function toggleUsuarioActivo(id: number, activo: boolean): Promise<
 
 export async function deleteUsuario(id: number): Promise<void> {
   try {
-    await prisma.usuario.delete({ where: { id } });
+    // 1. Primero obtenemos los IDs de las ofertas creadas por el usuario
+    const ofertasDelUsuario = await prisma.oferta.findMany({
+      where: { creadorId: id },
+      select: { id: true }
+    });
+
+    const ofertaIds = ofertasDelUsuario.map(o => o.id);
+
+    // 2. Eliminamos todos los formularios relacionados con esas ofertas
+    if (ofertaIds.length > 0) {
+      await prisma.formulario.deleteMany({
+        where: {
+          ofertaId: { in: ofertaIds }
+        }
+      });
+      console.log(`✅ Eliminados formularios de ${ofertaIds.length} ofertas`);
+    }
+
+    // 3. Eliminamos los formularios donde este usuario es el postulado
+    await prisma.formulario.deleteMany({
+      where: { postuladoId: id }
+    });
+    console.log(`✅ Eliminadas postulaciones del usuario`);
+
+    // 4. Eliminamos las ofertas creadas por el usuario
+    await prisma.oferta.deleteMany({
+      where: { creadorId: id }
+    });
+    console.log(`✅ Eliminadas ${ofertaIds.length} ofertas del usuario`);
+
+    // 5. Eliminamos los proyectos creados por el usuario
+    const proyectosEliminados = await prisma.proyecto.deleteMany({
+      where: { creadorId: id }
+    });
+    console.log(`✅ Eliminados ${proyectosEliminados.count} proyectos del usuario`);
+
+    // 6. Finalmente eliminamos el usuario
+    await prisma.usuario.delete({ 
+      where: { id } 
+    });
+    console.log(`✅ Usuario ${id} eliminado exitosamente`);
+
   } catch (e: any) {
+    console.error("❌ Error al eliminar usuario:", e);
+    
     if (e.code === "P2025") {
       const error = new Error("Usuario no encontrado") as any;
       error.statusCode = 404;
