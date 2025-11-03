@@ -62,6 +62,7 @@ export default function Login({ onLogin }) {
     register: registerCambio,
     handleSubmit: handleSubmitCambio,
     watch,
+    reset: resetCambio,
     formState: { errors: errorsCambio }
   } = useForm({
     resolver: yupResolver(cambioContrasenaSchema),
@@ -471,7 +472,7 @@ export default function Login({ onLogin }) {
             <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
               <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
-                  <div className="modal-header bg-info text-white">
+                  <div className="modal-header bg-danger text-white">
                     <h5 className="modal-title">Correo enviado</h5>
                     <button type="button" className="btn-close" onClick={() => {
                       setMostrarModalRecuperacion(false);
@@ -483,7 +484,7 @@ export default function Login({ onLogin }) {
                     <div className={styles.container}>
                       <h2>Ingresá tu código de 6 dígitos</h2>
                       {renderCodeInputs()}
-                      {codigoError && <p className={styles.error}>{codigoError}</p>}
+                      {codigoError && <div className="text-danger">{codigoError}</div>}
                       <button
                         type="button"
                         className={styles.submit}
@@ -502,9 +503,10 @@ export default function Login({ onLogin }) {
             <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
               <div className="modal-dialog modal-dialog-centered" role="document">
                 <div className="modal-content">
-                  <div className="modal-header bg-primary text-white">
+                  <div className="modal-header bg-danger text-white">
                     <h5 className="modal-title">Cambiar contraseña</h5>
-                    <button type="button" className="btn-close" onClick={() => setMostrarCambioContrasena(false)}></button>
+                   <button type="button" className="btn-close" onClick={() => {  setMostrarCambioContrasena(false); resetCambio(); }}></button>
+
                   </div>
                   <div className="modal-body">
                     <form
@@ -524,6 +526,7 @@ export default function Login({ onLogin }) {
                           const responseData = await res.json();
 
                           if (res.ok) {
+                            resetCambio();
                             setMostrarCambioContrasena(false);
                             setMostrarModalCambioExitoso(true);
                           } else {
@@ -704,7 +707,7 @@ export default function Login({ onLogin }) {
         <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
-              <div className="modal-header bg-primary text-white">
+              <div className="modal-header bg-danger text-white">
                 <h5 className="modal-title">¡Listo!</h5>
                 <button type="button" className="btn-close" onClick={() => setMostrarModalCambioExitoso(false)}></button>
               </div>
