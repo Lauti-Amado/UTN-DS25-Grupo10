@@ -236,7 +236,17 @@ function Acordion({ ofertaIdInicial, postulanteDestacadoId }) {
   const cancelarFormulario = () => {
     limpiarFormulario();
     setMostrarFormulario(false);
-    reset();
+    reset({
+      titulo: '',
+      descripcion: '',
+      categoria: '',
+      ubicacion: '',
+      sueldo: '',
+      modalidad: '',
+      horario: '',
+      contacto: '',
+      logo: ''
+    });
   };
 
   const handlePostular = async (item) => {
@@ -290,8 +300,20 @@ function Acordion({ ofertaIdInicial, postulanteDestacadoId }) {
         contacto: ofertaEditando.contacto || '',
         logo: ofertaEditando.logo || '',
       });
-    }
-  }, [modoEdicion, ofertaEditando, reset]);
+    } else if (!modoEdicion) {
+        reset({
+          titulo: '',
+          descripcion: '',
+          categoria: '',
+          ubicacion: '',
+          sueldo: '',
+          modalidad: '',
+          horario: '',
+          contacto: '',
+          logo: ''
+        });
+      }
+    }, [modoEdicion, ofertaEditando, reset]);
 
   return (
     <div className="container mt-4">
@@ -303,6 +325,8 @@ function Acordion({ ofertaIdInicial, postulanteDestacadoId }) {
               if (mostrarFormulario) {
                 setMostrarModalCancelar(true);
               } else {
+                limpiarFormulario();
+                reset();
                 setMostrarFormulario(true);
               }
             }}
